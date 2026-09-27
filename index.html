@@ -12328,7 +12328,7 @@ if(typeof asInit==="function")try{asInit();}catch(e){console.warn(e);}
 #csBox .csTop{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0 10px}
 #csBox .csTop input[type=text],#csBox .csTop select{font-family:system-ui;font-size:12px;padding:5px 8px;border:1px solid var(--line,#d8d2c2);border-radius:7px;background:#fff}
 #csBox table{border-collapse:collapse;width:100%;font-size:12px}
-#csBox th{background:#f3eee2;color:#2b3440;font-weight:700;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line,#d8d2c2);white-space:nowrap;cursor:pointer;user-select:none}
+#csBox th{background:#f3eee2;color:#2b3440;font-weight:700;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line,#d8d2c2);white-space:nowrap;cursor:pointer;user-select:none}#csBox tr.csSel td{background:#fbf3df}#csBox tr.csRow{cursor:pointer}
 #csBox td{padding:6px 8px;border-bottom:1px solid #eee;vertical-align:top}
 #csBox tr.csRow:hover td{background:#fbf6e8}
 #csBox .csTag{display:inline-block;font-size:10.5px;padding:1px 6px;border-radius:9px;background:#eef2f6;color:#345;margin:0 3px 2px 0}
@@ -12447,7 +12447,7 @@ function csAdapter(){const id=String(FPW_CONFIG.driveClientId||"").trim();return
 function csMsg(t,err){const e=$("csMsg");if(e){e.textContent=t||"";e.style.color=err?"var(--gD)":"var(--sub)";}}
 async function csOpen(){$("csOverlay").classList.add("on");CS.A=csAdapter();$("csMode").textContent=`存放：${CS.A.name}${CS.A===CSLocal&&FPW_CONFIG.mode==="drive"?"（config.js 的 driveClientId 尚未填入有效的 OAuth 用戶端 ID，退回本機）":""}`;
   try{await CS.A.init();CS.user=await CS.A.whoami();}catch(e){csMsg(String(e.message||e),true);}
-  csRenderUser();if(CS.user)await csRefresh();else{$("csList").innerHTML=`<div class="note">請先登入（${CS.A.name}）。本機模式只是輸入你的 Email 作為「負責同仁」標記。</div>`;$("csDetail").innerHTML="";}}
+  csRenderUser();if(CS.user)await csRefresh();else{$("csList").innerHTML=`<div class="note">${CS.A===CSDrive?"請先按右上「以 Google 登入」，選擇你的 Google 帳號並允許存取雲端硬碟。":"請先按右上「設定同仁 Email」——本機模式只是輸入你的 Email 作為「負責同仁」標記，資料存在這台電腦的瀏覽器。"}</div>`;$("csDetail").innerHTML="";}}
 function csClose(){$("csOverlay").classList.remove("on");}
 function csRenderUser(){const u=CS.user;const mgr=u&&csIsManager(u.email);
   $("csUser").innerHTML=u?`<span>${csEsc(u.name||u.email)}${mgr?" <span class='bdg b-both'>主管</span>":""}</span><button class="btn ghost sm" type="button" id="csSignOut">登出</button>`:`<button class="btn sm" type="button" id="csSignIn">${CS.A===CSDrive?"以 Google 登入":"設定同仁 Email"}</button>`;
@@ -12464,17 +12464,22 @@ function csFiltered(){const q=($("csQ").value||"").trim().toLowerCase(),st=$("cs
 function csRenderList(){const L=csFiltered();const stCls=s=>"s"+(CS_STATUS.indexOf(s)+1);
   if(!L.length){$("csList").innerHTML=`<div class="note">${CS.clients.length?"沒有符合條件的客戶。":"客戶庫是空的——按「＋ 新客戶」或「存目前畫面為新版本」開始。"}</div>`;return;}
   $("csList").innerHTML=`<div style="overflow-x:auto"><table><tr><th data-sort="name">姓名</th><th>醫院／科別</th><th>電話</th><th data-sort="owner">負責同仁</th><th data-sort="status">狀態</th><th>標籤</th><th data-sort="updated">最近更新</th><th>版本</th><th></th></tr>
-    ${L.map(r=>`<tr class="csRow" data-id="${csEsc(r.id)}"><td><b>${csEsc(r.name||"（未命名）")}</b></td><td>${csEsc([r.hospital,r.dept].filter(Boolean).join("／"))}</td><td>${csEsc(r.phone||"")}</td><td>${csEsc(r.owner||"")}</td><td>${r.status?`<span class="csSt ${stCls(r.status)}">${csEsc(r.status)}</span>`:""}</td><td>${(r.tags||[]).map(t=>`<span class="csTag">${csEsc(t)}</span>`).join("")}</td><td style="white-space:nowrap">${csFmtT(r.updated)}</td><td>${r.nVer||0}</td>
+    ${L.map(r=>`<tr class="csRow${r.id===CS.sel?" csSel":""}" data-id="${csEsc(r.id)}" title="點一下選取這位客戶（存版本會存到選取的客戶）"><td style="white-space:nowrap">${r.id===CS.sel?"▶ ":""}<b>${csEsc(r.name||"（未命名）")}</b></td><td>${csEsc([r.hospital,r.dept].filter(Boolean).join("／"))}</td><td>${csEsc(r.phone||"")}</td><td>${csEsc(r.owner||"")}</td><td style="white-space:nowrap">${r.status?`<span class="csSt ${stCls(r.status)}" style="white-space:nowrap">${csEsc(r.status)}</span>`:""}</td><td>${(r.tags||[]).map(t=>`<span class="csTag">${csEsc(t)}</span>`).join("")}</td><td style="white-space:nowrap">${csFmtT(r.updated)}</td><td>${r.nVer||0}</td>
       <td style="white-space:nowrap"><button class="btn sm" type="button" data-open="${csEsc(r.id)}">開啟最新</button> <button class="btn ghost sm" type="button" data-ver="${csEsc(r.id)}">版本…</button> <button class="btn ghost sm" type="button" data-edit="${csEsc(r.id)}">資料</button></td></tr>`).join("")}</table></div>`;
   $("csList").querySelectorAll("th[data-sort]").forEach(th=>th.onclick=()=>{$("csSort").value=th.dataset.sort;csRenderList();});
   $("csList").querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>csOpenLatest(b.dataset.open));
   $("csList").querySelectorAll("[data-ver]").forEach(b=>b.onclick=()=>csShowVersions(b.dataset.ver));
-  $("csList").querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>csEditClient(b.dataset.edit));}
+  $("csList").querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>csEditClient(b.dataset.edit));
+  $("csList").querySelectorAll("tr.csRow").forEach(tr=>tr.addEventListener("click",e=>{if(e.target.closest("button"))return;CS.sel=tr.dataset.id;const r=CS.clients.find(x=>x.id===CS.sel);csRenderList();if(r)csMsg(`已選取「${r.name}」——「存目前畫面為新版本」會存到這位客戶`);}));}
 function csRecordFromScreen(base){const nm=($("clientName")&&$("clientName").value.trim())||"";let hosp="",dept="",phone="";
   try{const bio=id=>$(id)?$(id).value:"";hosp=bio("bio_hospital")||bio("bio_org")||"";dept=bio("bio_dept")||bio("bio_spec")||"";phone=bio("bio_phone")||"";}catch(e){}
   return Object.assign({id:csId(),name:nm,hospital:hosp,dept,phone,owner:CS.user?CS.user.email:"",status:"問診中",tags:[],note:"",created:csNow()},base||{},{updated:csNow()});}
-async function csSaveHere(){if(!CS.user){csMsg("請先登入",true);return;}const nm=($("clientName").value||"").trim();if(!nm){csMsg("請先在上方「客戶」欄填姓名",true);return;}
-  let rec=CS.clients.find(r=>r.id===CS.sel)||CS.clients.find(r=>(r.name||"")===nm&&String(r.owner||"").toLowerCase()===CS.user.email)||null;
+async function csSaveHere(){if(!CS.user){csMsg("請先登入",true);return;}let nm=($("clientName").value||"").trim();
+  const selRec=CS.clients.find(r=>r.id===CS.sel)||null;
+  if(!nm&&selRec){nm=selRec.name||"";if(nm&&$("clientName"))$("clientName").value=nm;} // 上方客戶欄空白 → 用清單中選取的客戶
+  if(!nm){csMsg("請先在清單點選一位客戶，或在工作台上方「客戶」欄填姓名",true);return;}
+  if(selRec&&selRec.name&&selRec.name!==nm&&!confirm(`目前選取的客戶是「${selRec.name}」，但工作台上方客戶欄是「${nm}」。\n\n確定要把目前畫面存成「${selRec.name}」的新版本？\n（按「取消」可先到清單點選正確的客戶）`))return;
+  let rec=selRec||CS.clients.find(r=>(r.name||"")===nm&&String(r.owner||"").toLowerCase()===CS.user.email)||null;
   const label=prompt("這個版本的名稱",`${($("scenName")&&$("scenName").value)||"現況"} ${new Date().toISOString().slice(0,10)}`);if(label===null)return;
   csMsg("儲存中…");try{
     if(!rec){rec=csRecordFromScreen();rec=await CS.A.saveClient(rec);CS.clients.push(rec);}
@@ -12509,7 +12514,8 @@ function csEditClient(id){const rec=id?CS.clients.find(r=>r.id===id):csRecordFro
   $("csEditCancel").onclick=()=>{$("csDetail").innerHTML="";CS.edit=null;};
   $("csEditSave").onclick=async()=>{const box=$("csDetail");box.querySelectorAll("[data-k]").forEach(el=>{const k=el.dataset.k;rec[k]=k==="tags"?el.value.split(/[,，]/).map(s=>s.trim()).filter(Boolean):el.value.trim();});
     if(!rec.name){csMsg("姓名必填",true);return;}rec.owner=(rec.owner||(CS.user?CS.user.email:"")).toLowerCase();rec.updated=csNow();
-    try{await CS.A.saveClient(rec);if(isNew)CS.clients.push(rec);csMsg(isNew?"客戶已建立":"已儲存");$("csDetail").innerHTML="";csRenderList();}catch(e){csMsg(String(e.message||e),true);}};}
+    try{await CS.A.saveClient(rec);if(isNew){CS.clients.push(rec);CS.sel=rec.id;if($("clientName")&&!$("clientName").value.trim())$("clientName").value=rec.name;}
+      csMsg(isNew?`客戶「${rec.name}」已建立並選取——按「存目前畫面為新版本」即可存入第一個版本`:"已儲存");$("csDetail").innerHTML="";csRenderList();}catch(e){csMsg(String(e.message||e),true);}};}
 async function csExportAll(){if(!CS.user)return;csMsg("打包中…");try{const out={kind:"客戶庫備份",ver:1,time:csNow(),by:CS.user.email,clients:[]};
     for(const r of csFiltered()){const vs=await CS.A.listVersions(r.id);const vv=[];for(const v of vs){vv.push({label:v.label,time:v.time,by:v.by,data:await CS.A.getVersion(r.id,v.id)});}const c=Object.assign({},r);delete c._dir;delete c._file;c.versions=vv;out.clients.push(c);}
     dlJSON(out,`客戶庫備份_${new Date().toISOString().slice(0,10)}.json`);csMsg(`已匯出 ${out.clients.length} 位客戶`);}catch(e){csMsg(String(e.message||e),true);}}
