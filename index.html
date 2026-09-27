@@ -190,6 +190,10 @@ ul.tight{margin:6px 0 0;padding-left:19px;} ul.tight li{margin-bottom:4px;}
 .pt input[type=text]{font-family:'Noto Serif TC',serif;font-size:10.5px;padding:2px 5px;border:1px solid #f0ebe0;
   border-radius:5px;background:#fdfcf9;width:100%;color:var(--sub);margin-top:2px;}
 .pt th.grp{background:#2c517a;font-size:10.5px;}
+.pt th.grp0{background:#1e3552;font-size:11px;letter-spacing:.2em}.pt th.grp2{background:#3d6690;font-size:10.5px;}
+.pt .protSub{font-family:system-ui;font-size:10.5px;color:var(--sub);margin-top:3px;line-height:1.35;white-space:nowrap}
+.pt .retYrs{display:flex;align-items:center;gap:4px;font-family:system-ui;font-size:10.5px;color:var(--sub)}
+.pt .retYrs input{width:64px!important;text-align:right}
 .pt td.vr{background:#fbf9f5;}
 
 /* ---- scenarios ---- */
@@ -260,6 +264,7 @@ ul.tight{margin:6px 0 0;padding-left:19px;} ul.tight li{margin-bottom:4px;}
 #fgPanel button.act{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:7px 9px;font-family:system-ui;font-size:12px;cursor:pointer;width:100%}
 #fgPanel button.act:hover{border-color:var(--accent);color:var(--accent)}
 #fgPanel button.big{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;margin-top:10px}
+#fgPanel button.big:hover{color:#fff;filter:brightness(1.18);box-shadow:0 2px 6px rgba(0,0,0,.18)}
 #fgPanel button.del{position:absolute;top:5px;right:6px;background:none;border:0;color:#9aa6b4;cursor:pointer;font-size:15px;line-height:1;padding:2px 4px}
 #fgPanel button.del:hover{color:var(--gD)}
 #fgPanel button.mv{position:absolute;top:6px;background:none;border:0;color:#9aa6b4;cursor:pointer;font-size:11px;padding:2px 3px}
@@ -288,6 +293,7 @@ body.helpAll .helpBtn,.panel.helpOn .helpBtn{color:var(--accent);border-color:va
 #protTables>div{overflow-x:auto}
 @media print{body{zoom:1!important}.helpBtn{display:none}}
 body[data-dv="self"] .itmRow[data-dv="sp"],body[data-dv="sp"] .itmRow[data-dv="self"]{display:none}
+body[data-svc-tax="off"] .tab[data-view="view_est"],body[data-svc-tax="off"] .mtGrp[data-view="view_est"]{display:none!important}
 .dvTag{display:inline-block;font-family:system-ui;font-size:10.5px;color:#7a5a1e;background:#fbf3df;border:1px solid #e6d3a3;border-radius:4px;padding:0 5px;margin-left:4px}
 #tocDock{position:fixed;top:92px;right:16px;width:176px;z-index:60;display:none;}
 @media(min-width:1580px){#tocDock{display:block;}}
@@ -391,6 +397,21 @@ input[readonly].curDerived{background:#f1efe9!important;color:var(--sub)}
 .adjHost .mvs{margin-left:10px;display:inline-flex;gap:2px} /* 緊跟在內容後面，不推到最右 */
 /* ①-3 顧問建議欄＋方案值欄：僅方案工作區顯示 */
 body.rxLock .bsAdjCol{display:none!important}
+/* v269：方案工作區 ①-1～①-3 現況資料唯讀 */
+.plLockNote{display:none;border:1.5px dashed var(--gA);background:var(--gAb);border-radius:10px;padding:9px 12px;margin:4px 0 10px;font-family:system-ui;font-size:12px;color:#2b3440;line-height:1.6}
+body.plWs .plLockNote{display:block}
+.plOnly{display:none}body.plWs .plOnly{display:inline-block}
+/* v270：新年度現況 */
+.nyNote{display:none;border:1.5px dashed #d4a017;background:#fff8dc;border-radius:10px;padding:9px 12px;margin:4px 0 10px;font-family:system-ui;font-size:12px;color:#5a4500;line-height:1.6}
+.nyNote.on{display:block}.nyNote button{margin-left:8px}
+input.nyPendCell,select.nyPendCell{background:#fff3c4!important;outline:1.5px solid #e0b020}
+#nyOut table{font-size:12px}#nyOut tr.nyP td{background:#fff8dc}#nyOut td.n{text-align:right;font-family:var(--mono)}
+#nyOut input.nyIn{width:110px;text-align:right;font-family:var(--mono);font-size:12px;padding:2px 5px;border:1px solid var(--line);border-radius:5px}
+#nyOut .nyCase{display:inline-block;padding:2px 10px;border-radius:10px;color:#fff;font-weight:700;font-family:system-ui;font-size:12px;margin-right:6px}
+.plLockNote b{color:var(--gA)}.plLockNote .plDiff{color:var(--gD);font-weight:700}
+.plLockNote button{margin-left:8px}
+body.plWs :is(#itmIncSec,#itmExpSec,#itmSec,#tblIncome,#tblExpense,#tblAsset,#tblLiab,#tblExpenseDv,#tblAssetDv,#tblLiabDv) :is(input,select,textarea):not([data-itmq]):not([type=hidden]):not(.bsAdjCol *):not(.adjHost *):not([data-if=use]):not([data-if=useAmt]):not([data-if=sim]):not([data-if=redeem]){background:#f1efe9!important;color:#6b7280!important;cursor:not-allowed}
+body.plWs :is(#btnItmAddI,#btnItmAddE,#btnItmAddA,#btnItmAddL,[data-iadel],[data-iedel],[data-iidel],[data-ildel],[data-goast]){display:none!important}
 body:not(.rxLock) .abGrid{grid-template-columns:1fr!important}
 .planv{font-family:var(--mono);font-weight:800;text-align:right;white-space:nowrap}
 .planv.up{color:var(--gA)} .planv.dn{color:var(--gD)} .planv.same{color:#8a94a0;font-weight:400}
@@ -443,7 +464,8 @@ body:not(.rxLock) .bsCascade{display:block}
     <span class="status" id="status">就緒</span>
     <button class="btn" id="btnSaveFile">儲存工作檔</button>
     <button class="btn ghost" id="btnOpenFile">開啟工作檔</button>
-    <button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶庫</button>
+    <button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button>
+    <span id="lgChip" class="lgChip" style="display:none"></span>
     <button class="btn ghost" id="btnNewClient" title="先自動存檔目前客戶，再清空全部客戶資料（保留顧問資料與稅務參數）">🆕 新客戶</button>
     <input type="file" id="fileWork" accept=".json,application/json" style="display:none">
     <span style="display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-family:system-ui;font-size:11.5px;color:var(--sub)">
@@ -691,7 +713,7 @@ body:not(.rxLock) .bsCascade{display:block}
   </div>
   <p class="cap no-print" style="margin:-2px 0 8px"><b>現金管理紀律同時作用於現況藍圖、方案藍圖與 ④-3 求解</b>——客戶的現況本來就該有現金紀律，方案只是延續同一條規則。<b>緊急預備金</b>＝平時最低要留的現金地板（N 個月生活支出與固定金額取大者，可由 ①-0 匯入依追蹤工具規則帶入）。它<b>不是完全不能碰的錢</b>——實務上真的沒錢時當然會動用：<b>④-3 求解</b>時保留不投入目標（可動用單筆＝存款−緊急預備金）；<b>④-1 藍圖</b>存款高於此線正常，低於此線就依贖回順序<b>先變現投資補回</b>，投資也用盡時才動用預備金本身。<b>⑤ 蒙地卡羅</b>則保守——不把預備金計入投資部位。0＝不設（不保留、存款見底才變現）。</p>
   <div class="no-print" style="margin-top:-4px"><span id="bpRedeemNote" class="status"></span></div>
-  <input type="hidden" id="bp_kbOrd" value="9999"><input type="hidden" id="bp_invOrd" value="9998"><input type="hidden" id="bp_residUse" value="[]"><input type="hidden" id="retSelfM" value=""><input type="hidden" id="retSpM" value=""><input type="hidden" id="retSelfEnd" value=""><input type="hidden" id="retSpEnd" value=""><input type="hidden" id="bp_rdLv" value=""><input type="hidden" id="syncStamp" value=""><input type="hidden" id="incMixJson" value=""><input type="hidden" id="expMixJson" value=""><input type="hidden" id="trkArvJson" value="">
+  <input type="hidden" id="bp_kbOrd" value="9999"><input type="hidden" id="bp_invOrd" value="9998"><input type="hidden" id="bp_residUse" value="[]"><input type="hidden" id="retSelfM" value=""><input type="hidden" id="retSpM" value=""><input type="hidden" id="retSelfEnd" value=""><input type="hidden" id="retSpEnd" value=""><input type="hidden" id="bp_rdLv" value=""><input type="hidden" id="syncStamp" value=""><input type="hidden" id="incMixJson" value=""><input type="hidden" id="expMixJson" value=""><input type="hidden" id="trkArvJson" value=""><input type="hidden" id="nyPendJson" value="[]"><input type="hidden" id="nyMetaJson" value="">
   <div id="bpStale" class="no-print"></div>
   <div id="rdSeq" class="no-print"></div>
   <div id="bpModeBanner"></div>
@@ -898,7 +920,9 @@ body:not(.rxLock) .bsCascade{display:block}
   <div class="scRow no-print">
     <button class="btn" id="btnTrkImport">匯入收支追蹤 JSON</button>
     <button class="btn ghost" id="btnTrkExport" title="把 ①-1～①-4 與 ②-1、④-1 緊急預備金整理成追蹤工具吃得下的客戶檔（v1.14 格式），客戶端匯入後即可開始記帳追蹤">📤 匯出給追蹤工具</button>
+    <select id="trkBudgetMode" class="plOnly" title="方案工作區匯出時，追蹤工具的預算要用哪一套數字" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--paper)"><option value="plan">預算＝方案（含顧問建議）</option><option value="cur">預算＝現況（建議另列）</option></select>
     <input type="file" id="fileTrk" accept=".json,application/json" style="display:none">
+    <button class="btn ghost" type="button" id="btnNyJump" title="續約／回鍋客戶：用追蹤工具的週年實際值建立新年度現況">🗓 建立新年度現況…</button>
     <span class="status" id="trkMsg"></span>
   </div>
   <div id="trkSummary"></div>
@@ -922,6 +946,7 @@ body:not(.rxLock) .bsCascade{display:block}
   <input type="hidden" id="inc_self_basis" value=""><input type="hidden" id="inc_sp_basis" value="">
   <input type="hidden" id="liMetaJson" value=""><input type="hidden" id="siJson" value=""><input type="hidden" id="trkAssetsJson" value="">
   <div id="incBasisNote"></div>
+  <div class="plLockNote no-print" data-pl="inc"></div><div class="nyNote no-print" data-ny="inc"></div>
   <details class="grp no-print" id="itmIncSec" data-mt="①-1b 逐筆收入（問診用）" open style="margin:6px 0 12px;border:1.5px solid var(--gold);background:#fffaf0;border-radius:10px">
     <summary style="font-size:14px;font-weight:700;padding:11px 14px;color:var(--accent)">🧾 逐筆收入（問診用）：一份薪水／一個診所／一間出租房各一列</summary>
     <div class="grpBody">
@@ -937,6 +962,7 @@ body:not(.rxLock) .bsCascade{display:block}
   <div class="kicker">①-2　支出</div>
   <h2 id="expH2">現金支出表（家庭合計・元）</h2><div class="segRow no-print" data-dv-seg style="margin:0 0 8px;display:none"></div>
   <p class="cap">七大類支出。「理財支出」視為儲蓄的一部分（有效儲蓄率的分子），不會被當成消耗性支出帶入模擬器。</p>
+  <div class="plLockNote no-print" data-pl="exp"></div><div class="nyNote no-print" data-ny="exp"></div>
   <details class="grp no-print" id="itmExpSec" data-mt="①-2b 逐筆支出（問診用）" open style="margin:6px 0 12px;border:1.5px solid var(--gold);background:#fffaf0;border-radius:10px">
     <summary style="font-size:14px;font-weight:700;padding:11px 14px;color:var(--accent)">🧾 逐筆支出（問診用）：一筆貸款／一張保單／一個小孩各一列</summary>
     <div class="grpBody">
@@ -954,6 +980,7 @@ body:not(.rxLock) .bsCascade{display:block}
   <p class="cap">生息資產與自用資產分離——只有生息資產會進入模擬器帳戶。房貸餘額會自動帶入保障缺口的責任分析。
   由「匯入收支追蹤 JSON」帶入時，資產列依追蹤工具指定的會計歸屬對號入座，負債餘額直接填入右表。</p>
   <p class="cap no-print bsAdjCol" style="margin:-2px 0 6px"><b>顧問建議（方案）</b>：每列可加多筆「類型＋金額＋說明」——<b>調整配置</b>＝由此列轉出到「→至」列；<b>新增債務</b>＝負債＋、活存＋（借入資金），並自動建立「還款」限期時間帶支出（依利率／年期年金攤還）；<b>償還債務</b>＝負債－、活存－，可填「原年還款減少」同步降低貸款支出。金額單位與本表一致（<b>元</b>）。右側<b>方案值</b>＝現況值＋建議，所有引擎（④藍圖／⑤蒙地卡羅／⑥責任分析／⑦遺產稅）一律讀方案值；欄位本身仍是現況值。</p>
+  <div class="plLockNote no-print" data-pl="bs"></div><div class="nyNote no-print" data-ny="bs"></div>
   <details class="grp no-print" id="itmSec" data-mt="①-3b 逐筆明細（問診用）" open style="margin:6px 0 12px;border:1.5px solid var(--gold);background:#fffaf0;border-radius:10px">
     <summary style="font-size:14px;font-weight:700;padding:11px 14px;color:var(--accent)">🧾 逐筆明細（問診用）：一個帳戶／一張保單／一筆貸款各一列</summary>
     <div class="grpBody">
@@ -999,6 +1026,7 @@ body:not(.rxLock) .bsCascade{display:block}
   <div id="sumTables"></div>
   <div class="axTitle" style="margin:14px 0 8px">財務體質指標</div>
   <div class="kpiRow" id="kpiRow"></div>
+  <div id="a1Live"></div>
   <div style="margin-top:14px" class="no-print">
     <button class="btn" id="btnSync">→ 將資料層帶入蒙地卡羅模擬器</button>
     <label class="chk" style="margin:0 0 0 10px;font-size:12px" title="開啟時：①-1 收入／①-2 支出／①-3 資產負債一改動，模擬參數與 ④ 藍圖自動跟著重算，不必手動按同步。若你要手動微調 ⑤ 的模擬參數（μ／σ／存款／ETF）而不希望被蓋掉，就關掉它。"><input type="checkbox" id="bp_autoSync" checked><span><b>自動同步</b>（改資料就重算）</span></label>
@@ -1610,6 +1638,12 @@ body:not(.rxLock) .bsCascade{display:block}
     <div class="segRow" id="arvSrcSeg" style="margin:0"><button type="button" class="seg on" data-src="trk">追蹤工具實際值</button><button type="button" class="seg" data-src="cur">目前工作台值</button></div>
     <button class="btn" id="btnArv">產生對照表</button><span class="status" id="arvMsg"></span></div>
   <div id="arvOut"></div>
+  <div class="kicker" style="margin-top:18px" id="nySec">新年度：以週年實際值建立現況（續約／回鍋客戶）</div>
+  <p class="cap">在<b>現況</b>工作區使用。系統依追蹤工具週年資料「有多新、幾個月真的有記帳」自動判斷：<b>情況①</b> 最近 12 個月有 ≥ 9 個月記帳 → 收支用實際值；<b>情況②</b> 3～8 個月 → 有記的用實際值、記太少的沿用上次並標待確認；<b>情況③</b> 少於 3 個月、資料停在半年前、或根本沒有追蹤資料 → 以上次現況為底稿、整份待確認（等於重新問診）。資產負債一律用追蹤工具最新餘額並註明日期，超過 3 個月標待確認。套用前會先自動存一筆「年度結算」快照；<b>中間有沒有簽約不影響判斷</b>。</p>
+  <div class="scRow no-print" style="flex-wrap:wrap">
+    <button class="btn ghost" type="button" id="btnNyLoad" title="只讀取 annualReview（實際值），不會覆蓋 ①～⑦ 的資料">📂 讀取追蹤工具 JSON（只讀實際值）</button><input type="file" id="nyFile" accept=".json,application/json" style="display:none">
+    <button class="btn" type="button" id="btnNyBuild">產生新年度對照表</button><span class="status" id="nyMsg"></span></div>
+  <div id="nyOut"></div>
 </div>
 
 <div class="panel">
@@ -1630,6 +1664,7 @@ body:not(.rxLock) .bsCascade{display:block}
   <h2>一鍵產出理財規劃報告書</h2>
   <p class="cap">依當前工作區產出可列印的報告書（另開分頁，瀏覽器「列印 → 存成 PDF」即可）。十三章對應報告書格式：01 理財屋・02 生涯財務目標・03 收支表・04 資產負債表・05 風險管理・06 社保與職退・07 生涯資產模擬（④-1 藍圖與 ⑤ 蒙地卡羅圖）・08 財務健康診斷・09 規劃與建議・10 執行計畫表・11 結語・12 附表・13 聯絡我們。
   建議與執行計畫來自 ⑧-0 建議總表；執行狀態來自追蹤工具回報；資產明細來自追蹤工具匯入的逐筆資料（無匯入時以 ①-3 列彙總）。</p>
+  <div id="rptA1Note" class="note" style="display:none;margin:4px 0 8px"><b>服務方案 A1（財報系統）</b>：報告書改用財報版型——收支表、資產負債表、財務健康六步驟診斷、整體診斷、方案對照與指標總表、執行計畫、附表；不含生涯模擬、目標完成率、保障缺口與社保。下方章節勾選只有「執行計畫表」會影響 A1 版型。</div>
   <div class="scRow"><label style="font-size:12px;color:var(--sub);font-family:system-ui">顧問</label><input type="text" id="rpt_advisor" placeholder="吳振哲" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--paper);width:110px">
     <label style="font-size:12px;color:var(--sub);font-family:system-ui">單位</label><input type="text" id="rpt_org" placeholder="醫師的財務管家" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--paper);width:160px">
     <label style="font-size:12px;color:var(--sub);font-family:system-ui">聯絡</label><input type="text" id="rpt_contact" placeholder="電話／Email／LINE" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--paper);flex:1;min-width:180px">
@@ -3561,6 +3596,7 @@ function renderKPI(forceWho){
   t.push(kpiTile("保守資產比",pctf(consR),"（現金類＋儲蓄險現價）／生息資產・理想 <20%",gr3(consR,v=>v<0.2,v=>v<0.5)));
   t.push(kpiTile(who==="all"?"家庭淨值":`${DV_LB[who]}淨值`,NT(Math.round(d.net))+" 元","資產總計 − 負債總計",""));
   $("kpiRow").innerHTML=t.join("");
+  if(typeof a1LiveRender==="function"&&!forceWho)try{a1LiveRender();}catch(e){console.warn(e);}
 }
 
 /* ---------- 帶入模擬器 ---------- */
@@ -4111,6 +4147,66 @@ const TRK_AST_TOOL={ // ①-3 資產列 → 追蹤工具資產類型（其 bsKey
   "1_5":"事業股權","1_6":"互助會（活會）","1_7":"其他","1_8":"債權／應收帳款","1_9":"投資性不動產",
   "2_0":"自用不動產","2_1":"自用汽車"};
 const TRK_LIAB_KEY=["li_0","li_1","li_2","li_3","li_4","li_5","li_6","li_7"];
+/* ---------- v269：方案預算帶進追蹤工具 ---------- */
+function trkPlanTargets(){ // 顧問建議（bsAdj）→ 每列方案年額；只看收支類的直接調整（資產負債、保單屬「待執行建議」）
+  const E={},I={};
+  Object.entries(bsAdj||{}).forEach(([id,list])=>{let m;
+    if((m=id.match(/^exp_(\d+)_(\d+)$/))){const k=`${m[1]}_${m[2]}`,base=rawV(`${id}_m`)*12+rawV(`${id}_y`);let t=base,any=false;
+      (list||[]).forEach(it=>{if(bsSkip(it))return;const a=parseFloat(it.amt)||0;
+        if(it.t==="降低至"){t=a;any=true;}else if(it.t==="增加"){t+=a;any=true;}else if(it.t==="減少"){t=Math.max(0,t-a);any=true;}});
+      if(any&&Math.abs(t-base)>0.5)E[k]={base,tgt:t};return;}
+    if((m=id.match(/^inc_(\d+)_(\d+)$/))){const rk=`${m[1]}_${m[2]}`;
+      (list||[]).forEach(it=>{if(bsSkip(it))return;if(["增加","降低至","提高至"].indexOf(it.t)<0)return;
+        const w=it.who==="配偶"?"sp":"self",key=w+"|"+rk,a=parseFloat(it.amt)||0;
+        if(!I[key]){const base=rawV(`inc_${w}_${rk}_m`)*12+rawV(`inc_${w}_${rk}_y`);I[key]={base,tgt:base,who:w,rk};}
+        const o=I[key];if(it.t==="增加")o.tgt+=a;else o.tgt=a;});}
+  });
+  Object.keys(I).forEach(k=>{if(Math.abs(I[k].tgt-I[k].base)<=0.5)delete I[k];});
+  return {E,I};}
+function trkPlanBudgetApply(c){
+  const T=trkPlanTargets(),pn=(wsSlots[wsActive]||{}).name||"方案",R=x=>Math.round(x),rows=[],cAdd=[];
+  const N=v=>R(v).toLocaleString("en-US");
+  const note=(o,from,to)=>{o.note=(o.note?o.note+"｜":"")+`${pn}：原 ${N(from)} → ${N(to)}`;};
+  // ① 支出（A／B／C）：同一列的逐筆項目按比例分攤；現況沒有金額的列 → 新增一筆
+  Object.entries(T.E).forEach(([k,r])=>{const [gi,ri]=k.split("_").map(Number),rn=((EXP_GROUPS[gi]||{rows:[]}).rows[ri]||"").replace(/（.*?）/g,"");
+    const its=[].concat(c.aItems.filter(x=>x._ek===k),c.bItems.filter(x=>x._ek===k),c.cItems.filter(x=>x._ek===k));
+    if(r.base>0.5&&its.length){const f=r.tgt/r.base;its.forEach(x=>{const fld=x.origAmt!==undefined?"origAmt":"amount",v0=+x[fld]||0,v1=R(v0*f);note(x,v0,v1);x[fld]=v1;});
+      rows.push({k,name:rn,base:R(r.base),tgt:R(r.tgt),n:its.length});return;}
+    const amt=R(r.tgt/12);if(!(amt>0))return;
+    if(gi===4)c.cItems.push({_own:"共同",_ek:k,name:`【${pn}】${rn}`,account:"",currency:"台幣",currencyOther:"",origAmt:amt,rate:1,freq:"月",years:"",klass:TRK_C_MAP[k]||"",policyName:"",expReturn:(V(`exp_4_${ri}_r`)||null),endAge:null,platform:"",purpose:"",purposeOther:"",note:`${pn}新增（顧問建議）`});
+    else{const meta=TRK_EXP_MAP[k]||{cat:"雜費"};c.aItems.push({_own:"共同",_ek:k,cat:meta.cat,catOther:"",name:`【${pn}】${rn}`,who:meta.who||"",subCat:meta.subCat||"",liabKey:meta.liabKey||"",startAge:null,endAge:null,amount:amt,freq:"月",adviceRef:"",note:`${pn}新增（顧問建議）`});}
+    rows.push({k,name:rn,base:R(r.base),tgt:R(r.tgt),n:0,added:true});});
+  // ② 收入
+  const PK=["","利息","股利","租金","其他"];
+  Object.values(T.I).forEach(r=>{const [gi,ri]=r.rk.split("_").map(Number),rn=(((INC_GROUPS[gi]||{rows:[]}).rows[ri])||"").split("（")[0],d=r.tgt-r.base,rk="inc_"+r.rk+"|"+r.who;
+    if(gi===1&&ri>0){const ow=r.who==="sp"?"配偶":"本人",its=c.passive.filter(x=>x._ik===r.rk&&x.owner===ow);
+      if(r.base>0.5&&its.length){const f=r.tgt/r.base;its.forEach(x=>{const v0=+x.amount||0;x.amount=R(v0*f);});}
+      else if(r.tgt>0.5)c.passive.push({kind:PK[ri]||"其他",name:`【${pn}】${rn}`,amount:R(r.tgt),freq:"年",owner:ow,assetRef:""});
+      rows.push({k:rk,name:rn,base:R(r.base),tgt:R(r.tgt)});return;}
+    const m=c.incM.find(x=>x._sh===(r.who==="sp"?"spouse":"self"));
+    if(!m){rows.push({k:rk,name:rn,base:R(r.base),tgt:R(r.tgt),skip:true});return;}
+    if(r.rk==="0_0"||r.rk==="0_2"){const v0=m.income;m.income=Math.max(0,R(m.income+d/12));m.note=(m.note?m.note+"；":"")+`${pn}：月薪 ${N(v0)} → ${N(m.income)}`;}
+    else if(r.rk==="0_1"){m.bonus=Math.max(0,R(m.bonus+d));if(m.bonusItems&&m.bonusItems.length)m.bonusItems[0].amount=Math.max(0,R((+m.bonusItems[0].amount||0)+d));else if(m.bonus>0)m.bonusItems=[{kind:"year",amount:m.bonus,month:""}];}
+    else{const its=(m.sideItems||[]).filter(x=>x._ik===r.rk);
+      if(r.base>0.5&&its.length){const f=r.tgt/r.base;its.forEach(x=>{const v0=+x.amount||0,v1=R(v0*f);x.note=(x.note?x.note+";":"")+`plan=${pn};orig=${v0}`;x.amount=v1;});}
+      else if(r.tgt>0.5){m.sideItems=m.sideItems||[];m.sideItems.push({name:`【${pn}】${rn}`,amount:R(r.tgt),freq:"年",note:`plan=${pn}`});}
+      m.side=Math.max(0,R((+m.side||0)+d/12));}
+    rows.push({k:rk,name:rn,base:R(r.base),tgt:R(r.tgt)});});
+  // ③ 現在就開始的定期定額（④-2 處方／專戶）→ C 帳戶預算；未來才開始的留在建議清單
+  try{const adv=adviceExportObj();(adv.items||[]).forEach(it=>{const a=it.action||{},ca=a.cAccount;if(a.type!=="c_budget"||!ca||!(ca.amount>0))return;if((+ca.startAge||0)>(c.a0||0)+0.5)return;
+    c.cItems.push({_own:ca.owner==="配偶"?"配偶":"本人",name:`【${pn}】${ca.name||"定期定額"}`,account:"",currency:"台幣",currencyOther:"",origAmt:R(ca.amount),rate:1,freq:ca.freq||"月",years:"",klass:ca.klass||"定期定額（基金、ETF）",policyName:"",
+      expReturn:ca.expReturn||null,endAge:ca.endAge||null,platform:"",purpose:"",purposeOther:"",note:`${pn}：${it.title||""}`+(ca.lump>0?`｜期初單筆 ${N(ca.lump)} 另依建議執行`:"")});
+    cAdd.push(it.trackKey);});}catch(e){console.warn(e);}
+  return {plan:pn,rows,c:cAdd,marked:0};}
+function trkAdvMarkBudget(adv,pb){ // 已納入預算的建議：改成純文字項目（追蹤工具不再另建「建議上限」或重複的 C 項目），客戶仍可回報執行狀態
+  const ek=new Set(pb.rows.filter(r=>!r.skip&&!/^inc_/.test(r.k)).map(r=>r.k)),ik=new Set(pb.rows.filter(r=>!r.skip&&/^inc_/.test(r.k)).map(r=>r.k)),ck=new Set(pb.c);
+  (adv.items||[]).forEach(it=>{const a=it.action||{},sk=String(it.sourceKey||"");let hit=false;
+    if(a.type==="expense_budget"&&ek.has(sk.replace(/^exp_/,"")))hit=true;
+    else if(a.type==="income_change"&&ik.has(sk+"|"+(a.who==="配偶"?"sp":"self")))hit=true;
+    else if(a.type==="c_budget"&&ck.has(it.trackKey))hit=true;
+    if(!hit)return;
+    it.action={type:"budget_applied",origType:a.type,detail:a,note:`已納入「${pb.plan}」預算`};it.title=`（已納入預算）${it.title||""}`;pb.marked++;});
+  adv.budgetBasis="方案";return adv;}
 function trkExportObj(){
   const R=x=>Math.round(parseFloat(x)||0),a0=V("g_self_cur")||num("startAge")||40;
   const hasSp=!$("bio_hasSp")||$("bio_hasSp").checked;
@@ -4127,7 +4223,7 @@ function trkExportObj(){
       const bonus=mine.filter(x=>x.ic==="0_1"||(/^0_[02]$/.test(x.ic)&&!isM(x))).reduce((a,x)=>a+itmIncAnn(x),0);
       const rest=mine.filter(x=>!(/^0_[012]$/.test(x.ic)));
       const sideItems=rest.map(x=>{const f=x.freq||"月",std=f==="月"||f==="年"; // 追蹤工具收入只有月／年：其他頻率換算後送出，原頻率與原金額記在 note，匯回時還原
-        return {name:x.name||itmIncCats().find(c=>c[0]===x.ic)?.[1]||"其他收入",amount:std?R(parseFloat(x.amt)||0):R(itmIncMon(x)?itmIncCell(x):itmIncAnn(x)),freq:itmIncMon(x)?"月":"年",
+        return {_ik:x.ic,name:x.name||itmIncCats().find(c=>c[0]===x.ic)?.[1]||"其他收入",amount:std?R(parseFloat(x.amt)||0):R(itmIncMon(x)?itmIncCell(x):itmIncAnn(x)),freq:itmIncMon(x)?"月":"年",
         note:`tax=${x.tax||""}${(parseFloat(x.a1)||0)>0?`;a1=${x.a1}`:""}${(parseFloat(x.a2)||0)>0?`;a2=${x.a2}`:""}${(parseFloat(x.g)||0)?`;g=${x.g}`:""}${std?"":`;freq=${f};amt=${R(parseFloat(x.amt)||0)}${f==="不定期"?`;nYr=${Math.max(1,parseFloat(x.nYr)||1)}`:""}`}`};});
       const hasPro=mine.some(x=>x.tax==="pro");
       const kind=salM>0?(hasPro?"報准駐診":"受僱薪資"):(hasPro?"開業執行業務":"受僱薪資"); // 有本薪＝受僱（另有執行業務＝報准駐診）；只有執行業務＝開業
@@ -4155,10 +4251,10 @@ function trkExportObj(){
     const kind=isPro?(kindEl==="mix"?"報准駐診":"開業執行業務"):"受僱薪資";
     const basisEl=$(`inc_${w}_basis`),basis=basisEl?basisEl.value:"";
     const sideItems=[];
-    if(sideM>0)sideItems.push({name:"兼職／其他工作收入",amount:R(sideM),freq:"月"});
-    if(sideY>0)sideItems.push({name:"兼職／其他工作收入（年）",amount:R(sideY),freq:"年"});
-    if(isPro){if(proM>0)sideItems.push({name:"執行業務／分紅（月）",amount:R(proM),freq:"月"});
-              if(proY>0)sideItems.push({name:"執行業務／分紅（年）",amount:R(proY),freq:"年"});}
+    if(sideM>0)sideItems.push({_ik:"0_3",name:"兼職／其他工作收入",amount:R(sideM),freq:"月"});
+    if(sideY>0)sideItems.push({_ik:"0_3",name:"兼職／其他工作收入（年）",amount:R(sideY),freq:"年"});
+    if(isPro){if(proM>0)sideItems.push({_ik:"1_0",name:"執行業務／分紅（月）",amount:R(proM),freq:"月"});
+              if(proY>0)sideItems.push({_ik:"1_0",name:"執行業務／分紅（年）",amount:R(proY),freq:"年"});}
     const m={label:w==="self"?"本人":"配偶",kind,basis:basis||"稅前",bank:"",note:"",
       income:R(monthly),bonus:R(bonusY+annual),side:R(sideM+sideY/12+(isPro?proM+proY/12:0)),sideItems, // side＝月均（年項 ÷12），與逐筆路徑同義
       bonusItems:(bonusY+annual)>0?[{kind:"year",amount:R(bonusY+annual),month:""}]:[]};
@@ -4185,10 +4281,10 @@ function trkExportObj(){
       const sA=(parseFloat(x.a1)||0)>0?Math.round(parseFloat(x.a1)):null,eA=(parseFloat(x.a2)||0)>0?Math.round(parseFloat(x.a2)):null;
       const nm=x.name||rn.replace(/（.*?）/g,"");
       itmCov[key]=1;
-      if(gi===4){parts.forEach(([own,pa])=>cItems.push({_own:own,name:nm,account:"",currency:"台幣",currencyOther:"",origAmt:pa,rate:1,freq:fq,years:nY,
+      if(gi===4){parts.forEach(([own,pa])=>cItems.push({_own:own,_ek:key,name:nm,account:"",currency:"台幣",currencyOther:"",origAmt:pa,rate:1,freq:fq,years:nY,
         klass:TRK_C_MAP[key]||"",policyName:"",expReturn:(V(`exp_4_${ri}_r`)||null),endAge:eA,platform:"",purpose:"",purposeOther:"",note:"由財務規劃整合工作台匯出（逐筆）"}));return;}
       const meta=TRK_EXP_MAP[key]||{cat:"雜費"};
-      const base={cat:meta.cat,catOther:"",name:nm,who:(itmWhoSpec(key).trk?itmWhoTrk(x.who||meta.who||""):(meta.who||"")),subCat:meta.subCat||"",liabKey:meta.liabKey||"",
+      const base={_ek:key,cat:meta.cat,catOther:"",name:nm,who:(itmWhoSpec(key).trk?itmWhoTrk(x.who||meta.who||""):(meta.who||"")),subCat:meta.subCat||"",liabKey:meta.liabKey||"",
         startAge:sA,endAge:eA,note:"由財務規劃整合工作台匯出（逐筆）"+((parseFloat(x.g)||0)?`｜g=${parseFloat(x.g)}`:"")+(itmWhoKid(x.who)?`｜kid=${itmWhoKid(x.who)}`:"")};
       parts.forEach(([own,pa])=>{
         if(itmExpMon(x))aItems.push({...base,_own:own,amount:pa,freq:fq,adviceRef:""}); // A 帳戶：月／兩個月
@@ -4208,12 +4304,12 @@ function trkExportObj(){
     const sAge=rawV(`exp_${gi}_${ri}_a1`),eAge=rawV(`exp_${gi}_${ri}_a2`);
     if(gi===4){ // 理財支出 → C 帳戶（月／年）
       const klass=TRK_C_MAP[key]||"";
-      const mk=(amt,freq)=>{if(!(amt>0))return;cItems.push({_own:"共同",name:rn.replace(/（.*?）/g,""),account:"",currency:"台幣",currencyOther:"",origAmt:R(amt),rate:1,freq,years:"",
+      const mk=(amt,freq)=>{if(!(amt>0))return;cItems.push({_own:"共同",_ek:key,name:rn.replace(/（.*?）/g,""),account:"",currency:"台幣",currencyOther:"",origAmt:R(amt),rate:1,freq,years:"",
         klass,policyName:"",expReturn:(V(`as_1_${ri===2?2:0}_r`)||null),endAge:eAge>0?R(eAge):null,platform:"",purpose:"",purposeOther:"",note:"由財務規劃整合工作台匯出"});};
       mk(mv,"月");mk(yv,"年");return;
     }
     const meta=TRK_EXP_MAP[key];if(!meta)return;
-    const base={cat:meta.cat,catOther:"",name:meta.name||rn.replace(/（.*?）/g,""),
+    const base={_ek:key,cat:meta.cat,catOther:"",name:meta.name||rn.replace(/（.*?）/g,""),
       who:meta.who||"",subCat:meta.subCat||"",liabKey:meta.liabKey||"",
       startAge:sAge>0?R(sAge):null,endAge:eAge>0?R(eAge):null,note:"由財務規劃整合工作台匯出"};
     if(mv>0.5)aItems.push({...base,_own:"共同",amount:R(mv),freq:"月",adviceRef:"",name:base.name+(itmCov[key]?"（未逐筆殘額）":"")});
@@ -4224,7 +4320,7 @@ function trkExportObj(){
   const OWN_BLK=[["本人","self"],["配偶","spouse"],["共同","self"]]; // 共同（未逐筆的類別列）暫掛本人分頁
   const blkOne=(type,n,label,bankTxt,owner,items)=>({bid:n,label:`${type}${n+1}`,name:`${type}${n+1}`,
     bankName:"現金",bankOther:"",bank:bankTxt,note:"由工作台匯出，可自行改為實際帳戶／信用卡",owner,
-    items:items.map(it=>{const o={...it};delete o._own;return o;})});
+    items:items.map(it=>{const o={...it};delete o._own;delete o._ek;return o;})});
   const blks=(type,items,sheet)=>{const out=[];
     OWN_BLK.forEach(([lb,ow])=>{if(sheet&&ow!==sheet)return;
       const g=items.filter(x=>(x._own||"共同")===lb);
@@ -4284,7 +4380,7 @@ function trkExportObj(){
   const passive=[];
   ["self","sp"].forEach(w=>{if(w==="sp"&&!hasSp)return;
     [1,2,3,4].forEach(ri=>{const ann=rawV(`inc_${w}_1_${ri}_m`)*12+rawV(`inc_${w}_1_${ri}_y`);if(!(ann>0))return;
-      passive.push({kind:PI_KIND[ri],name:INC_GROUPS[1].rows[ri].split("（")[0],amount:R(ann),freq:"年",owner:w==="sp"?"配偶":"本人",assetRef:""});});});
+      passive.push({_ik:"1_"+ri,kind:PI_KIND[ri],name:INC_GROUPS[1].rows[ri].split("（")[0],amount:R(ann),freq:"年",owner:w==="sp"?"配偶":"本人",assetRef:""});});});
   // ---- ②-1 已有退休金 → socialInsurance ----
   const soc=[];
   let siPrev=[];try{siPrev=JSON.parse(($("siJson")||{}).value||"[]")||[];}catch(e){siPrev=[];}
@@ -4314,6 +4410,10 @@ function trkExportObj(){
   const bufM=R(V("bp_bufM")),bufW=R(V("bp_bufW")*1e4);
   const monthlyExp=D&&D.expTotal?Math.round(D.expTotal/12):0;
   const emerg=Math.max(bufW,bufM*monthlyExp);
+  // ---- v269：方案工作區「預算＝方案」 ----
+  let _pb=null;
+  if(typeof bsIsPlan==="function"&&bsIsPlan()&&(!$("trkBudgetMode")||$("trkBudgetMode").value!=="cur"))_pb=trkPlanBudgetApply({incM,aItems,bItems,cItems,passive,a0});
+  incM.forEach(m=>(m.sideItems||[]).forEach(x=>{delete x._ik;}));passive.forEach(x=>{delete x._ik;});
   const strip=a=>(a||[]).map(o=>{const c={...o};delete c._sh;return c;});
   const snapFor=sh=>({ // sh 為 null＝家庭合計（單人模式／頂層 draft）；"self"／"spouse"＝雙人個別管理的兩個分頁
     incomeMembers:strip(sh?incM.filter(m=>m._sh===sh):incM),
@@ -4339,7 +4439,7 @@ function trkExportObj(){
   jny.client={name:nm};jny.advisor=jny.advisor||{};
   if($("rpt_org")&&$("rpt_org").value)jny.advisor.org=$("rpt_org").value;
   if($("rpt_advisor")&&$("rpt_advisor").value)jny.advisor.name=$("rpt_advisor").value;
-  if(typeof bsIsPlan==="function"&&bsIsPlan())jny.plan=Object.assign(jny.plan||{},{name:(wsSlots[wsActive]||{}).name||""});
+  if(typeof bsIsPlan==="function"&&bsIsPlan())jny.plan=Object.assign(jny.plan||{},{name:(wsSlots[wsActive]||{}).name||"",budgetBasis:_pb?"方案":"現況"});
   jny.reviewCycle=jny.reviewCycle||"每季";
   const advS=(typeof jnyAdviceStat==="function")?jnyAdviceStat():null;if(advS)jny.advice=advS;
   jny.stage=(typeof jnyStage==="function")?jnyStage(jny):jny.stage;
@@ -4348,20 +4448,22 @@ function trkExportObj(){
     trackingByMode:{single:null,"dual-sep":null,"dual-joint":null},actionsByMode:{single:[],"dual-sep":[],"dual-joint":[]},trkGran:"item"};
   // ---- 方案建議：一併帶入，客戶端即可開始逐條回報 ----
   try{if(typeof bsIsPlan==="function"&&bsIsPlan()&&typeof adviceExportObj==="function"){
-    const adv=adviceExportObj();
+    const adv=adviceExportObj();if(_pb)trkAdvMarkBudget(adv,_pb);
     if(adv&&adv.items&&adv.items.length){out.advicePlans={_active:adv.plan.name,[adv.plan.name]:{doc:adv,status:{},importedAt:out.exportedAt}};
       out._adviceN=adv.items.length;}
   }}catch(e){console.warn(e);}
+  out._planBudget=_pb;
   out._counts={inc:incM.length,a:aItems.length,b:bItems.length,c:cItems.length,as:assets.length,li:liabs.length,pol:pols.length,soc:soc.length,pi:passive.length};
   return out;
 }
 $("btnTrkExport")&&$("btnTrkExport").addEventListener("click",()=>{
   const nm=($("clientName").value||$("bio_name").value||"客戶").trim().replace(/[\\/:*?"<>|]/g,"_");
   let o;try{o=trkExportObj();}catch(e){$("trkMsg").textContent="匯出失敗："+(e.message||e);console.error(e);return;}
-  const c=o._counts,advN=o._adviceN||0;delete o._counts;delete o._adviceN;
+  const c=o._counts,advN=o._adviceN||0,pb=o._planBudget;delete o._counts;delete o._adviceN;delete o._planBudget;
   const d=new Date(),ds=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
   dlJSON(o,`追蹤工具_${nm}_${ds}.json`);
   if(typeof jnyStamp==="function")jnyStamp("executionStart");
+  if(pb){$("trkMsg").textContent=`已匯出追蹤工具客戶檔 ✓ 預算＝「${pb.plan}」：${pb.rows.filter(r=>!r.skip).length} 個類別改用方案金額（逐筆按比例分攤）${pb.c.length?`、${pb.c.length} 筆定期定額直接列入 C 帳戶`:""}${pb.rows.some(r=>r.skip)?"；⚠ 有收入建議找不到對應成員，未帶入":""}・顧問建議 ${advN} 筆（其中 ${pb.marked||0} 筆標「已納入預算」）`;return;}
   $("trkMsg").textContent=`已匯出追蹤工具客戶檔 ✓ 收入 ${c.inc} 人・支出 A${c.a}／B${c.b}／C${c.c} 筆・資產 ${c.as}・負債 ${c.li}・保單 ${c.pol}・社保 ${c.soc}・理財收入 ${c.pi}${advN?`・顧問建議 ${advN} 筆`:"（現況工作區：未含顧問建議，切到方案再匯出可一併帶入）"}`;
 });
 /* ---------- 新客戶：先自動存檔目前客戶，再清空全部客戶資料（保留顧問資料、稅務參數、勞保勞退預設） ---------- */
@@ -4376,7 +4478,7 @@ function newClientReset(silent){
     document.querySelectorAll("#tblIncome input,#tblExpense input,#tblAsset input,#tblLiab input,#tblResp input").forEach(e=>{if(e.type==="number"||e.type==="text")e.value="";else if(e.type==="checkbox")e.checked=false;});
     document.querySelectorAll("#tblExpense select").forEach(e=>{e.selectedIndex=0;});
     [1,2,7,6,5].forEach((r,ri)=>{const e=$(`exp_4_${ri}_r`);if(e)e.value=r;});
-    ["famJson","estHeirJson","estAllocJson","liMetaJson","siJson","trkAssetsJson","inc_self_basis","inc_sp_basis","bsAdjJson","retAdjJson","txSrc","txExtJson","journeyJson"].forEach(id=>{if($(id))$(id).value="";});
+    ["famJson","estHeirJson","estAllocJson","liMetaJson","siJson","trkAssetsJson","inc_self_basis","inc_sp_basis","bsAdjJson","retAdjJson","txSrc","txExtJson","journeyJson","nyMetaJson"].forEach(id=>{if($(id))$(id).value="";});
     if(typeof buildJourney==="function")buildJourney();
     // 結構資料
     goals=[];if(typeof retAdj!=="undefined")retAdj=[];buildGoals();
@@ -4386,11 +4488,12 @@ function newClientReset(silent){
     if(typeof invPlans!=="undefined"){invPlans=[];buildInvPlans();}
     if(typeof svPlan!=="undefined")svPlan=null;if(typeof svLast!=="undefined")svLast={};["svOut","svRxOut","trkSummary"].forEach(id=>{if($(id))$(id).innerHTML="";});["svMsg","svRxMsg","trkMsg","syncMsg","polMsg","estSyncMsg"].forEach(id=>{if($(id))$(id).textContent="";});
     bsAdj={};if(typeof bsRestore==="function")bsRestore();
+    if($("nyPendJson"))$("nyPendJson").value="[]";if($("nyOut"))$("nyOut").innerHTML="";
     if(typeof bizList!=="undefined"){bizList=[];if(typeof buildBiz==="function")buildBiz();}
     if(typeof bioKids!=="undefined"){bioKids=[];if(typeof buildBioKids==="function")buildBioKids();}
     if(typeof pensList!=="undefined"){pensList=[];PENS_KEYS.forEach(k=>["self","sp"].forEach(w=>{if($(`g_${w}_${k}`))$(`g_${w}_${k}`).value=0;}));buildPens();}
     if(typeof itmAssets!=="undefined"){itmAssets=[];itmLiabs=[];itmExps=[];itmIncs=[];itmOvr=[];itmPrevKeys=[];itmSave();buildItems();}
-    ["bio_name","bio_self_y","bio_sp_y","bio_note"].forEach(id=>{if($(id))$(id).value="";});if($("bio_dep"))$("bio_dep").value=0;if($("bio_hasSp"))$("bio_hasSp").checked=true;if($("bio_occ"))$("bio_occ").selectedIndex=0;
+    ["bio_name","bio_self_y","bio_sp_y","bio_note"].forEach(id=>{if($(id))$(id).value="";});if($("svc_plan"))$("svc_plan").value="";if($("svc_tax"))$("svc_tax").checked=false;if(typeof svcApply==="function")svcApply(); /* 新客戶：稅務及傳承預設不含 */if($("bio_dep"))$("bio_dep").value=0;if($("bio_hasSp"))$("bio_hasSp").checked=true;if($("bio_occ"))$("bio_occ").selectedIndex=0;
     if(typeof estKids!=="undefined"){estKids=[];if(typeof buildEstKids==="function")buildEstKids();}
     document.querySelectorAll('#riskQBox input[type=radio]').forEach(e=>e.checked=false);if(typeof riskViewTier!=="undefined")riskViewTier=null;
     if(typeof EST_ROWS_A!=="undefined"){EST_ROWS_A.forEach(r=>{const id=r[1];if(!$(id))return;$(id).value=/G$/.test(id)?r[2]:0;});} // 遺產稅：資產／保額／負債歸零，成長率保留
@@ -4907,6 +5010,13 @@ function amtTxtCell(w,k,f,nm,r,fname){
   regLb(a,`保障｜${nm}｜${r}｜${fname}`);regLb(t,`保障｜${nm}｜${r}｜${fname}內容`);
   return `<td><input type="number" id="${a}" value="${dv(a)}" placeholder="0"><input type="text" id="${t}" value="${dv(t)}" placeholder="內容說明"></td>`;
 }
+function retCell(w,k,nm,r){ // 風險自留：金額＋內容說明＋預計準備期間（年）
+  const a=`pr_${w}_${k}_ret`,t=`pr_${w}_${k}_rettxt`,y=`pr_${w}_${k}_retyrs`;
+  regLb(a,`保障｜${nm}｜${r}｜自留`);regLb(t,`保障｜${nm}｜${r}｜自留內容`);regLb(y,`保障｜${nm}｜${r}｜自留預計準備期間(年)`);
+  return `<td><input type="number" id="${a}" value="${dv(a)}" placeholder="0"><input type="text" id="${t}" value="${dv(t)}" placeholder="內容說明">
+    </td><td style="vertical-align:top"><div class="retYrs" data-tip="[b]預計準備期間[/b]　自留金額預計幾年內累積到位（剛升主治、資產還在累積時常見 2～5 年）。||空白或 0＝已到位。期間內自留還沒存滿，完成率另列「今日」口徑，並算出每年需累積多少。"><input type="number" id="${y}" value="${dv(y)}" placeholder="已到位" min="0" step="1"><span>年</span></div>
+    <div id="pr_${w}_${k}_retper" class="protSub" style="text-align:left"></div></td>`;
+}
 /* ---------- 保單登錄表（單一來源）---------- */
 var policies=[];
 const POL_TYPES=["終身壽險","定期壽險","儲蓄／利變壽險","年金險","投資型保單","醫療／失能／意外（保障型）"];
@@ -5208,10 +5318,11 @@ function buildProt(){
       :`<div class="axTitle" style="margin-bottom:6px">${nm}</div>`;
     return `<div style="margin-bottom:18px">${head}
     <table class="pt">
-    <tr><th rowspan="2" style="text-align:left;min-width:150px">保障項目</th><th rowspan="2" style="min-width:88px">應備</th>
-      <th colspan="2" class="grp">規劃邏輯・風險轉嫁</th><th rowspan="2" class="grp" style="min-width:96px">風險自留</th>
-      <th rowspan="2" style="min-width:80px">差額</th><th rowspan="2">完成率</th><th rowspan="2" class="bsAdjCol" style="min-width:320px;text-align:left">顧問建議（方案）</th></tr>
-    <tr><th class="grp" style="min-width:96px">已備</th><th class="grp" style="min-width:96px">建議規劃</th></tr>`+
+    <tr><th rowspan="3" style="text-align:left;min-width:150px">保障項目</th><th rowspan="3" style="min-width:104px">應備</th>
+      <th colspan="4" class="grp0">規劃邏輯</th>
+      <th rowspan="3" style="min-width:92px">完成率</th><th rowspan="3" class="bsAdjCol" style="min-width:320px;text-align:left">顧問建議（方案）</th></tr>
+    <tr><th colspan="2" class="grp">風險轉嫁</th><th colspan="2" class="grp">風險自留</th></tr>
+    <tr><th class="grp2" style="min-width:104px">已備</th><th class="grp2" style="min-width:104px">建議規劃</th><th class="grp2" style="min-width:120px">來源</th><th class="grp2" style="min-width:80px">預計準備期間</th></tr>`+
     rows.map(([r,k])=>{
       const vr=(k==="resp2"||k==="ltc2")?" vr":"";
       let need;
@@ -5219,9 +5330,8 @@ function buildProt(){
       else{regLb(`pr_${w}_${k}_need`,`保障｜${nm}｜${r}｜應備`);
         need=`<td class="${vr.trim()}"><input type="number" id="pr_${w}_${k}_need" value="${dv(`pr_${w}_${k}_need`)}" placeholder="0"></td>`;}
       return `<tr><td class="rn${vr}">${r}</td>${need}
-      ${amtTxtCell(w,k,"have",nm,r,"已備")}${amtTxtCell(w,k,"plan",nm,r,"建議規劃")}${amtTxtCell(w,k,"ret",nm,r,"自留")}
-      <td id="pr_${w}_${k}_gap" style="vertical-align:top;padding-top:7px"></td>
-      <td id="pr_${w}_${k}_rate" style="text-align:center;vertical-align:top;padding-top:6px"></td>
+      ${amtTxtCell(w,k,"have",nm,r,"已備")}${amtTxtCell(w,k,"plan",nm,r,"建議規劃")}${retCell(w,k,nm,r)}
+      <td style="text-align:center;vertical-align:top;padding-top:6px"><div id="pr_${w}_${k}_rate"></div><div id="pr_${w}_${k}_gap" class="protSub"></div><div id="pr_${w}_${k}_today" class="protSub"></div></td>
       ${isKid(w)?`<td class="bsAdjCol"></td>`:`<td class="bsAdjCol adjHost" id="bsAdj_pr_${w}_${k}"></td>`}</tr>`;
     }).join("")+`</table></div>`;
   }).join("")+
@@ -5262,7 +5372,7 @@ function recalcProt(){
   $("respSelf").textContent=NT(respNeed("self"));
   $("respSp").textContent=NT(respNeed("sp"));
   if(typeof protApplyOffset==="function")try{protApplyOffset();}catch(e){}
-  let worst=[],retained=0;
+  let worst=[],retained=0,prep=[];
   protPersons().forEach(([w,nm])=>{
     PROT_ROWS.forEach(([r,k])=>{
       if(isKid(w)&&(k==="resp"||k==="resp2"||k==="ltc2"))return;
@@ -5271,9 +5381,13 @@ function recalcProt(){
       const have=V(`pr_${w}_${k}_have`),plan=V(`pr_${w}_${k}_plan`),ret=V(`pr_${w}_${k}_ret`);
       const gap=need-have-plan-ret,rate=need>0?(have+plan+ret)/need:NaN;
       const ge=$(`pr_${w}_${k}_gap`);
-      ge.textContent=need>0?(gap>0?"−"+NT(gap):"+"+NT(-gap)):"";
+      ge.textContent=need>0?(gap>0.5?"差 −"+NT(gap):gap<-0.5?"超 +"+NT(-gap):"足額"):"";
       ge.style.color=gap>0?"var(--gD)":"var(--gA)";
       $(`pr_${w}_${k}_rate`).innerHTML=need>0?protPill(rate):"";
+      const yrs=Math.max(0,V(`pr_${w}_${k}_retyrs`)),te=$(`pr_${w}_${k}_today`),pe=$(`pr_${w}_${k}_retper`);
+      if(te&&pe){if(need>0&&ret>0&&yrs>0){const today=(have+plan)/need;te.innerHTML=`今日 ${Math.round(today*100)}%<br>第 ${yrs} 年起 ${Math.round(rate*100)}%`;te.style.color=today<0.7?"var(--gD)":"var(--sub)";
+          pe.textContent=`每年需累積 ${NT(Math.round(ret/yrs))}`;if(today<0.7&&k!=="resp2"&&k!=="ltc2")prep.push({nm,r,yrs,today,per:ret/yrs});}
+        else{te.textContent="";pe.textContent="";}}
       if(need>0&&rate<0.7&&k!=="resp2"&&k!=="ltc2")worst.push({nm,r,gap,rate});
       if(need>0)retained+=ret;
     });
@@ -5284,6 +5398,8 @@ function recalcProt(){
     `<div class="note warn"><b>缺口最大的三項（不含清償後情境）：</b>${worst.slice(0,3).map(x=>`${x.nm}・${x.r}（缺 ${NT(x.gap)}，完成率 ${Math.round(x.rate*100)}%）`).join("；")}。
     壽險缺口建議優先用<b>定期壽險</b>補——同樣保額保費最低，符合「高責任期集中保障」原則；責任隨房貸攤還與子女長大逐年遞減，可逐年降額。${retNote}</div>`:
     `<div class="note good">所有項目完成率皆達 70% 以上。${retNote}</div>`;
+  if(prep.length)$("protNote").innerHTML+=`<div class="note warn"><b>準備期間內的空窗：</b>${prep.map(x=>`${x.nm}・${x.r}（自留預計 ${x.yrs} 年到位，今日完成率 ${Math.round(x.today*100)}%，每年需累積 ${NT(Math.round(x.per))}）`).join("；")}。
+    自留還沒存滿之前萬一發生，缺口要由其他資產或當年收入承擔。可考慮準備期間先用<b>定期型保單短期過渡</b>（到期不續），自留到位後再退場；或把每年需累積的金額排進 ④ 的投入計畫。</div>`;
 }
 $("btnFillMort").addEventListener("click",()=>{
   const m=V("li_0")+V("li_1");
@@ -5721,7 +5837,7 @@ function rxSummaryItems(){
   (typeof goals!=="undefined"?goals:[]).filter(_nh).forEach(gl=>(gl.adj||[]).filter(it=>it.sb).forEach(it=>L.push({st:it,grp:"④-1b 目標沙盤（採用）",src:`②-2 ${gl.name||gl.cat||"目標"}`,what:it.v||"",note:"",eff:"已寫回 ②-2，藍圖與蒙地卡羅依新值"})));
   (typeof hbHouses!=="undefined"?hbHouses:[]).forEach(h=>{const t=hbAdjTxt(h.id);if(t)L.push({st:h.adj,grp:G2,src:`②-2 🏠 ${h.label||"購屋"}`,what:t,note:"",eff:"④-1b 沙盤依此範圍拉總價／購屋年齡，整組目標列由 ②-3 精算連動"});});
   (typeof goals!=="undefined"?goals:[]).filter(_nh).forEach(gl=>(gl.adj||[]).filter(it=>!it.sb).forEach((it,k)=>L.push({st:it,grp:G2,src:`②-2 ${gl.name||gl.cat||"目標"}`,what:`優先 ${k+1}・${it.t}${it.amt!==undefined&&it.amt!==""?" "+amtTxt(optU(GOAL_ADJ_OPTS,it.t),it.amt):""}`,note:it.v||"",eff:"資源不足時依此優先序退讓目標"})));
-  Object.entries(bsAdj||{}).forEach(([id,items])=>(items||[]).forEach(it=>{const x=bsItemBrief(id,it);if(x){x.st=it;L.push(x);}}));
+  Object.entries(bsAdj||{}).forEach(([id,items])=>(items||[]).forEach(it=>{const x=bsItemBrief(id,it);if(x){x.st=it;x.key=id;L.push(x);}}));
   (typeof invPlans!=="undefined"?invPlans:[]).forEach(p=>{if(!((p.amtW||0)>0))return;const y1=Math.max(1,Math.round(p.y1||1)),y2=Math.max(y1,Math.round(p.y2||y1));
     L.push({st:p,grp:"④-2 處方投入",src:"④-2 處方",what:`${p.name||"處方投入"} ${p.amtW} 萬/年`,note:`${(typeof ipTitle==="function")?ipTitle(p)+"・":""}${a0+y1-1}–${a0+y2-1} 歲（第 ${y1}–${y2} 年）・μ ${p.mu}%／σ ${p.sg}%`,eff:`投入合計 ${(p.amtW*(y2-y1+1)).toFixed(0)} 萬 → ④-1 藍圖／⑤ 蒙地卡羅${(typeof ipTarget==="function"&&ipTarget(p))?"（併入既有投資部位）":""}`});});
   if(typeof svPlan!=="undefined"&&Array.isArray(svPlan))svPlan.filter(s=>!s.custom).forEach(s=>{const arr=s.arr||[];let t1=-1,t2=-1;for(let t=0;t<arr.length;t++){const v=arr[t];if(!isNaN(v)&&v>0.005){if(t1<0)t1=t;t2=t;}}
@@ -5806,7 +5922,7 @@ function rptBuild(){
     const W_=v=>v==null?"—":Wf(v);
     return `<section><h2>摘要：現況${cols.length>1?" vs 方案":""}</h2><table class="t"><tr><th>指標</th>${cols.map(sl=>`<th>${E(sl.name)}${sl.i?"（執行建議後）":"（維持目前行為）"}</th>`).join("")}</tr>
     ${row("退休成功率（蒙地卡羅）","srRetire",pct)}${row("綜合成功率（含所有目標）","srBoth",pct)}${row("期末資產中位數","finalP50",W_)}${row("生涯藍圖期末資產","bpFinal",W_)}${row("年收入（稅後帶入）","income",W_)}${row("年支出（帶入）","expense",W_)}
-    <tr><td>年結餘</td>${cols.map((sl,j)=>`<td class="n${j?" b":""}">${sl.sum&&sl.sum.income!=null?Wf(sl.sum.income-sl.sum.expense):"—"}</td>`).join("")}</tr>${row("預估遺產稅（元）","estTax",v=>v==null?"—":N(v))}</table>
+    <tr><td>年結餘</td>${cols.map((sl,j)=>`<td class="n${j?" b":""}">${sl.sum&&sl.sum.income!=null?Wf(sl.sum.income-sl.sum.expense):"—"}</td>`).join("")}</tr>${svcTaxOn()?row("預估遺產稅（元）","estTax",v=>v==null?"—":N(v)):""}</table>
     <p class="cap">各欄取該工作區最近快照（蒙地卡羅 ${NT(Math.max(600,num("nsim")||0))} 條路徑、同種子）。</p></section>`;};
   const secFamily=()=>{ // 00 背景與目標：家族圖＋收支資產摘要＋財務目標總額（照簡報版型）
     const svg=(typeof fgSvgForReport==="function")?fgSvgForReport():"";
@@ -5834,17 +5950,18 @@ function rptBuild(){
     return `<section><h2>00-2　家庭時間軸與關鍵年齡</h2><p class="lead">一條年齡軸看完一輩子：職涯階段、子女成長、各目標的支付期間與換屋；直立虛線是規劃上要盯住的關鍵年齡。</p>${svg}
       ${K.length?`<table class="t" style="margin-top:10px"><tr><th>年齡</th><th>年份</th><th>關鍵事件</th><th>類別</th></tr>${K.map(k=>`<tr><td class="n">${k.age}</td><td class="n">${new Date().getFullYear()+(k.age-(V("g_self_cur")||a0))}</td><td>${E(k.lb)}</td><td>${KL[k.kind]||""}</td></tr>`).join("")}</table>`:""}
       <p class="cap">年份以本人目前年齡推算${K.some(k=>k.kind==="kid")?"；子女成年（18）與大學畢業（22）換算為本人年齡":""}${K.some(k=>k.kind==="loan")?"；貸款還清取逐筆支出的訖齡或負債到期年":""}${K.some(k=>k.kind==="ins")?"；保單繳清取繳費年期":""}。</p></section>`;};
-  const secHouse=()=>{
+  const secHouse=(a1)=>{
     const gl=(typeof goals!=="undefined"?goals:[]);const buyOn=$("buyEnabled")&&$("buyEnabled").checked;const match=(test)=>gl.filter(g=>test(g));
     const blocks=[{lb:"旅遊",g:match(g=>/旅遊/.test(g.cat||"")||/旅遊/.test(g.name||""))},{lb:"結婚",g:match(g=>/結婚|婚/.test(g.name||""))},{lb:"生活品質",g:match(g=>/其他|孝養/.test(g.cat||"")&&!/結婚|婚|車|房|創業/.test(g.name||""))},{lb:"車子",g:match(g=>/汽車/.test(g.cat||"")||/車/.test(g.name||""))},{lb:"創業",g:match(g=>/創業|開業/.test(g.cat||""))},{lb:"教育費",g:match(g=>/教育/.test(g.cat||""))},{lb:"退休金",g:[{name:`${V("g_self_ret")} 歲退休・月 ${N(V("g_self_pvm"))}`,age:null}],always:true},{lb:"房子",g:match(g=>/購屋/.test(g.cat||"")||/房/.test(g.name||"")),extra:buyOn?[{name:"購屋（⑤ 模組）",age:null}]:[]}];
     blocks.forEach(b0=>{if(b0.extra)b0.g=b0.g.concat(b0.extra);b0.on=b0.always||b0.g.length>0;});
-    const R=(x,y,w,hh,b0)=>{const fill=b0.on?"#d9a93a":"#a9a49e";let sub=b0.g.slice(0,2).map(g=>`${g.name||""}${g.age?" "+g.age+"歲":""}`).join("・");
-      if(b0.lb==="房子"){const hs=(typeof hbHouses!=="undefined"?hbHouses:[]).filter(h=>b0.g.some(g=>g.hid===h.id));if(hs.length)sub=hs.map(h=>{const v=h.vals||{};return `${h.label||"購屋"} ${v.hb_age||""}歲・總價 ${fmtW((parseFloat(v.hb_price)||0)/1e4)}`;}).join("・");}
+    const R=(x,y,w,hh,b0)=>{const fill=a1?"#e6dcc3":b0.on?"#d9a93a":"#a9a49e";let sub=a1?"":b0.g.slice(0,2).map(g=>`${g.name||""}${g.age?" "+g.age+"歲":""}`).join("・");
+      if(b0.lb==="房子"&&!a1){const hs=(typeof hbHouses!=="undefined"?hbHouses:[]).filter(h=>b0.g.some(g=>g.hid===h.id));if(hs.length)sub=hs.map(h=>{const v=h.vals||{};return `${h.label||"購屋"} ${v.hb_age||""}歲・總價 ${fmtW((parseFloat(v.hb_price)||0)/1e4)}`;}).join("・");}
       return `<rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="3" fill="${fill}"/><text x="${x+w/2}" y="${y+(sub?24:hh/2+6)}" text-anchor="middle" font-size="17" font-weight="700" fill="#222">${E(b0.lb)}</text>${sub?`<text x="${x+w/2}" y="${y+46}" text-anchor="middle" font-size="10.5" fill="#333">${E(sub.length>22?sub.slice(0,22)+"…":sub)}</text>`:""}`;};
     const rows=[[0,1,2],[3,4,5],[6,7]];let y=118,g="";
     rows.forEach(rw=>{const wsum=rw.length===3?[180,180,180]:[300,240];let x=70;rw.forEach((bi,k)=>{const w=wsum[k];g+=R(x,y,w,58,blocks[bi]);x+=w+12;});y+=70;});
-    let pg="";["收支及信用\n管理","人身及財產風險\n管理","投資及資產\n管理","傳承及稅賦\n管理"].forEach((t,k)=>{const x=70+k*141,[l1,l2]=t.split("\n");pg+=`<rect x="${x}" y="${y}" width="129" height="62" rx="3" fill="#4a4a4a"/><text x="${x+64}" y="${y+27}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">${E(l1)}</text><text x="${x+64}" y="${y+47}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">${E(l2)}</text>`;});
+    let pg="";["收支及信用\n管理","人身及財產風險\n管理","投資及資產\n管理","傳承及稅賦\n管理"].forEach((t,k)=>{const x=70+k*141,[l1,l2]=t.split("\n");pg+=`<rect x="${x}" y="${y}" width="129" height="62" rx="3" fill="${a1&&(k===0||k===2)?"#b8862b":"#4a4a4a"}"/><text x="${x+64}" y="${y+27}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">${E(l1)}</text><text x="${x+64}" y="${y+47}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">${E(l2)}</text>`;});
     const svg=`<svg viewBox="0 0 700 ${y+82}" style="width:100%;max-width:700px;height:auto;display:block;margin:4px auto"><polygon points="120,60 250,0 380,60" fill="#3a3a3a"/><polygon points="320,60 450,0 580,60" fill="#3a3a3a"/><polygon points="180,66 350,-6 520,66" fill="#c9962e"/><rect x="336" y="36" width="28" height="22" fill="#4a4a4a"/><rect x="344" y="40" width="12" height="14" fill="#f3e7c8"/><rect x="58" y="66" width="584" height="${y+8}" fill="#f2f2f2" stroke="#d8d2c2"/><rect x="70" y="76" width="560" height="34" fill="#264a6b"/><text x="350" y="100" text-anchor="middle" font-size="19" font-weight="700" fill="#fff" letter-spacing="3">財務目標</text>${g}${pg}</svg>`;
+    if(a1)return `<section><h2>01　理財屋</h2><p class="lead" style="color:#7a5a1e;font-weight:700">先打穩地基，財務目標才蓋得上去</p>${svg}<p class="cap" style="text-align:center;font-size:12px;color:#333;font-weight:700;margin-top:6px">財務體質檢視</p><p class="cap">屋頂下是人生各階段可能的財務目標；它們都要靠底下四根支柱撐起來。本次（A1 財報系統）聚焦金色的兩根：<b>收支及信用管理</b>（現金流量）與<b>投資及資產管理</b>（資產負債），先把每月收支與資產負債的體質調整好，之後要量化財務目標（時間、金額、準備方式）時，才有穩固的基礎。</p></section>`;
     return `<section><h2>01　理財屋</h2><p class="lead" style="color:#7a5a1e;font-weight:700">沒有量化就沒有管理，人生量化才是財務規劃</p>${svg}<p class="cap" style="text-align:center;font-size:12px;color:#333;font-weight:700;margin-top:6px">目標量化管理</p><p class="cap">金色＝本次規劃納入的財務目標（含 ②目標設定與退休目標）；灰色＝尚未納入。四根支柱是每個目標背後都要做的管理：收支及信用、人身及財產風險、投資及資產、傳承及稅賦。</p></section>`;};
   const pill=(v)=>v==null?"—":`<span style="display:inline-block;min-width:52px;text-align:center;padding:1px 6px;border-radius:4px;font-weight:700;background:${v>=1?"#e8f5e9":v>=0.7?"#eef3f9":v>=0.4?"#fff5e6":"#fdf3f1"};color:${v>=1?"#1d6b4f":v>=0.7?"#2563a8":v>=0.4?"#9a5a12":"#8e2a1e"}">${(v*100).toFixed(0)}%</span>`;
   const secGoals=(cols)=>{
@@ -5904,10 +6021,15 @@ function rptBuild(){
     <tr class="tot"><td>家庭淨值</td>${ta.map((v,j)=>`<td class="n">${N(v-tl[j])}</td>`).join("")}${dc((ta[ta.length-1]-tl[tl.length-1])-(ta[0]-tl[0]))}</tr><tr><td class="i">負債比＝負債／資產</td>${ta.map((v,j)=>`<td class="n">${v?(tl[j]/v*100).toFixed(1)+"%":"—"}</td>`).join("")}${withDiff&&cols.length>1?"<td class=\"n\">—</td>":""}</tr></table></div></section>`;};
   const secRisk=()=>{
     let tbl="";protPersons().forEach(([w,nm])=>{if(isKid(w)&&!(typeof kidCount!=="undefined"&&kidCount>0))return;if(w==="sp"&&!hasSp)return;
-      let rows="";PROT_ROWS.forEach(([r0,k])=>{if(isKid(w)&&(k==="resp"||k==="resp2"||k==="ltc2"))return;const need=k==="resp"?respNeed(w):V(`pr_${w}_${k}_need`);if(!(need>0))return;
-        const have=V(`pr_${w}_${k}_have`),plan=V(`pr_${w}_${k}_plan`),ret=V(`pr_${w}_${k}_ret`),gap=need-have-plan-ret,rate=(have+plan+ret)/need;
-        rows+=`<tr><td>${E(r0)}</td><td class="n">${N(need)}</td><td class="n">${N(have)}</td><td class="n">${plan?N(plan):"—"}</td><td class="n">${ret?N(ret):"—"}</td><td class="n" style="color:${gap>0?"#8e2a1e":"#1d6b4f"}">${gap>0?"−"+N(gap):"＋"+N(-gap)}</td><td class="c">${pill(rate)}</td></tr>`;});
-      if(rows)tbl+=`<h3>${E(nm)}</h3><table class="t"><tr><th>項目</th><th>應備</th><th>已備</th><th>規劃新增</th><th>自留</th><th>缺口</th><th>完成率</th></tr>${rows}</table>`;});
+      const Wn=v=>{v=Math.round(v||0);if(!v)return "—";if(Math.abs(v)>=10000){const w0=v/10000;return (Math.abs(w0-Math.round(w0))<0.05?NT(Math.round(w0)):w0.toFixed(1))+"萬";}return NT(v)+"元";};
+      const cellTx=(f,v)=>{const tx=(($(`pr_${w}_${f}txt`)||{}).value||"").trim();return tx?E(tx):Wn(v);};
+      const items=[];PROT_ROWS.forEach(([r0,k])=>{if(isKid(w)&&(k==="resp"||k==="resp2"||k==="ltc2"))return;const need=k==="resp"?respNeed(w):V(`pr_${w}_${k}_need`);if(!(need>0))return;
+        const have=V(`pr_${w}_${k}_have`),plan=V(`pr_${w}_${k}_plan`),ret=V(`pr_${w}_${k}_ret`),yrs=ret>0?Math.max(0,V(`pr_${w}_${k}_retyrs`)):0;items.push({r0,k,need,have,plan,ret,yrs,rate:(have+plan+ret)/need,today:(have+plan)/need});});
+      const anyYrs=items.some(x=>x.yrs>0);
+      const rows=items.map(x=>`<tr><td>${E(x.r0)}</td><td class="n">${Wn(x.need)}</td><td class="c">${x.have?cellTx(`${x.k}_have`,x.have):"—"}</td><td class="c">${x.plan?cellTx(`${x.k}_plan`,x.plan):"—"}</td><td class="c">${x.ret?cellTx(`${x.k}_ret`,x.ret):"—"}</td>${anyYrs?`<td class="c">${x.yrs>0?`${x.yrs} 年<br><small style="color:#666">每年 ${Wn(x.ret/x.yrs)}</small>`:(x.ret?"已到位":"—")}</td>`:""}<td class="c">${pill(x.rate)}${x.yrs>0?`<br><small style="color:${x.today<0.7?"#8e2a1e":"#666"}">今日 ${Math.round(x.today*100)}%</small>`:""}</td></tr>`).join("");
+      if(rows)tbl+=`<h3>${E(nm)}</h3><table class="t pt5"><tr><th rowspan="3">項目</th><th rowspan="3">應備</th><th colspan="${anyYrs?4:3}" class="c" style="background:#26384f;color:#fff;text-align:center;letter-spacing:.2em">規劃邏輯</th><th rowspan="3" style="text-align:center">完成率</th></tr>
+        <tr><th colspan="2" class="c" style="background:#8392a8;color:#fff;text-align:center">風險轉嫁</th><th ${anyYrs?'colspan="2"':'rowspan="2"'} class="c" style="background:#8392a8;color:#fff;text-align:center">風險自留</th></tr>
+        <tr><th style="text-align:center">已備</th><th style="text-align:center">建議規劃</th>${anyYrs?'<th style="text-align:center">來源</th><th style="text-align:center">預計準備期間</th>':""}</tr>${rows}</table>${anyYrs?`<p class="cap">「預計準備期間」＝自留金額預計幾年內累積到位；期間內自留尚未存滿，「今日」完成率只計已備＋建議規劃。</p>`:""}`;});
     let rp="";try{const pr=riskProfile();if(!pr.incomplete){const list=riskGoalList();const pSp=(typeof riskHasSp==="function"&&riskHasSp())?riskProfile("sp"):null;
       const gapTxt=q=>Math.abs(q.gap)>=25?`——落差 ${Math.abs(q.gap)} 分，${q.gap>0?"能力高於意願：可承擔但心理上偏保守，配置以能安心續抱為先":"意願高於能力：心理上敢冒險但財務緩衝不足，配置須先補地基"}`:"";
       rp=`<h3>投資風險屬性</h3><p>本人：風險承受<b>能力</b> ${pr.capacity} 分、承受<b>意願</b> ${pr.tolerance} 分（0–100）${gapTxt(pr)}。${pSp?(pSp.incomplete?"配偶問卷未完成，配偶與共同目標暫用本人屬性。":`配偶：能力 ${pSp.capacity} 分、意願 ${pSp.tolerance} 分${gapTxt(pSp)}。共同目標（含退休）取兩人較保守者。`):""}各目標依歸屬取屬性、依「起用時間＋提領期間」判定檔位：</p>
@@ -6023,7 +6145,7 @@ function rptBuild(){
     (typeof hbHouses!=="undefined"?hbHouses:[]).forEach(h=>{const v=h.vals||{};if(!v.hb_sellOn||typeof hbSellCalc!=="function")return;const s0=hbSellCalc(v,V("g_self_cur")||num("startAge"));
       urow+=`<tr><td>換屋</td><td>${E(s0.asset?(s0.asset.name||"（未命名）"):"自用不動產（①-3 彙總）")}</td><td>預計 ${s0.sellAge} 歲賣出（${E(h.label)}）：售價約 ${N(Math.round(s0.priceNom))} − 賣方費用 ${N(Math.round(s0.sellCost))} − 房貸餘額 ${N(Math.round(s0.loanBal))}${s0.loan?`（${E(s0.loan.name||"")}）`:""} ＝ 淨得 ${N(Math.round(s0.net))}；${s0.buyAge} 歲購入新屋</td><td>自用不動產</td><td class="n">${s0.cost?N(Math.round(s0.cost)):"—"}</td><td class="n">${N(Math.round(s0.price0))}</td></tr>`;});
     (typeof residUseList==="function"?residUseList():[]).forEach(e=>{if(!(e.amt>0))return;urow+=`<tr><td>用途</td><td>${E(residUseName(e.src))}</td><td>${E(astUseLabel(e.use))}（指定 ${N(e.amt)}）・④-3 自動指派</td><td>未逐筆</td><td class="n">—</td><td class="n">${N(e.amt)}</td></tr>`;});
-    return `<section><h2>12　附表：資產負債明細（元）</h2><table class="t"><tr><th>項目</th><th>名稱</th><th>說明</th><th>類型</th><th>投入金額</th><th>現值</th></tr>${rows}<tr class="tot"><td colspan="4">資產小計${ta.length?"（追蹤工具逐筆）":"（①-3 列彙總）"}</td><td class="n">${totC?N(totC):"—"}</td><td class="n">${N(tot)}</td></tr>${prow}${lrow}${urow}</table><p class="cap">保單「投入金額」＝年繳保費×剩餘繳費年期（未含已繳），「現值」＝保價金；不動產以市價列現值、公告現值供遺產稅估算。${urow?"「用途」列＝①-3b 指定的既有部位用途（指定給目標者到期前鎖定、退休者退休前鎖定、備用、不動用），生涯藍圖與蒙地卡羅同口徑。":""}</p></section>`;};
+    return `<section><h2>12　附表：資產負債明細（元）</h2><table class="t"><tr><th>項目</th><th>名稱</th><th>說明</th><th>類型</th><th>投入金額</th><th>現值</th></tr>${rows}<tr class="tot"><td colspan="4">資產小計${ta.length?"（追蹤工具逐筆）":"（①-3 列彙總）"}</td><td class="n">${totC?N(totC):"—"}</td><td class="n">${N(tot)}</td></tr>${prow}${lrow}${urow}</table><p class="cap">保單「投入金額」＝年繳保費×剩餘繳費年期（未含已繳），「現值」＝保價金；不動產以市價列現值${svcTaxOn()?"、公告現值供遺產稅估算":""}。${urow?"「用途」列＝①-3b 指定的既有部位用途（指定給目標者到期前鎖定、退休者退休前鎖定、備用、不動用），生涯藍圖與蒙地卡羅同口徑。":""}</p></section>`;};
   const secYearly=(cols)=>{ // 12-2　逐年資金流向：每個工作區一張橫式表（總收入／生活支出可展開至大類／細類／逐筆）
     const lv=($("rpt_bdLv")&&$("rpt_bdLv").value)||"r";const withYr=cols.filter(sl=>sl.rpt&&sl.rpt.yr);if(!withYr.length)return "";
     const F=v=>Math.abs(v)>0.05?fmtW(v):"—",F1=v=>v>0.05?v.toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1})+" 萬":"—";
@@ -6040,17 +6162,18 @@ function rptBuild(){
   const secContact=()=>`<section><h2>13　聯絡我們</h2><div class="contact"><b>${E(org||"")}</b>${adv?`　顧問：${E(adv)}`:""}${contact?`<br>${E(contact)}`:""}<br><span class="cap">本報告依客戶提供資料與雙方確認之假設試算，數字為推估、非保證；市場、法規與家庭狀況變動時應重新檢視。</span></div></section>`;
   const partHead=(t,sub,c)=>`<div class="part" style="border-top:3px solid ${c||"#b08a3c"};margin:26px 0 8px;padding-top:8px"><div style="font-size:18px;font-weight:700;letter-spacing:2px">${E(t)}</div>${sub?`<div class="cap">${E(sub)}</div>`:""}</div>`;
   // ---------- 組裝 ----------
+  if(typeof svcPlanCode==="function"&&svcPlanCode()==="A1")return rptA1Build({E,N,a0,client,date,adv,org,contact,closing,slots,curS,plans,rowsOf,secHouse,secAppendix,secPlanTable,secContact,skipPlanTable:!on("rpt_s10")});
   const curCols=curS?[curS]:[];
   if(mode==="seq"){
     if(on("rpt_s0")&&slots.length)h+=secSummary(slots);
     h+=partHead("第一部分　財務現況",curS?"以「現況」工作區（維持目前行為）為基準":"",slotColors[0]);
-    if(on("rpt_sF"))h+=secFamily();if(on("rpt_s2b"))h+=secGantt();if(on("rpt_s1"))h+=secHouse();if(on("rpt_s2"))h+=secGoals(curCols);if(on("rpt_s3"))h+=secCashflow(curCols);if(on("rpt_s4"))h+=secBalance(curCols);if(on("rpt_s5"))h+=secRisk();if(on("rpt_s6"))h+=secSocial();if(on("rpt_s7"))h+=secSim(curCols,"",false);if(on("rpt_s7b"))h+=secEstate();if(on("rpt_s8"))h+=secKpi(curCols);
+    if(on("rpt_sF"))h+=secFamily();if(on("rpt_s2b"))h+=secGantt();if(on("rpt_s1"))h+=secHouse();if(on("rpt_s2"))h+=secGoals(curCols);if(on("rpt_s3"))h+=secCashflow(curCols);if(on("rpt_s4"))h+=secBalance(curCols);if(on("rpt_s5"))h+=secRisk();if(on("rpt_s6"))h+=secSocial();if(on("rpt_s7"))h+=secSim(curCols,"",false);if(on("rpt_s7b")&&svcTaxOn())h+=secEstate();if(on("rpt_s8"))h+=secKpi(curCols);
     plans.forEach((pl,k)=>{const tag=`（${E(pl.name)}）`;h+=partHead(`第${["二","三","四"][k]||k+2}部分　${pl.name}`,"執行本方案顧問建議後的財務狀況（與現況對照）",colorOf(pl));
       if(on("rpt_s9"))h+=secAdvice(pl,tag);if(on("rpt_s3"))h+=secCashflow([curS,pl].filter(Boolean),tag,true);if(on("rpt_s4"))h+=secBalance([curS,pl].filter(Boolean),tag,true);if(on("rpt_s2"))h+=secGoals([curS,pl].filter(Boolean));if(on("rpt_s7"))h+=secSim([pl],tag,false);if(on("rpt_s8"))h+=secKpi([pl],tag);if(on("rpt_s10"))h+=secPlanTable(pl,tag);});
     if(on("rpt_s11"))h+=secClosing();if(on("rpt_s12"))h+=secAppendix();if(on("rpt_s14"))h+=secYearly(slots);if(on("rpt_s13"))h+=secContact();
   }else{
     if(on("rpt_s0")&&slots.length)h+=secSummary(slots);
-    if(on("rpt_sF"))h+=secFamily();if(on("rpt_s2b"))h+=secGantt();if(on("rpt_s1"))h+=secHouse();if(on("rpt_s2"))h+=secGoals(slots);if(on("rpt_s3"))h+=secCashflow(slots);if(on("rpt_s4"))h+=secBalance(slots);if(on("rpt_s5"))h+=secRisk();if(on("rpt_s6"))h+=secSocial();if(on("rpt_s7"))h+=secSim(slots,"",true);if(on("rpt_s7b"))h+=secEstate();if(on("rpt_s8"))h+=secKpi(slots);
+    if(on("rpt_sF"))h+=secFamily();if(on("rpt_s2b"))h+=secGantt();if(on("rpt_s1"))h+=secHouse();if(on("rpt_s2"))h+=secGoals(slots);if(on("rpt_s3"))h+=secCashflow(slots);if(on("rpt_s4"))h+=secBalance(slots);if(on("rpt_s5"))h+=secRisk();if(on("rpt_s6"))h+=secSocial();if(on("rpt_s7"))h+=secSim(slots,"",true);if(on("rpt_s7b")&&svcTaxOn())h+=secEstate();if(on("rpt_s8"))h+=secKpi(slots);
     const advSlots=plans.length?plans:[];
     if(on("rpt_s9"))advSlots.forEach(pl=>{h+=secAdvice(pl,plans.length>1?`（${E(pl.name)}）`:"");});
     if(on("rpt_s9")&&!advSlots.length)h+=secAdvice(null,"");
@@ -6077,7 +6200,7 @@ function rptBuild(){
   .foot{margin-top:26px;font-size:10.5px;color:#999;text-align:center;border-top:1px solid #eee;padding-top:8px}.noprint{position:fixed;right:14px;top:10px}.gt{font-size:10.5px;width:100%}.gt td,.gt th{padding:4px 4px!important}.gt td span{min-width:36px!important;padding:1px 3px!important}
   @media print{.noprint{display:none}h2,h3{page-break-after:avoid;break-after:avoid}table{page-break-inside:avoid;break-inside:avoid}tr{page-break-inside:avoid;break-inside:avoid}thead{display:table-header-group}.kpis{grid-template-columns:repeat(4,1fr)}}`;
   const who=plans.length?`${E(client)}　｜　現況＋${plans.map(x=>E(x.name)).join("、")}`:`${E(client)}　｜　現況`;
-  const head=`<div class="cover"><h1>理財規劃報告書</h1><div class="who">${who}</div><div class="sub">報告日期 ${E(date)}${by?`　・　本人 ${a0} 歲`:""}${adv||org?`　・　${E(org)}${adv?" "+E(adv):""}`:""}　・　${mode==="seq"?"方式一：先現況、再依序各方案":"方式二：現況與方案並排比較"}</div></div>`;
+  const head=`<div class="cover"><h1>理財規劃報告書</h1><div class="who">${who}</div><div class="sub">${svcPlanTxt()?`服務方案：${E(svcPlanTxt())}　・　`:""}報告日期 ${E(date)}${by?`　・　本人 ${a0} 歲`:""}${adv||org?`　・　${E(org)}${adv?" "+E(adv):""}`:""}　・　${mode==="seq"?"方式一：先現況、再依序各方案":"方式二：現況與方案並排比較"}</div></div>`;
   return `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><title>理財規劃報告書｜${E(client)}</title><style>${css}</style></head><body>
   <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button></div>${head}${h}
   <div class="foot">${E(org)}${adv?"・"+E(adv):""}　${E(date)}　理財規劃報告書</div>
@@ -6085,6 +6208,267 @@ function rptBuild(){
     t.style.setProperty("--zs",Math.min(1,sw/nat));t.style.setProperty("--zp",Math.min(1,1010/nat));t.style.zoom="";});}
     fit();window.addEventListener("resize",fit);window.addEventListener("beforeprint",fit);})();<\/script></body></html>`;
 }
+/* ---------- A1 財報系統報告書（服務方案 A1）：收支、資產負債、財務健康六步驟、整體診斷、方案對照＋指標總表（結合追蹤工具實際值）、執行計畫、附表 ---------- */
+function svcPlanCode(){const e=$("svc_plan");return e?e.value:"";}
+const A1_ST={ok:{c:"#5aa84a",bg:"#eaf5e3",lb:"健康"},mid:{c:"#e39a2c",bg:"#fdf1dd",lb:"注意"},bad:{c:"#d8584a",bg:"#fbe6e3",lb:"危險"},na:{c:"#9aa3ad",bg:"#f1f2f4",lb:"—"}};
+const A1_STEPS=[
+  ["步驟一：償債能力",["loan","debt","liq"]],
+  ["步驟二：應急能力",["emerg"]],
+  ["步驟三：保障能力",["ins"]],
+  ["步驟四：儲蓄能力",["save","mgmt"]],
+  ["步驟五：財富增值能力",["earn","cons","risky"]],
+  ["步驟六：財務自由度",["growth","free"]]];
+const A1_FLOW=[["收入與支出（流量指標）",["spend","life","casual"]],["資產與負債（存量指標）",["liqA","after"]]];
+function a1Sum(o,pre){return Object.keys(o||{}).filter(k=>k.indexOf(pre)===0).reduce((a,k)=>a+(+o[k]||0),0);}
+function a1LifeSA(){ // 身後資產變現率的分子：壽險保額（①-4 保單登錄；沒有登錄時用 ⑥-1 責任分析已備）
+  let s=0;(typeof policies!=="undefined"?policies:[]).forEach(p=>{if(p.src==="bsAdj")return;if(/壽|投資型/.test(p.type||"")&&(!p.insured||/本人|配偶/.test(p.insured)))s+=parseFloat(p.sa)||0;});
+  if(!(s>0))s=(V("pr_self_resp_have")||0)+(V("pr_sp_resp_have")||0);return s;}
+function a1PrevNet(){ // 淨資產增長率：最近一筆至少 180 天前、且有逐列資料的歷史快照
+  const now=Date.now();let best=null;
+  (typeof scenarios!=="undefined"?scenarios:[]).forEach(sn=>{const r=sn&&sn.rpt&&sn.rpt.rows;if(!r||!sn.time)return;const t=Date.parse(String(sn.time).replace(" ","T"));if(!isFinite(t)||now-t<180*864e5)return;
+    if(!best||t>best.t)best={t,net:a1Sum(r.as,"")-a1Sum(r.li,""),name:sn.name,time:sn.time};});if(best)best.yrs=(now-best.t)/(365.25*864e5);return best;}
+function a1Ind(R,age,prev){ // R＝{inc,exp,as,li}（元・年化）→ 指標
+  const I=a1Sum(R.inc,""),If=a1Sum(R.inc,"1_"),X=a1Sum(R.exp,""),F=a1Sum(R.exp,"4_"),C=X-F;
+  const L=a1Sum(R.exp,"0_"),Loan=(+R.exp["1_0"]||0)+(+R.exp["1_2"]||0)+(+R.exp["1_3"]||0),InsC=(+R.exp["3_2"]||0)+(+R.exp["3_3"]||0),Cas=(+R.exp["6_0"]||0)+(+R.exp["0_1"]||0);
+  const Cash=a1Sum(R.as,"0_"),CV=+R.as["1_4"]||0,Liq=Cash+["1_0","1_1","1_2","1_3"].reduce((a,k)=>a+(+R.as[k]||0),0),Earn=a1Sum(R.as,"0_")+a1Sum(R.as,"1_"),A=Earn+a1Sum(R.as,"2_"),Li=a1Sum(R.li,""),CurLi=(+R.li["4"]||0)+(+R.li["7"]||0);
+  const r=(n,d)=>d>0?n/d:NaN,net=A-Li;
+  const band=(v,okF,midF)=>!isFinite(v)?"na":okF(v)?"ok":midF(v)?"mid":"bad";
+  const consTh=age>=60?0.6:age>=50?0.4:0.2,consTxt=age>=60?"≤ 60%（60 歲以上）":age>=50?"≤ 40%（50～60 歲）":"≤ 20%（50 歲以下）";
+  const o={};const put=(k,lb,v,st,ideal,formula,fmt)=>{o[k]={k,lb,v,st,ideal,formula,disp:fmt?fmt(v):(isFinite(v)?(v*100).toFixed(v!==0&&Math.abs(v)<0.1?2:1)+"%":"—")};};
+  put("loan","貸款壓力比",r(Loan,I),band(r(Loan,I),v=>v<0.3,v=>v<0.4),"< 30%","（房貸＋其他貸款＋死會）年付 ÷ 年收入");
+  put("debt","資產負債率",r(Li,A),band(r(Li,A),v=>v<0.5,v=>v<0.7),"< 50%","總負債 ÷ 總資產");
+  if(CurLi>0)put("liq","資產流動比率",Liq/CurLi,band(Liq/CurLi,v=>v>=2,v=>v>=1),"≥ 200%","流動資產 ÷ 流動負債（卡循、民間借貸）",v=>Math.round(v*100)+"%");
+  else put("liq","資產流動比率",Infinity,"ok","≥ 200%","流動資產 ÷ 流動負債（卡循、民間借貸）",()=>"無流動負債");
+  const em=C>0?Cash/(C/12):NaN;put("emerg","緊急預備金月數",em,!isFinite(em)?"na":em>=6&&em<12?"ok":em>=3?"mid":"bad","6 個月 ≤ 月數 < 12 個月","現金類資產 ÷ 月消費支出",v=>isFinite(v)?v.toFixed(1)+" 個月":"—");
+  const ir=r(InsC,I);put("ins","保障型保費負擔率",ir,!isFinite(ir)?"na":ir===0?"mid":ir<=0.1?"ok":ir<=0.15?"mid":"bad","≤ 10%","商業保障型保費 ÷ 年收入");
+  const sr=r(I-C,I),mr=r(F,I);put("save","儲蓄率",sr,band(sr,v=>v>=0.2,v=>v>=0.1),"20% ≤ 儲蓄率 < 50%","（年收入 − 消費支出）÷ 年收入");
+  put("mgmt","管理儲蓄率",mr,band(mr,v=>v>=0.2,v=>v>=0.1),"≥ 20%，且儲蓄率 > 管理儲蓄率","理財支出 ÷ 年收入");
+  put("earn","生息資產率",r(Earn,A),band(r(Earn,A),v=>v>=0.3,v=>v>=0.2),"≥ 30%","生息資產 ÷ 總資產");
+  const cr=r(Cash+CV,Earn);put("cons","保守資產率",cr,band(cr,v=>v<=consTh,v=>v<=consTh+0.2),consTxt,"（現金類＋儲蓄險保價金）÷ 生息資產");
+  put("risky","風險資產率",isFinite(cr)?1-cr:NaN,band(isFinite(cr)?1-cr:NaN,v=>v>0.2,v=>v>=0.1),"> 20%","（生息資產 − 保守資產）÷ 生息資產");
+  const gy=prev&&prev.yrs>1.5?prev.yrs:1; // 中間有空窗（例如第二年沒規劃）→ 以相隔年數年化，才能和「每年 ≥ 5%」比較
+  const g=prev&&Math.abs(prev.net)>0.5?(gy>1&&prev.net>0&&net>0?Math.pow(net/prev.net,1/gy)-1:(net-prev.net)/Math.abs(prev.net)/gy):NaN;
+  put("growth",gy>1?"淨資產增長率（年化）":"淨資產增長率",g,prev?band(g,v=>v>=0.05,v=>v>=0):"na",gy>1?"≥ 5%／年":"≥ 5%",gy>1?`（今年淨值 ÷ ${gy.toFixed(1)} 年前淨值）^(1/${gy.toFixed(1)}) − 1`:"（今年淨值 − 去年淨值）÷ 去年淨值",v=>isFinite(v)?(v*100).toFixed(1)+"%":"無去年資料");
+  put("free","財務自由度",r(If,C),band(r(If,C),v=>v>=0.8,v=>v>=0.3),"≥ 80%","理財收入 ÷ 年消費支出");
+  put("spend","支出收入比",r(C,I),band(r(C,I),v=>v<=0.7,v=>v<=0.8),"≤ 70%","（年支出 − 理財支出）÷ 年收入");
+  put("life","生活費用比",r(L,I),band(r(L,I),v=>v<=0.2,v=>v<=0.3),"≤ 20%","生活費 ÷ 年收入");
+  put("casual","消費隨性度",r(Cas,I),band(r(Cas,I),v=>v<=0.1,v=>v<=0.15),"≤ 10%","（治裝美容＋雜項支出）÷ 年收入");
+  put("liqA","資產變現率",r(Liq,A),band(r(Liq,A),v=>v>=0.3,v=>v>=0.2),"≥ 30%","流動資產 ÷ 總資產");
+  const ad=A>0?Math.max(a1LifeSA(),CV)/A:NaN;put("after","身後資產變現率",ad,band(ad,v=>v>=1,v=>v>=0.5),"≥ 100%","max（壽險保額, 保單現金價值）÷ 總資產");
+  o._={I,If,X,F,C,L,Loan,InsC,Cas,Cash,CV,Liq,Earn,A,Li,CurLi,net,consTh};
+  o.mgmt.warn2=isFinite(sr)&&isFinite(mr)&&sr<=mr; // 儲蓄率不高於管理儲蓄率＝靠動用存款在投資
+  return o;}
+function a1IndTrk(T,prev){ // 追蹤工具實際值（類別層級）→ 可算的指標；其餘 null
+  const I=T.inc.total,C=T.exp.total,o={};const r=(n,d)=>d>0?n/d:NaN;
+  o.spend=r(C,I);o.life=r(T.exp[0],I);o.loan=r(T.exp[1],I);o.save=r(I-C,I);o.mgmt=r(T.invest,I);o.debt=r(T.liab,T.asTotal);o.earn=r(T.asEarn,T.asTotal);o.free=r(T.inc.fin,C);
+  if(prev&&Math.abs(prev.net)>0.5)o.growth=(T.net-prev.net)/Math.abs(prev.net);return o;}
+function a1Comment(x,o){ // 評語（上勤式）
+  const k=x.k,s=x.st;if(s==="na")return k==="growth"?"此次為首年規劃，待明年週年檢視時產生此指標；比例越高代表資產增長速度越快。":"資料不足，無法計算。";
+  const OK="表現良好，繼續保持。";
+  const T={
+    loan:{mid:"貸款負擔偏重，新增貸款前應先評估還款能力。",bad:"貸款壓力過高，收入中斷時容易產生還款危機，應優先規劃降低負債或延長年期。"},
+    debt:{mid:"負債佔資產比例偏高，須留意新增負債。",bad:"負債已超過資產的七成，財務槓桿過高，應優先降低負債。"},
+    liq:{ok:x.v===Infinity?"目前沒有短期負債，短期支付壓力低。":"有足夠的流動資金來應對短期負債，表現良好，繼續保持。",mid:"流動資產僅勉強涵蓋短期負債，應先償還卡循等高利負債。",bad:"流動資產不足以償還短期負債，需立即處理高利短期債務。"},
+    emerg:{mid:x.v>=12?"預備金超過 12 個月，部分資金閒置，可移轉至生息部位提升效率。":"預備金未達 6 個月，建議先補足再進行其他投資。",bad:"預備金不足 3 個月，突發事件時可能被迫借貸或賤賣資產，應優先補足。"},
+    ins:{mid:x.v===0?"目前沒有商業保障型保費，收入中斷或重大傷病時缺乏轉嫁機制，建議檢視保障缺口。":"保費負擔略高，需檢視保單是否重複或保障與儲蓄混雜。",bad:"保費負擔過重，已排擠儲蓄與生活，應檢視保單結構。"},
+    save:{ok:x.v>=0.5?"儲蓄能力佳，可進一步規劃結餘的配置效率。":OK,mid:"儲蓄率偏低，財務目標的準備速度較慢，建議提升儲蓄率。",bad:x.v<0?"收支已出現赤字，正在消耗存量資產，需立即調整收支。":"收支幾乎打平，若未來有財務目標待完成，建議先提升儲蓄率。"},
+    mgmt:{ok:o.mgmt.warn2?"管理儲蓄率達標，但儲蓄率未高於管理儲蓄率——目前是動用存款在投入，應先確認收支結餘。":OK,mid:"管理儲蓄率偏低，財富累積速度較慢，建議提升。",bad:"管理儲蓄率較低，財富累積速度較慢，建議把結餘固定轉為理財支出。"},
+    earn:{mid:"生息資產比例略低，資產創造理財收入的能力有限。",bad:"資產多為自用資產，能創造理財收入的部位不足。"},
+    cons:{mid:"保守資產比例偏高，資產風險低但預期回報也低，建議適度提升。",bad:"資產風險較低，但同時也帶來低預期回報的缺點，表示目前資產累積效能偏低，建議提升。"},
+    risky:{mid:"風險性資產比例偏低，長期增值動能有限。",bad:"幾乎沒有風險性資產，長期可能跑輸通膨。"},
+    growth:{mid:"淨資產持平，增長速度偏慢。",bad:"淨資產較去年減少，需檢視收支與資產變動原因。"},
+    free:{mid:"理財收入已能支應部分支出，持續累積生息資產。",bad:"主要收入仍需仰賴工作收入，未來須提升理財收入。"},
+    spend:{mid:"支出比例已超出理想範圍，需留意各項開銷。",bad:"收支失衡情況嚴重，需進一步檢視收支流量及各項目開銷，讓收支流量缺口降低。"},
+    life:{mid:"已超出理想範圍，切勿再增加，否則可能影響未來的財務目標。",bad:"嚴重超出太多，須留意是否支出過多，恐影響未來的財務目標，甚至造成資金的排擠效應。"},
+    casual:{mid:"隨性消費略高，需進一步檢視。",bad:"嚴重超出太多，應審慎評估，需檢視是否進行調整，來增加財富累積的空間。"},
+    liqA:{mid:"可快速變現的資產比例略低。",bad:"資產多為不易變現的部位，急需資金時彈性不足。"},
+    after:{ok:"身前生息資產在身後不受任何限制（例如完稅後才能處分等），立刻變現的程度良好，繼續保持。",mid:"身後可立即動用的資金有限，家人可能需等待遺產程序才能取得資金。",bad:"身後幾乎沒有可立即動用的資金，建議以壽險保額（指定受益人）補足。"}};
+  const t=T[k]||{};return t[s]||(s==="ok"?OK:"");}
+function a1Donut(parts,title,size){ // parts:[[label,value,color]]
+  size=size||150;const tot=parts.reduce((a,p)=>a+Math.max(0,p[1]),0);const R0=size/2-6,r0=R0*0.58,cx=size/2,cy=size/2;
+  if(!(tot>0))return `<div style="width:${size}px;text-align:center;color:#999;font-size:11px">${title}：無資料</div>`;
+  let a=-Math.PI/2,paths="";parts.forEach(p=>{const v=Math.max(0,p[1]);if(!v)return;const f=v/tot,a2=a+f*Math.PI*2,large=f>0.5?1:0;
+    const P=(ang,rr)=>`${(cx+rr*Math.cos(ang)).toFixed(2)},${(cy+rr*Math.sin(ang)).toFixed(2)}`;
+    paths+=f>0.9999?`<circle cx="${cx}" cy="${cy}" r="${(R0+r0)/2}" fill="none" stroke="${p[2]}" stroke-width="${R0-r0}"/>`:`<path d="M${P(a,R0)} A${R0},${R0} 0 ${large} 1 ${P(a2,R0)} L${P(a2,r0)} A${r0},${r0} 0 ${large} 0 ${P(a,r0)} Z" fill="${p[2]}"/>`;
+    if(f>=0.06){const m=(a+a2)/2,rr=(R0+r0)/2;paths+=`<text x="${(cx+rr*Math.cos(m)).toFixed(1)}" y="${(cy+rr*Math.sin(m)+3.5).toFixed(1)}" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">${Math.round(f*100)}%</text>`;}a=a2;});
+  const lg=parts.filter(p=>p[1]>0).map(p=>`<span style="white-space:nowrap"><i style="display:inline-block;width:9px;height:9px;background:${p[2]};border-radius:2px;margin-right:3px"></i>${p[0]}</span>`).join(" ");
+  return `<div style="text-align:center"><svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">${paths}<text x="${cx}" y="${cy+5}" text-anchor="middle" font-size="13" font-weight="700" fill="#333">${title}</text></svg><div style="font-size:10px;color:#555;line-height:1.6;max-width:${size+60}px;margin:0 auto">${lg}</div></div>`;}
+const A1_PAL=["#5b8fd6","#e39a2c","#6bb36b","#c86b9a","#8a7bd1","#d8584a","#3fb3b0","#b08a3c","#7a8794","#a3c46b"];
+function rptA1Build(X){
+  const {E,N,a0,client,date,adv,org,contact,closing,slots,curS,plans,rowsOf,secHouse,secAppendix,secPlanTable,secContact}=X;
+  const cur=curS&&rowsOf(curS)?rowsOf(curS):null;
+  const prev=a1PrevNet();
+  let trk=null;try{trk=(typeof arvActual==="function")?arvActual("trk"):null;}catch(e){trk=null;}
+  const Ic=cur?a1Ind(cur,a0,prev):null;
+  const pct=(v,d)=>d>0?(v/d*100).toFixed(2)+"%":"—";
+  let sec=0;const H=(t)=>{sec++;return `<h2>${String(sec).padStart(2,"0")}　${t}</h2>`;};
+  const toc=[];const S=(t,body,cls)=>{toc.push(t);return `<section class="${cls===undefined?"pb":cls}">${H(t)}${body}</section>`;};
+  let h="";
+  // 01 理財屋
+  if(typeof secHouse==="function"){const hs=secHouse(true).replace(/<h2>[^<]*<\/h2>/,"");h+=S("理財屋",hs.replace(/^<section>|<\/section>$/g,""));}
+  if(!cur){h+=S("財務現況",`<p class="cap">「現況」工作區尚無逐列資料——請先在「現況」完成 ①-1～①-3 並儲存。</p>`);}
+  else{
+    const I=Ic._.I,Xx=Ic._.X;
+    // 收支表
+    const incRows=INC_GROUPS.map((g,gi)=>[g.g,a1Sum(cur.inc,gi+"_")]);const expRows=EXP_GROUPS.map((g,gi)=>[g.g.replace(/（.*?）/g,""),a1Sum(cur.exp,gi+"_")]);
+    const tb=(rows,tot,lb)=>`<table class="t"><tr><th>${lb}</th><th style="text-align:right">月</th><th style="text-align:right">年</th><th style="text-align:right">佔收入比</th></tr>${rows.map(r0=>`<tr><td>${E(r0[0])}</td><td class="n">${N(r0[1]/12)}</td><td class="n">${N(r0[1])}</td><td class="n">${pct(r0[1],I)}</td></tr>`).join("")}<tr class="tot"><td>小計</td><td class="n">${N(tot/12)}</td><td class="n">${N(tot)}</td><td class="n">${pct(tot,I)}</td></tr></table>`;
+    const surplus=I-Xx;
+    h+=S("收入與支出表",`<div class="a1Pies">${a1Donut(incRows.map((r0,i)=>[r0[0],r0[1],A1_PAL[i]]),"收入")}${a1Donut(expRows.map((r0,i)=>[r0[0],r0[1],A1_PAL[i+2]]),"支出")}</div>
+      <div class="two">${tb(incRows,I,"收入")}${tb(expRows,Xx,"支出")}</div>
+      <table class="t" style="max-width:520px"><tr><th>月收支</th><th style="text-align:right">金額</th><th>年收支</th><th style="text-align:right">金額</th></tr>
+      <tr><td>月收入</td><td class="n">${N(I/12)}</td><td>年收入</td><td class="n">${N(I)}</td></tr><tr><td>月支出</td><td class="n">${N(Xx/12)}</td><td>年支出</td><td class="n">${N(Xx)}</td></tr>
+      <tr class="tot"><td>月結餘</td><td class="n" style="color:${surplus<0?"#c0392b":"inherit"}">${N(surplus/12)}</td><td>年結餘</td><td class="n" style="color:${surplus<0?"#c0392b":"inherit"}">${N(surplus)}</td></tr></table>
+      <p class="cap">支出含理財支出（視為儲蓄）；年結餘＝年收入 − 年支出。</p>`);
+    // 資產負債表
+    const asRows=[];ASSET_GROUPS.forEach((g,gi)=>g.rows.forEach((r0,ri)=>{const v=+cur.as[`${gi}_${ri}`]||0;if(v)asRows.push([r0.split("（")[0],v,gi]);}));
+    const liRows=[];LIAB_ROWS.forEach((r0,ri)=>{const v=+cur.li[`${ri}`]||0;if(v)liRows.push([r0.split("（")[0],v]);});
+    const A=Ic._.A,Li=Ic._.Li;
+    const atb=`<table class="t"><tr><th>資產</th><th style="text-align:right">金額</th><th style="text-align:right">佔總資產比</th></tr>${ASSET_GROUPS.map((g,gi)=>{const L0=asRows.filter(x=>x[2]===gi);if(!L0.length)return "";const gt=L0.reduce((a,x)=>a+x[1],0);return `<tr class="g"><td>${E(g.g)}</td><td class="n">${N(gt)}</td><td class="n">${pct(gt,A)}</td></tr>`+L0.map(x=>`<tr><td class="i">${E(x[0])}</td><td class="n">${N(x[1])}</td><td class="n">${pct(x[1],A)}</td></tr>`).join("");}).join("")}<tr class="tot"><td>資產總計</td><td class="n">${N(A)}</td><td class="n">${A?"100.00%":"—"}</td></tr></table>`;
+    const ltb=`<table class="t"><tr><th>負債</th><th style="text-align:right">金額</th><th style="text-align:right">佔總負債比</th></tr>${liRows.length?liRows.map(x=>`<tr><td class="i">${E(x[0])}</td><td class="n">${N(x[1])}</td><td class="n">${pct(x[1],Li)}</td></tr>`).join(""):`<tr><td class="i">（無負債）</td><td class="n">0</td><td class="n">—</td></tr>`}<tr class="tot"><td>負債總計</td><td class="n">${N(Li)}</td><td class="n">${Li?"100.00%":"—"}</td></tr></table>`;
+    h+=S("資產負債表",`<div class="a1Pies">${a1Donut(ASSET_GROUPS.map((g,gi)=>[g.g.replace("生息資產－",""),asRows.filter(x=>x[2]===gi).reduce((a,x)=>a+x[1],0),A1_PAL[gi]]),"資產")}${a1Donut(liRows.map((x,i)=>[x[0],x[1],A1_PAL[(i+5)%10]]),"負債")}</div>
+      <div class="two">${atb}${ltb}</div><div class="a1Net">資產淨值　<b>${N(A-Li)}</b></div>`);
+    // 財務健康診斷
+    const card=(x)=>{const st=A1_ST[x.st];return `<div class="a1Card" style="border-color:${st.c}"><div class="a1Hd" style="background:${st.c}"><div class="a1Lb">${E(x.lb)}</div><div class="a1V">${E(x.disp)}</div></div>
+      <div class="a1Tx">${E(a1Comment(x,Ic))}</div><div class="a1Id">理想值：${E(x.ideal)}</div><div class="a1Fm">公式：${E(x.formula)}</div></div>`;};
+    const legend=`<div class="a1Lg">${["ok","mid","bad"].map(s=>`<span style="background:${A1_ST[s].bg};border-color:${A1_ST[s].c};color:${A1_ST[s].c}">${A1_ST[s].lb}</span>`).join("")}<span class="cap" style="border:0;background:none;color:#777">健康＝在理想範圍內・注意＝接近或略超出・危險＝嚴重超出理想值</span></div>`;
+    const grp=(t,keys)=>`<div class="a1Step"><div class="a1StepHd">${E(t)}</div><div class="a1Cards">${keys.map(k=>card(Ic[k])).join("")}</div></div>`;
+    h+=S("財務健康診斷",`<p class="lead">穩健的理財順序：先確保還得起債、應付得了突發事件、有基本保障，再談儲蓄、增值與財務自由。</p>${legend}${A1_STEPS.map(([t,ks])=>grp(t,ks)).join("")}`);
+    h+=S("收支與存量指標",`${legend}${A1_FLOW.map(([t,ks])=>grp(t,ks)).join("")}${prev?`<p class="cap">淨資產增長率以歷史快照「${E(prev.name)}」（${E(prev.time)}）的淨值為基準${prev.yrs>1.5?`——與 ${E(String(prev.time).slice(0,7))} 相比，相隔 ${prev.yrs.toFixed(1)} 年（中間有未規劃的年度），已換算為每年平均（年化）`:"（去年）"}。</p>`:""}`);
+    // 整體財務診斷（自動敘述）
+    const P=(k)=>Ic[k].disp,st=(k)=>Ic[k].st,red=s=>`<b style="color:#c0392b">${s}</b>`,hl=(k)=>st(k)==="ok"?P(k):red(P(k));
+    const para=[];
+    { const bad=["spend","life","casual"].filter(k=>st(k)!=="ok");
+      para.push(["整體支出分析",`支出收入比：${hl("spend")}（理想值 ${Ic.spend.ideal}）；生活費用比：${hl("life")}（理想值 ${Ic.life.ideal}）；消費隨性度：${hl("casual")}（理想值 ${Ic.casual.ideal}）。`+
+        (bad.length?`${bad.map(k=>Ic[k].lb).join("、")}高於理想值，需檢視是否能減少非必要支出，增加每年財富累積的空間；且未來各類支出仍有增加的可能（交際、旅遊、紅白包、3C、進修等），應預先保留彈性。`:"支出結構健康，維持目前的消費紀律即可。")]); }
+    para.push(["緊急預備金",`緊急預備金月數：${hl("emerg")}（理想值 ${Ic.emerg.ideal}）。`+(st("emerg")==="ok"?"足以應付突發狀況。":Ic.emerg.v>=12?"預備金偏多，超出部分可轉入生息資產。":`現有現金約可支應 ${Ic.emerg.disp}，建議預備金至少準備 ${N(Ic._.C/12*6)}～${N(Ic._.C/12*12)} 元（以月消費支出估）。`)]);
+    para.push(["流量結餘與儲蓄",`儲蓄率：${hl("save")}，管理儲蓄率：${hl("mgmt")}。`+(Ic.save.v<0?"目前收支已是赤字，正在消耗存量資產；在不影響生活品質的前提下，應先讓收支回到正數。":st("mgmt")!=="ok"?"結餘若沒有計畫地管理，容易在不知不覺中被花掉；建議把每月結餘固定轉入理財支出（定期定額、零存整付），讓儲蓄變成自動化。":"結餘已有計畫地轉為理財支出，繼續保持。")+(Ic.mgmt.warn2?"但儲蓄率未高於管理儲蓄率，代表投入的錢有一部分來自既有存款，需留意現金水位。":"")]);
+    para.push(["償債與負債",`貸款壓力比：${hl("loan")}，資產負債率：${hl("debt")}，資產流動比率：${hl("liq")}。`+(["loan","debt","liq"].every(k=>st(k)==="ok")?"負債狀況在可控範圍內。":"負債比例偏高時，應避免再增加貸款，並優先償還高利負債。")]);
+    para.push(["財務防禦與自由度",`財務自由度：${hl("free")}，保障型保費負擔率：${hl("ins")}。`+(st("free")!=="ok"?"目前主要收入仍須仰賴工作收入；若風險發生導致收入中斷，就會出現財務壓力，如何保障收入來源不中斷、做好財務安全防護，是需要關注的課題。":"理財收入已能支應大部分支出。")]);
+    para.push(["資產配置",`生息資產率：${hl("earn")}，保守資產率：${hl("cons")}（${E(Ic.cons.ideal)}），風險資產率：${hl("risky")}。`+(st("cons")!=="ok"?"保守資產比例偏高，風險低但預期回報也低；未來應把長期不會動用的資金分散到不同類型的資產，提高資產累積效能。":"資產配置在合理範圍，定期再平衡即可。")]);
+    h+=S("整體財務診斷",para.map(([t,x])=>`<h3>${E(t)}</h3><p>${x}</p>`).join(""));
+    // 規劃方案
+    const trkBanner=trk?`<div class="a1TrkBn">📒 本報告含<b>週年檢視實際值</b>——藍色「實際」欄來自財務追蹤工具記帳（${E(trk.label)}${trk.asOf?`・資產負債截至 ${E(trk.asOf)}`:""}），用來對照「方案建議」與「客戶實際做到」。</div>`:"";
+    const trkNote=trk?`「實際」欄＝財務追蹤工具回填（${E(trk.label)}），僅類別層級。`:"方案選定後，可由 ①-0「匯出給追蹤工具」把方案預算帶到財務追蹤工具每月記帳；週年檢視匯入追蹤工具 JSON 後，本報告會自動加上「實際」欄。";
+    if(plans.length){
+      let pb="";plans.forEach(pl=>{const Rp=rowsOf(pl);if(!Rp)return;const ad=(pl.rpt&&pl.rpt.adv)||[];
+        const chg=(tbl,k)=>Math.abs((+Rp[tbl][k]||0)-(+cur[tbl][k]||0))>0.5;
+        const Ip=a1Sum(Rp.inc,"");
+        const hd=`<tr><th>項目</th><th style="text-align:right">現況（年）</th><th style="text-align:right">${E(pl.name)}（年）</th><th style="text-align:right">增減</th><th style="text-align:right">方案月額</th><th style="text-align:right">佔收入比</th>${trk?`<th style="text-align:right" class="a1TrkH">實際（年）</th>`:""}</tr>`;
+        const line=(lb,tbl,k,ind,goodUp,trV)=>{const a=+cur[tbl][k]||0,b=+Rp[tbl][k]||0,d=b-a,c=Math.abs(d)>0.5;return `<tr${c?' class="a1Chg"':""}><td${ind?' class="i"':""}>${c?"★ ":""}${E(lb)}</td><td class="n">${N(a)}</td><td class="n">${N(b)}</td><td class="n" style="color:${c?((goodUp?d>0:d<0)?"#2e7d32":"#c0392b"):"#999"}">${c?(d>0?"+":"−")+N(Math.abs(d)):"—"}</td><td class="n">${N(b/12)}</td><td class="n">${pct(b,Ip)}</td>${trk?`<td class="n a1Trk">${trV!=null?N(trV):""}</td>`:""}</tr>`;};
+        const gline=(lb,a,b,goodUp,trV)=>{const d=b-a;return `<tr class="g"><td>${E(lb)}</td><td class="n">${N(a)}</td><td class="n">${N(b)}</td><td class="n" style="color:${Math.abs(d)>0.5?((goodUp?d>0:d<0)?"#2e7d32":"#c0392b"):"#999"}">${Math.abs(d)>0.5?(d>0?"+":"−")+N(Math.abs(d)):"—"}</td><td class="n">${N(b/12)}</td><td class="n">${pct(b,Ip)}</td>${trk?`<td class="n a1Trk">${trV!=null?N(trV):""}</td>`:""}</tr>`;};
+        let t=`<div class="a1Blk"><h3>收支表調整｜收入 <span class="a1Star">★ 調整項目</span></h3><table class="t a1Cmp">${hd}`;
+        INC_GROUPS.forEach((g,gi)=>{const a=a1Sum(cur.inc,gi+"_"),b=a1Sum(Rp.inc,gi+"_");if(!a&&!b)return;t+=gline(g.g,a,b,true,trk?(gi===0?trk.inc.work:trk.inc.fin):null);g.rows.forEach((r0,ri)=>{const k=`${gi}_${ri}`;if(cur.inc[k]||Rp.inc[k])t+=line(r0.split("（")[0],"inc",k,1,true);});});
+        t+=`<tr class="tot"><td>收入合計</td><td class="n">${N(a1Sum(cur.inc,""))}</td><td class="n">${N(Ip)}</td><td></td><td class="n">${N(Ip/12)}</td><td class="n">100.00%</td>${trk?`<td class="n a1Trk">${N(trk.inc.total)}</td>`:""}</tr></table></div><div class="a1Blk"><h3>收支表調整｜支出與結餘</h3><table class="t a1Cmp">${hd}`;
+        EXP_GROUPS.forEach((g,gi)=>{const a=a1Sum(cur.exp,gi+"_"),b=a1Sum(Rp.exp,gi+"_");if(!a&&!b)return;t+=gline(g.g.replace(/（.*?）/g,""),a,b,gi===4,trk?(gi===4?trk.invest:trk.exp[gi]):null);g.rows.forEach((r0,ri)=>{const k=`${gi}_${ri}`;if(cur.exp[k]||Rp.exp[k])t+=line(r0.split("（")[0],"exp",k,1,gi===4);});});
+        const Xa=a1Sum(cur.exp,""),Xb=a1Sum(Rp.exp,"");
+        t+=`<tr class="tot"><td>支出合計</td><td class="n">${N(Xa)}</td><td class="n">${N(Xb)}</td><td></td><td class="n">${N(Xb/12)}</td><td class="n">${pct(Xb,Ip)}</td>${trk?`<td class="n a1Trk">${N(trk.exp.total+trk.invest)}</td>`:""}</tr>`;
+        t+=`<tr class="tot"><td>年結餘</td><td class="n">${N(a1Sum(cur.inc,"")-Xa)}</td><td class="n">${N(Ip-Xb)}</td><td></td><td class="n">${N((Ip-Xb)/12)}</td><td class="n">${pct(Ip-Xb,Ip)}</td>${trk?`<td class="n a1Trk">${N(trk.inc.total-trk.exp.total-trk.invest)}</td>`:""}</tr></table></div>`;
+        const asChg=Object.keys(Rp.as).some(k=>chg("as",k))||Object.keys(Rp.li).some(k=>chg("li",k));
+        let bt="";{const Ab=a1Sum(Rp.as,""),Lb=a1Sum(Rp.li,"");
+          const dC=(a,b,goodUp)=>{const d=b-a;return `<td class="n" style="color:${Math.abs(d)>0.5?((goodUp?d>0:d<0)?"#2e7d32":"#c0392b"):"#999"}">${Math.abs(d)>0.5?(d>0?"+":"−")+N(Math.abs(d)):"—"}</td>`;};
+          const tc=(v)=>trk?`<td class="n a1Trk">${v!=null?N(v):""}</td>`:"";
+          const bhd=`<tr><th>項目</th><th style="text-align:right">現況</th><th style="text-align:right">${E(pl.name)}</th><th style="text-align:right">增減</th><th style="text-align:right">佔比</th>${trk?`<th style="text-align:right" class="a1TrkH">實際</th>`:""}</tr>`;bt=`<div class="a1Blk"><h3>資產負債表調整｜資產 <span class="a1Star">★ 調整項目</span>${asChg?"":`<span class="cap" style="margin-left:8px">（本方案未調整資產負債）</span>`}</h3><table class="t a1Cmp">${bhd}`;
+          ASSET_GROUPS.forEach((g,gi)=>{const a=a1Sum(cur.as,gi+"_"),b=a1Sum(Rp.as,gi+"_");if(!a&&!b)return;bt+=`<tr class="g"><td>${E(g.g)}</td><td class="n">${N(a)}</td><td class="n">${N(b)}</td>${dC(a,b,true)}<td class="n">${pct(b,Ab)}</td>${tc(null)}</tr>`;
+            g.rows.forEach((r0,ri)=>{const k=`${gi}_${ri}`;const x0=+cur.as[k]||0,x1=+Rp.as[k]||0;if(!x0&&!x1)return;const c=chg("as",k);bt+=`<tr${c?' class="a1Chg"':""}><td class="i">${c?"★ ":""}${E(r0.split("（")[0])}</td><td class="n">${N(x0)}</td><td class="n">${N(x1)}</td>${dC(x0,x1,true)}<td class="n">${pct(x1,Ab)}</td>${tc(null)}</tr>`;});});
+          bt+=`<tr class="tot"><td>資產總計</td><td class="n">${N(a1Sum(cur.as,""))}</td><td class="n">${N(Ab)}</td>${dC(a1Sum(cur.as,""),Ab,true)}<td class="n">${Ab?"100.00%":"—"}</td>${tc(trk?trk.asTotal:null)}</tr></table></div><div class="a1Blk"><h3>資產負債表調整｜負債與淨值</h3><table class="t a1Cmp">${bhd}`;
+          let anyLi=false;LIAB_ROWS.forEach((r0,ri)=>{const k=`${ri}`;const x0=+cur.li[k]||0,x1=+Rp.li[k]||0;if(!x0&&!x1)return;anyLi=true;const c=chg("li",k);bt+=`<tr${c?' class="a1Chg"':""}><td class="i">${c?"★ ":""}${E(r0.split("（")[0])}</td><td class="n">${N(x0)}</td><td class="n">${N(x1)}</td>${dC(x0,x1,false)}<td class="n">${pct(x1,Ab)}</td>${tc(null)}</tr>`;});
+          if(!anyLi)bt+=`<tr><td class="i">（無負債）</td><td class="n">0</td><td class="n">0</td><td class="n">—</td><td></td>${tc(null)}</tr>`;
+          bt+=`<tr class="tot"><td>負債總計</td><td class="n">${N(a1Sum(cur.li,""))}</td><td class="n">${N(Lb)}</td>${dC(a1Sum(cur.li,""),Lb,false)}<td class="n">${pct(Lb,Ab)}</td>${tc(trk?trk.liab:null)}</tr>`;
+          const na=a1Sum(cur.as,"")-a1Sum(cur.li,""),nb=Ab-Lb;bt+=`<tr class="tot"><td>資產淨值</td><td class="n">${N(na)}</td><td class="n">${N(nb)}</td>${dC(na,nb,true)}<td></td>${tc(trk?trk.net:null)}</tr></table></div>`;}
+        const Ipl=a1Ind(Rp,a0,prev);
+        const refTxt=key=>a1KeysFor(key).map(k=>{const a=Ic[k],b=Ipl[k];const same=a.disp===b.disp;return `<div class="a1Ref"><span class="a1Dot" style="background:${A1_ST[a.st].c}"></span>${E(a.lb)} ${E(a.disp)}${same?"":` → <span class="a1Dot" style="background:${A1_ST[b.st].c}"></span><b>${E(b.disp)}</b>`}</div>`;}).join("");
+        const adT=ad.length?`<table class="t a1AdvT"><tr><th style="width:22px">#</th><th>調整項目</th><th>調整內容</th><th>說明（與客戶討論）</th><th>參考指標（現況 → 方案）</th></tr>${ad.map((x,i)=>`<tr><td class="c">${i+1}</td><td>${E(String(x.src||"").replace(/^[①-⑧]-\d+\s*/,""))}</td><td>${E(x.what)}${x.eff?`<div class="cap">${E(x.eff)}</div>`:""}</td><td>${x.note?E(x.note):'<span class="cap">—</span>'}</td><td>${x.key?refTxt(x.key):'<span class="cap">—</span>'}</td></tr>`).join("")}</table>`:`<p class="cap">本方案尚未加入顧問建議。</p>`;
+        pb+=`<div class="a1Plan"><h3 class="a1PlanHd">${E(pl.name)}</h3><h3>調整項目</h3>${adT}
+          ${t}${bt}</div>`;});
+      h+=S("規劃方案",`${trkBanner}<p class="lead">以現況為基準，依各項指標與客戶討論後調整收支與資產負債；★＝本方案調整的項目，「參考指標」為該項調整影響的財務健康指標。</p>${pb}<p class="cap">${trkNote}</p>`);
+      // 指標總表
+      const cols=[{nm:"現況",I:Ic}].concat(plans.filter(pl=>rowsOf(pl)).map(pl=>({nm:pl.name,I:a1Ind(rowsOf(pl),a0,prev)})));
+      const TR=trk?a1IndTrk(trk,prev):null;
+      const dot=(st,txt)=>`<span class="a1Dot" style="background:${A1_ST[st].c}"></span>${E(txt)}`;
+      let it=`<table class="t a1Sum"><tr><th>指標</th>${cols.map(c=>`<th style="text-align:center">${E(c.nm)}</th>`).join("")}${TR?`<th style="text-align:center" class="a1TrkH">實際（追蹤工具）</th>`:""}<th>理想值</th></tr>`;
+      A1_STEPS.concat(A1_FLOW).forEach(([t,ks])=>{it+=`<tr class="g"><td colspan="${cols.length+(TR?3:2)}">${E(t)}</td></tr>`;
+        ks.forEach(k=>{const base=Ic[k];it+=`<tr><td class="i">${E(base.lb)}</td>${cols.map(c=>`<td class="c">${dot(c.I[k].st,c.I[k].disp)}</td>`).join("")}`;
+          if(TR){const v=TR[k];if(v==null||!isFinite(v))it+=`<td class="c a1Trk" style="color:#aaa">—</td>`;else{const st2=a1StOf(k,v,Ic._.consTh);it+=`<td class="c a1Trk">${dot(st2,(v*100).toFixed(1)+"%")}</td>`;}}
+          it+=`<td class="cap" style="font-size:10.5px">${E(base.ideal)}</td></tr>`;});});
+      it+=`</table>`;
+      h+=S("指標總表：現況 vs 方案",`${trkBanner}<p class="lead">各方案執行後，財務健康指標的變化${TR?"；最右欄為追蹤工具記帳的實際結果":""}。</p>${it}${TR?`<p class="cap">實際欄只能計算類別層級的指標（例如貸款壓力比含房租）；其餘指標以「—」表示。</p>`:""}`);
+      if(!X.skipPlanTable)plans.forEach(pl=>{const x=secPlanTable(pl,plans.length>1?`（${E(pl.name)}）`:"");h+=x.replace(/<h2>[^<]*<\/h2>/,H("執行計畫表"+(plans.length>1?`（${E(pl.name)}）`:"")));toc.push("執行計畫表"+(plans.length>1?`（${pl.name}）`:""));});
+    }else{
+      h+=S("規劃方案",`<p class="cap">尚未建立方案。可在「方案工作區」新增方案，於 ①-1～①-3 各列加入顧問建議（例如：生活費調降、雜費調降、增加理財支出），報告書會自動產生現況與方案的對照與指標變化。</p><p class="cap">${trkNote}</p>`);
+    }
+  }
+  // 結語
+  h+=S("結語",`<p class="closing">${E(closing).replace(/\n/g,"<br>")}</p>`,"");
+  // 附表
+  { const fq=x=>{const f=(typeof itmExpFreq==="function")?itmExpFreq(x):(x.freq||"月");return f;};
+    const incL=(typeof itmIncs!=="undefined"?itmIncs:[]).filter(x=>(parseFloat(x.amt)||0)>0),expL=(typeof itmExps!=="undefined"?itmExps:[]).filter(x=>(parseFloat(x.amt)||0)>0);
+    const annI=x=>{const a=parseFloat(x.amt)||0,f=x.freq||"月";return f==="月"?a*12:f==="兩個月"?a*6:f==="季"?a*4:f==="半年"?a*2:f==="不定期"?a/Math.max(1,parseFloat(x.nYr)||1):a;};
+    const grpNm=(G,key)=>{const [gi,ri]=String(key||"0_0").split("_").map(Number);return [(G[gi]||{g:""}).g.replace(/（.*?）/g,""),((G[gi]||{rows:[]}).rows[ri]||"").split("（")[0]];};
+    const tbl=(L,G,keyF,annF,lb)=>{if(!L.length)return "";let rows="";const by={};L.forEach(x=>{const k=keyF(x);(by[k]=by[k]||[]).push(x);});
+      Object.keys(by).sort().forEach(k=>{const [gn,rn]=grpNm(G,k);by[k].forEach(x=>{const an=annF(x),mon=/月/.test(x.freq||"月")&&!/兩個月/.test(x.freq||"")?parseFloat(x.amt)||0:0;
+        rows+=`<tr><td>${E(gn)}</td><td>${E(rn)}</td><td>${E(x.name||"")}</td><td class="n">${mon?N(mon):""}</td><td class="n">${N(an)}</td><td class="c">${x.a1||""}</td><td class="c">${x.a2||""}</td></tr>`;});});
+      return `<h3>${lb}</h3><table class="t"><tr><th>類別</th><th>項目</th><th>名稱</th><th style="text-align:right">月金額</th><th style="text-align:right">年金額</th><th>開始年齡</th><th>停止年齡</th></tr>${rows}</table>`;};
+    let ap=tbl(incL,INC_GROUPS,x=>x.ic||"0_0",annI,"收入明細")+tbl(expL,EXP_GROUPS,x=>x.ex||"0_0",x=>(typeof itmExpAnn==="function")?itmExpAnn(x):annI(x),"支出明細");
+    if(!ap&&cur){ap=`<h3>收入明細</h3><table class="t"><tr><th>類別</th><th>項目</th><th style="text-align:right">年金額</th></tr>${INC_GROUPS.map((g,gi)=>g.rows.map((r0,ri)=>cur.inc[`${gi}_${ri}`]?`<tr><td>${E(g.g)}</td><td>${E(r0.split("（")[0])}</td><td class="n">${N(cur.inc[`${gi}_${ri}`])}</td></tr>`:"").join("")).join("")}</table>
+      <h3>支出明細</h3><table class="t"><tr><th>類別</th><th>項目</th><th style="text-align:right">年金額</th></tr>${EXP_GROUPS.map((g,gi)=>g.rows.map((r0,ri)=>cur.exp[`${gi}_${ri}`]?`<tr><td>${E(g.g.replace(/（.*?）/g,""))}</td><td>${E(r0.split("（")[0])}</td><td class="n">${N(cur.exp[`${gi}_${ri}`])}</td></tr>`:"").join("")).join("")}</table>`;}
+    const bal=typeof secAppendix==="function"?secAppendix().replace(/^<section>|<\/section>$/g,"").replace(/<h2>[^<]*<\/h2>/,"<h3>資產負債明細</h3>"):"";
+    h+=S("附表",ap+bal);}
+  h+=S("聯絡我們",secContact().replace(/^<section>|<\/section>$/g,"").replace(/<h2>[^<]*<\/h2>/,""),"");
+  // 目錄
+  const tocH=`<section class="a1Toc"><h2>目錄</h2><ol>${toc.map(t=>`<li>${E(t)}</li>`).join("")}</ol></section>`;
+  const css=`:root{${rptCssVars()}}@page{size:A4;margin:16mm 14mm}body{font-family:"Noto Serif TC","PMingLiU",serif;color:#222;margin:0;padding:24px 28px;font-size:12.5px;line-height:1.7}
+  .cover{padding:60px 0 30px;margin-bottom:10px;border-bottom:3px double #b08a3c;page-break-after:always}.cover .tag{display:inline-block;background:#26384f;color:#fff;font-family:system-ui;font-size:12px;letter-spacing:2px;padding:3px 12px;border-radius:3px}
+  .cover h1{font-size:32px;margin:14px 0 4px;letter-spacing:4px}.cover .en{font-family:system-ui;letter-spacing:6px;color:#8a7a55;font-size:13px}.cover .who{font-size:17px;margin-top:40px}.cover .sub{color:#666;font-size:12px;margin-top:6px}
+  section{margin:0 0 22px}h2{font-size:17px;border-left:5px solid #b08a3c;padding-left:9px;margin:22px 0 10px;letter-spacing:1px;page-break-after:avoid}h3{font-size:13.5px;margin:12px 0 4px;color:#7a5a1e;page-break-after:avoid}.lead{margin:0 0 8px;color:#444}
+  .a1Toc{page-break-after:always}.a1Toc ol{font-size:14px;line-height:2.2;padding-left:26px}
+  table.t{border-collapse:collapse;width:100%;font-size:11.5px;margin:4px 0 8px}table.t th{background:#f3eee2;border:1px solid #cfc6b0;padding:5px 7px;text-align:left;font-weight:700}table.t td{border:1px solid #d8d2c2;padding:4px 7px;vertical-align:top}
+  td.n{text-align:right;font-family:"Menlo","Consolas",monospace;white-space:nowrap}td.c{text-align:center;white-space:nowrap}td.i{padding-left:20px;color:#444}tr.g td{background:#faf7ef;font-weight:700}tr.tot td{font-weight:700;background:#f3eee2}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}.a1Pies{display:flex;justify-content:space-around;align-items:flex-start;margin:4px 0 10px}
+  .a1Net{background:#f6e7b8;text-align:center;font-weight:700;padding:6px;margin-top:4px}
+  .a1Lg{display:flex;gap:8px;align-items:center;margin:4px 0 10px;flex-wrap:wrap}.a1Lg span{border:1px solid;border-radius:5px;padding:1px 10px;font-size:11px;font-weight:700;font-family:system-ui}
+  .a1Step{background:#f2f2f2;padding:6px 8px 10px;margin:0 0 10px;page-break-inside:avoid}.a1StepHd{text-align:center;font-weight:700;font-family:system-ui;font-size:12.5px;padding:3px 0 7px}
+  .a1Cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.a1Card{border:1.5px solid;background:#fff;display:flex;flex-direction:column}
+  .a1Hd{color:#fff;text-align:center;padding:8px 4px;font-family:system-ui}.a1Lb{font-weight:700;font-size:12.5px}.a1V{font-size:17px;font-weight:700;margin-top:6px}
+  .a1Tx{font-size:11px;padding:6px 7px;min-height:52px;line-height:1.55;flex:1}.a1Id{font-size:9.5px;color:#888;padding:4px 7px;border-top:1px solid #eee}.a1Fm{font-size:9.5px;color:#999;padding:0 7px 5px}
+  section.pb{page-break-before:always}.a1Plan+.a1Plan{page-break-before:always}.a1Blk{page-break-inside:avoid;break-inside:avoid}h3{page-break-after:avoid;break-after:avoid}.a1PlanHd{font-size:15px;color:#26384f;border-bottom:2px solid #26384f;padding-bottom:3px}.a1Adv{background:#faf7ef;border:1px solid #e6dcc4;padding:6px 10px;margin:4px 0 8px}.a1Adv ol{margin:2px 0;padding-left:22px}
+  .a1Star{font-size:10.5px;color:#b08a3c;font-weight:400;margin-left:8px}
+  table.a1AdvT td{font-size:11px}.a1Ref{white-space:nowrap;font-size:10.5px;line-height:1.6}th.a1TrkH{background:#2f5d8a!important;color:#fff}td.a1Trk{background:#eef4fb;color:#1f4e79}
+  .a1TrkBn{background:#eef4fb;border:1px solid #9fbcdc;border-left:5px solid #2f5d8a;padding:7px 10px;margin:4px 0 10px;font-size:12px;color:#1f4e79}tr.a1Chg td{background:#fff5d6}tr.a1Chg td:first-child{color:#8a5a00;font-weight:700}
+  .a1Dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:0}table.a1Sum td.c{font-family:"Menlo","Consolas",monospace}
+  .cap{font-size:11px;color:#777;margin:2px 0 0}.closing{font-size:13px;line-height:1.9;padding:6px 10px;border-left:3px solid #ddd}.contact{margin-top:6px;font-size:12px;color:#444}
+  svg text{font-family:system-ui,"Noto Sans TC",sans-serif}.foot{margin-top:26px;font-size:10.5px;color:#999;text-align:center;border-top:1px solid #eee;padding-top:8px}.noprint{position:fixed;right:14px;top:10px}
+  @media print{.noprint{display:none}table{page-break-inside:avoid;break-inside:avoid}tr{page-break-inside:avoid}}`;
+  const cover=`<div class="cover"><span class="tag">A1 財報系統</span><h1>財務報告書</h1><div class="en">FINANCIAL PLAN</div><div class="who">${E(client)}</div><div class="sub">服務方案：${E(svcPlanTxt())}　・　報告日期 ${E(date)}${a0?`　・　本人 ${a0} 歲`:""}</div><div class="sub">${E(org||"")}${adv?"　顧問 "+E(adv):""}${contact?"　・　"+E(contact):""}</div></div>`;
+  return `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><title>財務報告書（A1）｜${E(client)}</title><style>${css}</style></head><body>
+  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button></div>${cover}${tocH}${h}
+  <div class="foot">${E(org)}${adv?"・"+E(adv):""}　${E(date)}　財務報告書（A1）</div></body></html>`;
+}
+const A1_KEYMAP=[[/^inc_1_/,["free","save","spend"]],[/^inc_/,["save","spend"]],[/^exp_0_1$/,["life","casual","save"]],[/^exp_0_/,["life","spend","save"]],[/^exp_1_/,["loan","spend","save"]],
+  [/^exp_2_/,["spend","save"]],[/^exp_3_/,["ins","spend","save"]],[/^exp_4_/,["mgmt","save"]],[/^exp_5_/,["spend","save"]],[/^exp_6_/,["casual","spend","save"]],
+  [/^as_0_/,["emerg","cons","risky"]],[/^as_1_/,["cons","risky","earn"]],[/^as_2_/,["earn","debt","liqA"]],[/^li_/,["debt","liq","loan"]],[/^pr_/,["ins"]]];
+function a1KeysFor(key){const m=A1_KEYMAP.find(x=>x[0].test(key||""));return m?m[1]:[];}
+function a1LiveRows(){ // 目前畫面（含本方案顧問建議效果）→ 逐列年化值（與 makeSnapshot 的 rpt.rows 同口徑）
+  const rows={inc:{},exp:{},as:{},li:{}};
+  INC_GROUPS.forEach((g,gi)=>g.rows.forEach((r0,ri)=>{rows.inc[`${gi}_${ri}`]=["self","sp"].reduce((a,w)=>a+V(`inc_${w}_${gi}_${ri}_m`)*12+V(`inc_${w}_${gi}_${ri}_y`),0);}));
+  EXP_GROUPS.forEach((g,gi)=>g.rows.forEach((r0,ri)=>{rows.exp[`${gi}_${ri}`]=V(`exp_${gi}_${ri}_m`)*12+V(`exp_${gi}_${ri}_y`);}));
+  ASSET_GROUPS.forEach((g,gi)=>g.rows.forEach((r0,ri)=>{rows.as[`${gi}_${ri}`]=V(`as_${gi}_${ri}`);}));
+  LIAB_ROWS.forEach((r0,ri)=>{rows.li[`${ri}`]=V(`li_${ri}`);});return rows;}
+function a1LiveRender(){ // ①-5：A1 財務健康指標（現況 → 本方案），調整建議金額時對照用
+  const box=$("a1Live");if(!box)return;if(svcPlanCode()!=="A1"){box.innerHTML="";return;}
+  const age=V("g_self_cur")||num("startAge")||40,isPlan=(typeof bsIsPlan==="function")&&bsIsPlan();
+  const cur=isPlan&&wsSlots&&wsSlots[0]&&wsSlots[0].snap&&wsSlots[0].snap.rpt&&wsSlots[0].snap.rpt.rows?wsSlots[0].snap.rpt.rows:(isPlan?null:a1LiveRows());
+  const live=a1LiveRows();const prev=a1PrevNet();const Ic=cur?a1Ind(cur,age,prev):null,Ip=isPlan?a1Ind(live,age,prev):null;
+  const dot=x=>`<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${A1_ST[x.st].c};margin-right:5px"></span>${esc(x.disp)}`;
+  let h=`<div class="axTitle" style="margin:14px 0 6px">A1 財務健康指標${isPlan?"（現況 → 本方案）":"（現況）"}<span class="mini" style="margin:0 0 0 8px;font-weight:400">${isPlan?"在 ①-1～①-3 加顧問建議時，右欄即時更新；報告書「參考指標」取自此對照":"切到方案工作區加顧問建議後，會多出「本方案」欄"}</span></div>
+    <div style="overflow-x:auto"><table class="dt" style="max-width:860px"><tr><th style="text-align:left">指標</th>${Ic?`<th>現況</th>`:""}${Ip?`<th>本方案</th>`:""}<th style="text-align:left">理想值</th></tr>`;
+  A1_STEPS.concat(A1_FLOW).forEach(([t,ks])=>{h+=`<tr><td colspan="${2+(Ic?1:0)+(Ip?1:0)}" style="background:var(--paper2,#f6f2e8);font-weight:700;font-family:system-ui;font-size:11.5px">${esc(t)}</td></tr>`;
+    ks.forEach(k=>{const b=(Ic||Ip)[k];const chg=Ic&&Ip&&Ic[k].disp!==Ip[k].disp;h+=`<tr${chg?' style="background:#fff5d6"':""}><td class="rn" style="padding-left:18px">${esc(b.lb)}</td>${Ic?`<td class="calc" style="text-align:left">${dot(Ic[k])}</td>`:""}${Ip?`<td class="calc" style="text-align:left${chg?";font-weight:700":""}">${dot(Ip[k])}</td>`:""}<td class="mini" style="margin:0">${esc(b.ideal)}</td></tr>`;});});
+  if(isPlan&&!cur)h+=`<tr><td colspan="4" class="mini">「現況」工作區尚無快照——切回現況一次即可建立。</td></tr>`;
+  box.innerHTML=h+`</table></div>`;}
+function a1StOf(k,v,consTh){ // 追蹤工具實際值的燈號（與 a1Ind 同門檻）
+  if(v==null||!isFinite(v))return "na";const b=(ok,mid)=>ok?"ok":mid?"mid":"bad";
+  switch(k){case"loan":return b(v<0.3,v<0.4);case"debt":return b(v<0.5,v<0.7);case"save":return b(v>=0.2,v>=0.1);case"mgmt":return b(v>=0.2,v>=0.1);
+    case"earn":return b(v>=0.3,v>=0.2);case"free":return b(v>=0.8,v>=0.3);case"spend":return b(v<=0.7,v<=0.8);case"life":return b(v<=0.2,v<=0.3);case"growth":return b(v>=0.05,v>=0);default:return "na";}}
 function rptAutoSnap(){ // 產生報告書時自動存一筆帶日期的歷史快照（同日同工作區只保留一筆）＋流程蓋章
   try{if(typeof jnyStamp==="function"){const pn=(typeof wsSlots!=="undefined"&&wsSlots[wsActive])?wsSlots[wsActive].name:"現況";
     jnyStamp("planned");jnyStamp("reported",null,{force:true,plan:{name:pn,reportVersion:`報告書 ${new Date().toISOString().slice(0,10)}・${pn}`}});}}catch(e){}
@@ -6282,6 +6666,8 @@ function applyValues(vals){
     if(e.type==="checkbox"||e.type==="radio")e.checked=!!v;else e.value=v;
   });
   if(keepArv&&!vals.trkArvJson&&$("trkArvJson"))$("trkArvJson").value=keepArv;
+  if(vals.svc_tax===undefined&&$("svc_tax"))$("svc_tax").checked=true; // 舊工作檔沒有服務方案欄 → 視為含稅務及傳承（與舊版輸出一致）
+  if(typeof svcApply==="function")try{svcApply();}catch(e){}
   // 滑桿（range）在 min/max 還沒更新前設值會被夾限（例：退休月支出 20 萬被舊上限夾成 10 萬）→ 先依還原後的區間欄位重設 min/max，再把滑桿值補寫一次
   if(typeof syncRanges==="function"){try{syncRanges();}catch(e){}
     Object.entries(vals).forEach(([id,v])=>{const e=$(id);if(e&&e.type==="range"){e.value=v;}});}
@@ -6354,7 +6740,7 @@ function makeSnapshot(light){ // light＝自動存檔用：不跑蒙地卡羅／
     LIAB_ROWS.forEach((r0,ri)=>{rows.li[`${ri}`]=V(`li_${ri}`);});
     rpt.rows=rows;
     if(typeof renderKPI==="function"&&$("kpiRow")){renderKPI("all");rpt.kpi=$("kpiRow").innerHTML;if(dvWho()!=="all")renderKPI();}
-    if(typeof rxSummaryItems==="function"&&typeof bsIsPlan==="function"&&bsIsPlan())rpt.adv=rxSummaryItems().map(x=>({grp:x.grp,src:x.src,what:x.what,note:x.note||"",eff:x.eff||"",tk:(x.st&&x.st._tk)||"",st:x.st?{accept:x.st.accept||"",when:x.st.when||"",status:x.st.status||"",actual:x.st.actual,doneDate:x.st.doneDate||"",note2:x.st.note2||"",t:x.st.t,amt:x.st.amt,yrs:x.st.yrs,premYrs:x.st.premYrs,amtW:x.st.amtW,y1:x.st.y1,y2:x.st.y2}:null}));
+    if(typeof rxSummaryItems==="function"&&typeof bsIsPlan==="function"&&bsIsPlan())rpt.adv=rxSummaryItems().map(x=>({grp:x.grp,src:x.src,what:x.what,note:x.note||"",eff:x.eff||"",key:x.key||"",tk:(x.st&&x.st._tk)||"",st:x.st?{accept:x.st.accept||"",when:x.st.when||"",status:x.st.status||"",actual:x.st.actual,doneDate:x.st.doneDate||"",note2:x.st.note2||"",t:x.st.t,amt:x.st.amt,yrs:x.st.yrs,premYrs:x.st.premYrs,amtW:x.st.amtW,y1:x.st.y1,y2:x.st.y2}:null}));
     else rpt.adv=[];
   }catch(e){}
   try{if(typeof estProject==="function"&&$("est_year")){const rows=estProject(),k=Math.min(50,Math.max(0,num("est_year"))),v=rows[k];if(v){estTax=v.tax;estCover=v.cover;estYear=v.year;estGross=v.gross;estDebt=v.debt;estSaT=v.sa;estLegacy=v.legacy;}}}catch(e){}
@@ -6438,6 +6824,132 @@ function arvActual(src){ // 實際值（元）：追蹤工具 annualReview 或�
   recalcData();const d=D;const exp={};[0,1,2,3,5,6].forEach(gi=>exp[gi]=EXP_GROUPS[gi].rows.reduce((s2,_,ri)=>s2+V(`exp_${gi}_${ri}_m`)*12+V(`exp_${gi}_${ri}_y`),0));exp.total=[0,1,2,3,5,6].reduce((s2,gi)=>s2+exp[gi],0);
   const rxLive=(typeof invPlans!=="undefined"?invPlans:[]).filter(q=>(q.y1||1)<=1&&(q.y2||1)>=1&&!(typeof bsSkip==="function"&&bsSkip(q))).reduce((a2,q)=>a2+(q.amtW||0),0)*10000;
   return {inc:{work:d.incWork,fin:d.incFin,total:d.incTotal},exp,invest:d.finS+rxLive,asEarn:d.cashlike+d.inv,asTotal:d.asTotal,liab:d.liTotal,net:d.net,adv:arvLiveAdv(),est:false,label:"目前工作台值",asOf:new Date().toISOString().slice(0,10)};}
+/* ---------- v270：以週年實際值建立新年度現況 ---------- */
+const NY_TH={full:9,part:3,staleMon:6,astStaleMon:3}; // 情況①≥9 個月；情況② 3～8；資料停在半年前→情況③；資產餘額超過 3 個月→待確認
+function nyToday(){return window._nyToday?new Date(window._nyToday):new Date();}
+function nyMonDiff(ym,d){const m=String(ym||"").match(/^(\d{4})-(\d{1,2})/);if(!m)return Infinity;return (d.getFullYear()-(+m[1]))*12+(d.getMonth()+1-(+m[2]));}
+function nyArv(){try{return JSON.parse(($("trkArvJson")||{}).value||"null");}catch(e){return null;}}
+function nyCase(A){if(!A)return {c:3,f:0,why:"還沒有讀入追蹤工具的週年資料（或客戶這段期間沒有使用追蹤工具）"};
+  const w=A.window||{},f=+w.filled||0,mon=nyMonDiff(w.to||A.reviewDate,nyToday()),span=`${w.from||"?"}～${w.to||"?"}`;
+  if(mon>NY_TH.staleMon)return {c:3,f,mon,span,why:`追蹤資料停在 ${w.to||A.reviewDate}（距今 ${mon} 個月）`};
+  if(f>=NY_TH.full)return {c:1,f,mon,span,why:`${span} 有 ${f} 個月記帳`};
+  if(f>=NY_TH.part)return {c:2,f,mon,span,why:`${span} 只有 ${f} 個月記帳`};
+  return {c:3,f,mon,span,why:`${span} 只有 ${f} 個月記帳（太少）`};}
+function nyActualMap(A){const E={},I={},AS={},LI={};if(!A)return {E,I,AS,LI};
+  const SUB={"食":0,"衣":1,"住":2,"行":3,"醫":4,"雜":5},L2E={li_0:0,li_1:0,li_2:2,li_3:2,li_4:2,li_5:2,li_6:2,li_7:3};
+  const addE=(k,v,est)=>{const o=E[k]=E[k]||{v:0,est:false,n:0};o.v+=v;o.n++;if(est)o.est=true;};
+  ((A.expense||{}).items||[]).forEach(x=>{const cat=x.cat==="其他"&&x.catOther?x.catOther:(x.cat||"");let gi,ri;
+    if(cat==="生活費用"&&SUB[x.subCat]!==undefined){gi=0;ri=SUB[x.subCat];}
+    else if(cat==="貸款"&&L2E[x.liabKey]!==undefined){gi=1;ri=L2E[x.liabKey];}
+    else{const r=trkRoute(cat,x.name||"",x.klass,x.who);gi=r[0];ri=r[1];}
+    addE(`${gi}_${ri}`,+x.annualized||0,!!x.est);});
+  ((A.invest||{}).items||[]).forEach(x=>{const r=trkRoute("理財支出",x.name||"",x.klass,x.who);addE(`${r[0]}_${r[1]}`,+x.annualized||0,!!x.est);});
+  ((A.income||{}).byMember||[]).forEach(m=>{const w=/配偶/.test(m.label||"")?"sp":"self",biz=/開業|執行業務/.test(String(m.kind||"")),est=!!m.est;
+    const add=(rk,v)=>{if(!(v>0))return;const k=w+"|"+rk;const o=I[k]=I[k]||{v:0,est:false};o.v+=v;if(est)o.est=true;};
+    if(biz)add("1_0",(+m.salary||0)+(+m.bonus||0));else{add("sal",+m.salary||0);add("0_1",+m.bonus||0);}
+    const sis=m.sideItems||[];if(sis.length)sis.forEach(si=>add(trkSideRoute(si.name||"")[0],+si.amount||0));else add("0_3",+m.side||0);});
+  ((A.assets||{}).items||[]).forEach(x=>{let k=String(x.bsKey||"").replace(/^as_/,"");if(!/^\d_\d$/.test(k)){const g=TRK_ASSET_MAP[x.tool]||[1,7];k=`${g[0]}_${g[1]}`;}
+    const o=AS[k]=AS[k]||{v:0,items:[]};o.v+=+x.value||0;o.items.push(x);});
+  ((A.liabilities||{}).items||[]).forEach(x=>{let ri=TRK_LIAB_KEY.indexOf(x.liabKey);if(ri<0)ri=3;const o=LI[ri]=LI[ri]||{v:0,items:[]};o.v+=+x.balance||0;o.items.push(x);});
+  return {E,I,AS,LI};}
+function nyIncLast(w,k){return rawV(`inc_${w}_${k}_m`)*12+rawV(`inc_${w}_${k}_y`);}
+function nyExpLast(k){return rawV(`exp_${k}_m`)*12+rawV(`exp_${k}_y`);}
+function nyRows(){const A=nyArv(),C=nyCase(A),M=nyActualMap(A),rows=[];
+  const asOf=A&&A.assets&&A.assets.asOf?String(A.assets.asOf):(A&&A.reviewDate)||"",astAge=asOf?nyMonDiff(asOf.slice(0,7),nyToday()):Infinity;
+  const own=(typeof itmExpOwned==="function")?itmExpOwned():{};
+  const dec=(r,a,stock)=>{const z=v=>Math.abs(v||0)<0.5;if(z(r.last)&&(!a||z(a.v)))return null;
+    if(C.c===3){r.adopt=r.last;r.src="沿用上次";r.pend=true;r.note=stock?"請客戶提供最新對帳單／餘額":"請與客戶確認";return r;}
+    if(!a){r.adopt=r.last;r.src="沿用上次";r.pend=true;r.note="追蹤工具沒有這一列";return r;}
+    if(stock){r.act=a.v;r.adopt=a.v;r.src=`追蹤餘額（${asOf||"日期不明"}）`;r.pend=astAge>NY_TH.astStaleMon;r.note=r.pend?"餘額日期較舊，請更新":"";return r;}
+    r.act=a.v;if(a.est){r.adopt=r.last;r.src="沿用上次";r.pend=true;r.note="記帳不足 3 個月（追蹤工具以預算估計）";return r;}
+    r.adopt=a.v;r.src="追蹤實際";r.pend=false;r.note="";return r;};
+  const push=r=>{if(r)rows.push(r);};
+  const hasSp=!$("bio_hasSp")||$("bio_hasSp").checked;
+  ["self","sp"].forEach(w=>{if(w==="sp"&&!hasSp)return;const who=w==="self"?"本人":"配偶";
+    push(dec({sec:"收入",key:`inc_${w}_sal`,label:`${who}・薪資（含加班）`,last:nyIncLast(w,"0_0")+nyIncLast(w,"0_2")},M.I[w+"|sal"]));
+    INC_GROUPS.forEach((g,gi)=>g.rows.forEach((rn,ri)=>{const k=`${gi}_${ri}`;if(k==="0_0"||k==="0_2")return;
+      push(dec({sec:"收入",key:`inc_${w}_${k}`,label:`${who}・${rn.split("（")[0]}`,last:nyIncLast(w,k)},M.I[w+"|"+k]));}));});
+  EXP_GROUPS.forEach((g,gi)=>g.rows.forEach((rn,ri)=>{const k=`${gi}_${ri}`;if(own[k])return;
+    push(dec({sec:"支出",key:`exp_${k}`,label:`${g.g.replace(/（.*?）/g,"")}｜${rn.replace(/（.*?）/g,"")}`,last:nyExpLast(k)},M.E[k]));}));
+  ASSET_GROUPS.forEach((g,gi)=>g.rows.forEach((rn,ri)=>{const k=`${gi}_${ri}`;if(k==="1_4")return;
+    push(dec({sec:"資產",key:`as_${k}`,label:rn.split("（")[0],last:rawV(`as_${k}`)},M.AS[k],true));}));
+  LIAB_ROWS.forEach((rn,ri)=>push(dec({sec:"負債",key:`li_${ri}`,label:rn.split("（")[0],last:rawV(`li_${ri}`)},M.LI[ri],true)));
+  return {A,C,M,rows,asOf,astAge};}
+function nyBuild(){const out=$("nyOut"),msg=$("nyMsg");if(!out)return null;
+  const R=nyRows(),C=R.C,E=esc,N=v=>NT(Math.round(v||0));
+  const col=C.c===1?"var(--gA)":C.c===2?"var(--gold)":"var(--gD)",ttl=C.c===1?"情況①：持續記帳":C.c===2?"情況②：斷續記帳":"情況③：沒有可用的實際值";
+  const tip=C.c===1?"收支採實際值，資產負債採追蹤工具最新餘額。":C.c===2?"有記帳的列採實際值；記帳不足的列沿用上次並標待確認。":"以上次現況為底稿，整份標待確認——請逐列與客戶確認（等於重新問診，但不用從零開始）。";
+  const nP=R.rows.filter(r=>r.pend).length;
+  let h=`<div style="margin:8px 0;font-family:system-ui;font-size:12.5px"><span class="nyCase" style="background:${col}">${ttl}</span>${E(C.why)}。${tip}${R.asOf?`<br><span class="cap">資產負債餘額截至 ${E(R.asOf)}</span>`:""}</div>
+  <div style="overflow-x:auto"><table class="t"><tr><th>項目（年化・元）</th><th style="text-align:right">上次現況</th><th style="text-align:right">追蹤實際</th><th style="text-align:right">建議採用（可改）</th><th>來源</th><th>待確認</th></tr>`;
+  let sec="";R.rows.forEach((r,i)=>{if(r.sec!==sec){sec=r.sec;h+=`<tr><td colspan="6" style="background:var(--paper2,#f6f2e8);font-weight:700;font-family:system-ui;padding:6px 8px">${sec}${sec==="資產"||sec==="負債"?"（餘額）":""}</td></tr>`;}
+    h+=`<tr class="${r.pend?"nyP":""}" data-nyi="${i}"><td>${E(r.label)}</td><td class="n">${N(r.last)}</td><td class="n">${r.act!=null?N(r.act):'<span class="cap">—</span>'}</td><td class="n"><input class="nyIn" type="number" data-nyk="${i}" value="${Math.round(r.adopt||0)}"></td><td>${E(r.src)}${r.note?`<div class="cap">${E(r.note)}</div>`:""}</td><td style="text-align:center"><input type="checkbox" data-nyp="${i}"${r.pend?" checked":""}></td></tr>`;});
+  h+=`</table></div><p class="cap">保單現價（①-3）與由 ①-4 保單帶入的保費列不在此表，維持 ①-4 保單登錄。套用前會自動在 ⑧-2 存一筆「年度結算」快照（保留套用前的整份資料）。</p>
+  <div class="scRow no-print"><button class="btn" type="button" id="btnNyApply">✓ 套用為新年度現況（${R.rows.length} 列，待確認 <span id="nyPN">${nP}</span> 列）</button></div>`;
+  out.innerHTML=h;window._nyR=R;
+  out.querySelectorAll("[data-nyp]").forEach(cb=>cb.onchange=()=>{const tr=cb.closest("tr");tr.classList.toggle("nyP",cb.checked);const n=out.querySelectorAll("[data-nyp]:checked").length;if($("nyPN"))$("nyPN").textContent=n;});
+  $("btnNyApply").onclick=nyApply;
+  if(msg)msg.textContent=`${ttl}：${R.rows.length} 列，待確認 ${nP} 列`;
+  return R;}
+function nyScale(list,fld,f){list.forEach(x=>{const v=parseFloat(x[fld])||0;x[fld]=Math.round(v*f);if(fld==="amt"&&x.pay==="分攤"){if(x.paySelf!==undefined&&x.paySelf!=="")x.paySelf=Math.round((parseFloat(x.paySelf)||0)*f);if(x.paySp!==undefined&&x.paySp!=="")x.paySp=Math.round((parseFloat(x.paySp)||0)*f);}});}
+function nyCells(pre,T,monFirst){const m=$(`${pre}_m`),y=$(`${pre}_y`);if(!m&&!y)return;const mv=rawV(`${pre}_m`),yv=rawV(`${pre}_y`),L=mv*12+yv;
+  if(L>0.5){const f=T/L;if(m)m.value=mv?Math.round(mv*f):"";if(y)y.value=yv?Math.round(yv*f):"";}
+  else if(T>0.5){if(monFirst&&m){m.value=Math.round(T/12);if(y)y.value="";}else if(y){y.value=Math.round(T);if(m)m.value="";}else if(m)m.value=Math.round(T/12);}
+  else{if(m)m.value="";if(y)y.value="";}}
+function nyWriteInc(w,k,T){const L=nyIncLast(w,k),its=(typeof itmIncs!=="undefined"?itmIncs:[]).filter(x=>(x.who||"self")===w&&x.ic===k&&(parseFloat(x.amt)||0)>0);
+  if(its.length&&L>0.5){nyScale(its,"amt",T/L);return;}nyCells(`inc_${w}_${k}`,T,k==="0_0");}
+function nyWriteExp(k,T){const L=nyExpLast(k),its=(typeof itmExps!=="undefined"?itmExps:[]).filter(x=>(x.ex||"0_0")===k&&(parseFloat(x.amt)||0)>0);
+  if(its.length&&L>0.5){nyScale(its,"amt",T/L);return;}const gi=+k.split("_")[0];nyCells(`exp_${k}`,T,gi<=2);}
+function nyWriteAs(k,T,trk){const its=(typeof itmAssets!=="undefined"?itmAssets:[]).filter(x=>(x.bs||"0_0")===k&&(parseFloat(x.value)||0)>0),L=rawV(`as_${k}`);
+  if(its.length){const tI=(trk&&trk.items)||[];const mt=its.map(x=>tI.find(t=>(t.name||"")===(x.name||"")));
+    if(tI.length&&mt.every(Boolean)&&Math.abs(tI.reduce((a,t)=>a+(+t.value||0),0)-T)<1){its.forEach((x,i)=>{x.value=Math.round(+mt[i].value||0);});return;}
+    const S=its.reduce((a,x)=>a+(parseFloat(x.value)||0),0);if(S>0.5){nyScale(its,"value",T/S);return;}}
+  const e=$(`as_${k}`);if(e)e.value=T>0.5?Math.round(T):"";}
+function nyWriteLi(ri,T,trk){const its=(typeof itmLiabs!=="undefined"?itmLiabs:[]).filter(x=>(x.key===undefined?3:+x.key)===ri&&(parseFloat(x.balance)||0)>0);
+  if(its.length){const tI=(trk&&trk.items)||[];const mt=its.map(x=>tI.find(t=>(t.name||"")===(x.name||"")));
+    if(tI.length&&mt.every(Boolean)&&Math.abs(tI.reduce((a,t)=>a+(+t.balance||0),0)-T)<1){its.forEach((x,i)=>{x.balance=Math.round(+mt[i].balance||0);});return;}
+    const S=its.reduce((a,x)=>a+(parseFloat(x.balance)||0),0);if(S>0.5){nyScale(its,"balance",T/S);return;}}
+  const e=$(`li_${ri}`);if(e)e.value=T>0.5?Math.round(T):"";}
+function nyApply(){const R=window._nyR,msg=$("nyMsg");if(!R)return;
+  if(typeof wsActive!=="undefined"&&wsActive!==0){if(msg)msg.textContent="請先切回「現況」工作區再套用（新年度現況寫在現況）";return;}
+  if(wsSlots&&wsSlots[0]&&wsSlots[0].locked){if(msg)msg.textContent="現況目前是鎖定狀態——請先在上方工作區列解鎖現況再套用";return;}
+  const out=$("nyOut");const pend=[];
+  R.rows.forEach((r,i)=>{const inp=out.querySelector(`[data-nyk="${i}"]`),cb=out.querySelector(`[data-nyp="${i}"]`);r.adopt=inp?(parseFloat(inp.value)||0):r.adopt;r.pend=cb?cb.checked:r.pend;});
+  // 1) 年度結算快照
+  const d=nyToday(),ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  try{if(typeof recalcData==="function")recalcData();scenarios.push(Object.assign(makeSnapshot(true),{name:`年度結算 ${ds}（套用新年度現況前）`}));if(typeof renderScenList==="function")renderScenList();}catch(e){console.warn(e);}
+  // 2) 寫入
+  const lastOf={};R.rows.forEach(r=>{lastOf[r.key]=r.last;});
+  R.rows.forEach(r=>{const T=Math.max(0,r.adopt||0);let m;
+    if((m=r.key.match(/^inc_(self|sp)_sal$/))){const w=m[1],a=nyIncLast(w,"0_0"),b=nyIncLast(w,"0_2");const T0=(a+b)>0.5?T*a/(a+b):T;nyWriteInc(w,"0_0",T0);nyWriteInc(w,"0_2",T-T0);
+      if(r.pend)pend.push(`inc_${w}_0_0`,`inc_${w}_0_2`);return;}
+    if((m=r.key.match(/^inc_(self|sp)_(\d_\d)$/))){nyWriteInc(m[1],m[2],T);}
+    else if((m=r.key.match(/^exp_(\d_\d)$/))){nyWriteExp(m[1],T);}
+    else if((m=r.key.match(/^as_(\d_\d)$/))){nyWriteAs(m[1],T,R.M.AS[m[1]]);}
+    else if((m=r.key.match(/^li_(\d)$/))){nyWriteLi(+m[1],T,R.M.LI[+m[1]]);}
+    if(r.pend)pend.push(r.key);});
+  if(typeof itmSave==="function"){itmSave();buildItems();itmSync(true);}
+  try{recalcData();}catch(e){}try{if(typeof doSync==="function")doSync();}catch(e){}
+  $("nyPendJson").value=JSON.stringify([...new Set(pend)]);
+  $("nyMetaJson").value=JSON.stringify({date:ds,case:R.C.c,why:R.C.why,span:R.C.span||"",asOf:R.asOf||""});
+  nyMark();
+  const nA=R.rows.filter(r=>!r.pend).length,plans=(wsSlots||[]).slice(1).map(x=>x.name);
+  if(msg)msg.textContent=`已建立 ${ds} 新年度現況 ✓ ${nA} 列採用追蹤資料、${R.rows.filter(r=>r.pend).length} 列待確認（①-1～①-3 黃底）${plans.length?`；舊方案（${plans.join("、")}）仍是上一年度的，建議刪除或在方案頁按「以現況更新本方案」`:""}；記得到「📁 客戶管理」存成新版本`;
+  if($("status"))$("status").textContent="新年度現況已套用——待確認列以黃底標示";}
+function nyPend(){try{return JSON.parse(($("nyPendJson")||{}).value||"[]")||[];}catch(e){return [];}}
+function nyCellsOf(k){if(/^(inc|exp)_/.test(k))return [`${k}_m`,`${k}_y`];return [k];}
+function nyMark(){const P=nyPend(),on=(typeof wsActive==="undefined"||wsActive===0)&&P.length>0;
+  document.querySelectorAll(".nyPendCell").forEach(e=>e.classList.remove("nyPendCell"));
+  if(on)P.forEach(k=>nyCellsOf(k).forEach(id=>{const e=$(id);if(e)e.classList.add("nyPendCell");}));
+  const cnt={inc:P.filter(k=>/^inc_/.test(k)).length,exp:P.filter(k=>/^exp_/.test(k)).length,bs:P.filter(k=>/^(as|li)_/.test(k)).length};
+  document.querySelectorAll(".nyNote").forEach(el=>{const n=cnt[el.dataset.ny]||0;const show=on&&n>0;el.classList.toggle("on",show);
+    el.innerHTML=show?`🟡 <b>新年度現況</b>：這一區還有 <b>${n}</b> 列待確認（黃底）——與客戶確認後直接修改該欄即可解除；逐筆明細的列改完後按右邊按鈕。<button class="btn ghost sm" type="button" data-nyok="${el.dataset.ny}">✓ 這一區已確認</button>`:"";});}
+document.addEventListener("input",e=>{const t=e.target;if(!t||!t.classList||!t.classList.contains("nyPendCell"))return;const P=nyPend(),k=t.id.replace(/_[my]$/,"");const Q=P.filter(x=>x!==k);if(Q.length!==P.length){$("nyPendJson").value=JSON.stringify(Q);nyMark();}});
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-nyok]");if(!b)return;const g=b.dataset.nyok,re=g==="inc"?/^inc_/:g==="exp"?/^exp_/:/^(as|li)_/;$("nyPendJson").value=JSON.stringify(nyPend().filter(k=>!re.test(k)));nyMark();});
+function nyLoadFile(f){const msg=$("nyMsg");const rd=new FileReader();rd.onload=()=>{let j=null;try{j=JSON.parse(rd.result);}catch(e){if(msg)msg.textContent="檔案不是 JSON";return;}
+  if(!j||!j.annualReview){if(msg)msg.textContent="這份檔案沒有週年實際值（annualReview）——請客戶用追蹤工具 v1.15 以上重新匯出；沒有的話直接按「產生新年度對照表」，會以情況③處理";return;}
+  $("trkArvJson").value=JSON.stringify(Object.assign({},j.annualReview,{adviceStatus:j.adviceStatus||null,exportedAt:(j.exportedAt||"").slice(0,10)}));
+  if(msg)msg.textContent=`已讀入週年實際值（${(j.annualReview.window||{}).from||"?"}～${(j.annualReview.window||{}).to||"?"}）——①～⑦ 未變動`;nyBuild();};rd.readAsText(f,"utf-8");}
 function arvBuild(){
   const out=$("arvOut"),msg=$("arvMsg");if(!out)return;
   const src=(($("arvSrcSeg")||{}).querySelector&&$("arvSrcSeg").querySelector("button.on")||{}).dataset?.src||"trk";
@@ -6471,6 +6983,10 @@ function arvBuild(){
   if(typeof jnyStamp==="function")try{jnyStamp("lastReview",null,{force:true});}catch(e){}
 }
 $("btnArv")&&$("btnArv").addEventListener("click",arvBuild);
+$("btnNyBuild")&&$("btnNyBuild").addEventListener("click",nyBuild);
+$("btnNyLoad")&&$("btnNyLoad").addEventListener("click",()=>$("nyFile").click());
+$("nyFile")&&$("nyFile").addEventListener("change",e=>{const f=e.target.files[0];if(f)nyLoadFile(f);e.target.value="";});
+$("btnNyJump")&&$("btnNyJump").addEventListener("click",()=>{mtShowView("view_scen");setTimeout(()=>{const x=$("nySec");if(x)x.scrollIntoView({behavior:"smooth",block:"start"});},120);});
 $("arvSrcSeg")&&$("arvSrcSeg").addEventListener("click",e=>{const b=e.target.closest("button[data-src]");if(!b)return;$("arvSrcSeg").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));if($("arvOut").innerHTML)arvBuild();});
 function applySnapshot(s){ // 還原一個方案快照（結構資料先於欄位值）
   if(s.goals){goals=JSON.parse(JSON.stringify(s.goals));buildGoals();}
@@ -6843,7 +7359,7 @@ $("btnCompare").addEventListener("click",()=>{
       <div class="stat"><div class="l">名目儲蓄率</div><div class="v">${s.summary.nomSave!==null&&isFinite(s.summary.nomSave)?(s.summary.nomSave*100).toFixed(1)+"%":"—"}</div></div>
       <div class="stat"><div class="l">壽險缺口(本人)</div><div class="v" style="font-size:13px">${NT(s.summary.lifeGapSelf)}</div></div>
     </div></div>`;
-  const CMP_SKIP=["scenName","status","syncStamp","incMixJson","expMixJson","trkArvJson","journeyJson","bp_kbOrd","bp_invOrd","bp_rdLv","bpXLv","bpWho","rpt_bdLv","hbCurId","sim_hid","rpt_closingH","txSrc","asPick","asOn","__wsCur"];
+  const CMP_SKIP=["scenName","status","syncStamp","incMixJson","expMixJson","trkArvJson","nyPendJson","nyMetaJson","journeyJson","bp_kbOrd","bp_invOrd","bp_rdLv","bpXLv","bpWho","rpt_bdLv","hbCurId","sim_hid","rpt_closingH","txSrc","asPick","asOn","__wsCur"];
   const CMP_JSON={bsAdjJson:["顧問建議（①-1／①-2／①-3 各列）",v=>Object.values(v||{}).reduce((a,x)=>a+(x||[]).length,0)+" 筆"],retAdjJson:["退休目標可接受調整",v=>(v||[]).length+" 項"],
     itmExpJson:["逐筆支出（①-2b）",v=>(v||[]).length+" 筆"],itmIncJson:["逐筆收入（①-1b）",v=>(v||[]).length+" 筆"],itmAssetJson:["逐筆資產（①-3b）",v=>(v||[]).length+" 筆"],itmLiabJson:["逐筆負債（①-3b）",v=>(v||[]).length+" 筆"],
     itmOvrJson:["彙總層手動覆寫",v=>(v||[]).length+" 列"],hbHousesJson:["購屋精算清單",v=>(v||[]).length+" 間"],liMetaJson:["負債明細",v=>Object.keys(v||{}).length+" 筆"],siJson:["社保投保資料",v=>(v||[]).length+" 筆"],
@@ -7599,6 +8115,18 @@ var bioKids=["106","109"]; // 子女出生年（民國或西元皆可，內部�
 function bioYr(v){v=parseFloat(v)||0;if(!v)return 0;return v<=200?v+1911:v;}   // 民國 → 西元
 function bioAge(v){const y=bioYr(v);return y?Math.max(0,new Date().getFullYear()-y):null;}
 function bioLaborAge(v){const r=bioYr(v)-1911;if(r<=0)return 65;return r<=46?60:(r>=51?65:60+(r-46));} // 勞保法定請領年齡（出生年次）
+/* ---------- 服務方案（①-0a）：選配「稅務及傳承規劃」決定 ⑦ 與報告書傳承內容是否出現 ---------- */
+const SVC_PLANS=[["","（未指定）"],["A1","A1 財報系統"],["A2","A2 保險系統診斷"],["B1","B1 全方位財務規劃系統－小資族群"],["B2","B2 全方位財務規劃系統"],["S","單點諮詢"]];
+function svcTaxOn(){const e=$("svc_tax");return !e||e.checked;}
+function svcPlanTxt(){const e=$("svc_plan");const p=SVC_PLANS.find(x=>x[0]===(e?e.value:""));const base=p&&p[0]?p[1]:"";
+  return base?base+(svcTaxOn()?"＋稅務及傳承規劃":""):(svcTaxOn()?"":"");}
+function svcApply(){const on=svcTaxOn();document.body.dataset.svcTax=on?"on":"off";
+  if($("svcTaxNote"))$("svcTaxNote").textContent=on?"⑦ 遺產稅推估與報告書「資產傳承」啟用":"未勾選：⑦ 遺產稅推估已隱藏，報告書不含資產傳承與遺產稅";
+  if(typeof a1LiveRender==="function")try{a1LiveRender();}catch(e){}
+  if($("rptA1Note"))$("rptA1Note").style.display=(typeof svcPlanCode==="function"&&svcPlanCode()==="A1")?"":"none";
+  const r7=$("rpt_s7b");if(r7){r7.disabled=!on;const lb=r7.closest("label");if(lb){lb.style.opacity=on?"":".45";lb.title=on?"":"未勾選「＋ 稅務及傳承規劃」（①-0a 服務方案）";}}
+  const v=$("view_est");if(!on&&v&&v.classList.contains("on")){const t=document.querySelector('.tab[data-view="view_fam"]');if(t)t.click();}}
+document.addEventListener("change",e=>{if(e.target&&(e.target.id==="svc_tax"||e.target.id==="svc_plan"))svcApply();});
 function buildBioKids(){
   const box=$("bioKidList");if(!box)return;
   const inpS='style="width:64px;font-family:var(--mono);font-size:12px;padding:3px 5px;border:1px solid var(--line);border-radius:5px;background:var(--paper);text-align:right"';
@@ -7621,6 +8149,10 @@ function buildBio(){
       <option value="emp">受僱醫師（醫院）</option><option value="clinic">開業醫（診所負責／聯合執業）</option>
       <option value="mix">受僱＋報准兼診</option><option value="other">非醫師／其他</option></select>
     ${lb("・備註")}<input type="text" id="bio_note" placeholder="轉介來源、特殊狀況…" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--paper);flex:1;min-width:160px"></div>
+  <div class="scRow" style="align-items:center">${lb("服務方案")}<select id="svc_plan" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:5px;border:1px solid var(--line);border-radius:6px;background:var(--paper)">
+      ${SVC_PLANS.map(([v,t])=>`<option value="${v}">${t}</option>`).join("")}</select>
+    <label class="chk" style="margin:0 0 0 10px"><input type="checkbox" id="svc_tax"><span><b>＋ 稅務及傳承規劃</b></span></label>
+    <span class="mini" id="svcTaxNote" style="margin:0 0 0 6px"></span></div>
   <div class="scRow">${lb("本人出生年")}${inp("bio_self_y","73",70,"如 76 或 1987")}<span class="mini" id="bioAgeSelf" style="margin:0"></span>
     ${lb("　性別")}${sexSel("bio_self_sex")}
     <span class="mini" id="bioLabor" style="margin:0"></span></div>
@@ -7637,7 +8169,7 @@ function buildBio(){
   [["bio_name","基本資料｜客戶名稱"],["bio_occ","基本資料｜職業身份"],["bio_note","基本資料｜備註"],
    ["bio_self_y","基本資料｜本人出生年"],["bio_self_sex","基本資料｜本人性別"],
    ["bio_hasSp","基本資料｜有配偶"],["bio_sp_y","基本資料｜配偶出生年"],["bio_sp_sex","基本資料｜配偶性別"],
-   ["bio_dep","基本資料｜其他受扶養人數"]].forEach(([id,t])=>regLb(id,t));
+   ["bio_dep","基本資料｜其他受扶養人數"],["svc_plan","基本資料｜服務方案"],["svc_tax","基本資料｜稅務及傳承規劃"]].forEach(([id,t])=>regLb(id,t));
   buildBioKids();
   box.addEventListener("input",e=>{
     const bk=e.target.dataset.bk;
@@ -7702,7 +8234,7 @@ function bioSync(){
   bioRefresh();
   $("bioMsg").textContent=`已同步 ✓ 本人 ${aS} 歲${hasSp&&aP!==null?`、配偶 ${aP} 歲`:""}${ks.length?`、子女 ${ks.length} 名（6 歲以下 ${kid6}）`:""}・勞保法定請領 ${bioLaborAge(V("bio_self_y"))} 歲${occ==="clinic"?"・已預設開業醫免補充保費":""}`;
 }
-buildBio();
+buildBio();svcApply();
 /* ---------- ④-4 合規收入反推（簡化版：①-0b 基準 ＋ 額外申報所得全額課稅；管道組合交給試算工具策略七） ---------- */
 // 在現況 ①-0b 基準上，探測「額外申報所得 X（全額課稅、含補充保費）」時的家庭稅後可支配與總稅負；不改動 ①-0b（算完還原）
 // 以全額課稅估是「下限」：任何有費用率的管道（自費、公司）要達到同樣稅後金流，申報毛額只會更高——管道怎麼組合，在試算工具策略七討論
@@ -7945,7 +8477,7 @@ function rcAutoFill(force){ // 生活支出 ← ①-2 年支出合計；目標�
   if(force||!(V("rc_live")>0)){$("rc_live").value=Math.round(num("expense"));out.push(`生活支出 ${Math.round(num("expense"))} 萬`);}
   const sp=(!rcIsCur()&&typeof svPlan!=="undefined"&&svPlan)?svPlan:null;
   if(force||!(V("rc_inv")>0)){const keep=rcKeepW();
-    const plan=(sp&&sp.length)?sp.filter(x=>!x.rcProbe).reduce((a,x)=>a+((x.m||0)*12),0):0; // 現有規劃的實投（④-2 處方＋④-3 求解）
+    const plan=(sp&&sp.length)?rcPlanTypW(sp):0; // 現有規劃的實投（④-2 處方＋④-3 求解）：v271 改用工作期典型年度（逐年合計的中位數），一次性的頭期款不當常年投入
     const ex0=rcNeedExtraW(0); // 現有規劃之上，藍圖到規劃終點不耗竭還差多少年投入（＝所有目標 100% 的補足額）
     // 申報收入稅後的閒置結餘（生活＋續扣＋既有規劃之外、躺在活存的錢）：先投出去，再看還缺多少「新現金」——曝光／提高收入只該補閒置投完後仍缺的部分
     // 閒置額取「申報口徑」與「藍圖口徑」的小者：申報稅後可支配−生活−續扣−既有規劃 vs 藍圖首年結餘（稅後收入−生活支出−續扣−既有規劃）——投出去的錢不能超過藍圖裡真的有的結餘
@@ -7981,16 +8513,28 @@ function rcWriteBack(res){ // ④-4 → ①-1 顧問建議：開業醫寫「曝�
   }
   bsPersist();if(typeof bsMountAll==="function")bsMountAll();bsRecalc();return true;
 }
-function rcTrimRetTax(dispFn,expose,amt,R0){ // 閉環用：退休專戶月投＝申報口徑允許的上限（申報稅後可支配 − 生活 − 續扣 − 其他專戶投入），不超過求解值；回傳 {m0,m,cap}
+/* v271：專戶投入逐年計——svPlan 每個專戶的 arr[t]＝第 t 年（本人 a0+t 歲）的月投（萬/月），沒排投入的年度＝0。
+   以前用 m×12 當「每年都要投」，會把今年就要用掉、其實沒有月投的頭期款（prep=0、arr 空）也算成常年投入，退休專戶被砍到 0、收入需求高估。 */
+function rcPlanYrW(x,t){if(x&&x.arr&&typeof x.arr.length==="number")return t<x.arr.length?Math.max(0,+x.arr[t]||0)*12:0;return Math.max(0,(x&&x.m)||0)*12;} // 萬/年
+function rcPlanHorizon(){try{const P=readP();return Math.max(1,Math.round(P.retireAge-P.startAge));}catch(e){return 30;}}
+function rcPlanTypW(sp){ // 工作期典型年度的年投入合計（退休前各年合計的中位數；萬/年）
+  const L=(sp||[]).filter(x=>!x.rcProbe);if(!L.length)return 0;const n=rcPlanHorizon(),ys=[];
+  for(let t=0;t<n;t++)ys.push(L.reduce((a,x)=>a+rcPlanYrW(x,t),0));ys.sort((a,b)=>a-b);return ys[Math.floor((ys.length-1)/2)];}
+function rcPlanMaxGapW(sp,dispW,live,keep){ // 逐年：生活＋續扣＋當年各專戶投入 − 申報稅後可支配，取最大（萬/年；≤0 回 0）
+  const L=(sp||[]).filter(x=>!x.rcProbe),n=rcPlanHorizon();let g=live+keep-dispW;
+  for(let t=0;t<n;t++){const v=live+keep+L.reduce((a,x)=>a+rcPlanYrW(x,t),0)-dispW;if(v>g)g=v;}return Math.max(0,g);}
+function rcTrimRetTax(dispFn,expose,amt,R0){ // 閉環用：退休專戶「逐年」月投 ≤ 當年申報口徑允許的上限（申報稅後可支配 − 生活 − 續扣 − 當年其他專戶投入），不超過求解值
   if(!(typeof svPlan!=="undefined"&&svPlan))return null;
   const it=svPlan.find(x=>x.label==="退休"&&!x.custom&&!x.budget&&!x.rcProbe);if(!it||!it.arr)return null;
   if(it._arr0===undefined){it._arr0=Float64Array.from(it.arr);it._m0=it.m;}
   const arr0=it._arr0,m0=it._m0;
-  const live=num("expense"),keep=rcKeepW(),others=svPlan.filter(x=>x!==it&&!x.rcProbe).reduce((a2,x)=>a2+((x.m||0)*12),0);
-  const disp=dispFn();const capY=disp/1e4-live-keep-others;const cap=Math.max(0,capY/12); // 萬/月
-  const m=Math.min(m0,cap),f=m0>0?m/m0:0;
-  for(let t=0;t<it.arr.length;t++)it.arr[t]=arr0[t]*f;it.m=m;it.trimmed=f;
-  return {m0,m,cap};
+  const live=num("expense"),keep=rcKeepW(),others=svPlan.filter(x=>x!==it&&!x.rcProbe),dispW=dispFn()/1e4;
+  let t1=-1,t2=-1,mMin=Infinity,nT=0;const act=[];
+  for(let t=0;t<it.arr.length;t++){const capM=Math.max(0,(dispW-live-keep-others.reduce((a2,x)=>a2+rcPlanYrW(x,t),0))/12);const v=Math.min(arr0[t],capM);it.arr[t]=v;
+    if(arr0[t]>0.005){act.push(v);if(v<arr0[t]-0.005){nT++;if(t1<0)t1=t;t2=t;if(v<mMin)mMin=v;}}}
+  act.sort((a,b)=>a-b);const m=act.length?act[Math.floor((act.length-1)/2)]:0; // 代表值＝投入年度的中位數
+  it.m=nT?m:m0;it.trimmed=nT?(m0>0?m/m0:0):1; // 沒有任何年度被下修 → 維持求解值
+  return {m0,m:it.m,t1,t2,nT,mMin:isFinite(mMin)?mMin:m,cap:Math.max(0,(dispW-live-keep)/12)};
 }
 function rcTrimRet(bpOK){ // 閉環用：退休專戶是最後順位、資源全上時會把新現金全吸走 → 下修到「藍圖剛好過」的最小月投，避免申報口徑跟著投入額無限上修
   if(!(typeof svPlan!=="undefined"&&svPlan))return null;
@@ -8025,11 +8569,11 @@ async function rcLoop(){ // 閉環：以「寫回 ①-1 → ④-3 求解 → 退
         else rcWriteBack({X:amt-cur,tgtInc:amt,R:R0,canExpose:false});}
       await tick(25);runSolver();await tick(90);
       const dispFn=()=>expose?rcNetState(Math.max(0,amt-R0)).disp:rcNetState(0).disp;
-      const tr=rcTrimRetTax(dispFn,expose,amt,R0);if(tr&&tr.m<tr.m0-0.05)trimNote=`退休專戶月投 ${tr.m0.toFixed(1)} → ${tr.m.toFixed(1)} 萬（申報口徑允許的上限：申報稅後可支配 − 生活 − 續扣 − 其他專戶投入）`;else trimNote="";
+      const tr=rcTrimRetTax(dispFn,expose,amt,R0);if(tr&&tr.nT>0){const a0=num("startAge");trimNote=`退休專戶月投在 ${a0+tr.t1}${tr.t2>tr.t1?`～${a0+tr.t2}`:""} 歲下修（${tr.nT} 個年度，最低 ${tr.mMin.toFixed(1)} 萬／月；其餘年度維持求解值）——當年申報稅後可支配 − 生活 − 續扣 − 當年其他專戶投入，只夠投這麼多`;}else trimNote="";
       const b=runBlueprint();
       // 申報口徑：申報收入的稅後可支配要養得起 生活＋續扣＋這套計畫（下修後）的年投入
-      let taxGap=0;try{const live=num("expense"),keep=rcKeepW(),plan=(svPlan||[]).filter(x=>!x.rcProbe).reduce((a2,x)=>a2+((x.m||0)*12),0);
-        const disp=expose?rcNetState(Math.max(0,amt-R0)).disp:rcNetState(0).disp;taxGap=Math.max(0,(live+keep+plan)*1e4-disp);}catch(e){taxGap=0;}
+      let taxGap=0;try{const live=num("expense"),keep=rcKeepW();
+        const disp=expose?rcNetState(Math.max(0,amt-R0)).disp:rcNetState(0).disp;taxGap=rcPlanMaxGapW(svPlan,disp/1e4,live,keep)*1e4;}catch(e){taxGap=0;} // v271：逐年檢查（當年各專戶實際投入），取最缺的一年
       // 嚴格模式：預算型目標都要由當年結餘直接付（④-3 卡片不能有「結餘不足」）
       const strict=$("rcStrict")&&$("rcStrict").checked,sy=Math.max(1,num("rcStrictYrs")||10); // 只檢查前 N 年：薪資平盤＋支出通膨，遠期結餘本來就會被吃掉，那是另一個議題
       const budBad=strict?Object.entries(svLast||{}).filter(([k,x])=>x&&x.budget&&!x.ok&&(!x.bad||x.bad.some(t=>t<sy))).map(([k])=>k):[];
@@ -8411,7 +8955,54 @@ function bsRestore(){ // 快照還原：由 bsAdjJson 重建狀態與 delta（fl
   if(typeof bsAdj!=="object"||Array.isArray(bsAdj))bsAdj={};
   bsComputeDelta();bsMountAll();bsRenderPlan();bsRenderCascade();
 }
+/* ---------- v269：方案工作區——①-1～①-3 是「現況」資料（唯讀），方案差異只記在「顧問建議」 ---------- */
+const PL_ZONES="#itmIncSec,#itmExpSec,#itmSec,#tblIncome,#tblExpense,#tblAsset,#tblLiab,#tblExpenseDv,#tblAssetDv,#tblLiabDv";
+const PL_OK_F=["use","useAmt","sim","redeem"]; // ①-3b 資產「用途／預留／納入模擬／贖回」屬規劃決策，方案內可調
+const PL_AST_KEEP=["use","useAmt","sim","redeem","autoUse"];
+function plIsLocked(el){
+  if(!(typeof bsIsPlan==="function"&&bsIsPlan()))return false;
+  if(!el||!el.closest||!el.closest(PL_ZONES))return false;
+  if(el.closest(".bsAdjCol,.adjHost,summary,.plLockNote"))return false;
+  if(el.matches("[data-itmq],[data-itmall],[type=hidden]"))return false;
+  if(el.dataset&&PL_OK_F.indexOf(el.dataset.if)>=0)return false;
+  if(el.matches("input,select,textarea"))return true;
+  if(el.matches("button")&&(/^btnItmAdd/.test(el.id)||el.matches("[data-iadel],[data-iedel],[data-iidel],[data-ildel],[data-goast]")))return true;
+  return false;}
+let plMsgT=0;
+function plLockMsg(){const now=Date.now();if(now-plMsgT<1500)return;plMsgT=now;
+  const m=$("status");if(m)m.textContent="方案工作區：①-1～①-3 是現況資料（唯讀）——調整請用右側「顧問建議」；資料有誤請切回「現況」修改";}
+["mousedown","click"].forEach(ev=>document.addEventListener(ev,e=>{const t=e.target&&e.target.closest?e.target.closest("input,select,textarea,button"):null;
+  if(t&&plIsLocked(t)){e.preventDefault();e.stopPropagation();if(ev==="mousedown")plLockMsg();}},true));
+document.addEventListener("focusin",e=>{if(plIsLocked(e.target)){e.target.blur();plLockMsg();}},true);
+document.addEventListener("keydown",e=>{if(e.key!=="Tab"&&plIsLocked(document.activeElement)){e.preventDefault();plLockMsg();}},true);
+function plBaseIds(){const ids=new Set(["itmIncJson","itmExpJson","itmAssetJson","itmLiabJson","itmOvrJson","liMetaJson","inc_self_basis","inc_sp_basis"]);
+  document.querySelectorAll("#tblIncome [id],#tblExpense [id],#tblAsset [id],#tblLiab [id]").forEach(el=>{if(!el.matches("input,select"))return;if(el.closest(".bsAdjCol,.adjHost"))return;if(el.type==="file"||el.type==="button")return;ids.add(el.id);});
+  return [...ids].filter(id=>$(id));}
+function plAstNorm(v){let a=[];try{a=JSON.parse(v||"[]")||[];}catch(e){a=[];}return JSON.stringify(a.map(x=>{const o={...x};PL_AST_KEEP.concat(["_new"]).forEach(k=>delete o[k]);return o;}));}
+function plValNorm(id,v){if(id==="itmAssetJson")return plAstNorm(v);if(typeof v==="boolean")return v?"1":"";if(/Json$/.test(id)){try{return JSON.stringify(JSON.parse(v||(id==="liMetaJson"?"{}":"[]")));}catch(e){return String(v||"");}}
+  const n=parseFloat(v);return (v===""||v==null)?"":isFinite(n)&&String(v).trim()!==""&&/^[-\d.]/.test(String(v).trim())?String(+n):String(v);}
+function plCurVal(el){return (el.type==="checkbox"||el.type==="radio")?el.checked:el.value;}
+function plDiff(){if(!bsIsPlan()||!wsSlots[0]||!wsSlots[0].snap||!wsSlots[0].snap.values)return [];const V0=wsSlots[0].snap.values;
+  return plBaseIds().filter(id=>V0[id]!==undefined&&plValNorm(id,V0[id])!==plValNorm(id,plCurVal($(id))));}
+function plSyncFromCur(){const d=plDiff();if(!d.length)return 0;const V0=wsSlots[0].snap.values;
+  d.forEach(id=>{const el=$(id),v=V0[id];
+    if(id==="itmAssetJson"){let cur=[],src=[];try{cur=JSON.parse(el.value||"[]")||[];}catch(e){}try{src=JSON.parse(v||"[]")||[];}catch(e){}
+      const out=src.map(x=>{const o={...x};const m=cur.find(c=>(c.name||"")===(x.name||"")&&(c.bs||"")===(x.bs||"")&&(c.who||"")===(x.who||""));if(m)PL_AST_KEEP.forEach(k=>{if(m[k]!==undefined)o[k]=m[k];else delete o[k];});return o;});
+      el.value=JSON.stringify(out);return;}
+    if(el.type==="checkbox"||el.type==="radio")el.checked=!!v;else el.value=v;});
+  if(typeof itmLoad==="function"){itmLoad();buildItems();itmSync(true);}
+  try{recalcData();}catch(e){}
+  if(typeof bsOnWs==="function")bsOnWs();
+  return d.length;}
+function plLockRender(){const on=typeof bsIsPlan==="function"&&bsIsPlan();document.body.classList.toggle("plWs",on);if(typeof nyMark==="function")try{nyMark();}catch(e){}
+  const notes=document.querySelectorAll(".plLockNote");if(!on){notes.forEach(n=>n.innerHTML="");return;}
+  let n=0;try{n=plDiff().length;}catch(e){}
+  const nm=(wsSlots[wsActive]||{}).name||"方案";
+  notes.forEach(el=>{el.innerHTML=`🔒 <b>方案工作區「${esc(nm)}」</b>：這裡顯示的是<b>現況</b>資料（唯讀）。方案要調整什麼，請用表格右側的<b>「顧問建議」</b>加入（每一筆都會帶說明進報告書與追蹤工具）；資料本身有誤，請切回「現況」修改。`
+    +(n?`<br><span class="plDiff">⚠ 現況已更新，與本方案沿用的資料有 ${n} 處不同</span><button class="btn sm" type="button" data-plsync="1">↻ 以現況更新本方案（保留顧問建議）</button>`:"");});}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-plsync]");if(!b)return;const n=plSyncFromCur();plLockRender();const m=$("status");if(m)m.textContent=n?`已用現況資料更新「${(wsSlots[wsActive]||{}).name}」（${n} 個欄位），顧問建議保留 ✓`:"本方案已與現況一致";});
 function bsOnWs(){ // 工作區切換／新增後：重算 delta 與畫面；若方案帶有建議則重新帶入
+  try{plLockRender();}catch(e){console.warn(e);}
   bsComputeDelta();bsRenderPlan();bsRenderCascade();if(typeof rxFundRender==="function")rxFundRender();
   if(typeof txRecalc==="function")txRecalc();if(typeof rxSummaryRender==="function")rxSummaryRender();
   if(bsIsPlan()&&Object.values(bsAdj).some(a=>a&&a.length))bsRecalcSoon();
@@ -11277,6 +11868,7 @@ function preCheck(){
     if(V("est_saPre")>V("est_sa"))err("⑦-1","95.1.1 前投保保額大於身故保額總額","view_est");
     if(V("est_amort")>0&&V("est_debt")>0&&V("est_debt")/V("est_amort")>40)warn("⑦-1",`債務 ${NT(V("est_debt"))} 以年攤還 ${NT(V("est_amort"))} 要 ${Math.ceil(V("est_debt")/V("est_amort"))} 年才還完`,"view_est");}catch(e){}
   // ⑥-2 保單
+  if(typeof svcTaxOn==="function"&&!svcTaxOn()){for(let i=L.length-1;i>=0;i--)if(L[i].view==="view_est")L.splice(i,1);} // 未選配稅務及傳承：⑦ 的檢查不列
   (typeof policies!=="undefined"?policies:[]).filter(p=>p.src!=="bsAdj").forEach(p=>{if((parseFloat(p.prem)||0)>0&&!((parseFloat(p.premYrs)||0)>0))warn("⑥-2",`保單「${p.name||"未命名"}」有保費但繳費年期 0（視為已繳清，保費不會列支出）`,"view_prot");});
   return L;
 }
@@ -12323,6 +12915,25 @@ if(typeof asInit==="function")try{asInit();}catch(e){console.warn(e);}
 <style>
 #csOverlay{position:fixed;inset:0;background:rgba(20,24,32,.45);z-index:80;display:none;align-items:flex-start;justify-content:center;padding:28px 12px;overflow:auto}
 #csOverlay.on{display:flex}
+#lgOverlay{position:fixed;inset:0;z-index:95;display:none;align-items:center;justify-content:center;background:linear-gradient(160deg,#f7f3ea 0%,#ece2cc 100%);padding:16px;overflow:auto}
+#lgOverlay.on{display:flex}
+#lgBox{width:min(420px,100%);background:#fffdf8;border:1px solid #e4d9c2;border-radius:18px;box-shadow:0 20px 60px rgba(60,45,20,.18);padding:34px 30px 20px;text-align:center;font-family:system-ui;box-sizing:border-box}
+#lgBox .lgOrg{font-size:12px;letter-spacing:5px;color:#b08a3c;font-weight:700}
+#lgBox .lgTitle{font-family:'Noto Serif TC',serif;font-size:24px;font-weight:800;color:#26384f;margin:8px 0 2px;letter-spacing:2px}
+#lgBox .lgSub{font-size:13px;color:#6b7280;margin-bottom:22px;letter-spacing:2px}
+#lgGo{width:100%;padding:11px 0;font-size:14px;border-radius:10px}
+#lgBox .lgMsg{min-height:18px;font-size:12px;margin:10px 0 4px;color:#6b7280;line-height:1.55}
+#lgBox .lgMsg.err{color:#c0392b;text-align:left}
+#lgBox .lgSteps{font-size:11.5px;color:#26384f;background:#f6f1e4;border-radius:8px;padding:8px 10px;margin:8px 0}
+#lgBox .lgHint{font-size:11px;color:#8a94a0;margin-bottom:14px}
+#lgBox .lgSkip{border:none;background:none;color:#8a94a0;font-size:11px;text-decoration:underline;cursor:pointer;padding:4px}
+.lgChip{display:inline-flex;align-items:center;gap:6px;font-family:system-ui;font-size:11.5px;color:#26384f;background:#f6f1e4;border:1px solid #e4d9c2;border-radius:14px;padding:2px 4px 2px 10px;white-space:nowrap}
+.lgChip .btn{font-size:11px;padding:2px 8px}
+#csOverlay.landing{background:linear-gradient(160deg,#f7f3ea 0%,#ece2cc 100%);z-index:90}
+#csOverlay.landing #csClose,#csOverlay.landing #csSaveHere{display:none}
+#csBox .csLandHd{display:none}
+#csOverlay.landing #csBox .csLandHd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#f6f1e4;border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:13px;color:#26384f}
+#csBox .csLandHd .btn{margin-left:auto}
 #csBox{background:var(--paper,#fbfaf6);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.28);width:min(1120px,100%);padding:16px 18px 14px;font-family:system-ui;font-size:12.5px}
 #csBox h2{margin:0 0 4px;font-size:17px}
 #csBox .csTop{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0 10px}
@@ -12333,7 +12944,8 @@ if(typeof asInit==="function")try{asInit();}catch(e){console.warn(e);}
 #csBox tr.csRow:hover td{background:#fbf6e8}
 #csBox .csTag{display:inline-block;font-size:10.5px;padding:1px 6px;border-radius:9px;background:#eef2f6;color:#345;margin:0 3px 2px 0}
 #csBox .csSt{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:9px;color:#fff;background:#8a94a0}
-#csBox .csSt.s1{background:#2563a8}#csBox .csSt.s2{background:#b8860b}#csBox .csSt.s3{background:#2e8b57}#csBox .csSt.s4{background:#8a94a0}
+#csBox .csHist{font-size:10.5px;color:#6b7280;margin-top:2px;white-space:nowrap}#csBox .csHist .gap{color:#b45309}
+#csBox .csSt.s1{background:#2563a8}#csBox .csSt.s2{background:#b8860b}#csBox .csSt.s3{background:#2e8b57}#csBox .csSt.s4{background:#7b4fa0}#csBox .csSt.s5{background:#4b5563}#csBox .csSt.s6{background:#a3aab3}
 #csBox .btn.sm{font-size:11.5px;padding:3px 8px}
 #csBox .csVer{background:#fff;border:1px solid var(--line,#d8d2c2);border-radius:10px;padding:10px 12px;margin-top:10px}
 #csBox .csVer table td{padding:4px 8px}
@@ -12343,12 +12955,23 @@ if(typeof asInit==="function")try{asInit();}catch(e){console.warn(e);}
 #csBox .csEdit label{font-size:11px;color:var(--sub,#666);display:block}
 #csBox .csEdit input,#csBox .csEdit select{width:100%;box-sizing:border-box;font-family:system-ui;font-size:12px;padding:4px 6px;border:1px solid var(--line,#d8d2c2);border-radius:6px}
 </style>
+<div id="lgOverlay" class="no-print" role="dialog" aria-label="顧問登入"><div id="lgBox">
+  <div class="lgOrg" id="lgOrg">醫師的財務管家</div>
+  <div class="lgTitle">財務規劃整合工作台</div>
+  <div class="lgSub">顧問登入</div>
+  <button class="btn" id="lgGo" type="button">以 Google 帳號登入</button>
+  <div class="lgMsg" id="lgMsg"></div>
+  <div class="lgSteps">登入 → <b>客戶管理</b>（你負責的客戶）→ 開啟客戶或建立新客戶 → 進入工作台</div>
+  <div class="lgHint" id="lgHint">第一次登入：請先請主管把你的 Gmail 加入授權名單。</div>
+  <button class="lgSkip" id="lgSkip" type="button">先不登入，直接使用（示範／離線：資料只存在這台電腦）</button>
+</div></div>
 <div id="csOverlay" class="no-print"><div id="csBox">
-  <div style="display:flex;align-items:center;gap:10px"><h2>📁 客戶庫</h2><span id="csMode" class="mini" style="margin:0"></span><span class="csUser" id="csUser"></span><button class="btn ghost sm" id="csClose" type="button">✕ 關閉</button></div>
+  <div class="csLandHd" id="csLandHd"></div>
+  <div style="display:flex;align-items:center;gap:10px"><h2>📁 客戶管理</h2><span id="csMode" class="mini" style="margin:0"></span><span class="csUser" id="csUser"></span><button class="btn ghost sm" id="csClose" type="button">✕ 關閉</button></div>
   <div class="csTop">
     <input type="text" id="csQ" placeholder="搜尋姓名／醫院／同仁／標籤" style="width:220px">
     <span class="segRow" id="csScope" style="margin:0"><button type="button" class="seg on" data-scope="mine">我的</button><button type="button" class="seg" data-scope="all">全部</button></span>
-    <select id="csStatusF"><option value="">全部狀態</option><option>問診中</option><option>方案討論</option><option>執行追蹤</option><option>暫停</option></select>
+    <select id="csStatusF"><option value="">全部狀態</option><option>問診中</option><option>方案討論</option><option>執行追蹤</option><option>週年檢視</option><option>已結案</option><option>暫停</option></select>
     <select id="csSort"><option value="updated">最近更新</option><option value="name">姓名</option><option value="owner">負責同仁</option><option value="status">狀態</option></select>
     <button class="btn sm" id="csSaveHere" type="button" title="把目前畫面存成這位客戶的新版本（客戶不存在會先建立）">💾 存目前畫面為新版本</button>
     <button class="btn ghost sm" id="csNew" type="button">＋ 新客戶</button>
@@ -12362,7 +12985,7 @@ if(typeof asInit==="function")try{asInit();}catch(e){console.warn(e);}
 <script>
 /* ---------- 設定：部署時可用 config.js 覆蓋（window.FPW_CONFIG） ---------- */
 window.FPW_CONFIG=Object.assign({mode:"local",driveClientId:"",driveRootName:"財務規劃工作台",managers:["b0987597583@gmail.com"],driveScope:"https://www.googleapis.com/auth/drive"},window.FPW_CONFIG||{});
-const CS_STATUS=["問診中","方案討論","執行追蹤","暫停"];
+const CS_STATUS=["問診中","方案討論","執行追蹤","週年檢視","已結案","暫停"];
 const csId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const csNow=()=>new Date().toISOString();
 const csFmtT=t=>{if(!t)return "—";const d=new Date(t);return isNaN(d)?String(t):`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;};
@@ -12394,7 +13017,7 @@ const CSDrive={
   async init(){},
   async loadGIS(){if(window.google&&google.accounts)return;await new Promise((res,rej)=>{const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.onload=res;s.onerror=()=>rej(new Error("無法載入 Google 登入元件（需要網路）"));document.head.appendChild(s);});},
   async getToken(interactive){if(this.token&&Date.now()<this.tokenExp-60000)return this.token;await this.loadGIS();
-    return await new Promise((res,rej)=>{const tc=google.accounts.oauth2.initTokenClient({client_id:FPW_CONFIG.driveClientId,scope:FPW_CONFIG.driveScope+" openid email profile",prompt:interactive?"":"",callback:r=>{if(r&&r.access_token){this.token=r.access_token;this.tokenExp=Date.now()+(r.expires_in||3600)*1000;res(this.token);}else rej(new Error(r&&r.error||"登入失敗"));},error_callback:e=>rej(new Error(e&&e.message||"登入取消"))});tc.requestAccessToken({prompt:interactive?"consent":""});});},
+    return await new Promise((res,rej)=>{const tc=google.accounts.oauth2.initTokenClient({error_callback:er=>rej(new Error("popup_closed："+((er&&er.type)||""))),client_id:FPW_CONFIG.driveClientId,scope:FPW_CONFIG.driveScope+" openid email profile",prompt:interactive?"":"",callback:r=>{if(r&&r.access_token){this.token=r.access_token;this.tokenExp=Date.now()+(r.expires_in||3600)*1000;res(this.token);}else rej(new Error(r&&r.error||"登入失敗"));},error_callback:e=>rej(new Error(e&&e.message||"登入取消"))});tc.requestAccessToken({prompt:interactive?"select_account":""});});},
   async api(path,opt){opt=opt||{};const tk=await this.getToken(false);const h=Object.assign({Authorization:"Bearer "+tk},opt.headers||{});const r=await fetch((path.startsWith("http")?path:"https://www.googleapis.com/drive/v3/"+path),Object.assign({},opt,{headers:h}));
     if(r.status===401){this.token=null;throw new Error("登入逾時，請重新登入");}if(!r.ok){let t="";try{t=await r.text();}catch(e){}throw new Error(`Drive ${r.status}：${t.slice(0,160)}`);}return opt.raw?r:await r.json();},
   async whoami(){if(this.user)return this.user;if(!this.token)return null;const j=await this.api("https://www.googleapis.com/oauth2/v3/userinfo");this.user={email:(j.email||"").toLowerCase(),name:j.name||j.email};return this.user;},
@@ -12445,16 +13068,33 @@ const CSDrive={
 const CS={A:null,user:null,scope:"mine",clients:[],sel:null,edit:null,busy:false};
 function csAdapter(){const id=String(FPW_CONFIG.driveClientId||"").trim();return (FPW_CONFIG.mode==="drive"&&/^\d+-[a-z0-9]+\.apps\.googleusercontent\.com$/.test(id))?CSDrive:CSLocal;} // 真正的用戶端 ID 形如 123456789012-abc….apps.googleusercontent.com；範本佔位字串不算
 function csMsg(t,err){const e=$("csMsg");if(e){e.textContent=t||"";e.style.color=err?"var(--gD)":"var(--sub)";}}
-async function csOpen(){$("csOverlay").classList.add("on");CS.A=csAdapter();$("csMode").textContent=`存放：${CS.A.name}${CS.A===CSLocal&&FPW_CONFIG.mode==="drive"?"（config.js 的 driveClientId 尚未填入有效的 OAuth 用戶端 ID，退回本機）":""}`;
+async function csOpen(mode){$("csOverlay").classList.add("on");$("csOverlay").classList.toggle("landing",mode==="landing");CS.A=csAdapter();$("csMode").textContent=`存放：${CS.A.name}${CS.A===CSLocal&&FPW_CONFIG.mode==="drive"?"（config.js 的 driveClientId 尚未填入有效的 OAuth 用戶端 ID，退回本機）":""}`;
   try{await CS.A.init();CS.user=await CS.A.whoami();}catch(e){csMsg(String(e.message||e),true);}
   csRenderUser();if(CS.user)await csRefresh();else{$("csList").innerHTML=`<div class="note">${CS.A===CSDrive?"請先按右上「以 Google 登入」，選擇你的 Google 帳號並允許存取雲端硬碟。":"請先按右上「設定同仁 Email」——本機模式只是輸入你的 Email 作為「負責同仁」標記，資料存在這台電腦的瀏覽器。"}</div>`;$("csDetail").innerHTML="";}}
-function csClose(){$("csOverlay").classList.remove("on");}
-function csRenderUser(){const u=CS.user;const mgr=u&&csIsManager(u.email);
+function csClose(){$("csOverlay").classList.remove("on","landing");}
+function csRenderUser(){const u=CS.user;const mgr=u&&csIsManager(u.email);if(typeof lgRenderChip==="function")try{lgRenderChip();}catch(e){}
   $("csUser").innerHTML=u?`<span>${csEsc(u.name||u.email)}${mgr?" <span class='bdg b-both'>主管</span>":""}</span><button class="btn ghost sm" type="button" id="csSignOut">登出</button>`:`<button class="btn sm" type="button" id="csSignIn">${CS.A===CSDrive?"以 Google 登入":"設定同仁 Email"}</button>`;
   const sc=$("csScope");if(sc){sc.style.display=mgr?"":"none";if(!mgr){CS.scope="mine";}sc.querySelectorAll(".seg").forEach(b=>b.classList.toggle("on",b.dataset.scope===CS.scope));}
   const si=$("csSignIn");if(si)si.onclick=async()=>{try{CS.user=await CS.A.signIn();csRenderUser();if(CS.user)await csRefresh();}catch(e){csMsg(String(e.message||e),true);}};
-  const so=$("csSignOut");if(so)so.onclick=async()=>{await CS.A.signOut();CS.user=null;CS.clients=[];csRenderUser();$("csList").innerHTML="";$("csDetail").innerHTML="";};}
+  const so=$("csSignOut");if(so)so.onclick=async()=>{if($("csOverlay").classList.contains("landing")){await lgLogout(true);return;}await CS.A.signOut();CS.user=null;CS.clients=[];csRenderUser();$("csList").innerHTML="";$("csDetail").innerHTML="";};}
 async function csRefresh(){if(!CS.user)return;csMsg("讀取中…");try{CS.clients=await CS.A.listClients();csMsg(`共 ${CS.clients.length} 位客戶`);}catch(e){csMsg(String(e.message||e),true);CS.clients=[];}csRenderList();}
+/* ---- v270：合約紀錄 ---- */
+function csToday(){const d=window._nyToday?new Date(window._nyToday):new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function csContractTouch(rec,plan){rec.contracts=Array.isArray(rec.contracts)?rec.contracts:[];const t=csToday();const L=rec.contracts[rec.contracts.length-1];
+  if(!L||L.end){if(!L)rec.contracts.push({year:+t.slice(0,4),plan:plan||"",start:t,end:""});return;}
+  if(plan)L.plan=plan;}
+function csContractEnd(rec){const L=(rec.contracts||[]).slice(-1)[0];if(L&&!L.gap&&!L.end)L.end=csToday();}
+function csContractTxt(rec,html){const C=rec.contracts||[];return C.map(c=>c.gap?(html?`<span class="gap">${c.year} 未續約</span>`:`${c.year} 未續約`):`${c.year} ${c.plan||"方案未定"}${c.end?"":"（進行中）"}`).join(" → ");}
+async function csRenew(id){const rec=CS.clients.find(r=>r.id===id);if(!rec)return;
+  const t=csToday(),y=+t.slice(0,4);rec.contracts=Array.isArray(rec.contracts)?rec.contracts:[];
+  if(!rec.contracts.length&&rec.plan)rec.contracts.push({year:+String(rec.created||t).slice(0,4),plan:rec.plan,start:String(rec.created||"").slice(0,10),end:""});
+  const L=rec.contracts[rec.contracts.length-1];if(L&&!L.end&&!L.gap)L.end=t;
+  const ly=L?+L.year:y-1;for(let yy=ly+1;yy<y;yy++)rec.contracts.push({year:yy,plan:"",gap:true});
+  rec.contracts.push({year:y,plan:"",start:t,end:""});
+  rec.status="問診中";rec.updated=csNow();
+  try{await CS.A.saveClient(rec);}catch(e){csMsg(String(e.message||e),true);return;}
+  CS.sel=id;csRenderList();
+  csMsg(`已為「${rec.name}」開新年度 ✓（${csContractTxt(rec)}）下一步：按「開啟最新」→ ①-0「🗓 建立新年度現況…」讀入客戶的追蹤工具 JSON`);}
 function csFiltered(){const q=($("csQ").value||"").trim().toLowerCase(),st=$("csStatusF").value,sort=$("csSort").value;const me=CS.user?CS.user.email:"";
   let L=CS.clients.slice();if(CS.scope==="mine"||!csIsManager(me))L=L.filter(r=>String(r.owner||"").toLowerCase()===me);
   if(st)L=L.filter(r=>(r.status||"")===st);
@@ -12463,13 +13103,14 @@ function csFiltered(){const q=($("csQ").value||"").trim().toLowerCase(),st=$("cs
   L.sort((a,b)=>sort==="updated"?(b.updated||"").localeCompare(a.updated||""):key(a).localeCompare(key(b),"zh-Hant"));return L;}
 function csRenderList(){const L=csFiltered();const stCls=s=>"s"+(CS_STATUS.indexOf(s)+1);
   if(!L.length){$("csList").innerHTML=`<div class="note">${CS.clients.length?"沒有符合條件的客戶。":"客戶庫是空的——按「＋ 新客戶」或「存目前畫面為新版本」開始。"}</div>`;return;}
-  $("csList").innerHTML=`<div style="overflow-x:auto"><table><tr><th data-sort="name">姓名</th><th>醫院／科別</th><th>電話</th><th data-sort="owner">負責同仁</th><th data-sort="status">狀態</th><th>標籤</th><th data-sort="updated">最近更新</th><th>版本</th><th></th></tr>
-    ${L.map(r=>`<tr class="csRow${r.id===CS.sel?" csSel":""}" data-id="${csEsc(r.id)}" title="點一下選取這位客戶（存版本會存到選取的客戶）"><td style="white-space:nowrap">${r.id===CS.sel?"▶ ":""}<b>${csEsc(r.name||"（未命名）")}</b></td><td>${csEsc([r.hospital,r.dept].filter(Boolean).join("／"))}</td><td>${csEsc(r.phone||"")}</td><td>${csEsc(r.owner||"")}</td><td style="white-space:nowrap">${r.status?`<span class="csSt ${stCls(r.status)}" style="white-space:nowrap">${csEsc(r.status)}</span>`:""}</td><td>${(r.tags||[]).map(t=>`<span class="csTag">${csEsc(t)}</span>`).join("")}</td><td style="white-space:nowrap">${csFmtT(r.updated)}</td><td>${r.nVer||0}</td>
-      <td style="white-space:nowrap"><button class="btn sm" type="button" data-open="${csEsc(r.id)}">開啟最新</button> <button class="btn ghost sm" type="button" data-ver="${csEsc(r.id)}">版本…</button> <button class="btn ghost sm" type="button" data-edit="${csEsc(r.id)}">資料</button></td></tr>`).join("")}</table></div>`;
+  $("csList").innerHTML=`<div style="overflow-x:auto"><table><tr><th data-sort="name">姓名</th><th>醫院／科別</th><th>電話</th><th data-sort="owner">負責同仁</th><th data-sort="status">狀態</th><th>方案</th><th>標籤</th><th data-sort="updated">最近更新</th><th>版本</th><th></th></tr>
+    ${L.map(r=>`<tr class="csRow${r.id===CS.sel?" csSel":""}" data-id="${csEsc(r.id)}" title="點一下選取這位客戶（存版本會存到選取的客戶）"><td style="white-space:nowrap">${r.id===CS.sel?"▶ ":""}<b>${csEsc(r.name||"（未命名）")}</b></td><td>${csEsc([r.hospital,r.dept].filter(Boolean).join("／"))}</td><td>${csEsc(r.phone||"")}</td><td>${csEsc(r.owner||"")}</td><td style="white-space:nowrap">${r.status?`<span class="csSt ${stCls(r.status)}" style="white-space:nowrap">${csEsc(r.status)}</span>`:""}</td><td style="white-space:nowrap">${csEsc(r.plan||"")}${(r.contracts||[]).length>1?`<div class="csHist">${csContractTxt(r,true)}</div>`:""}</td><td>${(r.tags||[]).map(t=>`<span class="csTag">${csEsc(t)}</span>`).join("")}</td><td style="white-space:nowrap">${csFmtT(r.updated)}</td><td>${r.nVer||0}</td>
+      <td style="white-space:nowrap"><button class="btn sm" type="button" data-open="${csEsc(r.id)}">開啟最新</button> <button class="btn ghost sm" type="button" data-ver="${csEsc(r.id)}">版本…</button> <button class="btn ghost sm" type="button" data-edit="${csEsc(r.id)}">資料</button>${r.status==="週年檢視"||r.status==="已結案"?` <button class="btn ghost sm" type="button" data-renew="${csEsc(r.id)}" title="續約或回鍋：新增一個合約年度，狀態回到問診中（中間沒簽約的年度標「未續約」）">＋新年度</button>`:""}</td></tr>`).join("")}</table></div>`;
   $("csList").querySelectorAll("th[data-sort]").forEach(th=>th.onclick=()=>{$("csSort").value=th.dataset.sort;csRenderList();});
   $("csList").querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>csOpenLatest(b.dataset.open));
   $("csList").querySelectorAll("[data-ver]").forEach(b=>b.onclick=()=>csShowVersions(b.dataset.ver));
   $("csList").querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>csEditClient(b.dataset.edit));
+  $("csList").querySelectorAll("[data-renew]").forEach(b=>b.onclick=()=>csRenew(b.dataset.renew));
   $("csList").querySelectorAll("tr.csRow").forEach(tr=>tr.addEventListener("click",e=>{if(e.target.closest("button"))return;CS.sel=tr.dataset.id;const r=CS.clients.find(x=>x.id===CS.sel);csRenderList();if(r)csMsg(`已選取「${r.name}」——「存目前畫面為新版本」會存到這位客戶`);}));}
 function csRecordFromScreen(base){const nm=($("clientName")&&$("clientName").value.trim())||"";let hosp="",dept="",phone="";
   try{const bio=id=>$(id)?$(id).value:"";hosp=bio("bio_hospital")||bio("bio_org")||"";dept=bio("bio_dept")||bio("bio_spec")||"";phone=bio("bio_phone")||"";}catch(e){}
@@ -12485,7 +13126,7 @@ async function csSaveHere(){if(!CS.user){csMsg("請先登入",true);return;}let 
     if(!rec){rec=csRecordFromScreen();rec=await CS.A.saveClient(rec);CS.clients.push(rec);}
     if(typeof wsSaveActive==="function")wsSaveActive();
     const data=workFileObj();const v=await CS.A.saveVersion(rec.id,label,data,CS.user.email);
-    rec.updated=csNow();rec.nVer=(rec.nVer||0)+1;rec.lastLabel=label;if(!rec.name)rec.name=nm;await CS.A.saveClient(rec);CS.sel=rec.id;
+    rec.updated=csNow();rec.nVer=(rec.nVer||0)+1;rec.lastLabel=label;{const pc=(typeof svcPlanCode==="function")?svcPlanCode():"";if(pc)rec.plan=pc;csContractTouch(rec,pc);}if(!rec.name)rec.name=nm;await CS.A.saveClient(rec);CS.sel=rec.id;
     csMsg(`已存為版本「${label}」（${csFmtT(v.time)}）`);csRenderList();csShowVersions(rec.id);
     if($("status"))$("status").textContent=`客戶庫：${rec.name}・版本「${label}」已儲存 ✓（${CS.A.name}）`;
   }catch(e){csMsg("儲存失敗："+(e.message||e),true);}}
@@ -12503,19 +13144,19 @@ async function csShowVersions(id){const rec=CS.clients.find(r=>r.id===id);if(!re
   $("csDetail").querySelectorAll("[data-vopen]").forEach(b=>b.onclick=()=>csOpenVersion(id,vs.find(v=>v.id===b.dataset.vopen)));
   $("csDetail").querySelectorAll("[data-vdl]").forEach(b=>b.onclick=async()=>{const v=vs.find(x=>x.id===b.dataset.vdl);try{const j=await CS.A.getVersion(id,v.id);dlJSON(j,`工作台_${rec.name}_${v.label}.json`);}catch(e){csMsg(String(e.message||e),true);}});
   $("csDetail").querySelectorAll("[data-vdel]").forEach(b=>b.onclick=async()=>{const v=vs.find(x=>x.id===b.dataset.vdel);if(!confirm(`刪除版本「${v.label}」？`))return;try{await CS.A.deleteVersion(id,v.id);csShowVersions(id);}catch(e){csMsg(String(e.message||e),true);}});}
-function csEditClient(id){const rec=id?CS.clients.find(r=>r.id===id):csRecordFromScreen();if(!rec)return;CS.edit=rec;const isNew=!id;
+function csEditClient(id){const land=$("csOverlay").classList.contains("landing");const rec=id?CS.clients.find(r=>r.id===id):(land?Object.assign(csRecordFromScreen(),{name:"",hospital:"",dept:"",phone:""}):csRecordFromScreen());if(!rec)return;CS.edit=rec;const isNew=!id;const st0=rec.status;
   const f=(k,lb,type)=>`<div><label>${lb}</label><input type="${type||"text"}" data-k="${k}" value="${csEsc(rec[k]||"")}"></div>`;
   $("csDetail").innerHTML=`<div class="csEdit">${f("name","姓名")}${f("hospital","醫院／診所")}${f("dept","科別")}${f("phone","電話")}
     <div><label>負責同仁（Email）</label><input type="text" data-k="owner" value="${csEsc(rec.owner||"")}" ${csIsManager(CS.user&&CS.user.email)?"":"readonly"}></div>
     <div><label>狀態</label><select data-k="status">${CS_STATUS.map(s=>`<option${rec.status===s?" selected":""}>${s}</option>`).join("")}</select></div>
     <div><label>標籤（逗號分隔）</label><input type="text" data-k="tags" value="${csEsc((rec.tags||[]).join(", "))}"></div>
-    <div><label>備註</label><input type="text" data-k="note" value="${csEsc(rec.note||"")}"></div>
+    <div><label>備註</label><input type="text" data-k="note" value="${csEsc(rec.note||"")}"></div>${(rec.contracts||[]).length?`<div style="grid-column:1/-1;font-size:11.5px;color:#26384f"><b>合約紀錄</b>　${csContractTxt(rec,true)}</div>`:""}
     <div style="grid-column:1/-1;display:flex;gap:8px;margin-top:4px"><button class="btn sm" type="button" id="csEditSave">${isNew?"建立客戶":"儲存資料"}</button><button class="btn ghost sm" type="button" id="csEditCancel">取消</button></div></div>`;
   $("csEditCancel").onclick=()=>{$("csDetail").innerHTML="";CS.edit=null;};
   $("csEditSave").onclick=async()=>{const box=$("csDetail");box.querySelectorAll("[data-k]").forEach(el=>{const k=el.dataset.k;rec[k]=k==="tags"?el.value.split(/[,，]/).map(s=>s.trim()).filter(Boolean):el.value.trim();});
-    if(!rec.name){csMsg("姓名必填",true);return;}rec.owner=(rec.owner||(CS.user?CS.user.email:"")).toLowerCase();rec.updated=csNow();
-    try{await CS.A.saveClient(rec);if(isNew){CS.clients.push(rec);CS.sel=rec.id;if($("clientName")&&!$("clientName").value.trim())$("clientName").value=rec.name;}
-      csMsg(isNew?`客戶「${rec.name}」已建立並選取——按「存目前畫面為新版本」即可存入第一個版本`:"已儲存");$("csDetail").innerHTML="";csRenderList();}catch(e){csMsg(String(e.message||e),true);}};}
+    if(!rec.name){csMsg("姓名必填",true);return;}rec.owner=(rec.owner||(CS.user?CS.user.email:"")).toLowerCase();rec.updated=csNow();const closed=rec.status==="已結案"&&st0!=="已結案";if(closed)csContractEnd(rec);
+    try{await CS.A.saveClient(rec);if(isNew&&land){CS.clients.push(rec);CS.sel=rec.id;lgEnterNew(rec);return;}if(isNew){CS.clients.push(rec);CS.sel=rec.id;if($("clientName")&&!$("clientName").value.trim())$("clientName").value=rec.name;}
+      csMsg(isNew?`客戶「${rec.name}」已建立並選取——按「存目前畫面為新版本」即可存入第一個版本`:closed?`已結案 ✓ 別忘了提醒「${rec.name}」：追蹤工具可以繼續記帳（工具在他手上）——哪天回來，就能直接用實際值建立新年度現況，重新規劃快很多。`:"已儲存");$("csDetail").innerHTML="";csRenderList();}catch(e){csMsg(String(e.message||e),true);}};}
 async function csExportAll(){if(!CS.user)return;csMsg("打包中…");try{const out={kind:"客戶庫備份",ver:1,time:csNow(),by:CS.user.email,clients:[]};
     for(const r of csFiltered()){const vs=await CS.A.listVersions(r.id);const vv=[];for(const v of vs){vv.push({label:v.label,time:v.time,by:v.by,data:await CS.A.getVersion(r.id,v.id)});}const c=Object.assign({},r);delete c._dir;delete c._file;c.versions=vv;out.clients.push(c);}
     dlJSON(out,`客戶庫備份_${new Date().toISOString().slice(0,10)}.json`);csMsg(`已匯出 ${out.clients.length} 位客戶`);}catch(e){csMsg(String(e.message||e),true);}}
@@ -12526,12 +13167,47 @@ async function csImportFiles(files){if(!CS.user){csMsg("請先登入",true);retu
       await CS.A.saveVersion(rec.id,`匯入 ${j.time||""}`.trim(),j,CS.user.email);rec.nVer=(rec.nVer||0)+1;rec.updated=csNow();await CS.A.saveClient(rec);n++;}
     else csMsg(`略過 ${f.name}：不是客戶庫備份或工作檔`,true);}catch(e){csMsg(`${f.name}：${e.message||e}`,true);}}
   csMsg(`已匯入 ${n} 筆`);csRenderList();}
-$("csClose").onclick=csClose;$("csOverlay").addEventListener("click",e=>{if(e.target===$("csOverlay"))csClose();});
+$("csClose").onclick=csClose;$("csOverlay").addEventListener("click",e=>{if(e.target===$("csOverlay")&&!$("csOverlay").classList.contains("landing"))csClose();});
 $("csQ").addEventListener("input",csRenderList);$("csStatusF").addEventListener("change",csRenderList);$("csSort").addEventListener("change",csRenderList);
 $("csScope").querySelectorAll(".seg").forEach(b=>b.onclick=()=>{CS.scope=b.dataset.scope;$("csScope").querySelectorAll(".seg").forEach(x=>x.classList.toggle("on",x===b));csRenderList();});
 $("csSaveHere").onclick=csSaveHere;$("csNew").onclick=()=>csEditClient(null);$("csExport").onclick=csExportAll;$("csImport").onclick=()=>$("csFile").click();$("csFile").addEventListener("change",e=>{csImportFiles([...e.target.files]);e.target.value="";});
 $("btnClientLib")&&$("btnClientLib").addEventListener("click",csOpen);
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("csOverlay").classList.contains("on"))csClose();});
+/* ---------- v269：顧問登入頁 → 客戶管理 → 工作台 ---------- */
+function lgGateOn(){return FPW_CONFIG.loginGate===true||(FPW_CONFIG.loginGate!==false&&csAdapter()===CSDrive);} // 雲端版（GitHub Pages＋Drive）一打開先登入；本機檔案版不擋
+function lgMsg(t,err){const e=$("lgMsg");if(e){e.textContent=t||"";e.classList.toggle("err",!!err);}}
+function lgShow(){const A=csAdapter();$("lgOverlay").classList.add("on");
+  if(FPW_CONFIG.orgName)$("lgOrg").textContent=FPW_CONFIG.orgName;
+  $("lgGo").textContent=A===CSDrive?"以 Google 帳號登入":"以 Email 登入（本機模式）";
+  $("lgHint").textContent=A===CSDrive?"第一次登入：請先請主管把你的 Gmail 加入授權名單（Google Auth Platform →「目標對象」→ 測試使用者）。":"本機模式：客戶資料只存在這台電腦的瀏覽器裡。";
+  lgMsg("");}
+function lgErrTxt(e){const t=String(e&&e.message||e||"");
+  if(/popup_closed|popup|access_denied|denied|403/i.test(t))return "登入沒有完成：可能是關掉了登入視窗，或你的 Gmail 還沒加入授權名單——請主管到 Google Auth Platform →「目標對象」→ 測試使用者加入你的 Gmail。";
+  if(/Failed to fetch|network|無法載入/i.test(t))return "連不上 Google，請確認網路後再試一次。（"+t+"）";
+  return t;}
+async function lgLogin(){const A=csAdapter();CS.A=A;lgMsg("登入中…");
+  try{await A.init();const u=await A.signIn();if(!u||!u.email){lgMsg("尚未完成登入",true);return;}CS.user=u;
+    $("lgOverlay").classList.remove("on");lgRenderChip();await csOpen("landing");}
+  catch(e){lgMsg(lgErrTxt(e),true);}}
+function lgRenderChip(){const c=$("lgChip");if(!c)return;const u=CS.user;
+  if(!u){c.style.display="none";c.innerHTML="";}
+  else{c.style.display="";c.innerHTML=`👤 <b>${csEsc(u.name||u.email)}</b>${csIsManager(u.email)?"<span class='bdg b-both'>主管</span>":""}<button class="btn ghost sm" type="button" id="lgOut" title="登出並清空畫面">登出</button>`;$("lgOut").onclick=()=>lgLogout(false);}
+  const h=$("csLandHd");if(h)h.innerHTML=u?`<span>👋 <b>${csEsc(u.name||u.email)}</b>，選一位客戶「開啟最新」，或按「＋ 新客戶」建立後進入工作台。</span><button class="btn ghost sm" type="button" id="csLandSkip">略過，直接進入工作台</button>`:"";
+  const sk=$("csLandSkip");if(sk)sk.onclick=()=>csClose();}
+async function lgLogout(noAsk){
+  if(!noAsk&&!confirm("登出後會清空畫面上的客戶資料（目前內容會先自動存檔在這台電腦；要留在客戶庫請先「存目前畫面為新版本」）。確定登出？"))return;
+  try{if(CS.A)await CS.A.signOut();}catch(e){}
+  CS.user=null;CS.clients=[];CS.sel=null;try{$("csList").innerHTML="";$("csDetail").innerHTML="";}catch(e){}
+  csClose();try{newClientReset(true);}catch(e){console.warn(e);}
+  lgRenderChip();if(lgGateOn())lgShow();else if($("status"))$("status").textContent="已登出";}
+function lgEnterNew(rec){ // landing 建立新客戶 → 清空工作台 → 帶入姓名 → 進入
+  try{newClientReset(true);}catch(e){console.warn(e);}
+  if($("clientName"))$("clientName").value=rec.name||"";
+  if($("bio_name")){$("bio_name").value=rec.name||"";$("bio_name").dispatchEvent(new Event("input",{bubbles:true}));}
+  csClose();setTimeout(()=>{if($("status"))$("status").textContent=`新客戶「${rec.name}」已建立 ✓ 資料填好後，到「📁 客戶管理」按「存目前畫面為新版本」存入第一個版本`;},600);}
+$("lgGo").onclick=lgLogin;
+$("lgSkip").onclick=()=>{$("lgOverlay").classList.remove("on");if($("status"))$("status").textContent="未登入：資料只存在這台電腦（可隨時按「📁 客戶管理」登入）";};
+if(lgGateOn())lgShow();
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("csOverlay").classList.contains("on")&&!$("csOverlay").classList.contains("landing"))csClose();});
 </script>
 
 </body>
