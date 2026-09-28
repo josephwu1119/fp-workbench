@@ -12975,6 +12975,7 @@ if(typeof asInit==="function")try{asInit();}catch(e){console.warn(e);}
     <select id="csSort"><option value="updated">最近更新</option><option value="name">姓名</option><option value="owner">負責同仁</option><option value="status">狀態</option></select>
     <button class="btn sm" id="csSaveHere" type="button" title="把目前畫面存成這位客戶的新版本（客戶不存在會先建立）">💾 存目前畫面為新版本</button>
     <button class="btn ghost sm" id="csNew" type="button">＋ 新客戶</button>
+    <button class="btn ghost sm" id="csStaff" type="button" style="display:none" title="主管專用：在「財務規劃工作台」底下建立同仁的資料夾，並分享給他（可編輯）">👥 新增同仁</button>
     <button class="btn ghost sm" id="csExport" type="button" title="把清單內所有客戶與版本打包成一個 JSON 備份下載">⬇ 匯出全部備份</button>
     <button class="btn ghost sm" id="csImport" type="button" title="匯入備份或工作檔 JSON 到客戶庫">⬆ 匯入</button><input type="file" id="csFile" accept=".json,application/json" multiple style="display:none">
   </div>
@@ -13031,12 +13032,18 @@ const CSDrive={
     let root=L.find(f=>(f.owners||[]).some(o=>(o.emailAddress||"").toLowerCase()===me.email))||L[0];
     if(!root){if(!csIsManager(me.email))throw new Error(`找不到「${nm}」資料夾——請主管先登入建立，並把你的子資料夾分享給你`);root=await this.mkdir(nm,null);}
     this.root=root;return root;},
-  async ownerDir(email,create){const key=email.toLowerCase();if(this.ownerDirs[key])return this.ownerDirs[key];const root=await this.findRoot();
-    const L=await this.list(`'${root.id}' in parents and name='${key}' and mimeType='application/vnd.google-apps.folder' and trashed=false`);let d=L[0];
-    if(!d&&create)d=await this.mkdir(key,root.id);if(d)this.ownerDirs[key]=d;return d||null;},
-  async ownerDirs_(){const me=await this.whoami();const root=await this.findRoot();
-    if(csIsManager(me.email)){const L=await this.list(`'${root.id}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`);L.forEach(d=>{this.ownerDirs[d.name.toLowerCase()]=d;});return L;}
-    const d=await this.ownerDir(me.email,false);return d?[d]:[];},
+  async ownerDir(email,create){const key=email.toLowerCase();if(this.ownerDirs[key])return this.ownerDirs[key];
+    const me=(await this.whoami())||{};let root=null;
+    try{root=await this.findRoot();}catch(e){if(csIsManager(me.email))throw e;root=null;} // 同仁通常只被分享自己的子資料夾，看不到根
+    let d=null;
+    if(root){const L=await this.list(`'${root.id}' in parents and name='${key}' and mimeType='application/vnd.google-apps.folder' and trashed=false`);d=L[0]||null;if(!d&&create)d=await this.mkdir(key,root.id);}
+    if(!d){const L=await this.list(`name='${key}' and mimeType='application/vnd.google-apps.folder' and trashed=false`);d=L[0]||null;} // 直接找「以 email 命名」且分享給我的資料夾
+    if(!d&&create)throw new Error(`找不到你的資料夾「${key}」——請主管在客戶管理按「👥 新增同仁」建立並分享給你`);
+    if(d)this.ownerDirs[key]=d;return d;},
+  async shareDir(dirId,email){return await this.api(`files/${dirId}/permissions?sendNotificationEmail=true&supportsAllDrives=true`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({role:"writer",type:"user",emailAddress:email})});},
+  async ownerDirs_(){const me=await this.whoami();
+    if(csIsManager(me.email)){const root=await this.findRoot();const L=await this.list(`'${root.id}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`);L.forEach(d=>{this.ownerDirs[d.name.toLowerCase()]=d;});return L;}
+    const d=await this.ownerDir(me.email,false);if(!d)throw new Error(`還沒有你的資料夾（${me.email}）——請主管在客戶管理按「👥 新增同仁」建立並分享給你`);return [d];},
   async readJson(fileId){const r=await this.api(`files/${fileId}?alt=media`,{raw:true});return await r.json();},
   async writeJson(name,parent,obj,fileId){const meta={name,mimeType:"application/json"};if(!fileId)meta.parents=[parent];
     const body=`--fpw\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(meta)}\r\n--fpw\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(obj)}\r\n--fpw--`;
@@ -13074,6 +13081,7 @@ async function csOpen(mode){$("csOverlay").classList.add("on");$("csOverlay").cl
 function csClose(){$("csOverlay").classList.remove("on","landing");}
 function csRenderUser(){const u=CS.user;const mgr=u&&csIsManager(u.email);if(typeof lgRenderChip==="function")try{lgRenderChip();}catch(e){}
   $("csUser").innerHTML=u?`<span>${csEsc(u.name||u.email)}${mgr?" <span class='bdg b-both'>主管</span>":""}</span><button class="btn ghost sm" type="button" id="csSignOut">登出</button>`:`<button class="btn sm" type="button" id="csSignIn">${CS.A===CSDrive?"以 Google 登入":"設定同仁 Email"}</button>`;
+  const st=$("csStaff");if(st)st.style.display=(mgr&&CS.A===CSDrive)?"":"none";
   const sc=$("csScope");if(sc){sc.style.display=mgr?"":"none";if(!mgr){CS.scope="mine";}sc.querySelectorAll(".seg").forEach(b=>b.classList.toggle("on",b.dataset.scope===CS.scope));}
   const si=$("csSignIn");if(si)si.onclick=async()=>{try{CS.user=await CS.A.signIn();csRenderUser();if(CS.user)await csRefresh();}catch(e){csMsg(String(e.message||e),true);}};
   const so=$("csSignOut");if(so)so.onclick=async()=>{if($("csOverlay").classList.contains("landing")){await lgLogout(true);return;}await CS.A.signOut();CS.user=null;CS.clients=[];csRenderUser();$("csList").innerHTML="";$("csDetail").innerHTML="";};}
@@ -13172,6 +13180,16 @@ $("csQ").addEventListener("input",csRenderList);$("csStatusF").addEventListener(
 $("csScope").querySelectorAll(".seg").forEach(b=>b.onclick=()=>{CS.scope=b.dataset.scope;$("csScope").querySelectorAll(".seg").forEach(x=>x.classList.toggle("on",x===b));csRenderList();});
 $("csSaveHere").onclick=csSaveHere;$("csNew").onclick=()=>csEditClient(null);$("csExport").onclick=csExportAll;$("csImport").onclick=()=>$("csFile").click();$("csFile").addEventListener("change",e=>{csImportFiles([...e.target.files]);e.target.value="";});
 $("btnClientLib")&&$("btnClientLib").addEventListener("click",csOpen);
+async function csAddStaff(email){ // v272：主管建立同仁資料夾＋分享（編輯者）
+  if(!CS.user||!csIsManager(CS.user.email)||CS.A!==CSDrive){csMsg("只有主管在雲端模式可以新增同仁",true);return;}
+  if(email===undefined)email=prompt("同仁的 Gmail（他用來登入的 Google 帳號）","");
+  email=String(email||"").trim().toLowerCase();if(!email)return;
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){csMsg("Email 格式不對",true);return;}
+  csMsg("建立並分享中…");
+  try{const d=await CSDrive.ownerDir(email,true);await CSDrive.shareDir(d.id,email);
+    csMsg(`已建立「${FPW_CONFIG.driveRootName}／${email}」並分享給他（可編輯）✓ Google 會寄通知信給他。還差一步：Google Cloud → Google Auth Platform →「目標對象」→ 測試使用者，也要加入 ${email}，他才登得進來。`);}
+  catch(e){csMsg("新增同仁失敗："+(e.message||e),true);}}
+$("csStaff")&&$("csStaff").addEventListener("click",()=>csAddStaff());
 /* ---------- v269：顧問登入頁 → 客戶管理 → 工作台 ---------- */
 function lgGateOn(){return FPW_CONFIG.loginGate===true||(FPW_CONFIG.loginGate!==false&&csAdapter()===CSDrive);} // 雲端版（GitHub Pages＋Drive）一打開先登入；本機檔案版不擋
 function lgMsg(t,err){const e=$("lgMsg");if(e){e.textContent=t||"";e.classList.toggle("err",!!err);}}
