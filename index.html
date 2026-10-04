@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>財務規劃整合工作台｜資料層×蒙地卡羅×風險規劃×方案管理</title>
+<title>財務規劃整合工作台｜醫師的財務管家</title>
+<meta name="description" content="醫師的財務管家｜財務規劃整合工作台：問診建檔、現況與方案比較、風險規劃、報告書產出與追蹤工具匯出。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -473,11 +474,11 @@ body:not(.rxLock) .bsCascade{display:block}
     <label>客戶</label><input id="clientName" type="text" value="" placeholder="客戶姓名" style="width:110px;font-family:'Noto Serif TC',serif">
     <label>方案</label><input id="scenName" type="text" value="家庭方案" style="width:170px;font-family:'Noto Serif TC',serif">
     <span class="status" id="status">就緒</span>
-    <button class="btn" id="btnSaveFile">儲存工作檔</button>
-    <button class="btn ghost" id="btnOpenFile">開啟工作檔</button>
+    <button class="btn" id="btnSaveFile" title="未登入客戶庫時的離線存檔（下載 JSON）。登入後用「📁 客戶管理 → 存目前畫面為新版本」，要檔案用版本列的「下載」">儲存工作檔</button>
+    <button class="btn ghost" id="btnOpenFile" title="未登入客戶庫時開啟 JSON 工作檔。登入後用「📁 客戶管理 → 匯入」">開啟工作檔</button>
     <button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button>
     <span id="lgChip" class="lgChip" style="display:none"></span>
-    <button class="btn ghost" id="btnNewClient" title="先自動存檔目前客戶，再清空全部客戶資料（保留顧問資料與稅務參數）">🆕 新客戶</button>
+    <button class="btn ghost" id="btnNewClient" title="未登入客戶庫時用：先自動存檔目前客戶，再清空全部客戶資料（保留顧問資料與稅務參數）。登入後請到「📁 客戶管理 → ＋新客戶」">🧹 清空畫面</button>
     <input type="file" id="fileWork" accept=".json,application/json" style="display:none">
     <span style="display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-family:system-ui;font-size:11.5px;color:var(--sub)">
       <label class="chk" style="margin:0"><input type="checkbox" id="asOn" checked><span>自動存檔</span></label>
@@ -4645,7 +4646,10 @@ function newClientReset(silent){
   if(!silent){$("status").textContent="已清空，請先填客戶姓名再開始輸入（上一位客戶已自動存檔，可由右上下拉還原）";const m=$("asMsg");if(m)m.textContent="新客戶（尚未存檔）";}
 }
 $("btnNewClient")&&$("btnNewClient").addEventListener("click",()=>{const c=$("clientName").value.trim();
-  if(!confirm(`開始新客戶？\n${c?`「${c}」的資料會先自動存檔，`:""}畫面上的收支、資產負債、目標、保單、方案與建議將全部清空（顧問資料與稅務參數保留）。`))return;newClientReset(false);});
+  if(!confirm(`清空畫面？\n${c?`「${c}」的資料會先自動存檔，`:""}畫面上的收支、資產負債、目標、保單、方案與建議將全部清空（顧問資料與稅務參數保留）。`))return;newClientReset(false);});
+function hdrModeRender(){ /* v309：登入客戶庫後，標頭的離線入口（清空畫面／儲存工作檔／開啟工作檔）隱藏——新客戶、存檔、開檔都走「📁 客戶管理」，正本只有一個 */
+  const on=!!(typeof CS!=="undefined"&&CS.user);["btnNewClient","btnSaveFile","btnOpenFile"].forEach(id=>{const e=$(id);if(e)e.style.display=on?"none":"";});}
+setTimeout(()=>{try{hdrModeRender();}catch(e){}},0);
 var trkDualNote="";
 function trkSideRoute(nm){const n=nm||"";if(/執行業務|分紅|診所|自費/.test(n))return["1_0","pro"];if(/租/.test(n))return["1_3","rent"];if(/股利|配息/.test(n))return["1_2","div"];if(/利息/.test(n))return["1_1","int"];return["0_3","sal"];} // 追蹤工具 sideItems 名稱 → ①-1 列／所得類別
 function importTracker(j){
@@ -13741,7 +13745,7 @@ async function csOpen(mode){$("csOverlay").classList.add("on");$("csOverlay").cl
   if(typeof asBanner==="function"&&asNs()!==ns0)try{asBanner();}catch(e){} // v282：帳號變了 → 自動存檔橫幅與下拉換成該帳號的
   csRenderUser();if(CS.user)await csRefresh();else{$("csList").innerHTML=`<div class="note">${CS.A===CSDrive?"請先按右上「以 Google 登入」，選擇你的 Google 帳號並允許存取雲端硬碟。":"請先按右上「設定同仁 Email」——本機模式只是輸入你的 Email 作為「負責同仁」標記，資料存在這台電腦的瀏覽器。"}</div>`;$("csDetail").innerHTML="";}}
 function csClose(){$("csOverlay").classList.remove("on","landing");}
-function csRenderUser(){const u=CS.user;const mgr=u&&csIsManager(u.email);if(typeof lgRenderChip==="function")try{lgRenderChip();}catch(e){}
+function csRenderUser(){const u=CS.user;const mgr=u&&csIsManager(u.email);if(typeof lgRenderChip==="function")try{lgRenderChip();}catch(e){}if(typeof hdrModeRender==="function")try{hdrModeRender();}catch(e){}
   $("csUser").innerHTML=u?`<span>${csEsc(u.name||u.email)}${mgr?" <span class='bdg b-both'>主管</span>":""}</span><button class="btn ghost sm" type="button" id="csSignOut">登出</button>`:`<button class="btn sm" type="button" id="csSignIn">${CS.A===CSDrive?"以 Google 登入":"設定同仁 Email"}</button>`;
   const st=$("csStaff");if(st)st.style.display=(mgr&&CS.A===CSDrive)?"":"none";
   const sc=$("csScope");if(sc){sc.style.display=mgr?"":"none";if(!mgr){CS.scope="mine";}sc.querySelectorAll(".seg").forEach(b=>b.classList.toggle("on",b.dataset.scope===CS.scope));}
@@ -13814,7 +13818,7 @@ async function csShowVersions(id){const rec=CS.clients.find(r=>r.id===id);if(!re
   $("csDetail").querySelectorAll("[data-vopen]").forEach(b=>b.onclick=()=>csOpenVersion(id,vs.find(v=>v.id===b.dataset.vopen)));
   $("csDetail").querySelectorAll("[data-vdl]").forEach(b=>b.onclick=async()=>{const v=vs.find(x=>x.id===b.dataset.vdl);try{const j=await CS.A.getVersion(id,v.id);dlJSON(j,`工作台_${rec.name}_${v.label}.json`);}catch(e){csMsg(String(e.message||e),true);}});
   $("csDetail").querySelectorAll("[data-vdel]").forEach(b=>b.onclick=async()=>{const v=vs.find(x=>x.id===b.dataset.vdel);if(!confirm(`刪除版本「${v.label}」？`))return;try{await CS.A.deleteVersion(id,v.id);csShowVersions(id);}catch(e){csMsg(String(e.message||e),true);}});}
-function csEditClient(id){const land=$("csOverlay").classList.contains("landing");const rec=id?CS.clients.find(r=>r.id===id):(land?Object.assign(csRecordFromScreen(),{name:"",hospital:"",dept:"",phone:""}):csRecordFromScreen());if(!rec)return;CS.edit=rec;const isNew=!id;const st0=rec.status;
+function csEditClient(id){const land=$("csOverlay").classList.contains("landing");const rec=id?CS.clients.find(r=>r.id===id):Object.assign(csRecordFromScreen(),{name:"",hospital:"",dept:"",phone:""});if(!rec)return; /* v309：新客戶表單一律空白 */CS.edit=rec;const isNew=!id;const st0=rec.status;
   const f=(k,lb,type)=>`<div><label>${lb}</label><input type="${type||"text"}" data-k="${k}" value="${csEsc(rec[k]||"")}"></div>`;
   $("csDetail").innerHTML=`<div class="csEdit">${f("name","姓名")}${f("hospital","醫院／診所")}${f("dept","科別")}${f("phone","電話")}
     <div><label>負責同仁（Email）</label><input type="text" data-k="owner" value="${csEsc(rec.owner||"")}" ${csIsManager(CS.user&&CS.user.email)?"":"readonly"}></div>
@@ -13825,7 +13829,8 @@ function csEditClient(id){const land=$("csOverlay").classList.contains("landing"
   $("csEditCancel").onclick=()=>{$("csDetail").innerHTML="";CS.edit=null;};
   $("csEditSave").onclick=async()=>{const box=$("csDetail");box.querySelectorAll("[data-k]").forEach(el=>{const k=el.dataset.k;rec[k]=k==="tags"?el.value.split(/[,，]/).map(s=>s.trim()).filter(Boolean):el.value.trim();});
     if(!rec.name){csMsg("姓名必填",true);return;}rec.owner=(rec.owner||(CS.user?CS.user.email:"")).toLowerCase();rec.updated=csNow();const closed=rec.status==="已結案"&&st0!=="已結案";if(closed)csContractEnd(rec);
-    try{await CS.A.saveClient(rec);if(isNew&&land){CS.clients.push(rec);CS.sel=rec.id;lgEnterNew(rec);return;}if(isNew){CS.clients.push(rec);CS.sel=rec.id;if($("clientName")&&!$("clientName").value.trim())$("clientName").value=rec.name;}
+    if(isNew&&!land){const cur=(($("clientName")||{}).value||"").trim();if(cur&&cur!==rec.name&&!confirm(`建立「${rec.name}」會把目前畫面清空（「${cur}」會先自動存檔）。繼續？`)){csMsg("已取消");return;}} /* v309 */
+    try{await CS.A.saveClient(rec);if(isNew){CS.clients.push(rec);CS.sel=rec.id;lgEnterNew(rec);return;}
       csMsg(isNew?`客戶「${rec.name}」已建立並選取——按「存目前畫面為新版本」即可存入第一個版本`:closed?`已結案 ✓ 別忘了提醒「${rec.name}」：追蹤工具可以繼續記帳（工具在他手上）——哪天回來，就能直接用實際值建立新年度現況，重新規劃快很多。`:"已儲存");$("csDetail").innerHTML="";csRenderList();}catch(e){csMsg(String(e.message||e),true);}};}
 async function csExportAll(){if(!CS.user)return;csMsg("打包中…");try{const out={kind:"客戶庫備份",ver:1,time:csNow(),by:CS.user.email,clients:[]};
     for(const r of csFiltered()){const vs=await CS.A.listVersions(r.id);const vv=[];for(const v of vs){vv.push({label:v.label,time:v.time,by:v.by,data:await CS.A.getVersion(r.id,v.id)});}const c=Object.assign({},r);delete c._dir;delete c._file;c.versions=vv;out.clients.push(c);}
@@ -13950,7 +13955,7 @@ async function lgLogin(){const A=csAdapter();CS.A=A;lgMsg("登入中…");
     const ac=await csAccessCheck();if(!ac.ok){try{await A.signOut();}catch(e){}CS.user=null;lgMsg(ac.why,true);return;} // v273：到期／除名／未開通 → 擋下
     $("lgOverlay").classList.remove("on");document.body.classList.remove("lgLocked");lgRenderChip();if(typeof asBanner==="function")try{asBanner();}catch(e){}await csOpen("landing");}
   catch(e){lgMsg(lgErrTxt(e),true);}}
-function lgRenderChip(){const c=$("lgChip");if(!c)return;const u=CS.user;
+function lgRenderChip(){if(typeof hdrModeRender==="function")try{hdrModeRender();}catch(e){}const c=$("lgChip");if(!c)return;const u=CS.user;
   if(!u){c.style.display="none";c.innerHTML="";}
   else{c.style.display="";c.innerHTML=`👤 <b>${csEsc(u.name||u.email)}</b>${csIsManager(u.email)?"<span class='bdg b-both'>主管</span>":""}${CS.access&&CS.access.fpwExpires?`<span class='bdg b-rx' title='${csEsc(CS.access.fpwRole||"")}期限'>至 ${csEsc(CS.access.fpwExpires)}</span>`:""}<button class="btn ghost sm" type="button" id="lgOut" title="登出並清空畫面">登出</button>`;$("lgOut").onclick=()=>lgLogout(false);}
   const h=$("csLandHd");if(h)h.innerHTML=u?`<span>👋 <b>${csEsc(u.name||u.email)}</b>，選一位客戶「開啟最新」，或按「＋ 新客戶」建立後進入工作台。</span><button class="btn ghost sm" type="button" id="csLandSkip">略過，直接進入工作台</button>`:"";
