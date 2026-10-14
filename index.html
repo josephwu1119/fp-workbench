@@ -36,6 +36,8 @@ body{
 .dot{width:9px;height:9px;border-radius:9px;background:var(--accent);}
 .brand{font-weight:700;font-size:16px;letter-spacing:.5px;}
 .h1{font-size:27px;letter-spacing:1px;color:var(--accent);margin:0;}
+.polCvTag{font-family:system-ui;font-size:11px;color:var(--sub);margin-top:2px;text-align:right;white-space:nowrap}.polCvTag a{color:var(--accent)}
+.appVer{display:inline-block;vertical-align:middle;margin-left:10px;padding:1px 8px;border:1px solid var(--line);border-radius:10px;font-family:system-ui;font-size:11.5px;font-weight:600;letter-spacing:0;color:#8a7a5c;background:#fbf7f0;cursor:help}
 .lead{font-size:14.5px;line-height:1.8;color:#3a4654;margin:0;}
 .hdBar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;
   background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;
@@ -470,7 +472,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台</h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v361</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -2250,6 +2252,8 @@ function renderChart(P,r){
   chartData={P,r,L,T,iw,ih,n,xF,bd,inc,exp};
   attachHover();
 }
+function tipPlace(tip,px,bw){const op=tip.offsetParent;const k=(op&&op.offsetWidth)?(op.getBoundingClientRect().width/op.offsetWidth)||1:1;px/=k;bw/=k; /* v361：字級（zoom）≠100% 時，畫面座標換回 CSS 座標——原本 125% 時提示被推到右邊切掉 */
+  const w=tip.offsetWidth||240;let l=px+12;if(l+w>bw)l=px-12-w;tip.style.left=Math.max(0,Math.min(bw-w,l))+"px";} /* 量實際寬度，右側放不下就翻到游標左側 */
 function attachHover(){
   const svg=$("chart"),rect=$("hoverRect"),lineEl=$("hoverLine"),tip=$("tip"),box=$("chartBox");
   if(!rect) return;
@@ -2268,7 +2272,7 @@ function attachHover(){
       <div class="tRow"><span class="tDot" style="background:var(--exp)"></span>支出合計：<b>${fmtW(exp[i])}</b></div>`;
     tip.style.opacity="1";
     const px=x/980*b.width;
-    tip.style.left=Math.min(b.width-220,Math.max(0,px+12))+"px";
+    tipPlace(tip,px,b.width);
     tip.style.top="14px";
   };
   rect.addEventListener("mousemove",move);
@@ -3830,10 +3834,11 @@ function autoSyncNow(){ // ①-1／①-2／①-3 一改動 → 自動重跑 ②-
   let el=null;
   const box=()=>{if(!el){el=document.createElement("div");el.id="gTip";document.body.appendChild(el);}return el;};
   const move=ev=>{const b=box();const pad=14;
-    let x=ev.clientX+pad,y=ev.clientY+pad;
-    const w=b.offsetWidth,h=b.offsetHeight;
-    if(x+w>innerWidth-8)x=Math.max(8,ev.clientX-w-pad);
-    if(y+h>innerHeight-8)y=Math.max(8,ev.clientY-h-pad);
+    const w=b.offsetWidth,h=b.offsetHeight,k=(w&&b.getBoundingClientRect().width/w)||1; /* v361：字級（body zoom）≠100% → 螢幕座標換回 CSS 座標 */
+    const cx=ev.clientX/k,cy=ev.clientY/k,VW=innerWidth/k,VH=innerHeight/k;
+    let x=cx+pad,y=cy+pad;
+    if(x+w>VW-8)x=Math.max(8,cx-w-pad);
+    if(y+h>VH-8)y=Math.max(8,cy-h-pad);
     b.style.left=x+"px";b.style.top=y+"px";};
   const hide=()=>{if(el)el.style.display="none";};let supp=null; /* v357：點過的元素在滑鼠離開前不再顯示 */
   document.addEventListener("mouseover",ev=>{
@@ -3841,7 +3846,7 @@ function autoSyncNow(){ // ①-1／①-2／①-3 一改動 → 自動重跑 ②-
     const t=ev.target.closest("[data-tip]");if(!t||t===supp)return;
     const b=box();b.innerHTML=(t.dataset.tip||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")
       .replace(/\|\|/g,"<br>").replace(/\[b\]/g,"<b>").replace(/\[\/b\]/g,"</b>");
-    b.style.display="block";move(ev);});
+    b.style.left="0px";b.style.top="0px";b.style.display="block";move(ev);}); /* v361：先歸位再量寬度，避免被右緣擠窄 */
   document.addEventListener("mousemove",ev=>{if(el&&el.style.display==="block"&&ev.target.closest("[data-tip]"))move(ev);});
   document.addEventListener("mouseout",ev=>{if(supp&&!(ev.relatedTarget&&supp.contains(ev.relatedTarget)))supp=null;if(ev.target.closest("[data-tip]")&&el)el.style.display="none";});
   document.addEventListener("mouseleave",hide);
@@ -5366,6 +5371,9 @@ function buildPolicies(){
 /* v352：①-4 理財型／傳承型摘要（唯讀）；A1 時登錄表本身在 ①-4，摘要隱藏 */
 function polFinSumRender(){const box=$("polFinSum"),pn=$("polProtNote");if(!box)return;const a1=typeof svcPlanCode==="function"&&svcPlanCode()==="A1";
   const fin=policies.filter(p=>!polIsProt(p)),prot=policies.filter(p=>polIsProt(p));
+  {const as=$("as_1_4");if(as){const td=as.parentElement;let tg=td.querySelector(".polCvTag");const nCv=fin.filter(p=>(+p.cv||0)>0||(Array.isArray(p.cvArr)&&p.cvArr.length)).length; /* v361：①-3 保價金列標出來源，取代 ①-4 摘要卡 */
+    if(!tg){tg=document.createElement("div");tg.className="polCvTag no-print";td.appendChild(tg);}
+    const tab=polRegName().split(" ")[0];tg.innerHTML=nCv?`${tab} 登錄 ${nCv} 張・<a href="#" class="lnkToProtPol">看明細</a>`:`由 <a href="#" class="lnkToProtPol">${tab} 登錄表</a>帶入`;tg.title="";tg.dataset.tip=`保價金由${polRegName()}各保單的「保價金／現價」自動加總`;}}
   if(a1){box.innerHTML="";if(pn)pn.innerHTML="";return;}
   const N=v=>NT(Math.round(+v||0));let sa=0,cv=0,pr=0;
   const rows=fin.map(p=>{sa+=+p.sa||0;cv+=+p.cv||0;const prem=Array.isArray(p.premArr)&&p.premArr.length?p.premArr[0]:(+p.prem||0);pr+=prem;return `<tr><td class="rn" style="white-space:normal">${esc(p.name||"（未命名）")}${p.src==="bsAdj"?`<span class="mini" style="margin:0 0 0 6px;color:var(--gold)">方案新增</span>`:""}</td><td style="text-align:left;font-family:system-ui;font-size:11px">${esc(p.type||"")}${p.rider==="附約"?"・附約":""}</td><td style="text-align:center;font-family:system-ui;font-size:11px">${esc(p.insured||"本人")}</td><td class="calc">${N(p.sa)}</td><td class="calc">${N(p.cv)}</td><td style="text-align:left;font-family:system-ui;font-size:11px">${esc(p.pay||"")}</td><td class="calc">${prem?N(prem):"—"}${p.premYrs?`<span class="mini" style="margin:0 0 0 4px">×${p.premYrs}年</span>`:""}</td></tr>`;}).join("");
@@ -5376,6 +5384,7 @@ var polPlacing=false;
 const CAP14_SUM=`保單一律在 <b>⑥-3 保單登錄表</b> 登錄——理財型／傳承型與保障型同一張清單、主約接自己的附約。這裡只摘要理財型／傳承型：<b>保價金</b>自動進 ①-3「儲蓄保險現金價值」、退休現金流與 ⑦ 遺產稅，<b>保額</b>進 ⑥ 已備，<b>理財類保費</b>同步後建為限期扣款時間帶（①-2 理財支出只是現況記錄）。要保人非本人的保單不入本人資產與遺產。`;
 const CAP14_A1=`<b>A1 財報系統</b>不含 ⑥ 風險規劃，保單就在這裡登錄（理財型／傳承型與保障型同一張清單、主約接自己的附約）：<b>保價金</b>自動進 ①-3「儲蓄保險現金價值」、退休現金流與 ⑦ 遺產稅，<b>理財類保費</b>同步後建為限期扣款時間帶。切到其他服務方案時，登錄表會回到 ⑥-3，這裡只剩摘要。`;
 function polEditorPlace(){const blk=$("protPolBlock"),h1=$("polEditorHostA1"),h6=$("polEditorHost63");if(!blk||!h1||!h6)return;const a1=typeof svcPlanCode==="function"&&svcPlanCode()==="A1";const host=a1?h1:h6;if(blk.parentNode!==host)host.appendChild(blk);
+  ["polNote","polCheck"].forEach(id=>{const e=$(id);if(e&&e.parentNode!==blk)blk.appendChild(e);}); /* v361：同步內容／一致性檢查跟著登錄表走 */
   document.querySelectorAll(".polRegT").forEach(e=>{const t=a1?"①-4":"⑥-3";if(e.textContent!==t)e.textContent=t;}); /* v358：靜態說明的登錄表分頁編號 */
   const k=$("k14kick"),h=$("h14"),c=$("cap14");const kt=a1?"①-4　保單登錄表":"①-4　理財型／傳承型保單（由 ⑥-3 帶入）";
   if(k&&k.textContent!==kt){k.textContent=kt;if(h)h.textContent=a1?"保單登錄表（理財型／傳承型＋保障型）":"理財型／傳承型保單摘要（保額、保價金、給付型態）";if(c)c.innerHTML=a1?CAP14_A1:CAP14_SUM;
@@ -5417,7 +5426,7 @@ $("btnAddPolProt")&&$("btnAddPolProt").addEventListener("click",()=>{ /* v333 */
   polOpenSet=new WeakSet();polOpenSet.add(policies[policies.length-1]);buildPolicies();polFocusNew(policies.length-1); /* v352 */
 });
 $("btnPolSyncProt")&&$("btnPolSyncProt").addEventListener("click",()=>{policySync();const pm=$("polMsgProt"),pm0=$("polMsg");if(pm&&pm0)pm.textContent=pm0.textContent;});
-document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("#lnkToProtPol");if(!a)return;e.preventDefault();const a1=typeof svcPlanCode==="function"&&svcPlanCode()==="A1";if(!a1){const t=document.querySelector('.tab[data-view="view_prot"]');if(t)t.click();}setTimeout(()=>{const el=$("protPolBlock");if(el)el.scrollIntoView({behavior:"smooth",block:"start"});},150);});
+document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("#lnkToProtPol,.lnkToProtPol");if(!a)return;e.preventDefault();const a1=typeof svcPlanCode==="function"&&svcPlanCode()==="A1";if(!a1){const t=document.querySelector('.tab[data-view="view_prot"]');if(t)t.click();}setTimeout(()=>{const el=$("protPolBlock");if(el)el.scrollIntoView({behavior:"smooth",block:"start"});},150);});
 /* 保險一致性檢查（軟性）：保費支出 × ①-4 保單登錄表 互相對照 */
 function polRegName(){return (typeof svcPlanCode==="function"&&svcPlanCode()==="A1")?"①-4 保單登錄表":"⑥-3 保單登錄表";} /* v355：登錄表所在分頁依方案 */
 function insCheck(){
@@ -9256,7 +9265,7 @@ const SVC_HIDE={A2:{views:A2_HIDE_VIEWS,panels:A2_HIDE_PANELS,home:"view_prot"},
 function svcA2Apply(){const code=(typeof svcPlanCode==="function"&&svcPlanCode())||"";const H=SVC_HIDE[code]||{views:[],panels:[]};document.body.dataset.svcPlan=code;
   const allViews=[...new Set(Object.values(SVC_HIDE).flatMap(x=>x.views))];
   allViews.forEach(v=>{const hide=H.views.includes(v);document.querySelectorAll(`.tab[data-view="${v}"],#mainToc .mtGrp[data-view="${v}"]`).forEach(el=>el.classList.toggle("a2hide",hide));});
-  document.querySelectorAll(".panel").forEach(p=>{const kk=p.querySelector(":scope>.kicker");if(!kk)return;const key=(typeof mtKey==="function")?mtKey(kk.textContent):"";const hide=H.panels.includes(key);p.classList.toggle("a2hide",hide);
+  document.querySelectorAll(".panel").forEach(p=>{const kk=p.querySelector(":scope>.kicker");if(!kk)return;const key=(typeof mtKey==="function")?mtKey(kk.textContent):"";const hide=H.panels.includes(key)||(key==="①-4"&&code!=="A1");p.classList.toggle("a2hide",hide); /* v361：①-4 只在 A1 顯示（其他方案保單統一在 ⑥-3） */
     if(p.id)document.querySelectorAll(`#mainToc .mtKid[data-t="${p.id}"]`).forEach(k=>k.classList.toggle("a2hide",hide));});
   if($("rptA2Note"))$("rptA2Note").style.display=code==="A2"?"":"none";
   if(typeof a2SimpleRefresh==="function")try{a2SimpleRefresh();}catch(e){} /* v327 */
@@ -12574,7 +12583,7 @@ function bpAttachHover(){ // ④-1 藍圖：游標所在年份的年齡（全家
       <div class="tRow"><span class="tDot" style="background:#8fb3d9"></span>累積資產（${d.planOK?"規劃後":"現況"}）：<b>${W(d.pool[i])}</b></div>
       ${d.poolB?`<div class="tRow"><span class="tDot" style="background:#8a94a0"></span>現況基線：<b>${W(d.poolB[i])}</b>　差 <b>${d.pool[i]-d.poolB[i]>=0?"+":"−"}${W(Math.abs(d.pool[i]-d.poolB[i]))}</b></div>`:""}
       ${d.poolCV?`<div class="tRow"><span class="tDot" style="background:#c9a24a"></span>含保單現價：<b>${W(d.poolCV[i])}</b>　保單 <b>${W(d.poolCV[i]-d.pool[i])}</b></div>`:""}`;
-    tip.style.opacity="1";const px=x/980*b.width;tip.style.left=Math.min(b.width-260,Math.max(0,px+12))+"px";tip.style.top="14px";};
+    tip.style.opacity="1";const px=x/980*b.width;tipPlace(tip,px,b.width);tip.style.top="14px";};
   svg.addEventListener("mousemove",move);
   box.addEventListener("mouseleave",()=>{tip.style.opacity="0";const ln=$("bpHoverLine");if(ln)ln.setAttribute("opacity","0");});
 }
@@ -14521,7 +14530,7 @@ async function csShowVersions(id){const rec=CS.clients.find(r=>r.id===id);if(!re
   if(rec.nVer!==vs.length){rec.nVer=vs.length;try{await CS.A.saveClient(rec);}catch(e){}csRenderList();}
   $("csDetail").dataset.rowFor=id;$("csDetail").innerHTML=`<div class="csVer"><div style="display:flex;align-items:center;gap:8px"><b>${csEsc(rec.name)}</b><span class="mini" style="margin:0">${csEsc(rec.owner||"")}・${vs.length} 個版本</span><span style="margin-left:auto"><button class="btn ghost sm" type="button" id="csDelClient">刪除這位客戶</button> <button class="btn ghost sm" type="button" id="csDetailClose">收起</button></span></div>
     ${vs.length?`<table><tr><th>版本</th><th>時間</th><th>大小</th><th>存檔者</th><th></th></tr>${vs.map(v=>`<tr><td>${csEsc(v.label)}</td><td>${csFmtT(v.time)}</td><td>${(v.size/1024).toFixed(0)} KB</td><td>${csEsc(v.by||"")}</td><td style="white-space:nowrap"><button class="btn sm" type="button" data-vopen="${csEsc(v.id)}">開啟</button> <button class="btn ghost sm" type="button" data-vdl="${csEsc(v.id)}">下載</button> <button class="btn ghost sm" type="button" data-vdel="${csEsc(v.id)}" style="color:var(--gD)">刪除</button></td></tr>`).join("")}</table>`:(()=>{const as=csAsFor(rec.name);const cur=(($("clientName")||{}).value||"").trim();
-      return `<div class="csNoVer"><div class="mini" style="margin:4px 0 8px">還沒有版本。要開始幫「${csEsc(rec.name)}」規劃：</div>
+      return `<div class="csNoVer" style="text-align:left"><div class="mini" style="margin:4px 0 8px">還沒有版本。要開始幫「${csEsc(rec.name)}」規劃：</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn sm" type="button" id="csBlankStart">🆕 開新空白工作台</button>${as?`<button class="btn ghost sm" type="button" id="csAsRestore">💾 還原這台電腦的自動存檔（${csEsc(as.time||"")}）</button>`:""}</div>
       <div class="mini" style="margin:8px 0 0">${cur&&cur!==rec.name?`目前畫面是「${csEsc(cur)}」，開新工作台前會先自動存檔（可由右上「還原自動存檔…」找回）。`:""}資料填好後，回到這裡按上方「存目前畫面為新版本」存入第一個版本。</div></div>`;})()}</div>`;
   csDetailAttach();
