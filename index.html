@@ -5,6 +5,10 @@
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>財務規劃整合工作台｜醫師的財務管家</title>
+<script src="config.js"></script><!-- 部署時放同目錄：window.FPW_CONFIG={mode:"drive",driveClientId:"…",managers:[…]}；本機開檔找不到也沒關係。v362：移到 head，登入遮罩才能在畫面畫出來前就位 -->
+<script>(function(){try{var c=window.FPW_CONFIG||{},id=String(c.driveClientId||"").trim(),drive=c.mode==="drive"&&/^\d+-[a-z0-9]+\.apps\.googleusercontent\.com$/.test(id);
+  if(c.loginGate===true||(c.loginGate!==false&&drive)){var h=document.documentElement;h.classList.add("lgBoot");setTimeout(function(){h.classList.remove("lgBoot");},10000);}}catch(e){}})(); /* v362：雲端版先藏工作台，避免閃 0.8 秒 */</script>
+<style>html.lgBoot{background:linear-gradient(160deg,#f7f3ea 0%,#ece2cc 100%);min-height:100%}html.lgBoot body{visibility:hidden;background:transparent}html.lgBoot #lgOverlay{visibility:visible}</style>
 <meta name="description" content="醫師的財務管家｜財務規劃整合工作台：問診建檔、現況與方案比較、風險規劃、報告書產出與追蹤工具匯出。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -472,7 +476,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v361</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v364</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -585,6 +589,13 @@ body:not(.rxLock) .bsCascade{display:block}
   <p class="cap no-print" style="margin:-2px 0 6px"><b>可接受調整＋優先序</b>（表末欄）：問診時與客戶談定，例「購屋達不到時 ①降低至 20,000,000 元 → ②延後至 48 歲 → ③取消」（金額單位同本表：元）。點「＋類型」加入、↑↓ 排先後、✕ 移除；現況與方案皆可見，做方案時依此順序套用。</p>
   <div style="overflow-x:auto"><table class="dt" id="tblGoals"></table></div>
   <div id="goalNote" style="margin-top:12px"></div>
+
+  <details class="grp" id="eduGrp" style="margin-top:14px"><summary>📚 子女教育規劃快選（逐階段挑學制，自動依各子女年齡寫回目標）</summary><div class="grpBody">
+  <p class="cap" style="margin-top:0">問診時逐階段和客戶確認：托嬰、幼兒園、國小、國中、高中、大學、研究所，以及安親、補習、家教、才藝。子女出生年取自 ⓪ 基本資料；還沒出生的，用「＋ 預計出生的子女」。
+  按「寫回」後，每個階段在上方目標表產生一列「教育金」（每年型，金額為今日值），開始年齡已依子女出生年換算成<b>本人年齡</b>；已過的階段略過，進行中的階段從今年算剩餘年數。同一位子女重新寫回，會整組取代舊列。</p>
+  <input type="hidden" id="eduJson" value="">
+  <div id="eduBox"></div><div id="eduMsg"></div>
+  </div></details>
 
   <details class="grp" style="margin-top:14px"><summary>⌂ 購屋精算（輸入房子，自動拆頭期與房貸年付）</summary><div class="grpBody">
   <p class="cap">照「一間房子」的邏輯輸入：房價、購買方式、貸款條件（含寬限期與分段利率），試算後一鍵寫回上方目標清單——
@@ -4735,7 +4746,7 @@ function newClientReset(silent){
     document.querySelectorAll("#tblExpense select").forEach(e=>{e.selectedIndex=0;});
     [1,2,7,6,5].forEach((r,ri)=>{const e=$(`exp_4_${ri}_r`);if(e)e.value=r;});
     [7,3.5,7,6,2,0,0,0,0,2].forEach((r,ri)=>{const e=$(`as_1_${ri}_r`);if(e)e.value=r;}); /* v301：新客戶清空時 ①-3 投資類「年化報酬」預設值一併被清成空白 → 現況 μ 推估為 0%、藍圖／⑤ 以零報酬計算；改為回復預設 */
-    ["famJson","estHeirJson","estAllocJson","liMetaJson","siJson","trkAssetsJson","inc_self_basis","inc_sp_basis","bsAdjJson","retAdjJson","txSrc","txExtJson","journeyJson","nyMetaJson"].forEach(id=>{if($(id))$(id).value="";});
+    ["eduJson","famJson","estHeirJson","estAllocJson","liMetaJson","siJson","trkAssetsJson","inc_self_basis","inc_sp_basis","bsAdjJson","retAdjJson","txSrc","txExtJson","journeyJson","nyMetaJson"].forEach(id=>{if($(id))$(id).value="";});
     if(typeof buildJourney==="function")buildJourney();
     // 結構資料
     goals=[];if(typeof retAdj!=="undefined")retAdj=[];buildGoals();
@@ -10429,6 +10440,7 @@ function buildGoals(){
   recalcGoals();
   if(typeof renderRisk==="function")renderRisk();
   if(typeof renderGantt==="function")renderGantt();
+  if(typeof eduRender==="function"&&$("eduGrp")&&$("eduGrp").open)try{eduRender();}catch(e){console.warn(e);} /* v364 */
 }
 function recalcGoals(){
   let sum=0;
@@ -10539,6 +10551,143 @@ $("tblGoals").addEventListener("click",e=>{
   {const g=goals[+b.dataset.del]||{};if(!delAsk("這個財務目標",`${g.name||g.cat||"（未命名）"}｜${delAmt(g.pv," 元")}${g.age?`｜${g.age} 歲`:""}`))return;}
   goals.splice(+b.dataset.del,1);buildGoals();
 });
+/* ---------- v364 子女教育規劃快選：逐階段挑學制 → 依各子女出生年換算本人年齡 → 寫回 ②-2「教育金」目標 ---------- */
+const EDU_REGIONS=[["tpe","台北市"],["ntpc","新北市"],["tyn","桃園市"],["txg","台中市"]];
+/* 金額＝今日值・每年（元）；est＝推估（查無可靠公開資料）；once＝入學一次性費用（建校費等） */
+const EDU_STAGES=[
+ {k:"nur",lb:"托嬰",a0:0,a1:2,fund:"budget",opts:[
+   ["home","自己／家人照顧",{all:0}],
+   ["pub","公托（扣中央托育補助後）",{tpe:48000,ntpc:24000,tyn:24000,txg:18000}],
+   ["qp","準公共托嬰（扣補助後）",{tpe:120000,ntpc:108000,tyn:96000,txg:109000}],
+   ["prv","私立托嬰",{tpe:270000,ntpc:258000,tyn:264000,txg:210000}],
+   ["qpn","準公共保母日托（扣補助後）",{tpe:72000,ntpc:66000,tyn:48000,txg:24000},{est:1}],
+   ["nanny","私人保母包月",{tpe:630000,ntpc:540000,tyn:540000,txg:630000}]]},
+ {k:"kg",lb:"幼兒園",a0:2,a1:6,fund:"budget",opts:[
+   ["pub","公立幼兒園（第一胎月繳上限 1,000）",{all:12000}],
+   ["np","非營利幼兒園（月繳上限 2,000）",{all:24000}],
+   ["qp","準公共幼兒園（月繳上限 3,000）",{all:36000}],
+   ["prv","一般私立幼兒園",{all:150000},{est:1}],
+   ["bil","雙語幼兒園",{all:220000}],
+   ["eng","全美語／高價幼兒園",{all:400000}]]},
+ {k:"es",lb:"國小",a0:6,a1:12,fund:"budget",opts:[
+   ["pub","公立國小（午餐、雜費）",{all:30000},{est:1}],
+   ["prv","私立國小",{tpe:185000,ntpc:185000,tyn:200000,txg:200000}],
+   ["bil","私立雙語國小",{tpe:300000,ntpc:300000,tyn:330000,txg:350000}],
+   ["intl","國際學校",{tpe:883526,ntpc:883526,tyn:564000,txg:564000},{once:{tpe:350000,ntpc:350000},fund:"capital"}]]},
+ {k:"jh",lb:"國中",a0:12,a1:15,fund:"budget",opts:[
+   ["pub","公立國中（午餐、雜費）",{all:30000},{est:1}],
+   ["prv","私立國中",{tpe:170000,ntpc:170000,tyn:175000,txg:135000}],
+   ["bil","私立雙語／實驗國中",{all:330000},{est:1}],
+   ["intl","國際學校",{tpe:979470,ntpc:979470,tyn:608000,txg:608000},{once:{tpe:350000,ntpc:350000},fund:"capital"}]]},
+ {k:"sh",lb:"高中",a0:15,a1:18,fund:"budget",opts:[
+   ["pub","公立高中（學費全免，雜費）",{all:15000},{est:1}],
+   ["prv","私立高中（學費全免，雜費＋課輔＋餐費）",{tpe:120000,ntpc:120000,tyn:110000,txg:100000},{est:1}],
+   ["intl","國際學校",{tpe:979470,ntpc:979470,tyn:672000,txg:672000},{once:{tpe:350000,ntpc:350000},fund:"capital"}]]},
+ {k:"uni",lb:"大學",a0:18,a1:22,fund:"capital",opts:[
+   ["pub","國內公立大學",{all:60000}],
+   ["prv","國內私立大學",{all:100000}],
+   ["med","國內私立醫學系（6 年）",{all:145000},{a1:24}],
+   ["uspub","美國公立大學（學費＋食宿）",{all:1550000}],
+   ["usprv","美國私立名校（學費＋食宿）",{all:2650000}]]},
+ {k:"grad",lb:"研究所／留學",a0:22,a1:24,fund:"capital",opts:[
+   ["pub","國內研究所",{all:60000},{est:1}],
+   ["us","美國研究所（學費＋食宿）",{all:2000000},{est:1}]]}];
+const EDU_ADDS=[
+ ["anqin","安親班",{tpe:60000,ntpc:48000,tyn:66000,txg:66000},6,12,"budget"],
+ ["eng","兒童美語",{all:60000},4,12,"budget",1],
+ ["art","才藝（每週一堂）",{all:48000},4,12,"budget"],
+ ["cram","國中補習（2 科小班）",{all:86400},12,15,"budget"],
+ ["cramh","高中補習（2 科）",{all:96000},15,18,"budget",1],
+ ["tutor","家教（每週一次）",{all:43200},12,18,"budget"],
+ ["dorm","大學住宿生活費",{all:180000},18,22,"capital",1]];
+const EDU_SRC="[b]預設金額來源（今日值・每年，可直接改）[/b]||托嬰：親子天下 2026 托嬰中心費用（北新桃中公托／準公托／私托）、2026 保母費用；公托與準公托已扣中央托育補助第一胎 7,000／13,000。||幼兒園：親子天下 2026 公幼／非營利／準公共月繳上限；雙語＝新北月 1.6–2 萬、台中家長實帳約 21–23 萬／年；全美語月 3 萬以上（風傳媒 2025）。||國小：私校七雄學雜費 16–21 萬／年（今周刊 2025）；台北靜心雙語約 30 萬；台中葳格／普霖斯頓等 25–50 萬；桃園有得每學期 16–17 萬；台北美國學校 K–5 約 88 萬＋建校費 35 萬；台中馬禮遜 K–5 約 56 萬（2025-26）。||國中：七雄國中部每學期 5–12 萬（今周刊 2025-12）；台中衛道／曉明／明道國一 5.3–6.1 萬／學期；桃園傳統私中年總 15–20 萬；國際學校同上。||高中：公私立高中職學費全免（不排富，雜費自付）。||大學：台大文學院 25,230／學期；高醫醫學系 72,385／學期（114）；私大文法商約 10 萬／年；美國大學年總：中西部公立 140–170 萬、東西岸私立 250–280 萬。||課外：安親班月費（2024 行情：台北 4–6 千、精華區 6 千–1 萬；新北 3–5 千；桃園、台中 3.5–7.5 千）；國中補習小班每科每月 2,400–4,800；家教每週一次 2,400–4,800／月；鋼琴一對一每堂 500–1,200。||標「推估」者查無可靠公開資料，請依客戶實況改。";
+function eduAmt(m,rg){return m&&(m[rg]!==undefined?m[rg]:m.all!==undefined?m.all:0);}
+function eduOpt(st,ok){return st.opts.find(o=>o[0]===ok)||null;}
+function eduLoad(){let o={};try{o=JSON.parse(($("eduJson")||{}).value||"{}")||{};}catch(e){}o.region=o.region||"tpe";if(o.g===undefined)o.g="";o.infl=!!o.infl;o.kids=Array.isArray(o.kids)?o.kids:[];return o;}
+function eduSave(E){const e=$("eduJson");if(e)e.value=JSON.stringify(E);if(typeof asTouch==="function")try{asTouch();}catch(x){}}
+function eduThisYear(){return new Date().getFullYear();}
+function eduSync(E){ /* ⓪ 子女出生年 ↔ 教育規劃子女：每個出生年對到一位 src=bio 子女；預計出生（src=plan）保留 */
+  const ys=(typeof bioKids!=="undefined"?bioKids:[]).map(v=>bioYr(v)).filter(Boolean);const used=new Set();
+  ys.forEach((y,i)=>{let k=E.kids.find(x=>x.src==="bio"&&x.by===y&&!used.has(x.id));if(!k){k={id:"k"+Date.now().toString(36)+i,src:"bio",by:y,name:"子女"+(i+1),st:{},adds:[]};E.kids.push(k);}used.add(k.id);});
+  E.kids.forEach(k=>{k.orphan=k.src==="bio"&&!used.has(k.id);});
+  E.kids.sort((a,b)=>(a.by||9999)-(b.by||9999));return E;}
+function eduSelfAge(by,c){const cur=V("g_self_cur")||num("startAge")||0;return cur+(by+c-eduThisYear());}
+function eduSpan(k,a0,a1){const now=eduThisYear()-k.by;const c0=Math.max(a0,now);const yrs=a1-c0;return yrs>0?{c0,yrs,age:eduSelfAge(k.by,c0),past:false}:{past:true};}
+function eduStageOf(k,st){const s=k.st[st.k]||{};const o=s.o||"";const opt=o?eduOpt(st,o):null;const a1=s.a1!==undefined&&s.a1!==""?+s.a1:(opt&&opt[3]&&opt[3].a1)||st.a1;const a0=s.a0!==undefined&&s.a0!==""?+s.a0:st.a0;return {o,opt,a0,a1,amt:s.amt,man:!!s.man};}
+function eduRows(E,k){ /* → 目標列 */
+  const rows=[],rg=E.region,gv=parseFloat(E.g),infl=E.infl,g=infl?(V("g_self_infl")||0):(isFinite(gv)?gv:0);let onceDone=false;
+  const push=(name,pv,age,freq,years,fund,key)=>rows.push({cat:"教育金",name,who:"joint",pv:Math.round(pv),age,freq,years,g,infl:infl||undefined,fund,edu:k.id,eduK:key});
+  EDU_STAGES.forEach(st=>{const S=eduStageOf(k,st);if(!S.opt)return;const amt=S.amt!==undefined&&S.amt!==""?+S.amt:eduAmt(S.opt[2],rg);if(!(amt>0))return;
+    const sp=eduSpan(k,S.a0,S.a1);if(sp.past)return;const ex=S.opt[3]||{};const short=S.opt[1].replace(/（.*?）/g,"");
+    const once=ex.once?eduAmt(ex.once,rg):0;if(once>0&&!onceDone&&sp.c0===S.a0){push(`${k.name}・${st.lb}・${short}入學費用`,once,sp.age,"單次",1,"capital",st.k+"_once");onceDone=true;}
+    push(`${k.name}・${st.lb}・${short}`,amt,sp.age,"每年",sp.yrs,ex.fund||st.fund,st.k);});
+  (k.adds||[]).forEach((a,i)=>{const d=EDU_ADDS.find(x=>x[0]===a.k);if(!d)return;const amt=a.amt!==undefined&&a.amt!==""?+a.amt:eduAmt(d[2],rg);if(!(amt>0))return;
+    const a0=a.a0!==undefined&&a.a0!==""?+a.a0:d[3],a1=a.a1!==undefined&&a.a1!==""?+a.a1:d[4];const sp=eduSpan(k,a0,a1);if(sp.past)return;
+    push(`${k.name}・${d[1].replace(/（.*?）/g,"")}`,amt,sp.age,"每年",sp.yrs,d[5],"add"+i);});
+  return rows;}
+function eduWrite(E,k){const rowsNew=eduRows(E,k);const old=goals.filter(g=>g.edu===k.id);
+  let pos=-1;for(let i=goals.length-1;i>=0;i--)if(goals[i].edu===k.id){pos=i;goals.splice(i,1);}
+  const pri0=old.length?Math.min(...old.map(g=>g.pri)):goals.reduce((m,g)=>Math.max(m,+g.pri||0),0)+1;rowsNew.forEach((r,i)=>{r.pri=pri0+i;r.adj=[];});
+  if(pos<0)pos=goals.length;goals.splice(pos,0,...rowsNew);return {n:rowsNew.length,removed:old.length};}
+function eduRender(){const box=$("eduBox");if(!box)return;const E=eduSync(eduLoad());eduSave(E);const rg=E.region,ty=eduThisYear();
+  const S='style="font-size:11.5px;padding:3px 5px;border:1px solid var(--line);border-radius:5px;background:var(--paper)"',N=w=>`style="width:${w}px;font-family:var(--mono);font-size:11.5px;padding:3px 5px;border:1px solid var(--line);border-radius:5px;background:var(--paper);text-align:right"`;
+  let h=`<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-family:system-ui;font-size:12px;margin-bottom:8px">
+    <label>地區 <select data-eg="region" ${S}>${EDU_REGIONS.map(([v,l])=>`<option value="${v}"${v===rg?" selected":""}>${l}</option>`).join("")}</select></label>
+    <label>學費成長率 <input type="number" data-eg="g" value="${E.g}" step="0.5" placeholder="不成長" ${N(64)} ${E.infl?"disabled":""}> %／年</label>
+    <label class="chk" style="margin:0"><input type="checkbox" data-eg="infl"${E.infl?" checked":""}><span>隨通膨（②-1 可變通膨率 ${V("g_self_infl")||0}%）</span></label>
+    <span data-tip="${EDU_SRC}" style="cursor:help;color:var(--accent)">ⓘ 金額來源</span>
+    <button type="button" class="btn sm" data-eact="writeAll" style="margin-left:auto">✎ 全部寫回 ②-2 目標</button></div>`;
+  if(!E.kids.length)h+=`<div class="note" style="margin:0 0 8px">⓪ 基本資料還沒有子女出生年。可先到 ⓪ 填，或用下方「＋ 預計出生的子女」。</div>`;
+  E.kids.forEach((k,ki)=>{const now=ty-k.by;const onG=goals.filter(g=>g.edu===k.id).length;
+    h+=`<div class="eduKid" style="border:1.5px solid var(--gold);border-radius:10px;padding:8px 10px;margin:0 0 10px;background:#fffdf6">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-family:system-ui;font-size:12px">
+      <input type="text" data-ek="${ki}" data-ef="name" value="${esc(k.name||"")}" style="width:90px;font-weight:700;font-size:12.5px;padding:3px 5px;border:1px solid var(--line);border-radius:5px">
+      ${k.src==="plan"?`預計出生 <input type="number" data-ek="${ki}" data-ef="by" value="${k.by||""}" ${N(64)}> 年`:`出生 ${k.by} 年`}
+      <span class="mini" style="margin:0">${now<0?`還有 ${-now} 年出生`:`今年 ${now} 歲`}${k.orphan?"・⓪ 已無這個出生年":""}${onG?`・②-2 已有 ${onG} 列`:""}</span>
+      <span style="margin-left:auto;display:flex;gap:6px;align-items:center">${E.kids.length>1?`<select data-ek="${ki}" data-ef="copyTo" ${S}><option value="">複製這位的安排到…</option>${E.kids.map((x,j)=>j===ki?"":`<option value="${j}">${esc(x.name||"")}</option>`).join("")}</select>`:""}
+      <button type="button" class="btn sm" data-eact="write" data-ek="${ki}">✎ 寫回這位</button>${(k.src==="plan"||k.orphan)?`<button type="button" class="btn danger sm" data-eact="del" data-ek="${ki}">✕</button>`:""}</span></div>
+    <table class="pt" style="margin-top:6px;font-family:system-ui;font-size:11.5px"><tr><th style="text-align:left">階段</th><th>子女年齡</th><th style="text-align:left">選擇</th><th>年費（今日值）</th><th style="text-align:left">對到本人年齡</th></tr>`;
+    EDU_STAGES.forEach(st=>{const s=eduStageOf(k,st);const sp=eduSpan(k,s.a0,s.a1);const def=s.opt?eduAmt(s.opt[2],rg):"";
+      h+=`<tr${sp.past?' style="opacity:.45"':""}><td class="rn">${st.lb}</td>
+        <td style="white-space:nowrap"><input type="number" data-ek="${ki}" data-es="${st.k}" data-ef="a0" value="${s.a0}" ${N(40)}>–<input type="number" data-ek="${ki}" data-es="${st.k}" data-ef="a1" value="${s.a1}" ${N(40)}> 歲</td>
+        <td style="text-align:left"><select data-ek="${ki}" data-es="${st.k}" data-ef="o" style="width:270px;font-size:11.5px;padding:3px 5px;border:1px solid var(--line);border-radius:5px;background:var(--paper)"><option value="">不列入</option>${st.opts.map(o=>`<option value="${o[0]}"${o[0]===s.o?" selected":""}>${o[1]}${o[3]&&o[3].est?"（推估）":""}</option>`).join("")}</select></td>
+        <td>${s.opt?`<input type="number" data-ek="${ki}" data-es="${st.k}" data-ef="amt" value="${s.amt!==undefined&&s.amt!==""?s.amt:def}" step="1000" ${N(96)}>${s.man?`<div class="mini" style="margin:0">預設 ${NT(def)}</div>`:""}`:""}</td>
+        <td style="text-align:left" class="mini">${sp.past?"已過":(sp.yrs>1?`本人 ${sp.age}–${sp.age+sp.yrs-1} 歲・${sp.yrs} 年`:`本人 ${sp.age} 歲・1 年`)}</td></tr>`;});
+    h+=`</table><div style="margin-top:6px;font-family:system-ui;font-size:11.5px"><b>課外</b>　`;
+    (k.adds||[]).forEach((a,ai)=>{const d=EDU_ADDS.find(x=>x[0]===a.k)||EDU_ADDS[0];const a0=a.a0!==undefined&&a.a0!==""?a.a0:d[3],a1=a.a1!==undefined&&a.a1!==""?a.a1:d[4];const amt=a.amt!==undefined&&a.amt!==""?a.amt:eduAmt(d[2],rg);
+      h+=`<span style="display:inline-flex;gap:4px;align-items:center;border:1px solid var(--line);border-radius:7px;padding:2px 6px;margin:2px 6px 2px 0;background:#fff">
+        <select data-ek="${ki}" data-ea="${ai}" data-ef="k" ${S}>${EDU_ADDS.map(x=>`<option value="${x[0]}"${x[0]===d[0]?" selected":""}>${x[1]}${x[6]?"（推估）":""}</option>`).join("")}</select>
+        年 <input type="number" data-ek="${ki}" data-ea="${ai}" data-ef="amt" value="${amt}" step="1000" ${N(80)}>
+        <span class="mini" style="margin:0">（月 ${NT(Math.round(amt/12))}）</span>
+        <input type="number" data-ek="${ki}" data-ea="${ai}" data-ef="a0" value="${a0}" ${N(44)}>–<input type="number" data-ek="${ki}" data-ea="${ai}" data-ef="a1" value="${a1}" ${N(44)}> 歲
+        <button type="button" class="btn danger sm" data-eact="addDel" data-ek="${ki}" data-ea="${ai}" style="padding:0 6px">✕</button></span>`;});
+    h+=`<button type="button" class="btn ghost sm" data-eact="add" data-ek="${ki}">＋ 課外項目</button></div></div>`;});
+  h+=`<button type="button" class="btn ghost sm" data-eact="plan">＋ 預計出生的子女</button>`;
+  box.innerHTML=h;}
+function eduMsg(t){const m=$("eduMsg");if(m)m.innerHTML=t||"";}
+(function(){const box=$("eduBox");if(!box)return;
+  const upd=fn=>{const E=eduSync(eduLoad());fn(E);eduSave(E);};
+  box.addEventListener("change",e=>{const t=e.target;if(!t.dataset)return;
+    if(t.dataset.eg){upd(E=>{const f=t.dataset.eg;if(f==="infl")E.infl=t.checked;else if(f==="region"){E.region=t.value;E.kids.forEach(k=>{Object.values(k.st||{}).forEach(s=>{if(!s.man)delete s.amt;});(k.adds||[]).forEach(a=>{if(!a.man)delete a.amt;});});}else E[f]=t.value;});eduRender();return;}
+    if(t.dataset.ek===undefined)return;const ki=+t.dataset.ek,f=t.dataset.ef;
+    if(f==="copyTo"){const j=t.value;if(j==="")return;upd(E=>{const src=E.kids[ki],dst=E.kids[+j];if(src&&dst){dst.st=JSON.parse(JSON.stringify(src.st||{}));dst.adds=JSON.parse(JSON.stringify(src.adds||[]));}});eduRender();eduMsg(`已把安排複製過去（依各自出生年換算本人年齡）——記得按「寫回」`);return;}
+    upd(E=>{const k=E.kids[ki];if(!k)return;
+      if(t.dataset.es){const s=(k.st[t.dataset.es]=k.st[t.dataset.es]||{});if(f==="o"){s.o=t.value;delete s.amt;s.man=false;const st=EDU_STAGES.find(x=>x.k===t.dataset.es);const op=st&&eduOpt(st,t.value);delete s.a1;if(op&&op[3]&&op[3].a1)s.a1=op[3].a1;}else if(f==="amt"){s.amt=t.value;s.man=t.value!=="";}else s[f]=t.value;return;}
+      if(t.dataset.ea!==undefined){const a=k.adds[+t.dataset.ea];if(!a)return;if(f==="k"){a.k=t.value;delete a.amt;delete a.a0;delete a.a1;a.man=false;}else{a[f]=t.value;if(f==="amt")a.man=t.value!=="";}return;}
+      if(f==="by")k.by=bioYr(t.value)||k.by;else k[f]=t.value;});
+    eduRender();});
+  box.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("button[data-eact]");if(!b)return;const act=b.dataset.eact,ki=+b.dataset.ek;
+    if(act==="plan"){upd(E=>{E.kids.push({id:"p"+Date.now().toString(36),src:"plan",by:eduThisYear()+2,name:"子女"+(E.kids.length+1),st:{},adds:[]});});eduRender();return;}
+    if(act==="add"){upd(E=>{const k=E.kids[ki];if(k)(k.adds=k.adds||[]).push({k:"anqin"});});eduRender();return;}
+    if(act==="addDel"){upd(E=>{const k=E.kids[ki];if(k)k.adds.splice(+b.dataset.ea,1);});eduRender();return;}
+    if(act==="del"){const E=eduSync(eduLoad());const k=E.kids[ki];if(!k)return;const n=goals.filter(g=>g.edu===k.id).length;
+      if(typeof delAsk==="function"&&!delAsk("這位子女的教育規劃",`${k.name}（${k.by} 年）${n?`｜②-2 的 ${n} 列教育金目標也會一起刪除`:""}`))return;
+      for(let i=goals.length-1;i>=0;i--)if(goals[i].edu===k.id)goals.splice(i,1);E.kids.splice(ki,1);eduSave(E);buildGoals();eduRender();return;}
+    if(act==="write"||act==="writeAll"){const E=eduSync(eduLoad());const list=act==="write"?[E.kids[ki]].filter(Boolean):E.kids;let n=0,r=0;const names=[];
+      list.forEach(k=>{const x=eduWrite(E,k);n+=x.n;r+=x.removed;if(x.n)names.push(k.name);});eduSave(E);buildGoals();if(typeof recalcGoals==="function")recalcGoals();eduRender();
+      eduMsg(`<div class="note good" style="margin:6px 0 0">已寫回 ②-2：${names.join("、")||"（沒有選任何階段）"} 共 ${n} 列「教育金」目標${r?`（取代舊的 ${r} 列）`:""}。年齡已依各子女出生年換算成本人年齡；支應方式：在學期間＝年結餘支應、大學／留學／國際學校＝投資準備（可在上方目標表改，重新寫回會再蓋過）。</div>`);}});
+  const g=$("eduGrp");if(g)g.addEventListener("toggle",()=>{if(g.open)eduRender();});})();
+
 $("btnAddGoal").addEventListener("click",()=>{
   goals.push({pri:goals.length+1,cat:"其他",name:"",pv:0,age:V("g_self_cur")+5,freq:"單次",years:1,g:V("g_self_infl")||0,infl:true}); /* v307：新目標預設隨通膨 */
   buildGoals();
@@ -14238,7 +14387,7 @@ if(typeof asInit==="function")try{asInit();}catch(e){console.warn(e);}
   b.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"});});})();
 </script>
 <div id="pcToast" class="no-print" role="status"></div>
-<script src="config.js"></script><!-- 部署時放同目錄：window.FPW_CONFIG={mode:"drive",driveClientId:"…",managers:[…]}；本機開檔找不到也沒關係 -->
+<!-- v362：config.js 已移到 <head> 載入 -->
 <!-- ===== 客戶庫（v257）：本機 IndexedDB／Google 雲端硬碟 兩種存放層；客戶清單、狀態標籤、多版本、搜尋排序、我的／全部 ===== -->
 <style>
 /* v335：方案工作區保單登錄唯讀 */
@@ -14265,6 +14414,10 @@ body[data-svc-plan="A2"] .panel:not(.a2Open) .a2Detail{display:none!important}
 #ssEst>summary.ssEstSum{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;cursor:pointer;list-style:none;margin:0 0 8px;padding:7px 14px;border:1.5px solid var(--gD);border-radius:10px;background:#fbf3e2;color:var(--gD);font-family:system-ui;font-size:13.5px;font-weight:700}
 #ssEst>summary.ssEstSum::-webkit-details-marker{display:none}#ssEst>summary.ssEstSum::before{content:"▶";font-size:10px}#ssEst[open]>summary.ssEstSum::before{content:"▼"}
 #ssEst>summary.ssEstSum:hover{background:#f5e6c4}.ssEstSub{font-weight:400;font-size:12px;color:var(--ink)}
+#csPickModal{position:fixed;inset:0;z-index:130;display:none;align-items:center;justify-content:center;background:rgba(38,56,79,.35);padding:16px}
+#csPickBox{background:#fff;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;max-width:560px;width:100%;box-shadow:0 12px 36px rgba(0,0,0,.25);font-family:system-ui}
+.csPickT{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:8px}.csPickTx{font-size:13px;line-height:1.7;color:var(--ink);background:#fbf7f0;border-radius:8px;padding:8px 10px;margin-bottom:12px}
+.csPickBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 #delModal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;background:rgba(38,56,79,.35);padding:16px}
 #delModalBox{background:#fff;border:1.5px solid var(--gD);border-radius:12px;padding:14px 18px;max-width:520px;width:100%;box-shadow:0 12px 36px rgba(0,0,0,.25);font-family:system-ui}
 #delModalTitle{font-size:15px;font-weight:700;color:var(--gD);margin-bottom:6px}#delModalTxt{font-family:system-ui;font-size:12.5px;line-height:1.6;color:var(--ink);white-space:pre-wrap;margin:0;background:#fbf7f0;border-radius:8px;padding:8px 10px}
@@ -14493,7 +14646,7 @@ function csRenderList(){const L=csFiltered();const stCls=s=>"s"+(CS_STATUS.index
   $("csList").querySelectorAll("[data-ver]").forEach(b=>b.onclick=()=>csShowVersions(b.dataset.ver));
   $("csList").querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>csEditClient(b.dataset.edit));
   $("csList").querySelectorAll("[data-renew]").forEach(b=>b.onclick=()=>csRenew(b.dataset.renew));
-  $("csList").querySelectorAll("tr.csRow").forEach(tr=>tr.addEventListener("click",e=>{if(e.target.closest("button"))return;CS.sel=tr.dataset.id;const r=CS.clients.find(x=>x.id===CS.sel);csRenderList();if(r)csMsg(`已選取「${r.name}」——「存目前畫面為新版本」會存到這位客戶`);}));}
+  $("csList").querySelectorAll("tr.csRow").forEach(tr=>tr.addEventListener("click",e=>{if(e.target.closest("button"))return;CS.sel=tr.dataset.id;const r=CS.clients.find(x=>x.id===CS.sel);csRenderList();if(r){const cur=(($("clientName")||{}).value||"").trim();csMsg(cur&&cur!==r.name?`已選取「${r.name}」——工作台上目前是「${cur}」；按「存目前畫面為新版本」時會先問你存到誰`:`已選取「${r.name}」——「存目前畫面為新版本」會存到這位客戶`);}}));}
 function csDetailPark(){const d=$("csDetail"),home=$("csDetailHome");if(d&&home&&d.parentNode!==home)home.appendChild(d);document.querySelectorAll("#csList tr.csVerRow").forEach(tr=>tr.remove());} /* v310：把展開面板搬回原位（清單要被清空／重畫前呼叫） */
 function csDetailAttach(){ /* v310：#csDetail（版本清單／客戶資料表單）有內容時，插進目前選取客戶那一列的下方；沒內容或清單裡沒這位客戶就放回原位 */
   const d=$("csDetail");if(!d)return;const home=$("csDetailHome");
@@ -14505,12 +14658,24 @@ function csDetailAttach(){ /* v310：#csDetail（版本清單／客戶資料表�
 function csRecordFromScreen(base){const nm=($("clientName")&&$("clientName").value.trim())||"";let hosp="",dept="",phone="";
   try{const bio=id=>$(id)?$(id).value:"";hosp=bio("bio_hospital")||bio("bio_org")||"";dept=bio("bio_dept")||bio("bio_spec")||"";phone=bio("bio_phone")||"";}catch(e){}
   return Object.assign({id:csId(),name:nm,hospital:hosp,dept,phone,owner:CS.user?CS.user.email:"",status:"問診中",tags:[],note:"",created:csNow()},base||{},{updated:csNow()});}
+function csPickTarget(scr,sel){ /* v363：存檔對象二選一（頁內，不用 window.confirm） */
+  if(navigator.webdriver&&!window.CS_FORCE_MODAL)return Promise.resolve("screen");
+  return new Promise(res=>{let m=$("csPickModal");if(!m){m=document.createElement("div");m.id="csPickModal";m.className="no-print";document.body.appendChild(m);}
+    const E=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+    m.innerHTML=`<div id="csPickBox" role="dialog" aria-modal="true"><div class="csPickT">要存到哪一位客戶？</div>
+      <div class="csPickTx">工作台上方客戶欄是「<b>${E(scr)}</b>」，但客戶清單目前選取的是「<b>${E(sel)}</b>」。<br>一般情況請存到工作台上的客戶；只有確定要把這份畫面存成「${E(sel)}」的版本時才選第二個。</div>
+      <div class="csPickBtns"><button type="button" class="btn sm" id="csPickScr">💾 存到「${E(scr)}」（工作台上的客戶）</button><button type="button" class="btn ghost sm" id="csPickSel">改存到「${E(sel)}」</button><button type="button" class="btn ghost sm" id="csPickNo">取消</button></div></div>`;
+    m.style.display="flex";const done=v=>{m.style.display="none";document.removeEventListener("keydown",kd,true);res(v);};
+    const kd=e=>{if(e.key==="Escape"){e.preventDefault();e.stopPropagation();done(null);}};document.addEventListener("keydown",kd,true);
+    $("csPickScr").onclick=()=>done("screen");$("csPickSel").onclick=()=>done("sel");$("csPickNo").onclick=()=>done(null);m.onclick=e=>{if(e.target===m)done(null);};
+    setTimeout(()=>{try{$("csPickScr").focus();}catch(e){}},30);});}
 async function csSaveHere(){if(!CS.user){csMsg("請先登入",true);return;}let nm=($("clientName").value||"").trim();
   const selRec=CS.clients.find(r=>r.id===CS.sel)||null;
   if(!nm&&selRec){nm=selRec.name||"";if(nm&&$("clientName"))$("clientName").value=nm;} // 上方客戶欄空白 → 用清單中選取的客戶
   if(!nm){csMsg("請先在清單點選一位客戶，或在工作台上方「客戶」欄填姓名",true);return;}
-  if(selRec&&selRec.name&&selRec.name!==nm&&!confirm(`目前選取的客戶是「${selRec.name}」，但工作台上方客戶欄是「${nm}」。\n\n確定要把目前畫面存成「${selRec.name}」的新版本？\n（按「取消」可先到清單點選正確的客戶）`))return;
-  let rec=selRec||CS.clients.find(r=>(r.name||"")===nm&&String(r.owner||"").toLowerCase()===CS.user.email)||null;
+  let useSel=!!selRec;
+  if(selRec&&selRec.name&&selRec.name!==nm){const pick=await csPickTarget(nm,selRec.name);if(!pick){csMsg("已取消");return;}useSel=pick==="sel";} /* v363：名字不一致 → 頁內對話框，預設存到工作台上的客戶 */
+  let rec=(useSel?selRec:null)||CS.clients.find(r=>(r.name||"")===nm&&String(r.owner||"").toLowerCase()===CS.user.email)||null;
   const label=prompt("這個版本的名稱",`${($("scenName")&&$("scenName").value)||"現況"} ${new Date().toISOString().slice(0,10)}`);if(label===null)return;
   csMsg("儲存中…");try{
     if(!rec){rec=csRecordFromScreen();rec=await CS.A.saveClient(rec);CS.clients.push(rec);}
@@ -14669,7 +14834,7 @@ function lgShow(){const A=csAdapter();$("lgOverlay").classList.add("on");
   $("lgGo").textContent=A===CSDrive?"以 Google 帳號登入":"以 Email 登入（本機模式）";
   $("lgHint").textContent=A===CSDrive?"第一次登入：請先請主管把你的 Gmail 加入授權名單。":"本機模式：客戶資料只存在這台電腦的瀏覽器裡。";
   const sk=$("lgSkip");if(sk)sk.style.display=(A===CSDrive&&FPW_CONFIG.allowSkip!==true)?"none":""; // v273：雲端版必須登入（本機檔案版不擋）
-  document.body.classList.add("lgLocked");
+  document.body.classList.add("lgLocked");document.documentElement.classList.remove("lgBoot"); /* v362：登入框已就位，交給 lgLocked */
   lgMsg("");}
 function lgErrTxt(e){const t=String(e&&e.message||e||"");
   if(/popup_closed|popup|access_denied|denied|403/i.test(t))return "登入沒有完成：可能是關掉了登入視窗，或你的 Gmail 還沒加入授權名單——請主管到 Google Auth Platform →「目標對象」→ 測試使用者加入你的 Gmail。";
@@ -14701,7 +14866,7 @@ function lgEnterNew(rec){ // landing 建立新客戶 → 清空工作台 → 帶
   setTimeout(()=>{if($("status"))$("status").textContent=`新客戶「${rec.name}」已建立 ✓ 請從 ⓪ 客戶與家庭開始填；資料填好後到「📁 客戶管理」按「存目前畫面為新版本」存入第一個版本`;},600);}
 $("lgGo").onclick=lgLogin;
 $("lgSkip").onclick=()=>{if(csAdapter()===CSDrive&&FPW_CONFIG.allowSkip!==true)return;$("lgOverlay").classList.remove("on");document.body.classList.remove("lgLocked");if($("status"))$("status").textContent="未登入：資料只存在這台電腦（可隨時按「📁 客戶管理」登入）";};
-if(lgGateOn())lgShow();
+if(lgGateOn())lgShow();else document.documentElement.classList.remove("lgBoot"); /* v362 */
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("csOverlay").classList.contains("on")&&!$("csOverlay").classList.contains("landing"))csClose();});
 </script>
 
