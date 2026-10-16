@@ -8,11 +8,14 @@
 <script src="config.js"></script><!-- 部署時放同目錄：window.FPW_CONFIG={mode:"drive",driveClientId:"…",managers:[…]}；本機開檔找不到也沒關係。v362：移到 head，登入遮罩才能在畫面畫出來前就位 -->
 <script>(function(){try{var c=window.FPW_CONFIG||{},id=String(c.driveClientId||"").trim(),drive=c.mode==="drive"&&/^\d+-[a-z0-9]+\.apps\.googleusercontent\.com$/.test(id);
   if(c.loginGate===true||(c.loginGate!==false&&drive)){var h=document.documentElement;h.classList.add("lgBoot");setTimeout(function(){h.classList.remove("lgBoot");},10000);}}catch(e){}})(); /* v362：雲端版先藏工作台，避免閃 0.8 秒 */</script>
-<style>html.lgBoot{background:linear-gradient(160deg,#f7f3ea 0%,#ece2cc 100%);min-height:100%}html.lgBoot body{visibility:hidden;background:transparent}html.lgBoot #lgOverlay{visibility:visible}</style>
+<style>html.lgBoot{background:linear-gradient(160deg,#f7f3ea 0%,#ece2cc 100%);min-height:100%}html.lgBoot body{visibility:hidden;background:transparent}html.lgBoot #lgOverlay{visibility:visible}
+#bootSplash{display:none}html.lgBoot #bootSplash{display:flex;visibility:visible;position:fixed;inset:0;z-index:94;align-items:center;justify-content:center;padding:16px}
+#bootCard{width:min(520px,100%);background:#fffdf8;border:1px solid #e4d9c2;border-radius:18px;box-shadow:0 20px 60px rgba(60,45,20,.18);padding:34px 30px 30px;text-align:center;font-family:system-ui;box-sizing:border-box}
+#bootCard .o{font-size:12px;letter-spacing:5px;color:#b08a3c;font-weight:700}#bootCard .t{font-family:'Noto Serif TC',serif;font-size:24px;font-weight:800;color:#26384f;margin:8px 0 14px;letter-spacing:2px}#bootCard .s{font-size:13px;color:#6b7280;letter-spacing:2px}</style>
 <meta name="description" content="醫師的財務管家｜財務規劃整合工作台：問診建檔、現況與方案比較、風險規劃、報告書產出與追蹤工具匯出。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&display=swap" rel="stylesheet"></noscript><!-- v365：字型改非阻塞載入，第一個畫面不必等 Google Fonts -->
 <style>
 :root{
   --paper:#f7f4ee; --accent:#1a3a5c; --ink:#1c2733; --gold:#7a5418;
@@ -300,6 +303,11 @@ ul.tight{margin:6px 0 0;padding-left:19px;} ul.tight li{margin-bottom:4px;}
 body:not(.helpAll) .panel:not(.helpOn) p.cap{display:none}
 body.helpAll .helpBtn,.panel.helpOn .helpBtn{color:var(--accent);border-color:var(--accent)}
 .panel:has(>.helpBtn)>:first-child{padding-right:88px} /* 第一行避開右上「說明」鈕 */
+.noteBtn{position:absolute;right:14px;top:12px;font-family:system-ui;font-size:11px;padding:3px 9px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--sub);cursor:pointer;white-space:nowrap}
+.panel:has(>.helpBtn)>.noteBtn{right:96px}.noteBtn:hover{color:var(--accent);border-color:var(--accent)}.noteBtn.on{color:#7a5a12;border-color:#b08a3c;background:#fbf3e2;font-weight:700}
+.panel:has(>.noteBtn)>:first-child{padding-right:110px}.panel:has(>.noteBtn):has(>.helpBtn)>:first-child{padding-right:190px}
+.noteBox{margin:6px 0 10px;border:1.5px solid #b08a3c;border-radius:10px;background:#fffdf6;padding:8px 10px;font-family:system-ui}
+.noteHd{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px;margin-bottom:6px}.noteBox textarea{width:100%;box-sizing:border-box;font-family:system-ui;font-size:13px;line-height:1.7;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:#fff;resize:vertical}
 #protTables>div{overflow-x:auto}
 .rpTrack{display:flex;height:7px;background:#eee;border-radius:4px;overflow:hidden;margin-top:4px;min-width:120px}.rpTrack span{display:block;height:100%}.rpBar{margin-top:3px}
 table.rpTbl input.rpIn,table.rpTbl select.rpIn{font-family:var(--mono);font-size:12px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--paper);text-align:right}table.rpTbl select.rpIn{font-family:"Noto Serif TC",serif;text-align:left;max-width:150px}table.rpTbl td{padding:4px 5px;white-space:nowrap}table.rpTbl{width:100%;table-layout:auto}table.rpTbl select.rpIn{max-width:120px}table.rpTbl input.rpIn[type=number]{width:84px!important;max-width:84px}table.rpTbl tr.rpA2 td{white-space:normal}table.rpTbl tr.rpA2 input.rpIn[type=text]{width:220px!important;min-width:0}table.rpTbl input.rpIn[type=text]{width:100%!important;min-width:90px;box-sizing:border-box}table.rpTbl td:has(>input.rpIn[type=text]),table.rpTbl td:has(>span>input.rpIn[type=text]){white-space:normal;min-width:120px} /* v332：文字欄撐滿、不再固定寬度 */table.rpTbl tr.rpA1 td{border-bottom:none;padding-bottom:2px}table.rpTbl tr.rpA2 td{padding-top:0;padding-bottom:8px;border-bottom:1px solid var(--line)}.rpLb{display:inline-flex;align-items:center;gap:4px;margin:2px 14px 2px 0;font-family:system-ui;font-size:11px;color:var(--sub)}
@@ -467,6 +475,7 @@ body:not(.rxLock) .bsCascade{display:block}
 </style>
 </head>
 <body>
+<div id="bootSplash" class="no-print" aria-hidden="true"><div id="bootCard"><div class="o">醫 師 的 財 務 管 家</div><div class="t">財務規劃整合工作台</div><div class="s">載入中…</div></div></div><!-- v365：雲端版開機卡，避免 Chrome 先留著上一頁的工作台畫面 -->
 <nav id="mainToc" class="no-print"></nav>
 <button id="mtBtn" class="no-print" type="button">總目錄</button>
 <div class="wrap">
@@ -475,8 +484,8 @@ body:not(.rxLock) .bsCascade{display:block}
   <div class="brandRow"><span class="dot"></span><span class="brand">財務規劃・整合工作台</span>
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
-    <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v364</span></h1>
+    <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v367</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -593,7 +602,7 @@ body:not(.rxLock) .bsCascade{display:block}
   <details class="grp" id="eduGrp" style="margin-top:14px"><summary>📚 子女教育規劃快選（逐階段挑學制，自動依各子女年齡寫回目標）</summary><div class="grpBody">
   <p class="cap" style="margin-top:0">問診時逐階段和客戶確認：托嬰、幼兒園、國小、國中、高中、大學、研究所，以及安親、補習、家教、才藝。子女出生年取自 ⓪ 基本資料；還沒出生的，用「＋ 預計出生的子女」。
   按「寫回」後，每個階段在上方目標表產生一列「教育金」（每年型，金額為今日值），開始年齡已依子女出生年換算成<b>本人年齡</b>；已過的階段略過，進行中的階段從今年算剩餘年數。同一位子女重新寫回，會整組取代舊列。</p>
-  <input type="hidden" id="eduJson" value="">
+  <input type="hidden" id="eduJson" value=""><input type="hidden" id="noteJson" value=""><!-- v366 卡片備註 -->
   <div id="eduBox"></div><div id="eduMsg"></div>
   </div></details>
 
@@ -2829,6 +2838,41 @@ mtBuild();
   });
 })();
 
+/* ---------- v366 卡片備註：每張卡片一則（依工作區各自一份，存 #noteJson），預設內部，可勾「放進報告書」 ---------- */
+function noteLoad(){try{const o=JSON.parse(($("noteJson")||{}).value||"{}");return o&&typeof o==="object"?o:{};}catch(e){return {};}}
+function noteSave(o){const e=$("noteJson");if(e)e.value=JSON.stringify(o);if(typeof asTouch==="function")try{asTouch();}catch(x){}}
+function notePanelKey(p){const k=p.querySelector(":scope>.kicker");return k&&typeof mtKey==="function"?mtKey(k.textContent):"";}
+function notePanelTitle(p){const k=p.querySelector(":scope>.kicker"),h=p.querySelector(":scope>h2");return ((k?k.textContent:"")+(h?"｜"+h.textContent:"")).replace(/\s+/g," ").trim();}
+function noteLocked(){return typeof wsSlots!=="undefined"&&wsActive===0&&wsSlots[0]&&wsSlots[0].locked;} /* 已定錨的現況：編輯不落地，所以備註也唯讀 */
+function noteRefresh(){const N=noteLoad();const lk=noteLocked();
+  document.querySelectorAll(".panel").forEach(p=>{const key=notePanelKey(p);if(!key)return;let b=p.querySelector(":scope>.noteBtn");
+    if(!b){b=document.createElement("button");b.type="button";b.className="noteBtn no-print";b.dataset.noteKey=key;p.appendChild(b);}
+    const n=N[key],has=!!(n&&(n.t||"").trim());b.classList.toggle("on",has);b.innerHTML=has?`📝 備註${n.r?"・報告書":""}`:"📝 備註";
+    b.dataset.tip=has?`[b]${(n.t||"").replace(/[\[\]]/g,"").slice(0,120)}${(n.t||"").length>120?"…":""}[/b]`:"這張卡片的問診備註（只有顧問看得到，可勾選放進報告書）";
+    const box=p.querySelector(":scope>.noteBox");if(box){const ta=box.querySelector("textarea"),ck=box.querySelector("input[type=checkbox]");if(document.activeElement!==ta)ta.value=n?n.t||"":"";ck.checked=!!(n&&n.r);ta.readOnly=lk;ck.disabled=lk;box.querySelector(".noteLk").style.display=lk?"":"none";}});}
+function noteToggle(p){let box=p.querySelector(":scope>.noteBox");if(box){box.remove();return;}const key=notePanelKey(p);const N=noteLoad(),n=N[key]||{};
+  box=document.createElement("div");box.className="noteBox no-print";
+  box.innerHTML=`<div class="noteHd"><b>📝 ${esc(key)} 備註</b><span class="mini noteWs" style="margin:0">${typeof wsSlots!=="undefined"&&wsSlots[wsActive]?esc(wsSlots[wsActive].name||"")+"・":""}只存在這個工作區</span>
+    <label class="chk" style="margin:0 0 0 auto"><input type="checkbox"${n.r?" checked":""}><span>放進報告書</span></label><button type="button" class="btn ghost sm noteClose">收起</button></div>
+    <textarea rows="4" placeholder="問診時想記下的事：客戶的想法、顧慮、待確認事項、資料來源…">${esc(n.t||"")}</textarea>
+    <div class="mini noteLk" style="margin:4px 0 0;display:none">現況已定錨（鎖定）：備註唯讀，要改請先解除鎖定。</div>`;
+  const kicker=p.querySelector(":scope>h2")||p.querySelector(":scope>.kicker");(kicker&&kicker.nextSibling)?p.insertBefore(box,kicker.nextSibling):p.appendChild(box);
+  const ta=box.querySelector("textarea"),ck=box.querySelector("input[type=checkbox]");
+  const put=()=>{if(noteLocked())return;const N2=noteLoad();const t=ta.value;if(!t.trim()&&!ck.checked)delete N2[key];else N2[key]={t,r:ck.checked,ts:new Date().toISOString().slice(0,16)};noteSave(N2);noteRefresh();};
+  ta.addEventListener("input",e=>{e.stopPropagation();put();});ta.addEventListener("change",e=>e.stopPropagation());ck.addEventListener("change",e=>{e.stopPropagation();put();});
+  box.querySelector(".noteClose").onclick=()=>box.remove();noteRefresh();if(!noteLocked())setTimeout(()=>{try{ta.focus();}catch(e){}},30);}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("button.noteBtn");if(!b)return;const p=b.closest(".panel");if(p)noteToggle(p);});
+function noteRptHtml(){ /* 報告書：各工作區勾了「放進報告書」的備註，依卡片順序 */
+  const E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const order=[],title={};document.querySelectorAll(".panel").forEach(p=>{const k=notePanelKey(p);if(k&&!title[k]){order.push(k);title[k]=notePanelTitle(p);}});
+  const slots=typeof wsSlots!=="undefined"?wsSlots:[{name:"現況"}];const groups=[];
+  slots.forEach((w,i)=>{let N={};try{N=i===wsActive?noteLoad():JSON.parse(((w.snap||{}).values||{}).noteJson||"{}")||{};}catch(e){}
+    const ks=Object.keys(N).filter(k=>N[k]&&N[k].r&&(N[k].t||"").trim()).sort((a,b)=>(order.indexOf(a)+999*(order.indexOf(a)<0))-(order.indexOf(b)+999*(order.indexOf(b)<0)));
+    if(ks.length)groups.push({name:i===0?"現況":(w.name||"方案"),rows:ks.map(k=>({k,t:title[k]||k,v:N[k].t}))});});
+  if(!groups.length)return "";
+  return `<section style="page-break-before:auto;margin-top:22px"><h2 style="border-bottom:2px solid #b08a3c;padding-bottom:4px">顧問備註</h2>${groups.map(g=>`${groups.length>1||g.name!=="現況"?`<h3 style="margin:10px 0 4px">${E(g.name)}</h3>`:""}${g.rows.map(r=>`<div style="margin:6px 0 10px;page-break-inside:avoid"><div style="font-size:11px;color:#8a7a5c;font-weight:700">${E(r.t)}</div><div style="font-size:12.5px;line-height:1.8;white-space:pre-wrap;border-left:3px solid #e4d9c2;padding:2px 10px">${E(r.v)}</div></div>`).join("")}`).join("")}</section>`;}
+setTimeout(()=>{try{noteRefresh();}catch(e){}},0);
+
 /* ---------- 資料層：列定義 ---------- */
 const INC_GROUPS=[
  {k:"work",g:"工作收入",rows:["薪資","獎金（三節、年終）","加班費","兼職收入","其他工作收入"]},
@@ -2970,8 +3014,8 @@ var itmAssets=[],itmLiabs=[],itmExps=[],itmIncs=[],itmOvr=[];
 var delAskPending=null,delLastTarget=null;
 document.addEventListener("click",e=>{const t=e.target&&e.target.closest?e.target.closest("button,a,[onclick]"):null;delLastTarget=t||e.target;},true); /* v354：記住觸發刪除的那顆按鈕 */
 function delAsk(what,detail){const d=(detail||"").toString().replace(/｜{2,}/g,"｜").replace(/｜[ \t]*(\n|$)/g,"$1").trim();const key=what+"|"+d;
-  if(delAskPending&&delAskPending.key===key){delAskPending=null;return true;} /* 對話框已核准 → 真的刪 */
-  if(navigator.webdriver&&!window.DEL_FORCE_MODAL)return true; /* 自動化測試不開對話框 */
+  if(delAskPending&&delAskPending.key===key){delAskPending=null;if(typeof qsMark==="function")qsMark();return true;} /* 對話框已核准 → 真的刪 */
+  if(navigator.webdriver&&!window.DEL_FORCE_MODAL){if(typeof qsMark==="function")qsMark();return true;} /* 自動化測試不開對話框 */
   const tgt=delLastTarget;delModalShow(what,d,()=>{delAskPending={key};if(tgt&&tgt.isConnected){try{tgt.click();}catch(e){}}delAskPending=null;});return false;}
 function delModalShow(what,d,onOk){let m=$("delModal");if(!m){m=document.createElement("div");m.id="delModal";m.className="no-print";m.innerHTML=`<div id="delModalBox" role="dialog" aria-modal="true" aria-labelledby="delModalTitle"><div id="delModalTitle"></div><pre id="delModalTxt"></pre><div class="protSub" style="margin:6px 0 10px">刪除後無法復原（除非重新載入上次存檔）。</div><div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" class="btn ghost sm" id="delModalCancel">取消</button><button type="button" class="btn danger sm" id="delModalOk">✕ 確定刪除</button></div></div>`;document.body.appendChild(m);
     m.addEventListener("click",e=>{if(e.target===m)delModalHide();});}
@@ -4746,7 +4790,7 @@ function newClientReset(silent){
     document.querySelectorAll("#tblExpense select").forEach(e=>{e.selectedIndex=0;});
     [1,2,7,6,5].forEach((r,ri)=>{const e=$(`exp_4_${ri}_r`);if(e)e.value=r;});
     [7,3.5,7,6,2,0,0,0,0,2].forEach((r,ri)=>{const e=$(`as_1_${ri}_r`);if(e)e.value=r;}); /* v301：新客戶清空時 ①-3 投資類「年化報酬」預設值一併被清成空白 → 現況 μ 推估為 0%、藍圖／⑤ 以零報酬計算；改為回復預設 */
-    ["eduJson","famJson","estHeirJson","estAllocJson","liMetaJson","siJson","trkAssetsJson","inc_self_basis","inc_sp_basis","bsAdjJson","retAdjJson","txSrc","txExtJson","journeyJson","nyMetaJson"].forEach(id=>{if($(id))$(id).value="";});
+    ["noteJson","eduJson","famJson","estHeirJson","estAllocJson","liMetaJson","siJson","trkAssetsJson","inc_self_basis","inc_sp_basis","bsAdjJson","retAdjJson","txSrc","txExtJson","journeyJson","nyMetaJson"].forEach(id=>{if($(id))$(id).value="";});
     if(typeof buildJourney==="function")buildJourney();
     // 結構資料
     goals=[];if(typeof retAdj!=="undefined")retAdj=[];buildGoals();
@@ -4786,7 +4830,7 @@ function newClientReset(silent){
 $("btnNewClient")&&$("btnNewClient").addEventListener("click",()=>{const c=$("clientName").value.trim();
   if(!confirm(`清空畫面？\n${c?`「${c}」的資料會先自動存檔，`:""}畫面上的收支、資產負債、目標、保單、方案與建議將全部清空（顧問資料與稅務參數保留）。`))return;newClientReset(false);});
 function hdrModeRender(){ /* v309：登入客戶庫後，標頭的離線入口（清空畫面／儲存工作檔／開啟工作檔）隱藏——新客戶、存檔、開檔都走「📁 客戶管理」，正本只有一個 */
-  const on=!!(typeof CS!=="undefined"&&CS.user);["btnNewClient","btnSaveFile","btnOpenFile"].forEach(id=>{const e=$(id);if(e)e.style.display=on?"none":"";});}
+  const on=!!(typeof CS!=="undefined"&&CS.user);["btnNewClient","btnSaveFile","btnOpenFile"].forEach(id=>{const e=$(id);if(e)e.style.display=on?"none":"";});if(typeof qsRender==="function")try{qsRender();}catch(e){}}
 setTimeout(()=>{try{hdrModeRender();}catch(e){}},0);
 var trkDualNote="";
 function trkSideRoute(nm){const n=nm||"";if(/執行業務|分紅|診所|自費/.test(n))return["1_0","pro"];if(/租/.test(n))return["1_3","rent"];if(/股利|配息/.test(n))return["1_2","div"];if(/利息/.test(n))return["1_1","int"];return["0_3","sal"];} // 追蹤工具 sideItems 名稱 → ①-1 列／所得類別
@@ -6897,7 +6941,7 @@ function rptBuild(){
   const who=plans.length?`${E(client)}　｜　現況＋${plans.map(x=>E(x.name)).join("、")}`:`${E(client)}　｜　現況`;
   const head=`<div class="cover"><h1>理財規劃報告書</h1><div class="who">${who}</div><div class="sub">${[svcPlanTxt()?`服務方案：${E(svcPlanTxt())}`:"",`報告日期 ${E(date)}`,by?`本人 ${a0} 歲`:"",adv||org?`${E(org)}${adv?" "+E(adv):""}`:"",mode==="seq"?"方式一：先現況、再依序各方案":"方式二：現況與方案並排比較"].filter(Boolean).map(t=>`<span style="white-space:nowrap">${t}</span>`).join(`<span style="padding:0 .6em;color:#999">・</span>`)}</div></div>`; /* v307：分段不在段中間斷行 */
   return `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><title>理財規劃報告書｜${E(client)}</title><style>${css}</style></head><body>
-  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button></div>${head}${h}
+  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button></div>${head}${h}${typeof noteRptHtml==="function"?noteRptHtml():""}
   <div class="foot">${E(org)}${adv?"・"+E(adv):""}　${E(date)}　理財規劃報告書</div>
   <script>(function(){function fit(){document.querySelectorAll("table.yr").forEach(function(t){t.style.zoom=1;var nat=t.scrollWidth||t.offsetWidth,sw=t.parentElement.clientWidth||nat;
     t.style.setProperty("--zs",Math.min(1,sw/nat));t.style.setProperty("--zp",Math.min(1,1010/nat));t.style.zoom="";});}
@@ -7271,7 +7315,7 @@ function rptA2Build(X){
   @media print{.noprint{display:none}table{page-break-inside:avoid;break-inside:avoid}tr{page-break-inside:avoid}table.a2App{page-break-inside:auto;break-inside:auto}h3{page-break-after:avoid;break-after:avoid}} /* v350：長表允許跨頁，避免整頁留白 */`;
   const cover=`<div class="cover"><span class="tag">A2 保險系統診斷</span><h1>保險規劃報告書</h1><div class="en">INSURANCE PLAN</div><div class="who">${E(client)}</div><div class="sub">服務方案：${E(svcPlanTxt())}　・　報告日期 ${E(date)}${a0?`　・　本人 ${a0} 歲`:""}</div><div class="sub">${E(org||"")}${adv?"　顧問 "+E(adv):""}${contact?"　・　"+E(contact):""}</div></div>`;
   return `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><title>保險規劃報告書（A2）｜${E(client)}</title><style>${css}</style></head><body>
-  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button></div>${cover}${tocH}${h}
+  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button></div>${cover}${tocH}${h}${typeof noteRptHtml==="function"?noteRptHtml():""}
   <div class="foot">${E(org)}${adv?"・"+E(adv):""}　${E(date)}　保險規劃報告書（A2）</div></body></html>`;
 }
 
@@ -7421,7 +7465,7 @@ function rptA1Build(X){
   @media print{.noprint{display:none}table{page-break-inside:avoid;break-inside:avoid}tr{page-break-inside:avoid}}`;
   const cover=`<div class="cover"><span class="tag">A1 財報系統</span><h1>財務報告書</h1><div class="en">FINANCIAL PLAN</div><div class="who">${E(client)}</div><div class="sub">服務方案：${E(svcPlanTxt())}　・　報告日期 ${E(date)}${a0?`　・　本人 ${a0} 歲`:""}</div><div class="sub">${E(org||"")}${adv?"　顧問 "+E(adv):""}${contact?"　・　"+E(contact):""}</div></div>`;
   return `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><title>財務報告書（A1）｜${E(client)}</title><style>${css}</style></head><body>
-  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button></div>${cover}${tocH}${h}
+  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button></div>${cover}${tocH}${h}${typeof noteRptHtml==="function"?noteRptHtml():""}
   <div class="foot">${E(org)}${adv?"・"+E(adv):""}　${E(date)}　財務報告書（A1）</div></body></html>`;
 }
 const A1_KEYMAP=[[/^inc_1_/,["free","save","spend"]],[/^inc_/,["save","spend"]],[/^exp_0_1$/,["life","casual","save"]],[/^exp_0_/,["life","spend","save"]],[/^exp_1_/,["loan","spend","save"]],
@@ -8068,6 +8112,7 @@ function applySnapshot(s){ // 還原一個方案快照（結構資料先於欄�
   const sbo=$("svBtOut");if(sbo)sbo.innerHTML="";
   const sbm=$("svBtMsg");if(sbm)sbm.textContent="";
   if(typeof renderGantt==="function")try{renderGantt();}catch(e){} // 欄位值都套完再畫一次（中途的 buildGoals 畫的是半套資料）
+  if(typeof noteRefresh==="function")try{noteRefresh();}catch(e){} /* v366 */
 }
 /* ---------- 工作檔：一鍵存/開（當前狀態＋全部方案）---------- */
 function workFileObj(){ // 目前畫面 → 工作檔物件（下載與客戶庫共用）
@@ -8130,6 +8175,7 @@ function simRoRender(){
     `<div class="mini" style="grid-column:1/-1;margin-top:4px">目標清單 ${(typeof goals!=="undefined"?goals:[]).filter(g=>(parseFloat(g.pv)||0)>0).length} 項 ← ②-2（購屋列一併計入）；時間帶收支 ${(typeof flows!=="undefined"?flows:[]).length} 筆（⑤-6 可編輯）；壓力測試（⑤-7）屬評估角度，現況也可用。</div>`;
 }
 function wsRender(){
+  if(typeof noteRefresh==="function")try{noteRefresh();}catch(e){} /* v366：工作區切換／定錨後更新備註按鈕 */
   const bar=$("wsBar");if(!bar)return;
   {const c=WS_COLORS[wsActive%4]||WS_COLORS[0],nm=(wsSlots[wsActive]||{}).name||"現況";
     bar.style.borderLeft=`5px solid ${c}`;bar.style.background=wsActive?`linear-gradient(90deg,${c}14,#fbf9f5 40%)`:"#fbf9f5";
@@ -14418,6 +14464,10 @@ body[data-svc-plan="A2"] .panel:not(.a2Open) .a2Detail{display:none!important}
 #csPickBox{background:#fff;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;max-width:560px;width:100%;box-shadow:0 12px 36px rgba(0,0,0,.25);font-family:system-ui}
 .csPickT{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:8px}.csPickTx{font-size:13px;line-height:1.7;color:var(--ink);background:#fbf7f0;border-radius:8px;padding:8px 10px;margin-bottom:12px}
 .csPickBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.qsState{font-family:system-ui;font-size:11.5px;color:var(--sub);white-space:nowrap}.qsState.dirty{color:#b4561c;font-weight:700}
+#qsModal{position:fixed;inset:0;z-index:135;display:none;align-items:center;justify-content:center;background:rgba(38,56,79,.35);padding:16px}
+#qsBox{background:#fff;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;max-width:520px;width:100%;box-shadow:0 12px 36px rgba(0,0,0,.25);font-family:system-ui}
+.qsT{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:8px}.qsTx{font-size:13px;line-height:1.7;color:var(--ink);background:#fbf7f0;border-radius:8px;padding:8px 10px;margin-bottom:12px}.qsBtns{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
 #delModal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;background:rgba(38,56,79,.35);padding:16px}
 #delModalBox{background:#fff;border:1.5px solid var(--gD);border-radius:12px;padding:14px 18px;max-width:520px;width:100%;box-shadow:0 12px 36px rgba(0,0,0,.25);font-family:system-ui}
 #delModalTitle{font-size:15px;font-weight:700;color:var(--gD);margin-bottom:6px}#delModalTxt{font-family:system-ui;font-size:12.5px;line-height:1.6;color:var(--ink);white-space:pre-wrap;margin:0;background:#fbf7f0;border-radius:8px;padding:8px 10px}
@@ -14682,14 +14732,14 @@ async function csSaveHere(){if(!CS.user){csMsg("請先登入",true);return;}let 
     if(typeof wsSaveActive==="function")wsSaveActive();
     const data=workFileObj();const v=await CS.A.saveVersion(rec.id,label,data,CS.user.email);
     rec.updated=csNow();rec.nVer=(rec.nVer||0)+1;rec.lastLabel=label;{const pc=(typeof svcPlanCode==="function")?svcPlanCode():"";if(pc)rec.plan=pc;csContractTouch(rec,pc);}if(!rec.name)rec.name=nm;await CS.A.saveClient(rec);CS.sel=rec.id;
-    csMsg(`已存為版本「${label}」（${csFmtT(v.time)}）`);csRenderList();csShowVersions(rec.id);
+    csMsg(`已存為版本「${label}」（${csFmtT(v.time)}）`);csRenderList();csShowVersions(rec.id);if(typeof qsClean==="function")qsClean(new Date().toTimeString().slice(0,5));
     if($("status"))$("status").textContent=`客戶庫：${rec.name}・版本「${label}」已儲存 ✓（${CS.A.name}）`;
   }catch(e){csMsg("儲存失敗："+(e.message||e),true);}}
 async function csOpenLatest(id){try{const vs=await CS.A.listVersions(id);if(!vs.length){await csShowVersions(id);csMsg("這位客戶還沒有版本——請在下方選「開新空白工作台」開始填寫");return;}await csOpenVersion(id,vs[0]);}catch(e){csMsg(String(e.message||e),true);}} /* v359：0 版本 → 展開面板給「開新空白工作台」 */
 function csAsFor(name){try{return (typeof asIndex==="function"?asIndex():[]).find(x=>x.client===name)||null;}catch(e){return null;}} /* v359：這台電腦上該客戶的自動存檔 */
-async function csOpenVersion(id,v){csMsg("讀取版本…");try{const j=await CS.A.getVersion(id,v.id);if(!j){csMsg("版本內容為空",true);return;}
+async function csOpenVersion(id,v){if(typeof qsGuard==="function"&&!(await qsGuard(`開啟「${(CS.clients.find(r=>r.id===id)||{}).name||""}」的版本「${(v&&v.label)||""}」`)))return;csMsg("讀取版本…");try{const j=await CS.A.getVersion(id,v.id);if(!j){csMsg("版本內容為空",true);return;}
     if(typeof asSave==="function"){try{asSave("cs-open");}catch(e){}}
-    loadWorkObj(j,`客戶庫：${v.label}`);CS.sel=id;csMsg(`已開啟「${v.label}」（${csFmtT(v.time)}）`);csClose();}catch(e){csMsg(String(e.message||e),true);}}
+    loadWorkObj(j,`客戶庫：${v.label}`);CS.sel=id;if(typeof qsClean==="function")setTimeout(()=>qsClean(""),0);csMsg(`已開啟「${v.label}」（${csFmtT(v.time)}）`);csClose();}catch(e){csMsg(String(e.message||e),true);}}
 async function csShowVersions(id){const rec=CS.clients.find(r=>r.id===id);if(!rec)return;if(CS.sel!==id){CS.sel=id;csRenderList();}csMsg("讀取版本清單…"); /* v310：選取記號跟著動 */
   let vs=[];try{vs=await CS.A.listVersions(id);csMsg("");}catch(e){csMsg(String(e.message||e),true);}
   if(rec.nVer!==vs.length){rec.nVer=vs.length;try{await CS.A.saveClient(rec);}catch(e){}csRenderList();}
@@ -14700,7 +14750,7 @@ async function csShowVersions(id){const rec=CS.clients.find(r=>r.id===id);if(!re
       <div class="mini" style="margin:8px 0 0">${cur&&cur!==rec.name?`目前畫面是「${csEsc(cur)}」，開新工作台前會先自動存檔（可由右上「還原自動存檔…」找回）。`:""}資料填好後，回到這裡按上方「存目前畫面為新版本」存入第一個版本。</div></div>`;})()}</div>`;
   csDetailAttach();
   if($("csBlankStart"))$("csBlankStart").onclick=()=>{CS.sel=id;lgEnterNew(rec);};
-  if($("csAsRestore"))$("csAsRestore").onclick=()=>{if(asRestore(rec.name)){CS.sel=id;if($("clientName")&&!$("clientName").value.trim())$("clientName").value=rec.name;csClose();}};
+  if($("csAsRestore"))$("csAsRestore").onclick=async()=>{if(typeof qsGuard==="function"&&!(await qsGuard(`還原「${rec.name}」的自動存檔`)))return;if(asRestore(rec.name)){if(typeof qsMark==="function")setTimeout(()=>{qsDirty=false;qsMark();},0);CS.sel=id;if($("clientName")&&!$("clientName").value.trim())$("clientName").value=rec.name;csClose();}};
   $("csDetailClose").onclick=()=>{$("csDetail").innerHTML="";csDetailAttach();};
   $("csDelClient").onclick=async()=>{if(!confirm(`刪除客戶「${rec.name}」與其 ${vs.length} 個版本？（${CS.A===CSDrive?"會移到雲端硬碟垃圾桶":"無法復原"}）`))return;try{await CS.A.deleteClient(id);CS.clients=CS.clients.filter(r=>r.id!==id);CS.sel=null;$("csDetail").innerHTML="";csRenderList();csMsg("已刪除");}catch(e){csMsg(String(e.message||e),true);}};
   $("csDetail").querySelectorAll("[data-vopen]").forEach(b=>b.onclick=()=>csOpenVersion(id,vs.find(v=>v.id===b.dataset.vopen)));
@@ -14851,6 +14901,7 @@ function lgRenderChip(){if(typeof hdrModeRender==="function")try{hdrModeRender()
   const h=$("csLandHd");if(h)h.innerHTML=u?`<span>👋 <b>${csEsc(u.name||u.email)}</b>，選一位客戶「開啟最新」，或按「＋ 新客戶」建立後進入工作台。</span><button class="btn ghost sm" type="button" id="csLandSkip">略過，直接進入工作台</button>`:"";
   const sk=$("csLandSkip");if(sk)sk.onclick=()=>csClose();}
 async function lgLogout(noAsk){
+  if(typeof qsGuard==="function"&&qsOn()&&qsDirty){if(!(await qsGuard("登出")))return;noAsk=true;} /* v367：有未儲存修改 → 頁內防呆取代 confirm */
   if(!noAsk&&!confirm("登出後會清空畫面上的客戶資料（目前內容會先自動存檔在這台電腦；要留在客戶庫請先「存目前畫面為新版本」）。確定登出？"))return;
   try{if(typeof asSave==="function"&&($("clientName").value||"").trim())asSave("logout");}catch(e){} // v282：登出前存到自己的帳號命名空間
   try{if(CS.A)await CS.A.signOut();}catch(e){}
@@ -14858,14 +14909,64 @@ async function lgLogout(noAsk){
   csClose();asPaused=true;try{newClientReset(true);}catch(e){console.warn(e);}finally{asPaused=false;asDirty=false;clearTimeout(asTimer);}
   try{const b=$("asBar");if(b){b.style.display="none";b.innerHTML="";}asRenderPick();}catch(e){} // v282：登出後不顯示任何人的自動存檔（下一位登入時才顯示他自己的）
   lgRenderChip();if(lgGateOn())lgShow();else if($("status"))$("status").textContent="已登出";}
-function lgEnterNew(rec){ // landing 建立新客戶 → 清空工作台 → 帶入姓名 → 進入
-  try{newClientReset(true);}catch(e){console.warn(e);}
+async function lgEnterNew(rec){ // landing 建立新客戶 → 清空工作台 → 帶入姓名 → 進入
+  if(typeof qsGuard==="function"&&!(await qsGuard(`開「${rec&&rec.name||""}」的新工作台`)))return; /* v367 */
+  try{newClientReset(true);}catch(e){console.warn(e);}if(typeof qsClean==="function")setTimeout(()=>qsClean(""),0);
   if($("clientName"))$("clientName").value=rec.name||"";
   if($("bio_name")){$("bio_name").value=rec.name||"";$("bio_name").dispatchEvent(new Event("input",{bubbles:true}));}
   csClose();try{const t=document.querySelector('.tab[data-view="view_fam"]');if(t)t.click();window.scrollTo({top:0,behavior:"smooth"});}catch(e){} /* v325：建立後直接到 ⓪ 客戶與家庭 */
   setTimeout(()=>{if($("status"))$("status").textContent=`新客戶「${rec.name}」已建立 ✓ 請從 ⓪ 客戶與家庭開始填；資料填好後到「📁 客戶管理」按「存目前畫面為新版本」存入第一個版本`;},600);}
 $("lgGo").onclick=lgLogin;
 $("lgSkip").onclick=()=>{if(csAdapter()===CSDrive&&FPW_CONFIG.allowSkip!==true)return;$("lgOverlay").classList.remove("on");document.body.classList.remove("lgLocked");if($("status"))$("status").textContent="未登入：資料只存在這台電腦（可隨時按「📁 客戶管理」登入）";};
+/* ---------- v367 一鍵儲存到客戶庫＋未儲存防呆 ---------- */
+var qsDirty=false,qsLastAt="",qsBusy=false;
+function qsOn(){return typeof CS!=="undefined"&&!!CS.user;}
+function qsDay(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function qsRender(){const b=$("btnQuickSave"),s=$("qsState");const on=qsOn();if(b)b.style.display=on?"":"none";if(!s)return;s.style.display=on?"":"none";
+  s.textContent=qsBusy?"儲存中…":qsDirty?"● 尚未儲存":qsLastAt?`已儲存 ${qsLastAt}`:"";s.className="qsState"+(qsDirty?" dirty":"");}
+function qsMark(){if(!qsOn()||qsDirty)return;qsDirty=true;qsRender();}
+function qsClean(at){qsDirty=false;if(at)qsLastAt=at;qsRender();}
+document.addEventListener("input",qsEv,true);document.addEventListener("change",qsEv,true);
+function qsEv(e){const t=e.target;if(!t||!(e.isTrusted||window.QS_TEST_ANY))return;if(t.closest&&t.closest("#csOverlay,#lgOverlay,#qsModal,#csPickModal,#delModal"))return;
+  if(/^(uiZoom|helpAll|asOn|asPick|csQ|csStatusF|csSort)$/.test(t.id||""))return;qsMark();}
+async function qsSave(){if(!qsOn()){if(typeof csOpen==="function")csOpen();return false;}if(qsBusy)return false;
+  const nm=(($("clientName")||{}).value||"").trim();if(!nm){if($("status"))$("status").textContent="請先在上方「客戶」欄填姓名再儲存";const c=$("clientName");if(c)c.focus();return false;}
+  qsBusy=true;qsRender();
+  try{if(!Array.isArray(CS.clients)||!CS.clients.length){try{CS.clients=await CS.A.listClients();}catch(e){}}
+    const me=String(CS.user.email||"").toLowerCase();
+    let rec=(CS.clients||[]).find(r=>r.id===CS.sel&&(r.name||"")===nm)||(CS.clients||[]).find(r=>(r.name||"")===nm&&String(r.owner||"").toLowerCase()===me)||null;
+    if(!rec){rec=csRecordFromScreen();rec=await CS.A.saveClient(rec);CS.clients.push(rec);}
+    if(typeof wsSaveActive==="function")wsSaveActive();
+    const data=workFileObj(),day=qsDay(),label=`${(($("scenName")||{}).value||"現況").trim()||"現況"} ${day}`;
+    const old=(rec.qsDay===day&&rec.qsVer)?rec.qsVer:null;
+    const v=await CS.A.saveVersion(rec.id,label,data,CS.user.email); /* 先存新的，成功後才移除當天舊的那一版（同一天覆蓋） */
+    if(old&&old!==v.id){try{await CS.A.deleteVersion(rec.id,old);}catch(e){}}
+    rec.qsDay=day;rec.qsVer=v.id;rec.updated=csNow();if(!old)rec.nVer=(rec.nVer||0)+1;rec.lastLabel=label;
+    {const pc=(typeof svcPlanCode==="function")?svcPlanCode():"";if(pc)rec.plan=pc;if(typeof csContractTouch==="function")csContractTouch(rec,pc);}
+    await CS.A.saveClient(rec);CS.sel=rec.id;
+    const at=new Date().toTimeString().slice(0,5);qsClean(at);
+    if($("status"))$("status").textContent=`💾 已儲存到客戶庫：${rec.name}・「${label}」${old?"（覆蓋今天稍早的版本）":"（今天第一次儲存，新增版本）"} ${at}`;
+    if($("csOverlay")&&$("csOverlay").classList.contains("on")&&typeof csRenderList==="function")try{csRenderList();}catch(e){}
+    return true;}
+  catch(e){if($("status"))$("status").textContent="儲存失敗："+(e.message||e);return false;}
+  finally{qsBusy=false;qsRender();}}
+function qsGuard(what){ /* 未儲存防呆：true＝可以繼續 */
+  if(!qsOn()||!qsDirty)return Promise.resolve(true);
+  if(navigator.webdriver&&!window.QS_FORCE_GUARD)return Promise.resolve(true);
+  return new Promise(res=>{let m=$("qsModal");if(!m){m=document.createElement("div");m.id="qsModal";m.className="no-print";document.body.appendChild(m);}
+    const nm=(($("clientName")||{}).value||"").trim()||"（未填姓名）";
+    m.innerHTML=`<div id="qsBox" role="dialog" aria-modal="true"><div class="qsT">偵測到資料尚未儲存</div>
+      <div class="qsTx">「<b>${esc(nm)}</b>」有修改還沒存進客戶庫，接下來要<b>${esc(what)}</b>。<br>先儲存再繼續，避免資料遺失。<span class="mini" style="display:block;margin-top:4px">（選「不儲存」時，內容仍會留在這台電腦的自動存檔，可由右上「還原自動存檔…」找回。）</span></div>
+      <div class="qsBtns"><button type="button" class="btn ghost sm" id="qsNo">取消</button><button type="button" class="btn ghost sm" id="qsSkip">不儲存，繼續</button><button type="button" class="btn sm" id="qsYes">💾 儲存後繼續</button></div></div>`;
+    m.style.display="flex";const done=v=>{m.style.display="none";document.removeEventListener("keydown",kd,true);res(v);};
+    const kd=e=>{if(e.key==="Escape"){e.preventDefault();e.stopPropagation();done(false);}};document.addEventListener("keydown",kd,true);
+    $("qsNo").onclick=()=>done(false);$("qsSkip").onclick=()=>done(true);m.onclick=e=>{if(e.target===m)done(false);};
+    $("qsYes").onclick=async()=>{$("qsYes").disabled=true;$("qsYes").textContent="儲存中…";const ok=await qsSave();if(ok)done(true);else{$("qsYes").disabled=false;$("qsYes").textContent="💾 儲存後繼續";}};
+    setTimeout(()=>{try{$("qsYes").focus();}catch(e){}},30);});}
+window.addEventListener("beforeunload",e=>{if(qsOn()&&qsDirty){e.preventDefault();e.returnValue="";return "";}});
+document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&!e.shiftKey&&!e.altKey&&(e.key==="s"||e.key==="S")&&qsOn()){e.preventDefault();qsSave();}});
+(function(){const b=$("btnQuickSave");if(b)b.addEventListener("click",()=>qsSave());setTimeout(()=>{try{qsRender();}catch(e){}},0);})();
+
 if(lgGateOn())lgShow();else document.documentElement.classList.remove("lgBoot"); /* v362 */
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("csOverlay").classList.contains("on")&&!$("csOverlay").classList.contains("landing"))csClose();});
 </script>
