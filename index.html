@@ -485,7 +485,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v367</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v369</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -1175,7 +1175,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <div class="rangeCap">區間下限 / 上限（同時決定熱力圖橫軸）</div></div>
   <div class="fld"><div class="lb"><span>配偶退休年齡（換算成本人幾歲）</span><span class="vl mini" id="v_retireAgeSp" style="margin:0"></span></div><input type="number" id="retireAgeSp" value="" placeholder="同本人" data-tip="[b]配偶退休年齡[/b]　由 ②-1 配偶的預計退休年齡自動換算到本人年齡軸（配偶 63 歲、比本人小 2 歲 → 本人 65 歲）。配偶那份薪資（上方「其中配偶年收入」）到這一年停止；空白＝與本人同時退休。||退休支出仍從本人退休年齡開始（家庭月支出）。"></div>
   <div class="fld"><div class="lb"><span>退休月支出（萬・現值・家庭合計）</span><span class="vl" id="v_retireMonthly">8</span></div>
-    <input type="range" id="retireMonthly" min="5" max="15" step="0.5" value="10">
+    <input type="range" id="retireMonthly" min="5" max="15" step="0.01" value="10">
     <div class="row2" style="margin-top:5px"><input type="number" id="retMonMin" value="5"><input type="number" id="retMonMax" value="10"></div>
     <div class="rangeCap">區間下限 / 上限（同時決定熱力圖縱軸）</div></div>
   <div class="fld"><div class="lb"><span>退休期間（年）</span></div><input type="number" id="retireYears" value="30"></div>
@@ -9508,8 +9508,8 @@ function sbRangeOf(cur){ // 滑桿範圍：由 ②-2 可接受調整推，沒勾
 function sbWith(cur,pv,age,fn0){ // 暫時套用候選值跑引擎，結束一定還原
   // 沙盤一律以 ②-2 目標列驅動蒙地卡羅（暫時關閉 ⑤-3 購屋模組，否則購屋列的金額／年齡改了引擎不會跟著動；口徑與 ④-1 一致）
   const fn=()=>{const be=$("buyEnabled");if(!be||!be.checked)return fn0();be.checked=false;try{return fn0();}finally{be.checked=true;}};
-  if(cur.isRet){const e1=$("retireAge"),e2=$("retireMonthly"),o1=e1.value,o2=e2.value;const ry=$("retireYears"),o3=ry?ry.value:null;const life=V("g_self_life");
-    try{e1.value=age;e2.value=(pv/1e4);if(ry)ry.value=Math.max(1,life-age);return fn();}finally{e1.value=o1;e2.value=o2;if(ry)ry.value=o3;}}
+  if(cur.isRet){const e1=$("retireAge"),e2=$("retireMonthly"),o1=e1.value,o2=e2.value,m1=e2.min,m2=e2.max;const ry=$("retireYears"),o3=ry?ry.value:null;const life=V("g_self_life");
+    try{e1.value=age;e2.min=0;e2.max=Math.max(+m2||0,pv/1e4+1);e2.value=(pv/1e4);if(ry)ry.value=Math.max(1,life-age);return fn();}finally{e2.min=m1;e2.max=m2;e1.value=o1;e2.value=o2;if(ry)ry.value=o3;}} /* v368：暫時放寬滑桿區間，候選值不被夾住 */
   if(cur.isHouse){ // 整間房：用候選總價／年齡跑 ②-3 精算，暫時換掉整組目標列（頭期款、裝潢、貸款年付、租屋、買房費用），結束還原
     const h=cur.h,saved=goals.slice();
     try{return hbWithVals(h,{hb_price:pv,hb_age:age},()=>{const r=hbCompute();const old=goals.filter(g=>hbIsRow(g,h.id));const pri0=old.length?Math.min(...old.map(g=>g.pri)):goals.length+1;
@@ -9635,7 +9635,9 @@ function sbApply(){
     hbCur=h.id;hbSave();hbFormWrite(h.vals);if(typeof hbRender==="function")hbRender();$("btnHbWrite").click();
     if(typeof renderBlueprint==="function")renderBlueprint();if(typeof rxSummaryRender==="function")try{rxSummaryRender();}catch(e){}if(typeof schedule==="function")schedule();
     $("sb_msg").textContent="已寫回 ②-3 精算並重寫整組目標列 ✓ 記為顧問建議（⑧-0 總表／報告書 09）・把握度以 1,500 次正式模擬記錄";clearTimeout(sbInvT);sb.stale=false;sbBuildSel();sbSelect(sb.key,false);return;}
-  if(isRet){$("g_self_ret").value=sb.age;$("g_self_pvm").value=sb.pv;$("retireAge").value=sb.age;$("retireMonthly").value=sb.pv/1e4;if($("retireYears"))$("retireYears").value=Math.max(1,V("g_self_life")-sb.age);if(typeof retAdj!=="undefined")retAdj.push({t:"其他",amt:"",to:"",v:txt,sb:true,d:sbNoteData(cur,b,r)});if(typeof goalSync==="function")try{goalSync(true);}catch(e){}if(typeof recalcRetGoal==="function")try{recalcRetGoal();}catch(e){}}
+  if(isRet){$("g_self_ret").value=sb.age;{const hasSp=(!$("bio_hasSp")||$("bio_hasSp").checked)&&$("g_sp_pvm")&&V("g_sp_pvm")>0;
+      if(hasSp){const s0=V("g_self_pvm"),p0=V("g_sp_pvm"),t0=s0+p0;const s1=t0>0?Math.round(sb.pv*s0/t0/100)*100:sb.pv; /* v369：百元整數，配偶＝合計−本人 */$("g_self_pvm").value=s1;$("g_sp_pvm").value=sb.pv-s1;} /* v368：家庭合計依原比例拆回本人／配偶 */
+      else $("g_self_pvm").value=sb.pv;}$("retireAge").value=sb.age;$("retireMonthly").value=sb.pv/1e4;if($("retireYears"))$("retireYears").value=Math.max(1,V("g_self_life")-sb.age);if(typeof retAdj!=="undefined")retAdj.push({t:"其他",amt:"",to:"",v:txt,sb:true,d:sbNoteData(cur,b,r)});if(typeof goalSync==="function")try{goalSync(true);}catch(e){}if(typeof recalcRetGoal==="function")try{recalcRetGoal();}catch(e){}}
   else{const g=cur.g;g.pv=sb.pv;g.age=sb.age;g.adj=g.adj||[];g.adj.push({t:"其他",amt:"",to:"",v:txt,sb:true,d:sbNoteData(cur,b,r)});}
   if(typeof buildGoals==="function")buildGoals();if(typeof renderBlueprint==="function")renderBlueprint();if(typeof rxSummaryRender==="function")try{rxSummaryRender();}catch(e){}if(typeof schedule==="function")schedule();
   $("sb_msg").textContent="已寫回 ②-2 ✓ 並記為顧問建議（⑧-0 總表／報告書 09）・把握度以 1,500 次正式模擬記錄";
@@ -10797,7 +10799,7 @@ function goalSync(silent){
   const ret=V("g_self_ret"),life=V("g_self_life");
   const cur=V("g_self_cur"),dSp=V("g_sp_cur")-cur; // 配偶−本人 年齡差
   const hasSp0=(!$("bio_hasSp")||$("bio_hasSp").checked); // 單身（①-0a 未勾配偶）：配偶欄位殘值不計入
-  const monW=+(((V("g_self_pvm")+(hasSp0?V("g_sp_pvm"):0))/10000).toFixed(1));
+  const monW=+(((V("g_self_pvm")+(hasSp0?V("g_sp_pvm"):0))/10000).toFixed(2)); /* v368：保留到百元（原 0.1 萬＋滑桿 0.5 吸附） */
   // 帶入值超出滑桿區間時自動擴充（滑桿區間同時決定熱力圖軸，一併放寬）
   if(ret<num("retAgeMin"))$("retAgeMin").value=Math.max(30,ret-3);
   if(ret>num("retAgeMax"))$("retAgeMax").value=ret+3;
