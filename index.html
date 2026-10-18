@@ -301,6 +301,15 @@ ul.tight{margin:6px 0 0;padding-left:19px;} ul.tight li{margin-bottom:4px;}
 .helpBtn{position:absolute;right:14px;top:12px;font-family:system-ui;font-size:11px;padding:3px 9px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--sub);cursor:pointer}
 .helpBtn:hover{color:var(--accent);border-color:var(--accent)}
 body:not(.helpAll) .panel:not(.helpOn) p.cap{display:none}
+body:not(.helpAll) .panel:not(.helpOn) .helpOnly{display:none} /* v370：說明區塊（非 p）同樣跟著「說明」開關 */
+.rdHelp{margin:4px 0 10px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px 10px;font-family:system-ui;font-size:12px;line-height:1.65}
+.rdHelp summary{cursor:pointer;color:var(--accent);font-size:13px}.rdRule{margin:6px 0}
+.rdDef{border-collapse:collapse;width:100%;margin:4px 0}.rdDef th,.rdDef td{border:1px solid var(--line);padding:4px 6px;vertical-align:top;text-align:left}.rdDef th{background:#f6f1e4;white-space:nowrap}
+.rdExGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:10px}.rdEx{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fffdf8}.rdExT{font-size:12.5px;margin-bottom:4px}.rdExN{font-size:11.5px;color:var(--sub);margin-top:4px}
+.rdTb{border-collapse:collapse;width:100%;font-size:11.5px}.rdTb th,.rdTb td{border-bottom:1px solid var(--line);padding:2px 5px;text-align:right;white-space:nowrap}.rdTb th{background:#f6f1e4;font-weight:700}.rdTb td:first-child,.rdTb th:first-child{text-align:center}.rdTb td:last-child{text-align:left;color:var(--sub);font-size:10.5px}
+.rdTb td{font-family:var(--mono)}.rdTb td:last-child{font-family:system-ui}.rdTb td.rdHi{background:#fdf0c8;font-weight:700}.rdTb td.rdNeg{color:var(--gD);font-weight:700}
+.rdDef th,.rdTb th{color:var(--ink)!important;opacity:1}
+.rdQ{text-decoration:none;color:var(--accent);font-weight:700;cursor:pointer}
 body.helpAll .helpBtn,.panel.helpOn .helpBtn{color:var(--accent);border-color:var(--accent)}
 .panel:has(>.helpBtn)>:first-child{padding-right:88px} /* 第一行避開右上「說明」鈕 */
 .noteBtn{position:absolute;right:14px;top:12px;font-family:system-ui;font-size:11px;padding:3px 9px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--sub);cursor:pointer;white-space:nowrap}
@@ -485,7 +494,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v369</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v374</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -499,8 +508,8 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-family:system-ui;font-size:11.5px;color:var(--sub)">
       <label class="chk" style="margin:0"><input type="checkbox" id="asOn" checked><span>自動存檔</span></label>
       <span id="asMsg" style="white-space:nowrap"></span>
-      <select id="asPick" style="font-family:'Noto Serif TC',serif;font-size:11.5px;padding:3px 5px;border:1px solid var(--line);border-radius:6px;background:var(--paper);max-width:200px"><option value="">還原自動存檔…</option></select>
-      <button class="btn ghost sm" id="btnAsClear" type="button">清除</button>
+      <select id="asPick" style="font-family:'Noto Serif TC',serif;font-size:11.5px;padding:3px 5px;border:1px solid var(--line);border-radius:6px;background:var(--paper);max-width:300px"><option value="">還原自動存檔…</option></select>
+      <button class="btn ghost sm" id="btnAsClear" type="button" style="display:none">清除</button>
       <span style="border-left:1px solid var(--line);height:18px;margin:0 2px"></span>
       <label>字級</label><select id="uiZoom" style="font-family:system-ui;font-size:11.5px;padding:3px 5px;border:1px solid var(--line);border-radius:6px;background:var(--paper)"><option value="1">100%</option><option value="1.15">115%</option><option value="1.25" selected>125%</option><option value="1.4">140%</option><option value="1.6">160%</option></select>
       <label class="chk" style="margin:0"><input type="checkbox" id="helpAll"><span>顯示所有說明</span></label></span>
@@ -644,6 +653,60 @@ body:not(.rxLock) .bsCascade{display:block}
         第3段（餘） <input type="number" id="hb_s3r" value="2.5" step="0.125" style="width:56px;font-family:var(--mono);font-size:11px;padding:2px 4px;border:1px solid var(--line);border-radius:4px;background:var(--paper);text-align:right"> %
       </div></div>
   </div>
+  <details class="grp" style="margin-top:8px" id="hbPreGrp"><summary>🏗 預售屋：自備款分期、交屋後才開始繳房貸（勾選啟用）</summary><div class="grpBody">
+  <p class="cap">預售屋和成屋差在四件事：①自備款分期付（簽約時的訂金＋簽約金＋開工款、施工期間的工程期款、交屋款）；②房貸<b>交屋那年</b>才開始繳；③<b>合約總價已鎖定</b>，自備款與貸款不套房價成長率；④已繳的錢是資產（預付房地款），但 2023-07-01 起<b>禁止換約轉售</b>，拿不回來。<br>
+  填法：上方「實現年齡」填<b>預計交屋年齡</b>，「房價」填<b>合約總價（含車位）</b>，成數照銀行核貸；下面填付款表的三段金額。交屋款＝自備款 − 簽約時付 − 工程期款（自動算）。已繳金額依「簽約款 → 工程期款 → 交屋款」順序扣除，扣完的不再列為目標。工程期款平均攤在「簽約年（或今年）到交屋前一年」。</p>
+  <label class="chk" style="margin:2px 0 6px"><input type="checkbox" id="hb_preOn"><span><b>這間是預售屋</b></span></label>
+  <div id="hbPreBox" style="display:none">
+  <div class="row3">
+    <div class="fld"><div class="lb"><span>簽約年齡（本人・空＝今年）</span></div><input type="number" id="hb_preSignAge" value="" placeholder="今年"></div>
+    <div class="fld"><div class="lb"><span>簽約時付（訂金＋簽約金＋開工款・元）</span></div><input type="number" id="hb_preDep" value="0" step="100000"></div>
+    <div class="fld"><div class="lb"><span>工程期款合計（元）</span></div><input type="number" id="hb_preBuild" value="0" step="100000"></div>
+  </div>
+  <div class="row3">
+    <div class="fld"><div class="lb"><span>至今已繳（元・已付的不再列目標）</span></div><input type="number" id="hb_prePaid" value="0" step="100000"></div>
+    <div class="fld"><div class="lb"><span>用途</span></div>
+      <select id="hb_preUse" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:6px;border:1px solid var(--line);border-radius:6px;background:var(--paper);width:100%"><option value="self" selected>自住</option><option value="inv">投資</option></select></div>
+    <div class="fld"><div class="lb"><span>交屋款（自動）</span></div><div class="mini" id="hbPreHand" style="margin:6px 0 0;font-family:var(--mono)">—</div></div>
+  </div>
+  <div class="scRow no-print" style="margin:4px 0 2px"><button class="btn ghost sm" id="btnHbPrePaid" type="button">＋ 已繳金額記到 ①-3b 資產（預付房地款）</button><span class="mini" id="hbPreMsg" style="margin:0"></span></div>
+  </div></div></details>
+  <details class="grp" style="margin-top:8px" id="hbPsGrp"><summary>💰 購入（交屋）後預計出售：投資房轉手、房地合一稅、房貸結清（勾選啟用）</summary><div class="grpBody">
+  <p class="cap">寫回時：這間的房貸年付只繳到<b>出售前一年</b>；收入時間帶新增「出售淨得」（屆時售價 − 仲介 − 代書 − 土增稅 − 房地合一稅 − 出售時房貸餘額，出售當年一次入帳）。<br>
+  <b>持有期間自「所有權移轉登記日」起算</b>（預售屋＝交屋，施工期間不算；國稅局已有以簽約日起算而補稅的案例）：≦2 年 45%、2～5 年 35%、5～10 年 20%、10 年以上 15%（非自用）。<b>預售屋交屋前禁止換約轉售</b>（平均地權條例；例外：配偶／直系／二親等讓與、繼承，或經核准的非自願失業、重大傷病等），出售年齡早於交屋時以交屋年計。</p>
+  <label class="chk" style="margin:2px 0 6px"><input type="checkbox" id="hb_psOn"><span><b>啟用預計出售</b></span></label>
+  <div id="hbPsBox" style="display:none">
+  <div class="row3">
+    <div class="fld"><div class="lb"><span>出售年齡（本人・空＝取得後 5 年）</span></div><input type="number" id="hb_psAge" value="" placeholder="取得＋5"></div>
+    <div class="fld"><div class="lb"><span>屆時售價（元・空＝總價依房價成長率推）</span></div><input type="number" id="hb_psPrice" value="" step="1000000" placeholder="自動"></div>
+    <div class="fld"><div class="lb"><span>房地合一稅</span></div>
+      <select id="hb_psTax" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:6px;border:1px solid var(--line);border-radius:6px;background:var(--paper);width:100%"><option value="gen" selected>非自用（45／35／20／15%）</option><option value="self">自用住宅優惠（設籍自住滿 6 年・400 萬免稅、超過 10%）</option></select></div>
+  </div>
+  <div class="row3">
+    <div class="fld"><div class="lb"><span>取得成本（元・空＝合約總價）</span></div><input type="number" id="hb_psCost" value="" step="1000000" placeholder="總價"></div>
+    <div class="fld"><div class="lb"><span>賣方仲介 %</span></div><input type="number" id="hb_psBrk" value="4" step="0.5"></div>
+    <div class="fld"><div class="lb"><span>代書・清算等（元）</span></div><input type="number" id="hb_psFee" value="20000" step="5000"></div>
+  </div>
+  <div class="row3">
+    <div class="fld"><div class="lb"><span>土增稅（元・手填）</span></div><input type="number" id="hb_psLtax" value="0" step="10000"></div>
+    <div class="fld"><div class="lb"><span>土地漲價總數額（元・自所得扣減）</span></div><input type="number" id="hb_psLandInc" value="0" step="10000"></div>
+    <div class="fld"><div class="lb"><span>&nbsp;</span></div><div class="mini" style="margin:0">取得成本可加計買方費用（契稅、代書、仲介）與改良支出，有單據才列。</div></div>
+  </div>
+  </div></div></details>
+  <details class="grp" style="margin-top:8px" id="hbtGrp"><summary id="hbtVerSum">⚖ 房地合一稅參數（房地合一 2.0（110-07-01 起）・可修改、隨檔儲存）</summary><div class="grpBody">
+  <p class="cap">換屋（賣現住自宅）與「購入後預計出售」共用這張表。修法時改這裡就好，不用等改版：版本說明寫新制名稱與施行日，稅率與年限照新制填。<b>你最後一次修改的數字會成為新客戶的預設</b>；舊客戶檔若存著不同的參數，開啟時上方會提示，由你決定沿用檔案的（適用舊制的案子）或改用目前預設。黃底＝與內建法定值（房地合一 2.0）不同。</p>
+  <div id="hbtWarn"></div>
+  <table class="dt" style="max-width:640px"><tbody>
+    <tr><td class="rn">版本說明（會顯示在試算與報告書）</td><td colspan="2"><input type="text" id="hbt_ver" value="房地合一 2.0（110-07-01 起）" style="width:100%"></td></tr>
+    <tr><td class="rn">非自用・第 1 級：持有 ≦ N 年</td><td style="white-space:nowrap"><input type="number" id="hbt_y1" value="2" min="0" step="1" style="width:120px;display:inline-block"> 年</td><td style="white-space:nowrap"><input type="number" id="hbt_r1" value="45" step="1" style="width:120px;display:inline-block"> %</td></tr>
+    <tr><td class="rn">非自用・第 2 級：持有 ≦ N 年</td><td style="white-space:nowrap"><input type="number" id="hbt_y2" value="5" min="0" step="1" style="width:120px;display:inline-block"> 年</td><td style="white-space:nowrap"><input type="number" id="hbt_r2" value="35" step="1" style="width:120px;display:inline-block"> %</td></tr>
+    <tr><td class="rn">非自用・第 3 級：持有 ≦ N 年</td><td style="white-space:nowrap"><input type="number" id="hbt_y3" value="10" min="0" step="1" style="width:120px;display:inline-block"> 年</td><td style="white-space:nowrap"><input type="number" id="hbt_r3" value="20" step="1" style="width:120px;display:inline-block"> %</td></tr>
+    <tr><td class="rn">非自用・超過第 3 級</td><td></td><td style="white-space:nowrap"><input type="number" id="hbt_r4" value="15" step="1" style="width:120px;display:inline-block"> %</td></tr>
+    <tr><td class="rn">自用住宅優惠：設籍自住滿 N 年</td><td style="white-space:nowrap"><input type="number" id="hbt_selfY" value="6" min="0" step="1" style="width:120px;display:inline-block"> 年</td><td></td></tr>
+    <tr><td class="rn">自用住宅優惠：免稅額／超過部分稅率</td><td style="white-space:nowrap"><input type="number" id="hbt_selfEx" value="4000000" step="100000" style="width:120px;display:inline-block"> 元</td><td style="white-space:nowrap"><input type="number" id="hbt_selfR" value="10" step="1" style="width:120px;display:inline-block"> %</td></tr>
+  </tbody></table>
+  <div class="scRow no-print" style="margin-top:4px"><button class="btn ghost sm" id="btnHbtLaw" type="button">恢復內建法定值（房地合一 2.0）</button><span class="mini" id="hbtMsg" style="margin:0"></span></div>
+  </div></details>
   <details class="grp" style="margin-top:8px" id="hbSellGrp"><summary>🔁 換屋：賣出現住自宅（勾選啟用・賣屋費用自動估、可覆寫）</summary><div class="grpBody">
   <p class="cap">勤 3.0 式換屋：<b>先賣舊屋 → 在外租屋一段時間 → 再買新屋</b>。寫回時自動產生「換房前租屋」「買房費用」兩列目標（單次・投資準備），
   並在收入時間帶新增「賣房淨得」（售價 − 賣方費用 − 賣屋時房貸餘額，賣屋當年一次入帳）；①-2 的房屋貸款支出改為繳到<b>賣屋前一年</b>。
@@ -1035,6 +1098,17 @@ body:not(.rxLock) .bsCascade{display:block}
     <summary style="font-size:14px;font-weight:700;padding:11px 14px;color:var(--accent)">🧾 逐筆明細（問診用）：一個帳戶／一張保單／一筆貸款各一列</summary>
     <div class="grpBody">
       <p class="cap" style="margin-top:0">問診時照客戶講的逐筆記——每筆有名稱、歸屬人、金額，資產可設成本與多時段報酬、贖回方式。<b>填完自動加總回下方類別表</b>（該列變灰底並顯示「來自逐筆 N 筆」，點 🔓 可改回手動填總數）。<b>保單保價金請在 <span class="polRegT">⑥-3</span> 保單登錄表填</b>——「儲蓄保險現金價值」那一列由保單登錄表專屬彙總，不在此重複登錄。追蹤工具匯入的帳戶級資料會直接落成逐筆；匯出給追蹤工具時也逐筆送出。</p>
+<div class="cap helpOnly rdHelp" id="rdHelp"><details open><summary><b>📘 四種「贖回方式」怎麼算</b>（含逐年明細示意）</summary>
+<div class="rdRule"><b>共同規則（④-1 藍圖／⑤ 每一年都照這個順序）：</b>① 每個標的先依自己的報酬率成長（退休前 %／退休後 %）→ ② 當年收入減支出進出「活存」→ ③「年金式」到期的給付撥進活存 → ④ 活存低於<b>緊急預備金水位</b>時，依 ④-1「<b>贖回順序</b>」由上往下變現補足。贖回方式決定的是：<b>輪到這個標的時，它怎麼被拿錢</b>。</div>
+<table class="rdDef"><tr><th>贖回方式</th><th>白話比喻</th><th>引擎怎麼算</th><th>常見用在</th></tr>
+<tr><td><b>部分贖回</b>（預設）</td><td>像提款卡：缺多少領多少</td><td>只變現當年缺口，其餘繼續依報酬率滾</td><td>股票、基金、ETF、可部分解約的保單</td></tr>
+<tr><td><b>全部贖回</b></td><td>像賣房子：不能只賣半間</td><td>輪到它就<b>整筆變現</b>；用不完的部分自動<b>再投入順序中下一個「部分贖回」標的</b>（不會躺在 0% 活存）</td><td>不動產、要整張解約的儲蓄險、整筆出場的投資</td></tr>
+<tr><td><b>年金式／特定時間</b></td><td>像退休金存摺：時間沒到領不出來，到了每年撥一筆</td><td>起始年齡前<b>鎖住、缺錢也跳過</b>；起始年齡起每年給付設定金額進活存（不超過剩餘價值），共「給付年數」年；年數跑完，剩餘價值回到可動用池（之後同部分贖回）。給付年數空白＝終身，只按年金給。<b>缺「給付金額」或「起始年齡」→ 當部分贖回</b>。定存選這個＝<b>到期年齡整筆本息轉活存</b></td><td>年金險、還本型保單、指定時間才解約的商品、定存到期</td></tr>
+<tr><td><b>不贖回</b></td><td>像傳家寶：永遠不賣</td><td>缺錢時永遠跳過；價值照報酬率成長、計入淨值與期末資產。其他資產用完時<b>會出現資金缺口</b></td><td>自住房、要傳承不動的資產（也可用「用途：不動用」）</td></tr></table>
+<div class="rdRule" style="margin-top:8px"><b>逐年明細示意</b>（單位：萬元・年底餘額；和 ④-1b 逐年明細表切到「逐筆」看到的欄位相同）：65 歲退休、每月生活費 5 萬（每年缺口 60 萬、沒有其他收入）、緊急預備金 0。<b>標的A 500 萬（年報酬 5%）贖回順序第 1</b>、<b>標的B 300 萬（6%・部分贖回）第 2</b>。<b>四張表只改 A 的贖回方式</b>；黃底＝當年被動用、紅字＝缺口。</div>
+<div class="rdExGrid"><div class="rdEx"><div class="rdExT">A＝<b>部分贖回</b></div><table class="rdTb"><tr><th>年齡</th><th>A 年底</th><th>A 動用</th><th>B 年底</th><th>B 動用</th><th>活存</th><th></th></tr><tr><td>65</td><td>465.0</td><td class="rdHi">60.0</td><td>318.0</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>66</td><td>428.2</td><td class="rdHi">60.0</td><td>337.1</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>67</td><td>389.7</td><td class="rdHi">60.0</td><td>357.3</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>68</td><td>349.1</td><td class="rdHi">60.0</td><td>378.7</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>69</td><td>306.6</td><td class="rdHi">60.0</td><td>401.5</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>70</td><td>261.9</td><td class="rdHi">60.0</td><td>425.6</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>71</td><td>215.0</td><td class="rdHi">60.0</td><td>451.1</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>72</td><td>165.8</td><td class="rdHi">60.0</td><td>478.2</td><td class="">—</td><td class="">—</td><td></td></tr></table><div class="rdExN">A 每年只被提領當年缺口 60 萬，其餘照 5% 繼續滾；B 完全沒被動到，一路長到 478 萬。<br>72 歲合計 <b>644.0 萬</b></div></div><div class="rdEx"><div class="rdExT">A＝<b>全部贖回</b></div><table class="rdTb"><tr><th>年齡</th><th>A 年底</th><th>A 動用</th><th>B 年底</th><th>B 動用</th><th>活存</th><th></th></tr><tr><td>65</td><td>—</td><td class="rdHi">525.0</td><td>783.0</td><td class="">—</td><td class="">—</td><td>整筆變現，餘額轉入 B</td></tr><tr><td>66</td><td>—</td><td class="">—</td><td>770.0</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>67</td><td>—</td><td class="">—</td><td>756.2</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>68</td><td>—</td><td class="">—</td><td>741.5</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>69</td><td>—</td><td class="">—</td><td>726.0</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>70</td><td>—</td><td class="">—</td><td>709.6</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>71</td><td>—</td><td class="">—</td><td>692.2</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>72</td><td>—</td><td class="">—</td><td>673.7</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr></table><div class="rdExN">65 歲輪到 A 時<b>整筆賣掉 525 萬</b>：60 萬補缺口，剩下 465 萬自動再投入順序中下一個「部分贖回」的 B（不會躺在活存）；之後都由 B 付。<br>72 歲合計 <b>673.7 萬</b>（錢搬到報酬 6% 的 B，所以比部分贖回多；若 B 報酬較低就會變少）</div></div><div class="rdEx"><div class="rdExT">A＝<b>年金式／特定時間</b></div><table class="rdTb"><tr><th>年齡</th><th>A 年底</th><th>A 動用</th><th>B 年底</th><th>B 動用</th><th>活存</th><th></th></tr><tr><td>65</td><td>525.0</td><td class="">—</td><td>258.0</td><td class="rdHi">60.0</td><td class="">—</td><td>A 鎖住</td></tr><tr><td>66</td><td>551.2</td><td class="">—</td><td>213.5</td><td class="rdHi">60.0</td><td class="">—</td><td>A 鎖住</td></tr><tr><td>67</td><td>518.8</td><td class="">—</td><td>226.3</td><td class="">—</td><td class="">—</td><td>年金 60.0</td></tr><tr><td>68</td><td>484.8</td><td class="">—</td><td>239.9</td><td class="">—</td><td class="">—</td><td>年金 60.0</td></tr><tr><td>69</td><td>449.0</td><td class="">—</td><td>254.3</td><td class="">—</td><td class="">—</td><td>年金 60.0</td></tr><tr><td>70</td><td>411.4</td><td class="">—</td><td>269.5</td><td class="">—</td><td class="">—</td><td>年金 60.0</td></tr><tr><td>71</td><td>372.0</td><td class="">—</td><td>285.7</td><td class="">—</td><td class="">—</td><td>年金 60.0</td></tr><tr><td>72</td><td>330.6</td><td class="">—</td><td>302.8</td><td class="">—</td><td class="">—</td><td>年金 60.0</td></tr></table><div class="rdExN">設定：每年給付 60 萬、<b>67 歲起</b>、給付 10 年。65～66 歲 A <b>鎖住不能解約</b>，缺口由 B 付；67 歲起 A 每年撥 60 萬進活存剛好補缺口，B 停止被動用、開始回升。<br>72 歲合計 <b>633.4 萬</b></div></div><div class="rdEx"><div class="rdExT">A＝<b>不贖回</b></div><table class="rdTb"><tr><th>年齡</th><th>A 年底</th><th>A 動用</th><th>B 年底</th><th>B 動用</th><th>活存</th><th></th></tr><tr><td>65</td><td>525.0</td><td class="">—</td><td>258.0</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>66</td><td>551.2</td><td class="">—</td><td>213.5</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>67</td><td>578.8</td><td class="">—</td><td>166.3</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>68</td><td>607.8</td><td class="">—</td><td>116.3</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>69</td><td>638.1</td><td class="">—</td><td>63.2</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>70</td><td>670.0</td><td class="">—</td><td>7.0</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>71</td><td>703.6</td><td class="">—</td><td>—</td><td class="rdHi">7.5</td><td class="rdNeg">-52.5</td><td>B 用完</td></tr><tr><td>72</td><td>738.7</td><td class="">—</td><td>—</td><td class="">—</td><td class="rdNeg">-112.5</td><td>缺口</td></tr></table><div class="rdExN">A 永遠不動、照 5% 長到 738.7 萬；缺口全由 B 付，B 在 70 歲用完，<b>71 歲起活存變負數＝付不出生活費</b>（帳面上有 700 多萬卻是現金流缺口）。<br>72 歲：A 738.7 萬、活存 <b style="color:var(--gD)">−112.5 萬</b></div></div></div>
+<div class="rdRule" style="margin-top:6px"><b>判讀重點：</b>同樣的錢，贖回方式會改變<b>「先動哪一筆、能不能動、動多少」</b>——①「全部贖回」適合不能拆賣的資產，但要確認順序下一個標的是你想要的去處；②「年金式」在起始年齡前是死錢，前幾年的缺口要有別的錢撐；③「不贖回」的資產再多也付不了生活費，退休現金流要靠其他標的。</div>
+</details></div>
       <div id="itmAssetBox"></div>
       <div id="itmLiabBox" style="margin-top:12px"></div>
     </div>
@@ -1823,6 +1897,7 @@ body:not(.rxLock) .bsCascade{display:block}
 </div>
 
 <script>
+function locISO(d){d=d||new Date();const p=n=>String(n).padStart(2,"0");return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;} /* v370：本地時間（台灣），取代 toISOString 的 UTC */
 // ==================== 引擎 ====================
 function makeRng(seed){let s=seed>>>0;return function(){s=(s+0x6D2B79F5)>>>0;let t=s;
   t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};}
@@ -2838,6 +2913,9 @@ mtBuild();
   });
 })();
 
+document.addEventListener("click",e=>{const q=e.target.closest&&e.target.closest("a.rdQ");if(!q)return;e.preventDefault(); /* v370：ⓘ → 展開 ①-3b 贖回方式說明 */
+  const h=$("rdHelp");if(!h)return;const pn=h.closest(".panel");if(pn&&!pn.classList.contains("helpOn")&&!document.body.classList.contains("helpAll")){const b=pn.querySelector(":scope>.helpBtn");if(b)b.click();else pn.classList.add("helpOn");}
+  const sec=$("itmSec");if(sec)sec.open=true;const d=h.querySelector("details");if(d)d.open=true;setTimeout(()=>h.scrollIntoView({behavior:"smooth",block:"start"}),30);});
 /* ---------- v366 卡片備註：每張卡片一則（依工作區各自一份，存 #noteJson），預設內部，可勾「放進報告書」 ---------- */
 function noteLoad(){try{const o=JSON.parse(($("noteJson")||{}).value||"{}");return o&&typeof o==="object"?o:{};}catch(e){return {};}}
 function noteSave(o){const e=$("noteJson");if(e)e.value=JSON.stringify(o);if(typeof asTouch==="function")try{asTouch();}catch(x){}}
@@ -2858,7 +2936,7 @@ function noteToggle(p){let box=p.querySelector(":scope>.noteBox");if(box){box.re
     <div class="mini noteLk" style="margin:4px 0 0;display:none">現況已定錨（鎖定）：備註唯讀，要改請先解除鎖定。</div>`;
   const kicker=p.querySelector(":scope>h2")||p.querySelector(":scope>.kicker");(kicker&&kicker.nextSibling)?p.insertBefore(box,kicker.nextSibling):p.appendChild(box);
   const ta=box.querySelector("textarea"),ck=box.querySelector("input[type=checkbox]");
-  const put=()=>{if(noteLocked())return;const N2=noteLoad();const t=ta.value;if(!t.trim()&&!ck.checked)delete N2[key];else N2[key]={t,r:ck.checked,ts:new Date().toISOString().slice(0,16)};noteSave(N2);noteRefresh();};
+  const put=()=>{if(noteLocked())return;const N2=noteLoad();const t=ta.value;if(!t.trim()&&!ck.checked)delete N2[key];else N2[key]={t,r:ck.checked,ts:locISO().slice(0,16)};noteSave(N2);noteRefresh();};
   ta.addEventListener("input",e=>{e.stopPropagation();put();});ta.addEventListener("change",e=>e.stopPropagation());ck.addEventListener("change",e=>{e.stopPropagation();put();});
   box.querySelector(".noteClose").onclick=()=>box.remove();noteRefresh();if(!noteLocked())setTimeout(()=>{try{ta.focus();}catch(e){}},30);}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("button.noteBtn");if(!b)return;const p=b.closest(".panel");if(p)noteToggle(p);});
@@ -3281,7 +3359,7 @@ function buildItems(){
       ${x.sim===false?`<div style="grid-column:span 3;align-self:center;font-family:system-ui;font-size:10.5px;color:var(--sub);border-left:2px solid var(--line);padding-left:8px">不計入生涯模擬——報酬率與贖回方式不需設定（仍列入資產負債表與淨值）</div>`
       :`<div><div class="mini">退休前 %</div><input type="number" data-ia="${i}" data-if="r1" value="${x.r1!==undefined?x.r1:""}" step="0.5" placeholder="—"></div>
       <div><div class="mini">退休後 %</div><input type="number" data-ia="${i}" data-if="r2" value="${x.r2!==undefined?x.r2:""}" step="0.5" placeholder="${(()=>{const r1=parseFloat(x.r1);if(!isFinite(r1))return "報酬−預設";if(String(x.bs)==="0_1")return r1.toFixed(1)+"（定存不降）";const g=Math.max(0,num("bp_baseGlide")||0),r0=(typeof bpDeriveR0==="function"?bpDeriveR0()*100:0);return "預設 "+Math.max(r0,r1-g).toFixed(1);})()}"></div>
-      <div><div class="mini">贖回方式</div>${sel(x.redeem||"part",ITM_REDEEM,`data-ia="${i}" data-if="redeem"`)}</div>`}
+      <div><div class="mini">贖回方式 <a href="#rdHelp" class="rdQ" title="四種贖回方式的定義與逐年明細示意">ⓘ</a></div>${sel(x.redeem||"part",ITM_REDEEM,`data-ia="${i}" data-if="redeem"`)}</div>`}
       <div style="display:flex;gap:4px;align-items:center;padding-bottom:3px">
         <label class="chk" style="margin:0;font-size:10px" title="是否計入生涯模擬與客戶端追蹤（自用房屋、自用車常關閉）；資產負債表一律計入"><input type="checkbox" data-ia="${i}" data-if="sim" ${x.sim!==false?"checked":""}><span>模擬</span></label>
         <button class="btn danger sm" type="button" data-iadel="${i}">✕</button></div>
@@ -3740,7 +3818,7 @@ function renderSummaryTables(dd){
   const box=$("sumTables");if(!box)return;dd=dd||dvData("all");const d=dd.D,who=dd.who||"all",WL=who==="all"?"家庭":"個人";if(!d||(!d.incTotal&&!d.expTotal&&!d.asTotal)){box.innerHTML="";return;}
   const a0=V("g_self_cur")||num("startAge")||0;
   const premSrcOf=f=>{if(f.premSrc)return f.premSrc;const m=(f.name||"").match(/^保單保費・(.+?)(#\d+)?$/);if(!m)return "";const q=(typeof policies!=="undefined"?policies:[]).find(x=>(x.name||"").trim()===m[1]);return !q?"fin":q.src==="bsAdj"?"new":(Array.isArray(q.premArr)&&q.premArr.length)?"arr":"fin";}; /* 舊快照的時間帶沒標 premSrc → 由保單推 */
-  let fInc=0,fExp=0;(typeof flows!=="undefined"?flows:[]).forEach(f=>{const ps=premSrcOf(f);if(f.sale||ps==="fin"||ps==="new")return;const v=((typeof flowVal==="function")?flowVal(f,a0,1)*10000:0)*dvFlowShare(f,who);if(!v)return;if(f.kind==="inc")fInc+=v;else fExp+=v;}); /* v294：原呼叫不存在的 flowAt → 永遠 0 */
+  let fInc=0,fExp=0;(typeof flows!=="undefined"?flows:[]).forEach(f=>{const ps=premSrcOf(f);if(f.sale||f.psale||ps==="fin"||ps==="new")return;const v=((typeof flowVal==="function")?flowVal(f,a0,1)*10000:0)*dvFlowShare(f,who);if(!v)return;if(f.kind==="inc")fInc+=v;else fExp+=v;}); /* v294：原呼叫不存在的 flowAt → 永遠 0 */
   const NP=dvNewPrem(who),finS=d.finS+NP.fin,ins=d.ins+NP.prot; /* v295：方案新增保單保費併入保險費（⑥-5 保障型）／理財支出（①-3 轉入保單） */
   const incTot=d.incTotal+fInc,expTot=d.expTotal+fExp+NP.prot+NP.fin;
   const pct=v=>incTot?(v/incTot*100).toFixed(2)+"%":"—";
@@ -3876,7 +3954,7 @@ function autoSyncNow(){ // ①-1／①-2／①-3 一改動 → 自動重跑 ②-
   clearTimeout(_asT);
   _asT=setTimeout(()=>{
     try{
-      if(!(typeof D!=="undefined"&&D&&D.incTotal>0))return;
+      if(!(typeof D!=="undefined"&&D&&(D.incTotal>0||D.expTotal>0||D.asTotal>0)))return; /* v371 */
       if(typeof syncStampNow==="function"&&$("syncStamp")&&syncStampNow()===$("syncStamp").value&&$("expMixJson")&&$("expMixJson").value)return; // 組成尚未產生（舊檔）則仍需同步一次
       _asBusy=true;
       if(typeof doSync==="function")doSync();
@@ -3937,7 +4015,7 @@ document.addEventListener("click",e=>{if(e.target.id!=="btnStaleSync")return;
   if(typeof renderBlueprint==="function")renderBlueprint();});
 function doSync(){
   recalcData();const d=D;
-  if(!d.incTotal){$("syncMsg").textContent="請先填入收入資料";return;}
+  if(!d.incTotal&&!(d.expTotal>0)&&!(d.asTotal>0)){$("syncMsg").textContent="請先填入收入、支出或資產資料";return;} /* v371：零收入（已退休、留停、家管）也要帶入 */
   const W=x=>Math.round(x/10000);
   const liquidInv=V("as_1_0")+V("as_1_1")+V("as_1_2")+V("as_1_3");
   const add=illiqPicked().reduce((a,r)=>a+r.v,0);
@@ -3951,7 +4029,7 @@ function doSync(){
   window._simOff={cash:offCash,etf:offEtf};
   $("income").value=W(d.incTotal-0); // 佔位，實際值於下方剔除後回填
   if($("syncStamp"))$("syncStamp").value=syncStampNow();
-  $("taxRate").value=(d.tax/d.incTotal*100).toFixed(1);
+  $("taxRate").value=d.incTotal>0?(d.tax/d.incTotal*100).toFixed(1):0;
   // ---- 設起訖年齡的支出 → 時間帶支出（起迄外自動不付），不留在全期年支出中 ----
   const a0=num("startAge");
   const upFlow=(name,kind,amtW,a1,a2,cpi,extra)=>{
@@ -4118,10 +4196,10 @@ function doSync(){
   $("incomeGrowth").value=V("inc_growth_r")||0; // 薪資年成長率：以 ①-1 明示輸入為準（預設 0＝平盤）
   $("cash").value=W(cashV);
   $("etf").value=W(etfV);
-  $("syncMsg").textContent="已帶入 ✓";
+  $("syncMsg").textContent=d.incTotal>0?"已帶入 ✓":"已帶入 ✓（目前沒有工作收入：以支出與資產帶入；退休金／年金請在 ②-1 設定）";
   if(typeof rdRender==="function")try{rdRender();}catch(e){} // 贖回順序清單跟著 ①-3 類別列變動
   $("syncNote").innerHTML=`<div class="note metaphor"><b>對應邏輯：</b>
-    年收入 ${W(d.incTotal-incExcl)} 萬（稅前總收入 ${W(d.incTotal)} 萬 − 剔除／轉時間帶 ${W(incExcl)} 萬）；有效稅費率 ${(d.tax/d.incTotal*100).toFixed(1)}%（稅賦÷收入，實報數字比估的準）；
+    年收入 ${W(d.incTotal-incExcl)} 萬（稅前總收入 ${W(d.incTotal)} 萬 − 剔除／轉時間帶 ${W(incExcl)} 萬）；有效稅費率 ${d.incTotal>0?(d.tax/d.incTotal*100).toFixed(1):"0.0"}%（稅賦÷收入，實報數字比估的準）；
     ${incNotes.length?`<br><b>收入調整：</b>${incNotes.join("；")}。`:""}
     年支出 ${W(d.life+d.loan+d.raise+d.ins+d.misc-termedAnn)} 萬＝生活＋貸款＋撫育＋保險＋雜費中<b>未設起訖年齡</b>的部分（<b>不含</b>理財支出與稅——前者是儲蓄、後者已由稅費率處理）；
     ${termedNotes.length?`<b>設起訖年齡的支出已轉為時間帶（起迄外自動不付）：</b>${termedNotes.join("；")}。<br>`:""}
@@ -4280,8 +4358,8 @@ const JNY_DATEK=[["intake","問診日"],["bookkeeping","記帳起日（先記帳
 function jnyGet(){let o={};try{o=JSON.parse(($("journeyJson")||{}).value||"{}")||{};}catch(e){o={};}
   o.schemaVersion=o.schemaVersion||"journey-1.0";o.dates=o.dates||{};o.plan=o.plan||{};o.advice=o.advice||{};return o;}
 function jnySet(o){const e=$("journeyJson");if(e)e.value=JSON.stringify(o||{});}
-function jnyToday(){return new Date().toISOString().slice(0,10);}
-function jnyAddY(d,n){if(!d)return "";const t=new Date(d+"T00:00:00");if(isNaN(t))return "";t.setFullYear(t.getFullYear()+(n||1));return t.toISOString().slice(0,10);}
+function jnyToday(){return locISO().slice(0,10);}
+function jnyAddY(d,n){if(!d)return "";const t=new Date(d+"T00:00:00");if(isNaN(t))return "";t.setFullYear(t.getFullYear()+(n||1));return locISO(t).slice(0,10);}
 function jnyDays(d){if(!d)return null;const t=new Date(d+"T00:00:00");if(isNaN(t))return null;return Math.round((t-new Date(jnyToday()+"T00:00:00"))/86400000);}
 function jnyStage(o){ // 由日期推階段（可被 o.stage 覆寫）
   if(o.stage)return o.stage;const d=o.dates||{};
@@ -4421,7 +4499,7 @@ function trkPlanBaseline(){ /* v313：規劃時現況＝現況工作區快照（
     return {asOf:(s0.time||"").slice(0,10),incomeAnnual:R(inc),expenseAnnual:R(exp),investAnnual:R(inv),financialAssets:R(fa),financialAssetsAll:R(faAll),totalAssets:R(asT),liabilities:R(li),netWorth:R(asT-li)};}catch(e){return null;}}
 function trkPlanExpect(){ // 方案工作區：方案套用後的基準＋藍圖 1／3／5 年金融資產＋成功率＋指標；現況工作區回 null
   if(!(typeof bsIsPlan==="function"&&bsIsPlan()))return null;
-  const R=x=>Math.round(x||0),out={schema:"1.2",asOf:new Date().toISOString().slice(0,10),planName:(wsSlots[wsActive]||{}).name||"方案",svcPlan:(typeof svcPlanCode==="function"?svcPlanCode():"")||"",currentAge:R(num("startAge")||V("g_self_cur")||0)};
+  const R=x=>Math.round(x||0),out={schema:"1.2",asOf:locISO().slice(0,10),planName:(wsSlots[wsActive]||{}).name||"方案",svcPlan:(typeof svcPlanCode==="function"?svcPlanCode():"")||"",currentAge:R(num("startAge")||V("g_self_cur")||0)};
   try{recalcData();const d=D||{};const rows=(typeof a1LiveRows==="function")?a1LiveRows():null;
     const invest=rows?Object.keys(rows.exp).filter(k=>/^4_/.test(k)).reduce((a,k)=>a+(+rows.exp[k]||0),0):(d.finS||0);
     out.base={incomeAnnual:R(d.incTotal),expenseAnnual:R(d.expTotal),investAnnual:R(invest),financialAssets:R(faScope().value),financialAssetsAll:R((d.cashlike||0)+(d.inv||0)),totalAssets:R(d.asTotal),liabilities:R(d.liTotal),netWorth:R(d.net)};
@@ -4713,14 +4791,14 @@ function trkExportObj(){
     assets:sh?assets.filter(a=>(a.owner||"self")===sh):assets,
     policies:sh?pols.filter(p=>(p.owner==="配偶"?"spouse":"self")===sh):pols,
     liabilities:sh?liabs.filter(l=>(l.owner||"self")===sh):liabs,
-    misc:0,clothing:0,donation:0,edu:0,note:`由財務規劃整合工作台匯出（${new Date().toISOString().slice(0,10)}）`,
+    misc:0,clothing:0,donation:0,edu:0,note:`由財務規劃整合工作台匯出（${locISO().slice(0,10)}）`,
     emergMin:sh==="spouse"?0:emerg,emergMax:0,emergBasis:"essential",emergConds:{}});
   const snap=snapFor(null);
   const jny0=(typeof jnyGet==="function")?jnyGet():{dates:{}};
   // 夫妻各付各的、各自有預算 → 預設「雙人（個別管理）」；追蹤工具用 draft.mode + sheetSnapshots 還原兩個分頁
   const draft=Object.assign({clientName:nm,mode:hasSp?"dual-sep":"single",income:incM.reduce((a,m)=>a+m.income+m.side,0),
     bonus:incM.reduce((a,m)=>a+m.bonus,0),side:0,reviewCycle:jny0.reviewCycle||"每季",
-    startDate:(jny0.dates&&(jny0.dates.executionStart||jny0.dates.bookkeeping))||new Date().toISOString().slice(0,10), /* v306：先記帳的客戶，追蹤起日＝記帳起日 */
+    startDate:(jny0.dates&&(jny0.dates.executionStart||jny0.dates.bookkeeping))||locISO().slice(0,10), /* v306：先記帳的客戶，追蹤起日＝記帳起日 */
     sheetSnapshots:hasSp?{self:snapFor("self"),spouse:snapFor("spouse"),joint:{}}
       :{self:JSON.parse(JSON.stringify(snap))}},snap);
   const jny=(typeof jnyGet==="function")?jnyGet():{};
@@ -4731,7 +4809,7 @@ function trkExportObj(){
   jny.reviewCycle=jny.reviewCycle||"每季";
   const advS=(typeof jnyAdviceStat==="function")?jnyAdviceStat():null;if(advS)jny.advice=advS;
   jny.stage=(typeof jnyStage==="function")?jnyStage(jny):jny.stage;
-  const out={schemaVersion:"1.14",exportedAt:new Date().toISOString().slice(0,10),
+  const out={schemaVersion:"1.14",exportedAt:locISO().slice(0,10),
     source:"財務規劃整合工作台",journey:jny,recordsByMode:{single:[],"dual-sep":[],"dual-joint":[]},draft,
     trackingByMode:{single:null,"dual-sep":null,"dual-joint":null},actionsByMode:{single:[],"dual-sep":[],"dual-joint":[]},trkGran:"item"};
   // ---- 方案建議：一併帶入，客戶端即可開始逐條回報 ----
@@ -4818,6 +4896,8 @@ function newClientReset(silent){
     // ⑤ 模擬參數回預設
     Object.entries(DEFAULTS).forEach(([k,v])=>{if($(k))$(k).value=v;});
     if($("clientName"))$("clientName").value="";if($("scenName"))$("scenName").value="家庭方案";
+    ["income","expense","cash","etf"].forEach(id=>{if($(id))$(id).value=0;}); /* v371：⑤ 不留上一位／示範的收支與部位 */
+    if(typeof hbtApplyDef==="function")try{hbtApplyDef();}catch(e){} /* v373：新客戶用你的房地合一預設 */
     // 重算與重畫
     recalcData();recalcProt();if(typeof recalcRetGoal==="function")recalcRetGoal();if(typeof renderRisk==="function")renderRisk();
     if(typeof incBasisRender==="function")incBasisRender();if(typeof bioRefresh==="function")bioRefresh();if(typeof txRecalc==="function")txRecalc();if(typeof lcRecalc==="function")lcRecalc();
@@ -6630,7 +6710,7 @@ function rptBuild(){
   const mode=$("rpt_mode")?$("rpt_mode").value:"cmp";
   const client=($("clientName")&&$("clientName").value)||($("bio_name")&&$("bio_name").value)||"客戶";
   const isPlan=bsIsPlan();
-  const date=($("rpt_date")&&$("rpt_date").value)||new Date().toISOString().slice(0,10);
+  const date=($("rpt_date")&&$("rpt_date").value)||locISO().slice(0,10);
   const adv=($("rpt_advisor")&&$("rpt_advisor").value)||"",org=($("rpt_org")&&$("rpt_org").value)||"",contact=($("rpt_contact")&&$("rpt_contact").value)||"";
   const closing=($("rpt_closing")&&$("rpt_closing").value.trim())||"這份報告不是終點，而是我們一起把「想要的生活」換算成「每年該做的事」的起點。數字會變、人生會變，重要的是每次回顧都比上一次更接近目標。之後的追蹤與調整，我們一起完成。";
   const a0=num("startAge")||V("g_self_cur")||40,by=bioYr(V("bio_self_y"))||0;
@@ -6639,10 +6719,11 @@ function rptBuild(){
   let h="";
   recalcData();if(typeof recalcProt==="function")recalcProt();if(typeof recalcRetGoal==="function")recalcRetGoal();
   // ===== 各工作區資料（現況＋所有方案）：目前工作區即時、其餘取快照 =====
-  const slots=(typeof wsSlots!=="undefined"?wsSlots:[]).map((w,i)=>{let sn=null;try{sn=(i===wsActive)?makeSnapshot():w.snap;}catch(e){}return {i,name:w.name,sn,sum:sn?sn.summary:null,rpt:sn?sn.rpt:null,goals:sn?sn.goals:[]};}).filter(x=>x.sn);
+  if(typeof wsRptDefault==="function")wsRptDefault();
+  const slots=(typeof wsSlots!=="undefined"?wsSlots:[]).map((w,i)=>{if(i>0&&w.rpt===false)return null;let sn=null;try{sn=(i===wsActive)?makeSnapshot():w.snap;}catch(e){}return {i,name:w.name,sn,sum:sn?sn.summary:null,rpt:sn?sn.rpt:null,goals:sn?sn.goals:[]};}).filter(x=>x&&x.sn); /* v374：只放現況＋勾選的方案 */
   recalcData();if(typeof renderKPI==="function")renderKPI("all"); // makeSnapshot 會重畫 KPI；報告書一律家庭合計
   const curS=slots.find(x=>x.i===0)||slots[0]||null,plans=slots.filter(x=>x.i>0);
-  const slotColors=["#5a6573","#b08a3c","#2563a8","#1d6b4f"],colorOf=sl=>slotColors[slots.indexOf(sl)%4];
+  const slotColors=(typeof WS_COLORS!=="undefined")?WS_COLORS:["#5a6573","#b08a3c","#2563a8","#1d6b4f"],colorOf=sl=>slotColors[sl.i%slotColors.length];
   const rowsOf=sl=>(sl&&sl.rpt&&sl.rpt.rows)||null;
   const hasSp=$("bio_hasSp")?$("bio_hasSp").checked:true;
   const protRate=(w,k)=>{const need=k==="resp"?respNeed(w):V(`pr_${w}_${k}_need`);if(!(need>0))return null;return (V(`pr_${w}_${k}_have`)+V(`pr_${w}_${k}_plan`)+(rpIsPlan()?V(`pr_${w}_${k}_ret`):0))/need;};
@@ -6692,7 +6773,7 @@ function rptBuild(){
     const svg=`<svg viewBox="0 0 700 ${y+82}" style="width:100%;max-width:700px;height:auto;display:block;margin:4px auto"><polygon points="120,60 250,0 380,60" fill="#3a3a3a"/><polygon points="320,60 450,0 580,60" fill="#3a3a3a"/><polygon points="180,66 350,-6 520,66" fill="#c9962e"/><rect x="336" y="36" width="28" height="22" fill="#4a4a4a"/><rect x="344" y="40" width="12" height="14" fill="#f3e7c8"/><rect x="58" y="66" width="584" height="${y+8}" fill="#f2f2f2" stroke="#d8d2c2"/><rect x="70" y="76" width="560" height="34" fill="#264a6b"/><text x="350" y="100" text-anchor="middle" font-size="19" font-weight="700" fill="#fff" letter-spacing="3">財務目標</text>${g}${pg}</svg>`;
     if(a1==="A2")return `<section><h2>01　理財屋</h2><p class="lead" style="color:#7a5a1e;font-weight:700">先把「萬一」的窟窿補起來，財務目標才蓋得穩</p>${svg}<p class="cap" style="text-align:center;font-size:12px;color:#333;font-weight:700;margin-top:6px">保障體質檢視</p><p class="cap">屋頂下是人生各階段可能的財務目標；它們都要靠底下四根支柱撐起來。本次（A2 保險系統診斷）聚焦金色那一根：<b>人身及財產風險管理</b>——先算清楚萬一發生時家庭需要多少（應備），對照現有保單能給多少（已備），把缺口在預算內補到位，其他三根支柱才不會因為一次意外而倒塌。</p></section>`;
     if(a1)return `<section><h2>01　理財屋</h2><p class="lead" style="color:#7a5a1e;font-weight:700">先打穩地基，財務目標才蓋得上去</p>${svg}<p class="cap" style="text-align:center;font-size:12px;color:#333;font-weight:700;margin-top:6px">財務體質檢視</p><p class="cap">屋頂下是人生各階段可能的財務目標；它們都要靠底下四根支柱撐起來。本次（A1 財報系統）聚焦金色的兩根：<b>收支及信用管理</b>（現金流量）與<b>投資及資產管理</b>（資產負債），先把每月收支與資產負債的體質調整好，之後要量化財務目標（時間、金額、準備方式）時，才有穩固的基礎。</p></section>`;
-    return `<section><h2>01　理財屋</h2><p class="lead" style="color:#7a5a1e;font-weight:700">沒有量化就沒有管理，人生量化才是財務規劃</p>${svg}<p class="cap" style="text-align:center;font-size:12px;color:#333;font-weight:700;margin-top:6px">目標量化管理</p><p class="cap">金色＝本次規劃納入的財務目標（含 ②目標設定與退休目標）；灰色＝尚未納入。四根支柱是每個目標背後都要做的管理：收支及信用、人身及財產風險、投資及資產、傳承及稅賦。</p></section>`;};
+    return `<section><h2>01　理財屋</h2><p class="lead" style="color:#7a5a1e;font-weight:700">沒有量化就沒有管理，人生量化才是財務規劃</p>${svg}<p class="cap" style="text-align:center;font-size:12px;color:#333;font-weight:700;margin-top:6px">目標量化管理</p><p class="cap">金色＝本次規劃納入的財務目標（含 ②目標設定與退休目標）；灰色＝尚未納入。四根支柱是每個目標背後都要做的管理：收支及信用、人身及財產風險、投資及資產、傳承及稅賦。</p>${typeof hbtRptNote==="function"?hbtRptNote():""}</section>`;};
   const pill=(v)=>v==null?"—":`<span style="display:inline-block;min-width:52px;text-align:center;padding:1px 6px;border-radius:4px;font-weight:700;background:${v>=1?"#e8f5e9":v>=0.7?"#eef3f9":v>=0.4?"#fff5e6":"#fdf3f1"};color:${v>=1?"#1d6b4f":v>=0.7?"#2563a8":v>=0.4?"#9a5a12":"#8e2a1e"}">${(v*100).toFixed(0)}%</span>`;
   const secGoals=(cols)=>{
     const gl=(typeof goals!=="undefined"?goals:[]);const cur=V("g_self_cur")||a0,retA=V("g_self_ret"),lifeA=V("g_self_life");
@@ -7497,19 +7578,19 @@ function a1StOf(k,v,consTh){ // 追蹤工具實際值的燈號（與 a1Ind 同�
     case"earn":return b(v>=0.3,v>=0.2);case"free":return b(v>=0.8,v>=0.3);case"spend":return b(v<=0.7,v<=0.8);case"life":return b(v<=0.2,v<=0.3);case"growth":return b(v>=0.05,v>=0);default:return "na";}}
 function rptAutoSnap(){ // 產生報告書時自動存一筆帶日期的歷史快照（同日同工作區只保留一筆）＋流程蓋章
   try{if(typeof jnyStamp==="function"){const pn=(typeof wsSlots!=="undefined"&&wsSlots[wsActive])?wsSlots[wsActive].name:"現況";
-    jnyStamp("planned");jnyStamp("reported",null,{force:true,plan:{name:pn,reportVersion:`報告書 ${new Date().toISOString().slice(0,10)}・${pn}`}});}
+    jnyStamp("planned");jnyStamp("reported",null,{force:true,plan:{name:pn,reportVersion:`報告書 ${locISO().slice(0,10)}・${pn}`}});}
     if(typeof csAutoStatus==="function")csAutoStatus("方案討論","已產生報告書");}catch(e){} /* v305 */
-  try{const d=new Date().toISOString().slice(0,10),pn=(typeof wsSlots!=="undefined"&&wsSlots[wsActive])?wsSlots[wsActive].name:"現況",nm=`報告書 ${d}・${pn}`;
+  try{const d=locISO().slice(0,10),pn=(typeof wsSlots!=="undefined"&&wsSlots[wsActive])?wsSlots[wsActive].name:"現況",nm=`報告書 ${d}・${pn}`;
     const sn=Object.assign(makeSnapshot(),{name:nm});const i=scenarios.findIndex(x=>x.name===nm);if(i>=0)scenarios[i]=sn;else scenarios.push(sn);renderScenList();}catch(e){console.warn(e);}}
-function rptOpen(){const html=rptBuild();rptAutoSnap();const w=window.open("","_blank");if(!w){$("rptMsg").textContent="瀏覽器擋了新分頁——請允許彈出視窗，或改用「下載 HTML」";return;}w.document.open();w.document.write(html);w.document.close();$("rptMsg").textContent="已在新分頁開啟 ✓（列印 → 存成 PDF）";}
-function rptDownload(){const html=rptBuild();rptAutoSnap();const client=($("clientName")&&$("clientName").value)||"客戶";const names=(typeof wsSlots!=="undefined"?wsSlots:[]).map(w=>w.name),pn=names.length>1?`現況＋${names.slice(1).join("、")}`:"現況";
-  const blob=new Blob([html],{type:"text/html"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`理財規劃報告書_${client}_${pn}_${new Date().toISOString().slice(0,10)}.html`;document.body.appendChild(a);a.click();a.remove();$("rptMsg").textContent=`已下載 ✓（內含 ${pn}）`;}
+function rptOpen(){const html=rptBuild();rptAutoSnap();const w=window.open("","_blank");if(!w){$("rptMsg").textContent="瀏覽器擋了新分頁——請允許彈出視窗，或改用「下載 HTML」";return;}w.document.open();w.document.write(html);w.document.close();$("rptMsg").textContent=`已在新分頁開啟 ✓（列印 → 存成 PDF）・本次內含：${typeof wsRptNames==="function"&&wsRptNames().length?"現況＋"+wsRptNames().join("、"):"現況"}`;}
+function rptDownload(){const html=rptBuild();rptAutoSnap();const client=($("clientName")&&$("clientName").value)||"客戶";const names=(typeof wsRptNames==="function")?wsRptNames():[],pn=names.length?`現況＋${names.join("、")}`:"現況";
+  const blob=new Blob([html],{type:"text/html"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`理財規劃報告書_${client}_${pn}_${locISO().slice(0,10)}.html`;document.body.appendChild(a);a.click();a.remove();$("rptMsg").textContent=`已下載 ✓（內含 ${pn}）`;}
 $("btnRptOpen")&&$("btnRptOpen").addEventListener("click",()=>{if(preGate("產生報告書"))rptOpen();});
 $("rptBdSeg")&&$("rptBdSeg").addEventListener("click",e=>{const b=e.target.closest("button[data-lv]");if(!b)return;$("rpt_bdLv").value=b.dataset.lv;
   $("rptBdSeg").querySelectorAll("button[data-lv]").forEach(x=>x.classList.toggle("on",x===b));});
 $("btnRptDl")&&$("btnRptDl").addEventListener("click",()=>{if(preGate("下載報告書"))rptDownload();});
 $("rpt_closing")&&$("rpt_closing").addEventListener("input",()=>{$("rpt_closingH").value=$("rpt_closing").value;});
-if($("rpt_date")&&!$("rpt_date").value)$("rpt_date").value=new Date().toISOString().slice(0,10);
+if($("rpt_date")&&!$("rpt_date").value)$("rpt_date").value=locISO().slice(0,10);
 /* 追蹤工具 adviceStatus → 依 trackKey（_tk）套到方案項目：status／actual／doneDate／note2 */
 /* ---------- v275：首月校正（v281 起只剩此用途：不存實際值、不套執行狀態） ---------- */
 function rbRouteExp(x){const SUB={"食":0,"衣":1,"住":2,"行":3,"醫":4,"雜":5},L2E={li_0:0,li_1:0,li_2:2,li_3:2,li_4:2,li_5:2,li_6:2,li_7:3};
@@ -7634,7 +7715,7 @@ function adviceExportObj(){
   // 摘要（現況 vs 方案）
   const cur=(typeof wsSlots!=="undefined"&&wsSlots[0]&&wsSlots[0].snap)?wsSlots[0].snap.summary:null;let me=null;try{me=makeSnapshot().summary;}catch(e){}
   const pick=(o)=>o?{srRetire:o.srRetire,srBoth:o.srBoth,finalP50W:o.finalP50,bpFinalW:o.bpFinal,incomeW:o.income,expenseW:o.expense,estTax:o.estTax}:null;
-  return {schemaVersion:"advice-1.0",exportedAt:new Date().toISOString().slice(0,10),source:"財務規劃整合工作台",
+  return {schemaVersion:"advice-1.0",exportedAt:locISO().slice(0,10),source:"財務規劃整合工作台",
     client:{name:$("clientName")?$("clientName").value:"",selfBirthYear:by||null,currentAge:a0},
     plan:{name:(wsSlots[wsActive]||{}).name||"方案",workspaceIndex:wsActive},
     units:{amount:"元",age:"本人年齡（歲）",year:"西元年",summaryW:"萬"},
@@ -7824,7 +7905,7 @@ function makeSnapshot(light){ // light＝自動存檔用：不跑蒙地卡羅／
   const rx1=(typeof invPlans!=="undefined"?invPlans:[]).filter(q=>(q.y1||1)<=1&&(q.y2||1)>=1&&!(typeof bsSkip==="function"&&bsSkip(q))).reduce((a,q)=>a+(q.amtW||0),0);
   const newPol=policies.filter(x=>x.src==="bsAdj"),newPrem=newPol.reduce((a,x)=>a+((x.prem||0)>0&&(x.premYrs||0)>0?x.prem:0),0);
   return {name:$("scenName").value||"未命名方案",client:$("clientName").value||"",
-    time:new Date().toISOString().slice(0,16).replace("T"," "),
+    time:locISO().slice(0,16).replace("T"," "),
     values:Object.assign(collectValues(),{__wsCur:(typeof wsActive!=="undefined"&&wsActive===0)}),goals:JSON.parse(JSON.stringify(goals)),kidCount,
     flows:JSON.parse(JSON.stringify(flows)),estKids:estKids.slice(),
     bioKids:(typeof bioKids!=="undefined")?bioKids.slice():[],
@@ -7899,7 +7980,7 @@ function arvActual(src){ // 實際值（元）：追蹤工具 annualReview 或�
       label:`追蹤工具實際值${w.from?`（${w.from}～${w.to}，${w.filled||0}/${w.months||12} 個月有實際）`:""}`,asOf:(a.assets||{}).asOf||a.reviewDate||a.exportedAt||""};}
   recalcData();const d=D;const exp={};[0,1,2,3,5,6].forEach(gi=>exp[gi]=EXP_GROUPS[gi].rows.reduce((s2,_,ri)=>s2+V(`exp_${gi}_${ri}_m`)*12+V(`exp_${gi}_${ri}_y`),0));exp.total=[0,1,2,3,5,6].reduce((s2,gi)=>s2+exp[gi],0);
   const rxLive=(typeof invPlans!=="undefined"?invPlans:[]).filter(q=>(q.y1||1)<=1&&(q.y2||1)>=1&&!(typeof bsSkip==="function"&&bsSkip(q))).reduce((a2,q)=>a2+(q.amtW||0),0)*10000;
-  return {inc:{work:d.incWork,fin:d.incFin,total:d.incTotal},exp,invest:d.finS+rxLive,asEarn:d.cashlike+d.inv,asTotal:d.asTotal,liab:d.liTotal,net:d.net,adv:arvLiveAdv(),est:false,cv:V("as_1_4"),policies:[],investItems:[],label:"目前工作台值",asOf:new Date().toISOString().slice(0,10)};}
+  return {inc:{work:d.incWork,fin:d.incFin,total:d.incTotal},exp,invest:d.finS+rxLive,asEarn:d.cashlike+d.inv,asTotal:d.asTotal,liab:d.liTotal,net:d.net,adv:arvLiveAdv(),est:false,cv:V("as_1_4"),policies:[],investItems:[],label:"目前工作台值",asOf:locISO().slice(0,10)};}
 /* ---------- v270：以週年實際值建立新年度現況 ---------- */
 const NY_TH={full:9,part:3,staleMon:6,astStaleMon:3}; // 情況①≥9 個月；情況② 3～8；資料停在半年前→情況③；資產餘額超過 3 個月→待確認
 function nyToday(){return window._nyToday?new Date(window._nyToday):new Date();}
@@ -8037,7 +8118,7 @@ function arvBuild(){
   /* v311：規劃時現況＝現況工作區快照（定錨鎖定的就是規劃前的樣子）；基準快照本身就是現況時不重複 */
   let B0=null;try{const s0=(typeof wsSlots!=="undefined"&&wsSlots[0]&&wsSlots[0].snap)||null;if(s0&&s0!==sn&&s0.rpt&&s0.rpt.rows&&(sn.name||"")!=="現況")B0=arvBase(s0);}catch(e){}
   /* v311：檢視日＝實際值的資產截止日（沒有就今天）；經過月數＝基準快照 → 檢視日 */
-  const rvDate=(A.asOf&&String(A.asOf).slice(0,10))||new Date().toISOString().slice(0,10);const rvD=new Date(rvDate+"T00:00:00");
+  const rvDate=(A.asOf&&String(A.asOf).slice(0,10))||locISO().slice(0,10);const rvD=new Date(rvDate+"T00:00:00");
   const mons=Math.max(0,nyMonDiff(String(sn.time||"").slice(0,7),isNaN(rvD)?new Date():rvD));
   const bpAt=(()=>{const bp=sn.rpt&&sn.rpt.bp;if(!(bp&&bp.pool&&bp.pool.length>1))return null;const k=mons/12,i=Math.min(bp.pool.length-2,Math.floor(k)),f=Math.min(1,k-i);const v=bp.pool[i]*(1-f)+bp.pool[i+1]*f;return v*10000+Math.max(0,B.asEarn-bp.pool[0]*10000);})();
   const badge=(t,c)=>`<span style="display:inline-block;padding:1px 7px;border-radius:9px;font-size:10.5px;font-weight:700;color:#fff;background:${c}">${t}</span>`;
@@ -8089,6 +8170,7 @@ $("nyFile")&&$("nyFile").addEventListener("change",e=>{const f=e.target.files[0]
 $("btnNyJump")&&$("btnNyJump").addEventListener("click",()=>{mtShowView("view_scen");setTimeout(()=>{const x=$("nySec");if(x)x.scrollIntoView({behavior:"smooth",block:"start"});},120);});
 $("arvSrcSeg")&&$("arvSrcSeg").addEventListener("click",e=>{const b=e.target.closest("button[data-src]");if(!b)return;$("arvSrcSeg").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));if($("arvOut").innerHTML)arvBuild();});
 function applySnapshot(s){ // 還原一個方案快照（結構資料先於欄位值）
+  if(typeof hbtApplyDef==="function"&&!(s&&s.values&&s.values.hbt_y1!==undefined))try{hbtApplyDef();}catch(e){} /* v373：舊檔沒有房地合一參數 → 用你的預設 */
   if(s.goals){goals=JSON.parse(JSON.stringify(s.goals));buildGoals();}
   if(typeof hbLoad==="function")hbLoad();
   if(s.kidCount!==undefined&&s.kidCount!==kidCount){kidCount=s.kidCount;buildProt();}
@@ -8113,6 +8195,7 @@ function applySnapshot(s){ // 還原一個方案快照（結構資料先於欄�
   const sbm=$("svBtMsg");if(sbm)sbm.textContent="";
   if(typeof renderGantt==="function")try{renderGantt();}catch(e){} // 欄位值都套完再畫一次（中途的 buildGoals 畫的是半套資料）
   if(typeof noteRefresh==="function")try{noteRefresh();}catch(e){} /* v366 */
+  if(typeof hbtCheck==="function")try{hbtMark();hbtCheck();}catch(e){} /* v373 */
 }
 /* ---------- 工作檔：一鍵存/開（當前狀態＋全部方案）---------- */
 function workFileObj(){ // 目前畫面 → 工作檔物件（下載與客戶庫共用）
@@ -8122,7 +8205,7 @@ function loadWorkObj(j,label){ // 工作檔物件 → 畫面（開檔與客戶�
   if(j&&j.kind==="工作台工作檔"&&j.current){
     scenarios=Array.isArray(j.scenarios)?j.scenarios:[];renderScenList();
     if(j.ws&&Array.isArray(j.ws.slots)&&j.ws.slots.length){
-      wsSlots=j.ws.slots.map((s,i)=>({name:i===0?"現況":(s.name||"方案"),snap:s.snap||null,locked:!!s.locked,born:s.born||(s.snap&&s.snap.time)||""})); /* v302：舊檔沒有 born，以該方案最後存檔時間代替 */
+      wsSlots=j.ws.slots.map((s,i)=>({name:i===0?"現況":(s.name||"方案"),snap:s.snap||null,locked:!!s.locked,born:s.born||(s.snap&&s.snap.time)||"",rpt:s.rpt})); /* v302：舊檔沒有 born，以該方案最後存檔時間代替；v374：rpt */
       wsActive=Math.min(Math.max(0,j.ws.active||0),wsSlots.length-1);const tgt=wsSlots[wsActive];applySnapshot(tgt&&tgt.snap?tgt.snap:j.current);
     }else{wsSlots=[{name:"現況",snap:j.current,locked:false}];wsActive=0;applySnapshot(j.current);}
     wsLockWarned=false;wsRender();
@@ -8152,8 +8235,13 @@ function dlJSON(obj,fname){
 /* ---------- 全域方案工作區：現況＋方案一～三（完整 ①～⑦ 副本，切換自動保存） ---------- */
 var wsSlots=[{name:"現況",snap:null,locked:false}];
 var wsActive=0,wsLockWarned=false,wsArmDel=false,wsRenaming=false;
-const WS_NAMES=["方案一","方案二","方案三"];
-const WS_COLORS=["#5a6573","#b08a3c","#2563a8","#1d6b4f"]; // 現況／方案一／方案二／方案三（與報告書同色）
+const WS_NAMES=["方案一","方案二","方案三","方案四","方案五","方案六"];
+const WS_COLORS=["#5a6573","#b08a3c","#2563a8","#1d6b4f","#8e2a1e","#6b4fa0","#b4561c"]; // 現況／方案一～六（與報告書同色）
+const WS_MAX=7,WS_RPT_MAX=3; /* v374：現況＋6 個方案；報告書最多 3 個方案 */
+function wsRptOn(i){return i>0&&!!wsSlots[i]&&wsSlots[i].rpt!==false;}
+function wsRptList(){return wsSlots.map((s,i)=>i).filter(i=>wsRptOn(i));}
+function wsRptNames(){return wsRptList().map(i=>wsSlots[i].name);}
+function wsRptDefault(){let n=0;wsSlots.forEach((s,i)=>{if(i===0)return;if(s.rpt===undefined)s.rpt=n<WS_RPT_MAX;if(s.rpt!==false)n++;});} /* 舊檔沒有 rpt：前三個方案勾 */
 /* ---------- ⑤ 現況唯讀：參數上鎖＋「值 ← 來源」摘要（方案工作區才可調） ---------- */
 const SIM_RO_ROWS=[ // [id, 標籤, 單位, 來源, 格式]
   ["startAge","目前年齡","歲","②-1"],["retireAge","退休年齡","歲","②-1"],["retireAgeSp","配偶退休（本人幾歲時）","歲","②-1",v=>{const a=num("retireAgeSp");return a>0?`${a} 歲・配偶薪資 ${num("incomeSp")} 萬/年到此為止`:"同本人";}],["retireMonthly","退休月支出（現值）","萬","②-1"],["retireYears","退休期間","年","②-1"],
@@ -8177,7 +8265,8 @@ function simRoRender(){
 function wsRender(){
   if(typeof noteRefresh==="function")try{noteRefresh();}catch(e){} /* v366：工作區切換／定錨後更新備註按鈕 */
   const bar=$("wsBar");if(!bar)return;
-  {const c=WS_COLORS[wsActive%4]||WS_COLORS[0],nm=(wsSlots[wsActive]||{}).name||"現況";
+  wsRptDefault();
+  {const c=WS_COLORS[wsActive%WS_COLORS.length]||WS_COLORS[0],nm=(wsSlots[wsActive]||{}).name||"現況";
     bar.style.borderLeft=`5px solid ${c}`;bar.style.background=wsActive?`linear-gradient(90deg,${c}14,#fbf9f5 40%)`:"#fbf9f5";
     let f=$("wsFloat");if(!f){f=document.createElement("div");f.id="wsFloat";f.className="no-print";document.body.appendChild(f);
       f.addEventListener("click",()=>{const b=$("wsBar");if(b)b.scrollIntoView({behavior:"smooth",block:"start"});});}
@@ -8190,10 +8279,10 @@ function wsRender(){
       if(on&&wsRenaming&&i!==0)
         return `<input id="wsRenInp" type="text" value="${s.name}" maxlength="12"
           style="font-family:'Noto Serif TC',serif;font-size:12px;padding:5px 8px;border:2px solid var(--gold);border-radius:7px;background:#fff;width:110px">`;
-      const c=WS_COLORS[i%4];
+      const c=WS_COLORS[i%WS_COLORS.length];
       return `<button class="btn sm${on?"":" ghost"}" data-ws="${i}" style="${on?`background:${c};border-color:${c};box-shadow:0 0 0 3px ${c}33;font-size:13px;padding:6px 14px;`:`color:${c};border-color:${c}66;`}${i===0?"font-weight:700":""}">${on?"▶ ":""}${i===0&&s.locked?"🔒 ":""}${s.name}</button>`;
     }).join("")+
-    (wsSlots.length<4?`<button class="btn ghost sm" data-wsadd="1">＋ 新增方案（複製目前）</button>`:"")+
+    (wsSlots.length<WS_MAX?`<button class="btn ghost sm" data-wsadd="1">＋ 新增方案（複製目前）</button>`:"")+
     (wsActive===0
       ?`<button class="btn ghost sm" data-wslock="1">${wsSlots[0].locked?"解鎖現況":"定錨並鎖定現況"}</button>`
       :`<button class="btn ghost sm" data-wsren="1">✎ 改名</button>`+
@@ -8201,7 +8290,8 @@ function wsRender(){
           ?`<button class="btn danger sm" data-wsdel="1">確認刪除「${wsSlots[wsActive].name}」？</button><button class="btn ghost sm" data-wsdelc="1">取消</button>`
           :`<button class="btn danger sm" data-wsdel="1">✕ 刪除此方案</button>`))+
     `<span id="wsMsg" style="font-size:10.5px;color:var(--sub);font-family:system-ui"></span>`+
-    `<button class="btn sm" data-wsov="1" style="margin-left:auto;border:1.5px solid var(--gold);color:var(--gold);background:#fff">📊 總覽比較（⑧）</button>`;
+    `<button class="btn sm" data-wsov="1" style="margin-left:auto;border:1.5px solid var(--gold);color:var(--gold);background:#fff">📊 總覽比較（⑧）</button>`+
+    (wsSlots.length>1?`<div id="wsRptRow" style="flex-basis:100%;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:system-ui;font-size:11.5px;color:var(--sub);margin-top:2px"><span title="報告書（B／A1／A2）只放現況＋勾選的方案，最多 3 個；⑧ 總覽比較仍是全部方案">📄 報告書放：</span>${wsSlots.map((s,i)=>i===0?"":`<label class="chk" style="margin:0;font-size:11.5px"><input type="checkbox" data-wsrpt="${i}"${wsRptOn(i)?" checked":""}><span style="color:${WS_COLORS[i%WS_COLORS.length]}">${s.name}</span></label>`).join("")}<span class="mini" style="margin:0">（現況一定放；方案最多 ${WS_RPT_MAX} 個，目前 ${wsRptList().length} 個）</span></div>`:"");
   try{wsStaleRender();}catch(e){}
   if(typeof mtSync==="function")mtSync();
   if(typeof syncCurMuSig==="function")syncCurMuSig();
@@ -8246,16 +8336,21 @@ function wsSwitch(i){
   wsRender();
   $("wsMsg").textContent=`已切換至「${tgt.name}」${saved?"":`（「${from}」為鎖定狀態，剛才的修改未保存）`}`;
 }
+$("wsBar").addEventListener("change",e=>{const cb=e.target;if(!cb||cb.dataset.wsrpt===undefined)return;const i=+cb.dataset.wsrpt;const s=wsSlots[i];if(!s)return; /* v374 */
+  if(cb.checked&&wsRptList().length>=WS_RPT_MAX){cb.checked=false;$("wsMsg").textContent=`報告書最多放 ${WS_RPT_MAX} 個方案——請先取消一個再勾「${s.name}」`;return;}
+  s.rpt=cb.checked;if(typeof asTouch==="function")try{asTouch();}catch(x){}if(typeof qsMark==="function")try{qsMark();}catch(x){}
+  const row=$("wsRptRow");if(row){const m=row.querySelector("span.mini");if(m)m.textContent=`（現況一定放；方案最多 ${WS_RPT_MAX} 個，目前 ${wsRptList().length} 個）`;}
+  $("wsMsg").textContent=wsRptList().length?`報告書將放：現況＋${wsRptNames().join("、")}`:"報告書只放現況（沒有勾選任何方案）";});
 $("wsBar").addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;
   if(b.dataset.wsov){mtShowView("view_scen");return;}
   if(b.dataset.ws!==undefined){wsArmDel=false;wsRenaming=false;wsSwitch(+b.dataset.ws);return;}
   if(b.dataset.wsadd){
-    if(wsSlots.length>=4)return;
+    if(wsSlots.length>=WS_MAX)return;
     wsArmDel=false;wsRenaming=false;
     wsSaveActive();
     const nm=WS_NAMES[wsSlots.length-1]||("方案"+wsSlots.length);
-    wsSlots.push({name:nm,snap:makeSnapshot(),locked:false,born:new Date().toISOString().slice(0,16).replace("T"," ")}); /* v302：記下由現況複製的時間 */
+    wsSlots.push({name:nm,snap:makeSnapshot(),locked:false,born:locISO().slice(0,16).replace("T"," "),rpt:wsRptList().length<WS_RPT_MAX}); /* v302：記下由現況複製的時間；v374：已勾不足 3 個才預設進報告書 */
     wsActive=wsSlots.length-1;wsLockWarned=false;wsRender();
     $("wsMsg").textContent=`已建立「${nm}」（複製自目前畫面）——現在起的修改都記在此方案`;
   }else if(b.dataset.wslock){
@@ -8285,13 +8380,13 @@ document.addEventListener("input",e=>{ // 鎖定中的現況被編輯 → 提醒
 },true);
 wsRender();
 $("btnSaveScen").addEventListener("click",()=>{
-  scenarios.push(Object.assign(makeSnapshot(),{name:`手動快照 ${new Date().toISOString().slice(0,10)}・${(typeof wsSlots!=="undefined"&&wsSlots[wsActive])?wsSlots[wsActive].name:"現況"}`}));renderScenList();
+  scenarios.push(Object.assign(makeSnapshot(),{name:`手動快照 ${locISO().slice(0,10)}・${(typeof wsSlots!=="undefined"&&wsSlots[wsActive])?wsSlots[wsActive].name:"現況"}`}));renderScenList();
   $("status").textContent="快照已儲存（⑧-2）";
 });
 $("btnExportAll").addEventListener("click",()=>{
   if(!scenarios.length){$("status").textContent="尚無快照可匯出，請先存一筆快照或產生報告書";return;}
   dlJSON({app:"fp-workbench",version:1,scenarios},
-    `方案_${$("clientName").value||"客戶"}_${new Date().toISOString().slice(0,10)}.json`);
+    `方案_${$("clientName").value||"客戶"}_${locISO().slice(0,10)}.json`);
 });
 $("btnImport").addEventListener("click",()=>$("fileImport").click());
 $("fileImport").addEventListener("change",e=>{
@@ -8773,18 +8868,18 @@ function buildLaborCalc(){
   $("btnLcFill").addEventListener("click",()=>{
     const r=lcCompute();if(!r)return;
     const w=$("lc_who").value;
-    pensUpsert({who:w,type:"勞保",mode:"月領",age:r.li.claim,yrs:r.li.yrsT,sal:V("lc_sal"),mon:r.li.mon,lump:0,payYrs:0,note:`計算器 ${new Date().toISOString().slice(0,10)}`});
+    pensUpsert({who:w,type:"勞保",mode:"月領",age:r.li.claim,yrs:r.li.yrsT,sal:V("lc_sal"),mon:r.li.mon,lump:0,payYrs:0,note:`計算器 ${locISO().slice(0,10)}`});
     $("lcMsg").textContent=`已寫入${w==="self"?"本人":"配偶"}「已有退休金」✓ 勞保月領 ${NT(r.li.mon)}、${r.li.claim} 歲起（終身）`;
   });
   $("btnNpFill").addEventListener("click",()=>{
     const r=lcCompute();if(!r||!r.np)return;const w=$("lc_who").value;
     if(r.np.yrs<=0){$("npMsg").textContent="年資為 0，沒有可填的國保年金";return;}
-    pensUpsert({who:w,type:"國保",mode:"月領",age:r.np.claim,yrs:r.np.yrs,sal:V("np_amt"),mon:r.np.mon,lump:0,payYrs:0,note:`計算器 ${new Date().toISOString().slice(0,10)}・${r.np.useB?"B":"A"} 式`});
+    pensUpsert({who:w,type:"國保",mode:"月領",age:r.np.claim,yrs:r.np.yrs,sal:V("np_amt"),mon:r.np.mon,lump:0,payYrs:0,note:`計算器 ${locISO().slice(0,10)}・${r.np.useB?"B":"A"} 式`});
     $("npMsg").textContent=`已寫入${w==="self"?"本人":"配偶"}「已有退休金」✓ 國保月領 ${NT(r.np.mon)}、${r.np.claim} 歲起（終身）`;});
   $("btnLrFill").addEventListener("click",()=>{
     const r=lcCompute();if(!r)return;
     const w=$("lc_who").value;
-    const note=`計算器 ${new Date().toISOString().slice(0,10)}`;
+    const note=`計算器 ${locISO().slice(0,10)}`;
     if(r.lr.mode==="mon"){
       pensUpsert({who:w,type:"勞退",mode:"月領",age:r.lr.claim,yrs:"",sal:V("lr_sal"),mon:r.lr.mon,lump:0,payYrs:r.lr.N,note});
       $("lrMsg").textContent=`已寫入${w==="self"?"本人":"配偶"}「已有退休金」✓ 勞退月領 ${NT(r.lr.mon)} × ${r.lr.N} 年、${r.lr.claim} 歲起`;
@@ -9869,7 +9964,7 @@ function rcLadderCalc(R,base,live,keepW,top){ /* 現在／第①層（稅後可�
     {k:"l1",label:"第 ① 層",inc:isFinite(X1)?Math.round(R+X1):null,tax:s1?Math.round(s1.taxAll):null,disp:s1?Math.round(s1.disp):null,goal:isFinite(X1)?"稅後可支配剛好＝生活支出＋續扣（申報收入養得起目前生活）":"5,000 萬內達不到（生活＋續扣過高）"},
     {k:"l2",label:"第 ② 層",inc:t2,tax:Math.round(s2.taxAll),disp:Math.round(s2.disp),goal:(top&&top.src==="loop")?"所有目標：閉環結果（藍圖不耗竭、期末預留留得住）":(top&&top.src==="solve")?"所有目標：反推估計（未閉環驗證）":"與現在相同（申報水準不需調整）"},
     {k:"full",label:"全額如實申報",inc:null,tax:null,disp:null,goal:"法定標準"}];
-  return {rows,d01:rows[1].tax!=null?rows[1].tax-rows[0].tax:null,d12:rows[1].tax!=null?rows[2].tax-rows[1].tax:null,src:top?top.src:"none",asOf:new Date().toISOString().slice(0,10)};}
+  return {rows,d01:rows[1].tax!=null?rows[1].tax-rows[0].tax:null,d12:rows[1].tax!=null?rows[2].tax-rows[1].tax:null,src:top?top.src:"none",asOf:locISO().slice(0,10)};}
 function rcLadderHTML(R,base,live,keepW,top){try{const L=rcLadderCalc(R,base,live,keepW,top);rcLadder[wsActive]=L;const N0=v=>v==null?"—":NT(Math.round(v));
     return `<div style="margin-top:10px"><div class="axTitle" style="margin-bottom:4px">申報階梯</div><div style="overflow-x:auto"><table class="dt aln" style="margin:0"><tr><th style="text-align:left">層級</th><th>年申報所得</th><th>所得稅（含補充保費／健保費增額）</th><th>稅後可支配</th><th style="text-align:left">這一層完成的目標</th></tr>
     ${L.rows.map(r=>`<tr${r.k==="l2"?' style="font-weight:700"':""}><td class="rn" style="font-weight:inherit">${r.label}</td><td class="calc">${r.k==="full"?"—":N0(r.inc)}</td><td class="calc">${r.k==="full"?"—":N0(r.tax)}</td><td class="calc">${r.k==="full"?"—":N0(r.disp)}</td><td style="text-align:left">${esc(r.goal)}</td></tr>`).join("")}</table></div>
@@ -9986,7 +10081,7 @@ function rcSolve(){
 $("btnRcAuto").addEventListener("click",()=>{const o=rcAutoFill(true);rcManual=false;$("btnRcAuto").style.display="none";$("rc_msg").textContent=o.length?"已帶入 "+o.join("、"):"";});
 $("btnRcSolve").addEventListener("click",()=>{if(preGate("④-4 反推"))rcSolve();});
 $("btnRcLoop").addEventListener("click",()=>{if(preGate("④-4 閉環"))rcLoop();});
-const GOAL_CATS=["購屋-頭期款","購屋-貸款","購屋-裝潢","購屋-換屋","教育金","旅遊計畫","創業/開業","汽車","孝養","其他"];
+const GOAL_CATS=["購屋-頭期款","購屋-預售款","購屋-貸款","購屋-裝潢","購屋-換屋","教育金","旅遊計畫","創業/開業","汽車","孝養","其他"];
 var goals=[ // var：供 readP 以 typeof 防衛提早引用（宣告提升）
  {pri:1,cat:"購屋-頭期款",name:"換屋頭期款",pv:15000000,age:50,freq:"單次",years:1,g:0},
  {pri:2,cat:"教育金",name:"老大留學",pv:5000000,age:53,freq:"單次",years:1,g:2},
@@ -10339,7 +10434,11 @@ function hbAdjTxt(hid){ // 「可接受總價 3,000 萬 ～ 3,500 萬・購屋�
 function hbRowsFrom(r,hid,lb,pri0){ // ②-3 精算結果 → 這間房的整組目標列（頭期／裝潢／貸款年付／租屋／買房費用）
   let pri=(pri0||1)-1;const rowsNew=[];
   const push=(cat,tpl,pv,age,freq,years,g,fund)=>rowsNew.push({pri:++pri,cat,hid,hname:tpl,name:tpl.replace("{H}",lb),pv:Math.round(pv),age,freq,years,g,fund});
-  push("購屋-頭期款","頭期款・{H}",r.downToday,r.age,"單次",1,V("hb_g"),"capital");
+  if(r.pre&&r.pre.on){const P=r.pre; /* v372：預售屋——合約價鎖定（成長率 0）；交屋款列放第一（沙盤以第一個頭期款類列核對交屋年） */
+    push("購屋-頭期款","交屋款・{H}",P.remHand,r.age,"單次",1,0,"capital");
+    if(P.remDep>0)push("購屋-預售款","預售屋簽約款・{H}",P.remDep,P.depAge,"單次",1,0,"capital");
+    if(P.remBuild>0){if(P.bYears>=1)push("購屋-預售款","預售屋工程期款・{H}",P.remBuild/P.bYears,P.bStart,"每年",P.bYears,0,"capital");else push("購屋-預售款","預售屋工程期款・{H}",P.remBuild,r.age,"單次",1,0,"capital");}}
+  else push("購屋-頭期款","頭期款・{H}",r.downToday,r.age,"單次",1,V("hb_g"),"capital");
   if(r.miscToday>0)push("購屋-裝潢","裝潢＋雜費・{H}",r.miscToday,r.age,"單次",1,V("hb_g"),"capital");
   r.rows.forEach(x=>push("購屋-貸款",x.name+"・{H}",x.pv,x.age,"每年",x.years,+(x.g.toFixed(2)),"budget"));
   const s=r.sell;
@@ -10870,6 +10969,10 @@ regLb("hb_sellOn","購屋精算｜啟用換屋");regLb("hb_sellAsset","購屋精
 ["hb_sellAsset","hb_sellLoan"].forEach(id=>$(id).addEventListener("change",()=>{if(typeof hbSellLinkNote==="function")hbSellLinkNote();}));
 $("hb_sellOn").addEventListener("change",()=>{$("hbSellBox").style.display=$("hb_sellOn").checked?"":"none";});
 $("hb_segOn").addEventListener("change",()=>{$("hb_segBox").style.display=$("hb_segOn").checked?"":"none";});
+$("hb_preOn").addEventListener("change",()=>{$("hbPreBox").style.display=$("hb_preOn").checked?"":"none";hbPreHandUpd();});
+$("hb_psOn").addEventListener("change",()=>{$("hbPsBox").style.display=$("hb_psOn").checked?"":"none";});
+["hb_price","hb_ltv","hb_mode","hb_preDep","hb_preBuild","hb_prePaid","hb_age","hb_preSignAge"].forEach(id=>{const e=$(id);if(e)e.addEventListener("input",()=>hbPreHandUpd());});
+$("btnHbPrePaid").addEventListener("click",()=>hbPrePaidToItm());
 $("hb_mode").addEventListener("change",()=>{$("hb_ltv").disabled=$("hb_mode").value!=="part";});
 function hbSolveG(F,T,n){ // 本金平均：解負成長率 g 使 Σ F(1+g)^k = T（首年正確、總額吻合）
   if(n<=1||F<=0)return 0;
@@ -10881,14 +10984,19 @@ function hbSolveG(F,T,n){ // 本金平均：解負成長率 g 使 Σ F(1+g)^k = 
 /* 多間房子：每間存一份精算欄位，寫回目標時只覆蓋自己那幾列（goals[].hid） */
 var hbHouses=[],hbCur="";
 const HB_FIELDS=["hb_age","hb_price","hb_g","hb_miscAmt","hb_mode","hb_ltv","hb_term","hb_amort","hb_grace","hb_rate","hb_s1y","hb_s1r","hb_s2y","hb_s2r","hb_s3r",
-  "hb_sellAsset","hb_sellLoan","hb_sellAge","hb_sellPrice","hb_loanBal","hb_oldRate","hb_costBasis","hb_heldYrs","hb_taxMode","hb_ltax","hb_landInc","hb_sellBrk","hb_sellFee","hb_rentMon","hb_rentMonths","hb_buyBrk","hb_bldgVal","hb_stamp","hb_buyFee"];
-const HB_DEF={hb_sellAsset:"",hb_sellLoan:"",hb_sellAge:"",hb_sellPrice:"",hb_loanBal:"",hb_oldRate:"",hb_costBasis:0,hb_heldYrs:6,hb_taxMode:"self",hb_ltax:0,hb_landInc:0,hb_sellBrk:4,hb_sellFee:20000,hb_rentMon:50000,hb_rentMonths:12,hb_buyBrk:2,hb_bldgVal:0,hb_stamp:0,hb_buyFee:30000}; // 舊檔沒有換屋欄位時的預設
-function hbFormRead(){const o={};HB_FIELDS.forEach(id=>{const e=$(id);if(e)o[id]=e.value;});o.hb_segOn=$("hb_segOn")?$("hb_segOn").checked:false;o.hb_sellOn=$("hb_sellOn")?$("hb_sellOn").checked:false;return o;}
+  "hb_sellAsset","hb_sellLoan","hb_sellAge","hb_sellPrice","hb_loanBal","hb_oldRate","hb_costBasis","hb_heldYrs","hb_taxMode","hb_ltax","hb_landInc","hb_sellBrk","hb_sellFee","hb_rentMon","hb_rentMonths","hb_buyBrk","hb_bldgVal","hb_stamp","hb_buyFee",
+  "hb_preSignAge","hb_preDep","hb_preBuild","hb_prePaid","hb_preUse","hb_psAge","hb_psPrice","hb_psTax","hb_psCost","hb_psBrk","hb_psFee","hb_psLtax","hb_psLandInc"];
+const HB_DEF={hb_sellAsset:"",hb_sellLoan:"",hb_sellAge:"",hb_sellPrice:"",hb_loanBal:"",hb_oldRate:"",hb_costBasis:0,hb_heldYrs:6,hb_taxMode:"self",hb_ltax:0,hb_landInc:0,hb_sellBrk:4,hb_sellFee:20000,hb_rentMon:50000,hb_rentMonths:12,hb_buyBrk:2,hb_bldgVal:0,hb_stamp:0,hb_buyFee:30000,
+  hb_preSignAge:"",hb_preDep:0,hb_preBuild:0,hb_prePaid:0,hb_preUse:"self",hb_psAge:"",hb_psPrice:"",hb_psTax:"gen",hb_psCost:"",hb_psBrk:4,hb_psFee:20000,hb_psLtax:0,hb_psLandInc:0}; // 舊檔沒有換屋欄位時的預設
+function hbFormRead(){const o={};HB_FIELDS.forEach(id=>{const e=$(id);if(e)o[id]=e.value;});o.hb_segOn=$("hb_segOn")?$("hb_segOn").checked:false;o.hb_sellOn=$("hb_sellOn")?$("hb_sellOn").checked:false;o.hb_preOn=$("hb_preOn")?$("hb_preOn").checked:false;o.hb_psOn=$("hb_psOn")?$("hb_psOn").checked:false;return o;}
 function hbFormWrite(v){if(typeof hbSellOptsRender==="function")hbSellOptsRender();
   HB_FIELDS.forEach(id=>{const e=$(id);if(!e)return;if(v[id]!==undefined)e.value=v[id];else if(HB_DEF[id]!==undefined)e.value=HB_DEF[id];});
   if(typeof hbSellOptsFix==="function")hbSellOptsFix();
   if($("hb_segOn")){$("hb_segOn").checked=!!v.hb_segOn;$("hb_segBox").style.display=v.hb_segOn?"":"none";}
   if($("hb_sellOn")){$("hb_sellOn").checked=!!v.hb_sellOn;$("hbSellBox").style.display=v.hb_sellOn?"":"none";}
+  if($("hb_preOn")){$("hb_preOn").checked=!!v.hb_preOn;$("hbPreBox").style.display=v.hb_preOn?"":"none";}
+  if($("hb_psOn")){$("hb_psOn").checked=!!v.hb_psOn;$("hbPsBox").style.display=v.hb_psOn?"":"none";}
+  if(typeof hbPreHandUpd==="function")setTimeout(()=>{try{hbPreHandUpd();}catch(e){}},0);
   if($("hb_ltv"))$("hb_ltv").disabled=($("hb_mode")||{}).value!=="part";}
 function hbSave(){const a=$("hbHousesJson"),b=$("hbCurId");
   if(a)a.value=JSON.stringify(hbHouses);if(b)b.value=hbCur;}
@@ -10974,6 +11082,7 @@ document.addEventListener("click",e=>{
     if(!confirm(`確定刪除「${h.label}」？${n?`目標清單中屬於這間的 ${n} 列也會一起移除。`:""}`))return;
     for(let i=goals.length-1;i>=0;i--)if((goals[i].cat||"").indexOf("購屋")===0&&(goals[i].hid||"h1")===hbCur)goals.splice(i,1);
     hbSaleSync(hbCur,h.label,null,[]);              // 移除這間的賣房淨得時間帶、還原 ①-2 訖齡
+    if(typeof hbPsSync==="function")hbPsSync(hbCur,h.label,null,[]); // v372
     hbHouses=hbHouses.filter(x=>x.id!==hbCur);hbCur=hbHouses[0].id;
     hbFormWrite(hbHouses[0].vals||{});hbSave();buildGoals();hbRender();
     if(typeof recalcRetGoal==="function")recalcRetGoal();return;}
@@ -10983,7 +11092,7 @@ document.addEventListener("input",e=>{if(e.target&&e.target.id==="hbLabel"){
   const h=hbHouses.find(x=>x.id===hbCur);if(!h)return;
   h.label=e.target.value;hbSave();
   let n=0;goals.forEach(g=>{if((g.cat||"").indexOf("購屋")===0&&(g.hid||"h1")===hbCur&&g.hname){g.name=g.hname.replace("{H}",h.label);n++;}});
-  let nf=0;flows.forEach(f=>{if(f.sale&&f.hid===hbCur&&f.hname){f.name=f.hname.replace("{H}",h.label);nf++;}});if(nf&&typeof buildFlows==="function")buildFlows();
+  let nf=0;flows.forEach(f=>{if((f.sale||f.psale)&&f.hid===hbCur&&f.hname){f.name=f.hname.replace("{H}",h.label);nf++;}});if(nf&&typeof buildFlows==="function")buildFlows();
   clearTimeout(_hbLbT);_hbLbT=setTimeout(()=>{ // 重繪會重建輸入框 → 延後到停止輸入後，避免游標跳掉
     const v=($("hbLabel")||{}).value;
     if(n&&typeof buildGoals==="function")buildGoals();
@@ -11053,8 +11162,8 @@ function hbSellCalc(v,cur){ // 換屋精算：賣舊屋（費用自動估、可�
   if(mode==="old")rtaxLb="舊制（105 年前取得）不適用房地合一稅，交易所得併入當年綜所稅（未計）";
   else if(cost<=0)rtaxLb="未填取得成本 → 房地合一稅未計";
   else{gain=Math.max(0,priceNom-cost-brk-fee-landInc);
-    if(mode==="self"){rtax=Math.max(0,gain-4e6)*0.10;rtaxLb=`自用住宅：課稅所得 ${NT(Math.round(gain))} − 免稅 4,000,000 → 超過部分 10%`;}
-    else{const rate=held<=2?0.45:held<=5?0.35:held<=10?0.20:0.15;rtax=gain*rate;rtaxLb=`非自用：課稅所得 ${NT(Math.round(gain))}・持有 ${held} 年 → ${Math.round(rate*100)}%`;}}
+    if(mode==="self"){rtax=hbtSelfTax(gain);rtaxLb=hbtSelfLb(gain)+hbtVerTag();}
+    else{const rate=hbPsRate(held);rtax=gain*rate;rtaxLb=`非自用：課稅所得 ${NT(Math.round(gain))}・持有 ${held} 年 → ${+(rate*100).toFixed(2)}%`+hbtVerTag();}}
   const sellCost=brk+fee+ltax+rtax,net=priceNom-sellCost-loanBal;
   // 買方費用（今日值；寫回時以房價成長率推到購屋年）
   const buyPrice0=Math.max(0,f("hb_price",0)),buyBrk=buyPrice0*Math.max(0,f("hb_buyBrk",2))/100,deed=Math.max(0,f("hb_bldgVal",0))*0.06,stamp=Math.max(0,f("hb_stamp",0)),buyFee=Math.max(0,f("hb_buyFee",0));
@@ -11101,7 +11210,8 @@ function hbCompute(){
   const ltv=mode==="full"?0:mode==="all"?100:Math.min(100,Math.max(0,V("hb_ltv")));
   const term=Math.max(1,Math.round(V("hb_term"))),grace=Math.max(0,Math.min(term-1,Math.round(V("hb_grace"))));
   const amort=$("hb_amort").value,prep=Math.max(0,age-cur);
-  const nomPrice=price*Math.pow(1+gr,prep);
+  const preOn=!!($("hb_preOn")&&$("hb_preOn").checked),grP=preOn?0:gr; /* v372：預售屋合約價鎖定 */
+  const nomPrice=price*Math.pow(1+grP,prep);
   const loan=nomPrice*ltv/100;
   const downToday=price*(1-ltv/100);
   // 利率段（寬限期年數計入前段年限；末段自動補滿）
@@ -11112,7 +11222,7 @@ function hbCompute(){
     add(Math.round(V("hb_s1y")),V("hb_s1r"));add(Math.round(V("hb_s2y")),V("hb_s2r"));
     if(used<term)segs.push({yrs:term-used,rate:V("hb_s3r")/100});
   }else segs=[{yrs:term,rate:V("hb_rate")/100}];
-  const rows=[],disp=[];
+  const rows=[],disp=[];const balAt=[loan];for(let k=1;k<=grace;k++)balAt[k]=loan; /* v372：每年底房貸餘額（出售用） */
   if(loan>0&&grace>0){
     const ip=loan*segs[0].rate;
     rows.push({name:"房貸利息（寬限期）",pv:ip,age,years:grace,g:0});
@@ -11130,7 +11240,7 @@ function hbCompute(){
         const pmt=mr>0?bal*mr/(1-Math.pow(1+mr,-nAll)):bal/nAll;
         rows.push({name:idx===0?"房貸年付":`房貸年付・第${idx+1}段`,pv:pmt*12,age:a,years:s.yrs,g:0});
         disp.push(`${idx===0?"":"第"+(idx+1)+"段"}月付 ${NT(Math.round(pmt))} 元/月 ×${s.yrs} 年（利率 ${(s.rate*100).toFixed(3).replace(/\.?0+$/,"")}%）`);
-        for(let m=0;m<s.yrs*12;m++)bal=bal*(1+mr)-pmt;
+        for(let m=0;m<s.yrs*12;m++){bal=bal*(1+mr)-pmt;if((m+1)%12===0)balAt.push(Math.max(0,bal));}
         bal=Math.max(0,bal);left-=s.yrs;a+=s.yrs;idx++;
       }
     }else{ // 本金平均：每月還本固定＋利息遞減；每段以「首年年付＋負成長率」一列近似（首年正確、段總額吻合）
@@ -11138,7 +11248,7 @@ function hbCompute(){
       for(const s of amSegs){
         let F=0,T=0,b0=bal;
         for(let y=0;y<s.yrs;y++){let yr=0;
-          for(let m=0;m<12;m++){yr+=prinM+bal*s.rate/12;bal-=prinM;}
+          for(let m=0;m<12;m++){yr+=prinM+bal*s.rate/12;bal-=prinM;}balAt.push(Math.max(0,bal));
           if(y===0)F=yr;T+=yr;}
         bal=Math.max(0,bal);
         const gg=hbSolveG(F,T,s.yrs);
@@ -11151,9 +11261,111 @@ function hbCompute(){
     }
   }
   const sell=hbSellCalc(hbFormRead(),cur);
-  return {cur,age,prep,gr,nomPrice,loan,downToday,downNom:downToday*Math.pow(1+gr,prep),
-          miscToday,miscNom:miscToday*Math.pow(1+gr,prep),rows,disp,mode,ltv,sell};
+  // ---- v372 預售屋：自備款分期 ----
+  let pre=null;
+  if(preOn){const sa0=$("hb_preSignAge").value.trim(),signAge=sa0===""?Math.round(cur):Math.round(V("hb_preSignAge"));
+    const down=downToday,dep=Math.max(0,V("hb_preDep")),build=Math.max(0,V("hb_preBuild"));let hand=down-dep-build;const over=hand<-0.5;hand=Math.max(0,hand);
+    const paid=Math.max(0,V("hb_prePaid"));let p=paid;const remDep=Math.max(0,dep-p);p=Math.max(0,p-dep);const remBuild=Math.max(0,build-p);p=Math.max(0,p-build);const remHand=Math.max(0,hand-p);
+    const bStart=Math.max(Math.round(cur),signAge),bYears=Math.max(0,age-bStart);
+    pre={on:true,signAge,deliv:age,down,dep,build,hand,over,paid,remDep,remBuild,remHand,depAge:Math.max(Math.round(cur),signAge),bStart,bYears,use:($("hb_preUse")||{}).value||"self"};}
+  // ---- v372 購入／交屋後預計出售 ----
+  let ps=null;
+  if($("hb_psOn")&&$("hb_psOn").checked){const blank=id=>{const e=$(id);return !e||String(e.value).trim()===""||!isFinite(parseFloat(e.value));};
+    const autoAge=blank("hb_psAge"),want=autoAge?age+5:Math.round(V("hb_psAge")),sAge=Math.max(age,want),held=sAge-age;
+    const priceAuto=blank("hb_psPrice"),priceNom=priceAuto?price*Math.pow(1+gr,Math.max(0,sAge-cur)):Math.max(0,V("hb_psPrice"));
+    const cost=blank("hb_psCost")?nomPrice:Math.max(0,V("hb_psCost"));
+    const brkP=Math.max(0,V("hb_psBrk")),brk=priceNom*brkP/100,fee=Math.max(0,V("hb_psFee")),ltax=Math.max(0,V("hb_psLtax")),landInc=Math.max(0,V("hb_psLandInc"));
+    const gain=Math.max(0,priceNom-cost-brk-fee-landInc);let mode=($("hb_psTax")||{}).value||"gen",rate=0,rtax=0,rtaxLb="";
+    const HT=hbtGet();
+    if(mode==="self"&&held<HT.hbt_selfY){mode="gen";rtaxLb=`自用優惠需設籍自住滿 ${HT.hbt_selfY} 年，持有 ${held} 年不適用 → 改按非自用；`;}
+    if(mode==="self"){rtax=hbtSelfTax(gain);rate=HT.hbt_selfR/100;rtaxLb+=hbtSelfLb(gain);}
+    else{rate=hbPsRate(held);rtax=gain*rate;rtaxLb+=`非自用：課稅所得 ${NT(Math.round(gain))}（售價 − 取得成本 ${NT(Math.round(cost))} − 費用${landInc?" − 土地漲價總數額":""}）・持有 ${held} 年 → ${+(rate*100).toFixed(2)}%`;}
+    rtaxLb+=hbtVerTag();
+    const loanBal=loan>0?(balAt[Math.min(held,balAt.length-1)]||0):0;
+    const net=priceNom-brk-fee-ltax-rtax-loanBal;
+    ps={on:true,age:sAge,want,autoAge,clamped:want<age,acqAge:age,held,priceNom,priceAuto,cost,brkP,brk,fee,ltax,landInc,gain,mode,rate,rtax,rtaxLb,loanBal,net};
+    // 房貸年付截到出售前一年
+    for(let i=rows.length-1;i>=0;i--){const x=rows[i],y=Math.min(x.years,sAge-x.age);if(y<=0)rows.splice(i,1);else if(y<x.years){x.years=y;x.cut=true;}}
+    if(held<Math.max(1,term))disp.push(`${sAge} 歲出售：房貸繳到 ${sAge-1} 歲，餘額 ${NT(Math.round(loanBal))} 以售價清償`);}
+  return {cur,age,prep,gr,nomPrice,loan,downToday,downNom:downToday*Math.pow(1+grP,prep),
+          miscToday,miscNom:miscToday*Math.pow(1+gr,prep),rows,disp,mode,ltv,sell,pre,ps,balAt};
 }
+/* ---------- v372 預售屋（自備款分期・交屋後才繳房貸・合約價鎖定）＋購入後預計出售（房地合一・房貸結清） ---------- */
+/* ---------- v373 房地合一稅參數表（換屋／預計出售共用；修法時改這裡；最後修改值成為新客戶預設） ---------- */
+const HBT_LAW={hbt_ver:"房地合一 2.0（110-07-01 起）",hbt_y1:2,hbt_r1:45,hbt_y2:5,hbt_r2:35,hbt_y3:10,hbt_r3:20,hbt_r4:15,hbt_selfY:6,hbt_selfEx:4000000,hbt_selfR:10};
+const HBT_LB={hbt_ver:"版本",hbt_y1:"第1級年限",hbt_r1:"第1級稅率",hbt_y2:"第2級年限",hbt_r2:"第2級稅率",hbt_y3:"第3級年限",hbt_r3:"第3級稅率",hbt_r4:"超過第3級稅率",hbt_selfY:"自用設籍年限",hbt_selfEx:"自用免稅額",hbt_selfR:"自用超過部分稅率"};
+let hbtWarnOff=false;
+function hbtGet(){const o={};for(const k in HBT_LAW){const e=$(k),v=e?String(e.value).trim():"";o[k]=k==="hbt_ver"?(v||HBT_LAW[k]):(v===""||!isFinite(parseFloat(v))?HBT_LAW[k]:parseFloat(v));}return o;}
+function hbtSet(o){for(const k in HBT_LAW){const e=$(k);if(e&&o&&o[k]!==undefined)e.value=o[k];}hbtMark();}
+function hbtDef(){try{const j=JSON.parse(localStorage.getItem("fpw_hbt_def")||"null");return j&&typeof j==="object"?j:null;}catch(e){return null;}}
+function hbtSaveDef(){try{localStorage.setItem("fpw_hbt_def",JSON.stringify(hbtGet()));}catch(e){}}
+function hbtSame(a,b){return Object.keys(HBT_LAW).every(k=>k==="hbt_ver"?String(a[k])===String(b[k]):Math.abs((+a[k])-(+b[k]))<1e-9);}
+function hbtMark(){const T=hbtGet();let n=0;for(const k in HBT_LAW){const e=$(k);if(!e)continue;const d=k==="hbt_ver"?String(T[k])!==HBT_LAW[k]:Math.abs(T[k]-HBT_LAW[k])>1e-9;e.style.background=d?"#fdf0c8":"";if(d)n++;}
+  const s=$("hbtVerSum");if(s)s.textContent=`⚖ 房地合一稅參數（${T.hbt_ver}${n?`；${n} 項與內建法定值不同`:""}・可修改、隨檔儲存）`;}
+function hbPsRate(held){const T=hbtGet();return (held<=T.hbt_y1?T.hbt_r1:held<=T.hbt_y2?T.hbt_r2:held<=T.hbt_y3?T.hbt_r3:T.hbt_r4)/100;}
+function hbtNextYr(held){const T=hbtGet();return held<=T.hbt_y1?T.hbt_y1+1:held<=T.hbt_y2?T.hbt_y2+1:held<=T.hbt_y3?T.hbt_y3+1:0;}
+function hbtSelfTax(gain){const T=hbtGet();return Math.max(0,gain-T.hbt_selfEx)*T.hbt_selfR/100;}
+function hbtSelfLb(gain){const T=hbtGet();return `自用住宅：課稅所得 ${NT(Math.round(gain))} − 免稅 ${NT(T.hbt_selfEx)} → 超過部分 ${T.hbt_selfR}%`;}
+function hbtVerTag(){return `（依「${hbtGet().hbt_ver}」）`;}
+function hbtCheck(){ /* 開檔後：檔案的參數 ≠ 你的預設 → 提示 */
+  const w=$("hbtWarn");if(!w)return;const D=hbtDef(),T=hbtGet();
+  if(!D||hbtSame(D,T)||hbtWarnOff){w.innerHTML="";return;}
+  const diffs=Object.keys(HBT_LAW).filter(k=>k==="hbt_ver"?String(D[k])!==String(T[k]):Math.abs((+D[k])-(+T[k]))>1e-9).map(k=>`${HBT_LB[k]}：檔案 ${esc(String(T[k]))} ／ 預設 ${esc(String(D[k]))}`);
+  w.innerHTML=`<div class="note warn" style="margin:0 0 6px"><b>⚠ 這份檔案的房地合一參數和你目前的預設不同</b>（${diffs.join("；")}）。<br>適用舊制的案子請保留檔案的；要照新制重算就改用預設，改完重新「試算」並「寫回」。
+    <div class="scRow" style="margin-top:4px"><button class="btn sm" type="button" id="btnHbtUseDef">改用我的預設</button><button class="btn ghost sm" type="button" id="btnHbtKeep">保留這份檔案的</button></div></div>`;
+  $("btnHbtUseDef").onclick=()=>{hbtSet(D);w.innerHTML="";if($("hbtMsg"))$("hbtMsg").textContent="已改用你的預設——請重新試算並寫回";};
+  $("btnHbtKeep").onclick=()=>{hbtWarnOff=true;w.innerHTML="";if($("hbtMsg"))$("hbtMsg").textContent="保留這份檔案的參數（你的預設不變）";};}
+function hbtRptNote(){ /* 報告書：有換屋或預計出售的房子 → 註明房地合一依哪一版參數 */
+  const hs=(typeof hbHouses!=="undefined"?hbHouses:[]).filter(h=>h.vals&&(h.vals.hb_psOn||h.vals.hb_sellOn));if(!hs.length)return "";
+  const E2=v=>String(v).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  return `<p class="cap">房屋出售試算（${hs.map(h=>E2(h.label||"購屋")+(h.vals.hb_psOn?`：預計 ${E2(h.vals.hb_psAge||"")} 歲出售`:"：換屋賣出現住")).join("；")}）的房地合一稅依「${E2(hbtGet().hbt_ver)}」參數計算；稅制若有修正，以申報時法令為準。</p>`;}
+function hbtApplyDef(){const D=hbtDef();if(D)hbtSet(D);else hbtMark();hbtWarnOff=false;const w=$("hbtWarn");if(w)w.innerHTML="";}
+(function(){ // 初始化：套用你的預設；修改即存成預設
+  hbtApplyDef();
+  Object.keys(HBT_LAW).forEach(k=>{const e=$(k);if(!e)return;e.addEventListener("input",()=>{hbtMark();hbtSaveDef();hbtWarnOff=false;const w=$("hbtWarn");if(w)w.innerHTML="";});});
+  const b=$("btnHbtLaw");if(b)b.addEventListener("click",()=>{hbtSet(HBT_LAW);hbtSaveDef();if($("hbtMsg"))$("hbtMsg").textContent="已恢復內建法定值，並設為你的預設";});
+})();
+
+function hbPreHtml(r){const P=r.pre;if(!P||!P.on)return "";const W=v=>NT(Math.round(v));
+  const rows=[];
+  if(P.dep>0)rows.push(`<tr><td>簽約時付（訂金＋簽約金＋開工款）</td><td>${P.signAge} 歲</td><td>${W(P.dep)}</td><td>${P.remDep>0?`<b>${W(P.remDep)}</b>（${P.depAge} 歲）`:"已繳清"}</td></tr>`);
+  if(P.build>0)rows.push(`<tr><td>工程期款</td><td>${P.signAge}～${Math.max(P.signAge,P.deliv-1)} 歲</td><td>${W(P.build)}</td><td>${P.remBuild>0?(P.bYears>=1?`<b>每年 ${W(P.remBuild/P.bYears)}</b> × ${P.bYears} 年（${P.bStart}～${P.bStart+P.bYears-1} 歲）`:`<b>${W(P.remBuild)}</b>（併交屋年）`):"已繳清"}</td></tr>`);
+  rows.push(`<tr><td>交屋款</td><td>${P.deliv} 歲</td><td>${W(P.hand)}</td><td>${P.remHand>0?`<b>${W(P.remHand)}</b>（${P.deliv} 歲）`:"已繳清"}</td></tr>`);
+  rows.push(`<tr><td>銀行貸款</td><td>${P.deliv} 歲起繳</td><td>${W(r.loan)}</td><td>房貸年付自 ${P.deliv} 歲起（見上方）</td></tr>`);
+  return `<div class="note" style="margin:6px 0 0;border-left:3px solid var(--gold)"><b>🏗 預售屋付款時程</b>（合約總價 ${W(r.nomPrice)} 已鎖定，自備款與貸款<b>不套</b>房價成長率；自備款 ${W(P.down)}＝簽約 ${W(P.dep)}＋工程期款 ${W(P.build)}＋交屋款 ${W(P.hand)}）
+    <table class="dt" style="margin:4px 0;font-size:12px"><tr><th>階段</th><th>時間</th><th>金額</th><th>尚需支付（寫回目標）</th></tr>${rows.join("")}</table>
+    ${P.paid>0?`・至今已繳 ${W(P.paid)}：不再列為目標；這筆是資產（預付房地款），可按上方「＋ 已繳金額記到 ①-3b 資產」記入資產負債表（不計入模擬・不贖回）。<br>`:""}
+    ${P.over?`<span style="color:var(--gD)">⚠ 簽約時付＋工程期款（${W(P.dep+P.build)}）超過自備款 ${W(P.down)}——請確認貸款成數或付款表金額；交屋款以 0 計。</span><br>`:""}
+    ${P.deliv<P.signAge?`<span style="color:var(--gD)">⚠ 交屋年齡（實現年齡 ${P.deliv}）早於簽約年齡 ${P.signAge}，請檢查。</span>`:""}</div>`;}
+function hbPsHtml(r){const S=r.ps;if(!S||!S.on)return "";const W=v=>NT(Math.round(v));
+  const nb=S.mode==="gen"?hbtNextYr(S.held):0;let tip="";
+  if(nb){const nr=hbPsRate(nb),save=S.gain*(S.rate-nr);if(save>1)tip=`<br>・再多持有到第 ${nb} 年（${S.acqAge+nb} 歲出售）稅率降為 ${+(nr*100).toFixed(2)}%，以同樣獲利估可少繳約 <b>${W(save)}</b>`;}
+  return `<div class="note" style="margin:6px 0 0;border-left:3px solid var(--gold)"><b>💰 預計 ${S.age} 歲出售</b>（${r.pre&&r.pre.on?"交屋":"取得"} ${S.acqAge} 歲、持有 ${S.held} 年${S.clamped?`；<span style="color:var(--gD)">原填 ${S.want} 歲早於${r.pre&&r.pre.on?"交屋（交屋前禁止換約轉售）":"取得"}，以 ${S.age} 歲計</span>`:""}${S.autoAge?"；出售年齡未填，以取得後 5 年計":""}）<br>
+    ・屆時售價 <b>${W(S.priceNom)}</b>${S.priceAuto?`（總價依房價成長率 ${(r.gr*100).toFixed(1)}%/年推到 ${S.age} 歲）`:"（手填）"}<br>
+    ・賣方費用：仲介 ${S.brkP}% ${W(S.brk)}＋代書等 ${W(S.fee)}＋土增稅 ${W(S.ltax)}＋房地合一稅 <b>${W(S.rtax)}</b>（${S.rtaxLb}）<br>
+    ・出售時房貸餘額 ${W(S.loanBal)}（已繳 ${S.held} 年；房貸年付寫回時只繳到 ${S.age-1} 歲）<br>
+    ・<b>出售淨得 ${W(S.net)}</b>＝售價 − 賣方費用 − 房貸餘額 → 寫回時建為 ${S.age} 歲的收入時間帶${tip}</div>`;}
+function hbPsSync(hid,lb,S,notes){notes=notes||[];
+  const fi=flows.findIndex(f=>f.psale&&f.hid===hid);
+  if(S&&S.on){const row={name:`出售淨得・${lb}`,hname:"出售淨得・{H}",kind:S.net>=0?"inc":"exp",amt:+(Math.abs(S.net)/1e4).toFixed(1),a1:S.age,a2:S.age,cpi:false,psale:true,hid,
+      note:`售價 ${NT(Math.round(S.priceNom))} − 仲介等 ${NT(Math.round(S.brk+S.fee+S.ltax))} − 房地合一稅 ${NT(Math.round(S.rtax))}（持有 ${S.held} 年・${hbtGet().hbt_ver}）− 房貸餘額 ${NT(Math.round(S.loanBal))}`};
+    if(fi>=0)flows[fi]=row;else flows.push(row);notes.push(`出售淨得 ${fmtW(row.amt)} 已建為 ${S.age} 歲${row.kind==="exp"?"支出（房貸餘額＋稅費大於售價）":"收入"}時間帶；房貸年付繳到 ${S.age-1} 歲`);}
+  else if(fi>=0){flows.splice(fi,1);notes.push("已移除出售淨得時間帶");}
+  if(typeof buildFlows==="function")try{buildFlows();}catch(e){}}
+function hbPreHandUpd(){const e=$("hbPreHand");if(!e)return;if(!($("hb_preOn")||{}).checked){e.textContent="—";return;}
+  try{const r=hbCompute();const P=r.pre;e.innerHTML=P?`${NT(Math.round(P.hand))}${P.over?' <span style="color:var(--gD)">⚠ 超過自備款</span>':""}`:"—";}catch(x){e.textContent="—";}}
+function hbPrePaidToItm(){ /* 已繳金額 → ①-3b 資產「預售屋已繳款・房名」（不計入模擬、不贖回）；該類別列原本是手填數字時先轉成一筆「（原手填）」保住 */
+  if(typeof itmAssets==="undefined")return;hbFlush();const r=hbCompute();const P=r.pre;const msg=$("hbPreMsg");
+  const lb=((hbHouses.find(x=>x.id===hbCur)||{}).label)||"購屋";
+  if(!P||!(P.paid>0)){if(msg)msg.textContent="「至今已繳」為 0，沒有要記的";return;}
+  const bs=P.use==="inv"?"1_9":"2_0",id="as_"+bs,rowNm=bs==="1_9"?"投資性不動產":"自用房屋、土地";
+  let it=itmAssets.find(x=>x.preHid===hbCur);let note="";
+  if(!it){const has=itmAssets.some(x=>(x.bs||"")===bs),man=V(id);
+    if(!has&&man>0&&!(typeof itmOvr!=="undefined"&&itmOvr.indexOf(id)>=0)){itmAssets.push({name:`（原手填）${rowNm}`,bs,who:"self",value:man,redeem:"none"});note=`；原本手填的 ${NT(Math.round(man))} 已轉成一筆「（原手填）」保留`;}
+    it={name:`預售屋已繳款・${lb}`,bs,who:"self",preHid:hbCur,sim:false,redeem:"none"};itmAssets.push(it);}
+  it.value=Math.round(P.paid);it.cost=Math.round(P.paid);it.bs=bs;it.name=`預售屋已繳款・${lb}`;
+  if(typeof hbEnsureIds==="function")hbEnsureIds();itmSave();buildItems();itmSync(true);recalcData();if(typeof autoSyncNow==="function")autoSyncNow();
+  if(msg)msg.textContent=`已記到 ①-3b「${rowNm}」：預售屋已繳款 ${NT(Math.round(P.paid))}（不計入模擬・不贖回）${note}`;}
 function hbSellHtml(r){ // 試算輸出：換屋段
   const s=r.sell;if(!s||!s.on)return "";
   const gp=Math.pow(1+r.gr,r.prep),buyCostNom=s.buyCost*gp,rentNom=s.rentTotal*Math.pow(1+r.gr,s.t);
@@ -11171,9 +11383,9 @@ function hbSellHtml(r){ // 試算輸出：換屋段
 $("btnHbCalc").addEventListener("click",()=>{
   const r=hbCompute();
   $("hbOut").innerHTML=`<div class="note" style="margin:0">
-    <b>試算（${r.age} 歲購屋・房價屆時約 ${fmtW(r.nomPrice/10000)}${r.gr?`＝今日 ${fmtW(V("hb_price")/10000)} 依 ${V("hb_g")}%/年推算`:""}）：</b><br>
-    ・頭期款：<b>${NT(Math.round(r.downNom))} 元</b>（今日值 ${NT(Math.round(r.downToday))}）${r.miscToday>0?`　裝潢＋雜費：<b>${NT(Math.round(r.miscNom))} 元</b>`:""}　貸款 ${NT(Math.round(r.loan))} 元${r.mode==="full"?"（全額付清・無貸款）":r.mode==="all"?"（全部貸款）":`（成數 ${r.ltv}%）`}<br>
-    ${r.disp.map(d=>"・"+d).join("<br>")}</div>`+hbSellHtml(r);
+    <b>試算（${r.age} 歲${r.pre?"交屋":"購屋"}・${r.pre?`合約總價 ${fmtW(r.nomPrice/10000)}（鎖定）`:`房價屆時約 ${fmtW(r.nomPrice/10000)}${r.gr?`＝今日 ${fmtW(V("hb_price")/10000)} 依 ${V("hb_g")}%/年推算`:""}`}）：</b><br>
+    ・${r.pre?"自備款（分期，見下）":"頭期款"}：<b>${NT(Math.round(r.downNom))} 元</b>${r.pre?"":`（今日值 ${NT(Math.round(r.downToday))}）`}${r.miscToday>0?`　裝潢＋雜費：<b>${NT(Math.round(r.miscNom))} 元</b>`:""}　貸款 ${NT(Math.round(r.loan))} 元${r.mode==="full"?"（全額付清・無貸款）":r.mode==="all"?"（全部貸款）":`（成數 ${r.ltv}%）`}<br>
+    ${r.disp.map(d=>"・"+d).join("<br>")}</div>`+hbPreHtml(r)+hbPsHtml(r)+hbSellHtml(r);
 });
 $("btnHbWrite").addEventListener("click",()=>{
   hbFlush();
@@ -11184,6 +11396,7 @@ $("btnHbWrite").addEventListener("click",()=>{
   const rowsNew=hbRowsFrom(r,hid,lb,pri0);const removed=hbReplaceRows(hid,rowsNew);
   const s=r.sell,sellNotes=[];
   hbSaleSync(hid,lb,s,sellNotes);                  // 賣房淨得時間帶 ＋ ①-2 房貸訖齡（啟用→建立／停用→移除還原）
+  hbPsSync(hid,lb,r.ps,sellNotes);                 // v372：購入後預計出售 → 出售淨得時間帶
   buildGoals();hbRender();simHouseRender();
   const nNew=rowsNew.length;
   $("hbMsg").textContent=`「${lb}」已寫回 ✓ 共 ${nNew} 列（頭期／裝潢${s.on?"／租屋／買房費用":""}・投資準備；房貸・年結餘支應）${removed.length?`；已覆蓋這間的舊列 ${removed.length} 列`:""}${sellNotes.length?"；"+sellNotes.join("；"):""}${hbHouses.length>1?`；其他 ${hbHouses.length-1} 間的目標列未更動`:""}`;
@@ -11891,7 +12104,7 @@ function buildFlows(){
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center">
       <label class="chk" style="margin:0"><input type="checkbox" data-fi="${i}" data-ff="cpi"${f.cpi?" checked":""}><span>隨通膨調整</span></label>
-      <span style="font-size:10px;color:var(--sub);font-family:system-ui">${f.sale?`②-3 換屋自動建立（重新寫回會覆蓋）：${f.note||""}`:(f.arr&&f.arr.length?`逐年序列 ${f.arr.length} 筆生效中`:(f.g!==undefined&&f.g!==null&&f.g!==""?`每年成長 ${f.g}%（自起始年複利）`:""))}</span>
+      <span style="font-size:10px;color:var(--sub);font-family:system-ui">${f.sale||f.psale?`②-3 ${f.psale?"預計出售":"換屋"}自動建立（重新寫回會覆蓋）：${f.note||""}`:(f.arr&&f.arr.length?`逐年序列 ${f.arr.length} 筆生效中`:(f.g!==undefined&&f.g!==null&&f.g!==""?`每年成長 ${f.g}%（自起始年複利）`:""))}</span>
       <button class="btn danger sm no-print" data-fdel="${i}">✕ 刪除</button>
     </div>
   </div>`).join("")||`<div class="mini" style="margin:2px 0 0">尚無時間帶收支。</div>`;
@@ -11909,7 +12122,7 @@ function renderQfChips(){
   box.innerHTML=(live.length?`<div style="display:flex;gap:6px;flex-wrap:wrap">${live.map(({f,i})=>
     `<span style="display:inline-flex;align-items:center;gap:5px;font-family:system-ui;font-size:11px;
       border:1px solid var(--line);border-radius:14px;padding:3px 10px;background:${f.kind==="inc"?"#eef5ee":"#fdf3f0"}">
-      ${f.name||"（未命名）"}${f.sale?`<span style="font-size:9.5px;color:var(--gold)">（②-3 換屋）</span>`:""}　<b style="font-family:var(--mono)">${f.kind==="inc"?"＋":"−"}${f.arr&&f.arr.length?"逐年序列":f.amt+" 萬/年"}</b>
+      ${f.name||"（未命名）"}${f.sale||f.psale?`<span style="font-size:9.5px;color:var(--gold)">（②-3 ${f.psale?"出售":"換屋"}）</span>`:""}　<b style="font-family:var(--mono)">${f.kind==="inc"?"＋":"−"}${f.arr&&f.arr.length?"逐年序列":f.amt+" 萬/年"}</b>
       <span style="color:var(--sub)">${f.life||f.a2>=120?`${f.a1} 歲起・終身`:`${f.a1}${f.a2!==f.a1?"–"+f.a2:""} 歲`}${f.cpi?"・隨通膨":""}</span>
       <a href="javascript:void 0" data-qfdel="${i}" class="no-print" style="color:var(--gD);font-weight:700;text-decoration:none">✕</a></span>`).join("")}</div>`
     :`<span class="mini">尚無時間帶收支。</span>`)+
@@ -14351,7 +14564,7 @@ function asIndex(ns){try{return JSON.parse(localStorage.getItem(AS_IDX(ns))||"[]
 function asBuild(){ // 與「儲存工作檔」同結構；目前工作區以 light 快照落地（其餘工作區沿用既有完整快照）
   const snap=makeSnapshot(true);
   let slots=null;
-  if(typeof wsSlots!=="undefined"){slots=wsSlots.map((w,i)=>({name:w.name,locked:!!w.locked,snap:(i===wsActive&&!(i===0&&w.locked))?snap:w.snap}));}
+  if(typeof wsSlots!=="undefined"){slots=wsSlots.map((w,i)=>({name:w.name,locked:!!w.locked,rpt:w.rpt,born:w.born,snap:(i===wsActive&&!(i===0&&w.locked))?snap:w.snap}));}
   return {kind:"工作台工作檔",ver:2,auto:true,time:snap.time,client:snap.client,current:snap,scenarios,ws:slots?{active:wsActive,slots}:undefined};
 }
 function asStrip(obj){ // 空間不足時：去掉各工作區快照裡的圖（報告書會提示重新產生）
@@ -14362,7 +14575,9 @@ function asSave(reason){
   const client=obj.client||"未命名",key=AS_KEY(client);
   const write=(o)=>{localStorage.setItem(key,JSON.stringify(o));};
   try{write(obj);}catch(e){try{write(asStrip(obj));}catch(e2){const m=$("asMsg");if(m)m.textContent="⚠ 瀏覽器儲存空間不足，自動存檔失敗";return false;}}
-  let idx=asIndex().filter(x=>x.client!==client);idx.unshift({client,ts:Date.now(),time:obj.time});
+  let idx=asIndex().filter(x=>x.client!==client);const ent={client,ts:Date.now(),time:obj.time};
+  if(typeof qsOn==="function"&&qsOn())ent.pend=!!(typeof qsDirty!=="undefined"&&qsDirty); /* v370：true＝有修改還沒存進客戶庫 */
+  idx.unshift(ent);
   while(idx.length>AS_MAX){const drop=idx.pop();try{localStorage.removeItem(AS_KEY(drop.client));}catch(e){}}
   try{localStorage.setItem(AS_IDX(),JSON.stringify(idx));}catch(e){}
   asDirty=false;asLastTs=Date.now();asRenderPick();
@@ -14376,29 +14591,42 @@ function asRestore(client,legacy){
   asPaused=true;
   try{
     scenarios=Array.isArray(j.scenarios)?j.scenarios:[];renderScenList();
-    if(j.ws&&Array.isArray(j.ws.slots)&&j.ws.slots.length){wsSlots=j.ws.slots.map((w,i)=>({name:i===0?"現況":(w.name||"方案"),snap:w.snap||null,locked:!!w.locked}));wsActive=Math.min(Math.max(0,j.ws.active||0),wsSlots.length-1);const tgt=wsSlots[wsActive];applySnapshot(tgt&&tgt.snap?tgt.snap:j.current);}
+    if(j.ws&&Array.isArray(j.ws.slots)&&j.ws.slots.length){wsSlots=j.ws.slots.map((w,i)=>({name:i===0?"現況":(w.name||"方案"),snap:w.snap||null,locked:!!w.locked,rpt:w.rpt,born:w.born||""}));wsActive=Math.min(Math.max(0,j.ws.active||0),wsSlots.length-1);const tgt=wsSlots[wsActive];applySnapshot(tgt&&tgt.snap?tgt.snap:j.current);}
     else{wsSlots=[{name:"現況",snap:j.current,locked:false}];wsActive=0;applySnapshot(j.current);}
     wsLockWarned=false;wsRender();
     $("status").textContent=`已還原自動存檔：${j.client||"未命名"}（${j.time||""}，${wsSlots.length} 個工作區）`;
   }finally{asPaused=false;}
   const b=$("asBar");if(b)b.style.display="none";asDirty=false;return true;
 }
+function asMarkSynced(){ /* v370：存進客戶庫／開啟版本後 → 目前客戶的自動存檔標為已同步 */
+  if(!asEnabled())return;try{asSave("synced");}catch(e){}const bar=$("asBar");if(bar&&bar.style.display!=="none"&&!asBarIgnored)try{asBanner();}catch(e){}}
+var asBarIgnored=false;
+function asCurName(){return ((($("clientName")||{}).value)||"")||"未命名";}
+function asLabel(x){const cur=x.client===asCurName(),t=String(x.time||"").slice(5,16);
+  return `${cur?"▶ ":""}${x.client}${cur?"（目前畫面）":""}　${t}${x.pend===true?"　● 未存客戶庫":x.pend===false?"　✓ 已存":""}`;}
 function asRenderPick(){const sel=$("asPick");if(!sel)return;const idx=asIndex();const leg=asNs()?asIndex(""):[];const q=v=>String(v).replace(/"/g,"&quot;");
-  sel.innerHTML=`<option value="">還原自動存檔…（${idx.length}${leg.length?`＋${leg.length}`:""}）</option>`+idx.map(x=>`<option value="${q(x.client)}">${x.client}　${x.time||""}</option>`).join("")
-    +(leg.length?`<optgroup label="登入前／舊版（不分帳號）">${leg.map(x=>`<option value="legacy:${q(x.client)}">${x.client}　${x.time||""}</option>`).join("")}</optgroup>`:"");}
+  sel.title="▶＝目前畫面的客戶；●＝有修改還沒按「💾 儲存」存進客戶庫；✓＝與客戶庫一致（每位客戶只留最近一份，這台電腦、這個瀏覽器）";
+  sel.innerHTML=`<option value="">還原自動存檔…（${idx.length}${leg.length?`＋${leg.length}`:""}）</option>`+idx.map(x=>`<option value="${q(x.client)}">${asLabel(x).replace(/</g,"&lt;")}</option>`).join("")
+    +(leg.length?`<optgroup label="登入前／舊版（不分帳號）">${leg.map(x=>`<option value="legacy:${q(x.client)}">${x.client}　${x.time||""}</option>`).join("")}</optgroup>`:"")
+    +(idx.length||leg.length?`<option value="__clear">🗑 清除自動存檔…</option>`:"");}
 function asBanner(){ // v282：依目前帳號顯示「偵測到自動存檔」；登入後／登出後各叫一次
-  const idx=asIndex();const bar=$("asBar");if(!bar)return;asRenderPick();
+  const idx0=asIndex();const bar=$("asBar");if(!bar)return;asRenderPick();
+  const lib=typeof qsOn==="function"&&qsOn(); /* v370：登入客戶庫 → 只提醒「有修改還沒存進客戶庫」的；未登入（離線）照舊 */
+  const idx=lib?idx0.filter(x=>x.pend===true):idx0;
   if(!idx.length){bar.style.display="none";bar.innerHTML="";return;}
   const last=idx[0],who=asNs(),H=v=>String(v==null?"":v).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));bar.style.display="block"; /* 不用 csEsc：asInit 在載入時就跑，csEsc 還沒定義 */
-  bar.innerHTML=`<div class="note good" style="margin:6px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span>💾 偵測到${who?`<b>${H(who)}</b> 的`:""}自動存檔：<b>${H(last.client)}</b>（${last.time||""}）${idx.length>1?`，另有 ${idx.length-1} 位客戶`:""}</span>
+  bar.innerHTML=lib?`<div class="note warn" style="margin:6px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span>💾 這台電腦有<b>還沒存進客戶庫</b>的修改：<b>${H(last.client)}</b>（最後輸入 ${H(String(last.time||"").slice(5,16))}）${idx.length>1?`，另有 ${idx.length-1} 位客戶也有`:""}</span>
+      <button class="btn sm" id="btnAsRestoreLast" type="button">還原「${H(last.client)}」</button><button class="btn ghost sm" id="btnAsIgnore" type="button">忽略</button><span class="mini" style="margin:0">還原後記得按右上「💾 儲存」；其他客戶請用右上「還原自動存檔…」下拉（● 標示）</span></div>`
+  :`<div class="note good" style="margin:6px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span>💾 偵測到${who?`<b>${H(who)}</b> 的`:""}自動存檔：<b>${H(last.client)}</b>（${last.time||""}）${idx.length>1?`，另有 ${idx.length-1} 位客戶`:""}</span>
       <button class="btn sm" id="btnAsRestoreLast" type="button">還原上次</button><button class="btn ghost sm" id="btnAsIgnore" type="button">忽略（從空白開始）</button><span class="mini" style="margin:0">其他客戶請用右上「還原自動存檔…」下拉</span></div>`;
   $("btnAsRestoreLast").addEventListener("click",()=>asRestore(last.client));
-  $("btnAsIgnore").addEventListener("click",()=>{bar.style.display="none";});}
+  $("btnAsIgnore").addEventListener("click",()=>{bar.style.display="none";asBarIgnored=true;});}
 function asInit(){
   try{if(localStorage.getItem("fpw_auto_off")==="1"&&$("asOn"))$("asOn").checked=false;}catch(e){}
   asBanner(); // v282：載入時＝未登入命名空間；登入後 lgLogin／csOpen 會再依帳號重畫
   $("asOn")&&$("asOn").addEventListener("change",()=>{try{localStorage.setItem("fpw_auto_off",$("asOn").checked?"0":"1");}catch(e){}const m=$("asMsg");if(m)m.textContent=$("asOn").checked?"已開啟":"已關閉";if($("asOn").checked)asTouch();});
-  $("asPick")&&$("asPick").addEventListener("change",()=>{let c=$("asPick").value;if(!c)return;const leg=/^legacy:/.test(c);c=c.replace(/^legacy:/,"");if(asDirty&&!confirm(`目前畫面尚未存檔的修改會被「${c}」的自動存檔覆蓋，確定還原？`)){$("asPick").value="";return;}asRestore(c,leg);$("asPick").value="";});
+  $("clientName")&&$("clientName").addEventListener("input",()=>{try{asRenderPick();}catch(e){}}); /* v370：▶ 目前畫面標記跟著客戶名 */
+  $("asPick")&&$("asPick").addEventListener("change",()=>{let c=$("asPick").value;if(!c)return;if(c==="__clear"){$("asPick").value="";$("btnAsClear").click();return;} /* v370：清除收進下拉 */const leg=/^legacy:/.test(c);c=c.replace(/^legacy:/,"");if(asDirty&&!confirm(`目前畫面尚未存檔的修改會被「${c}」的自動存檔覆蓋，確定還原？`)){$("asPick").value="";return;}asRestore(c,leg);$("asPick").value="";});
   $("btnAsClear")&&$("btnAsClear").addEventListener("click",()=>{const idx=asIndex();if(!idx.length){$("asMsg").textContent="沒有自動存檔";return;}
     const c=$("clientName").value||"未命名";const mine=idx.find(x=>x.client===c);
     const msg=mine?`清除「${c}」的自動存檔？（按取消則改為清除全部 ${idx.length} 位）`:`清除全部 ${idx.length} 位客戶的自動存檔？`;
@@ -14467,6 +14695,8 @@ body[data-svc-plan="A2"] .panel:not(.a2Open) .a2Detail{display:none!important}
 .csPickT{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:8px}.csPickTx{font-size:13px;line-height:1.7;color:var(--ink);background:#fbf7f0;border-radius:8px;padding:8px 10px;margin-bottom:12px}
 .csPickBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .qsState{font-family:system-ui;font-size:11.5px;color:var(--sub);white-space:nowrap}.qsState.dirty{color:#b4561c;font-weight:700}
+#qsSnModal{position:fixed;inset:0;z-index:136;display:none;align-items:center;justify-content:center;background:rgba(38,56,79,.35);padding:16px}
+#qsSnBox{background:#fff;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;max-width:560px;width:100%;box-shadow:0 12px 36px rgba(0,0,0,.25);font-family:system-ui}
 #qsModal{position:fixed;inset:0;z-index:135;display:none;align-items:center;justify-content:center;background:rgba(38,56,79,.35);padding:16px}
 #qsBox{background:#fff;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;max-width:520px;width:100%;box-shadow:0 12px 36px rgba(0,0,0,.25);font-family:system-ui}
 .qsT{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:8px}.qsTx{font-size:13px;line-height:1.7;color:var(--ink);background:#fbf7f0;border-radius:8px;padding:8px 10px;margin-bottom:12px}.qsBtns{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
@@ -14552,7 +14782,7 @@ body.lgLocked>*:not(#lgOverlay):not(script):not(style){visibility:hidden!importa
 window.FPW_CONFIG=Object.assign({mode:"local",driveClientId:"",driveRootName:"財務規劃工作台",managers:["b0987597583@gmail.com"],driveScope:"https://www.googleapis.com/auth/drive"},window.FPW_CONFIG||{});
 const CS_STATUS=["問診中","方案討論","執行追蹤","週年檢視","已結案","暫停"];
 const csId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
-const csNow=()=>new Date().toISOString();
+const csNow=()=>new Date().toISOString(); /* 真正時間戳（UTC），顯示經 csFmtT 轉本地 */
 const csFmtT=t=>{if(!t)return "—";const d=new Date(t);return isNaN(d)?String(t):`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;};
 const csEsc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function csIsManager(email){return !!email&&(FPW_CONFIG.managers||[]).map(x=>String(x).toLowerCase()).indexOf(String(email).toLowerCase())>=0;}
@@ -14662,7 +14892,7 @@ function csRenderUser(){const u=CS.user;const mgr=u&&csIsManager(u.email);if(typ
   const sc=$("csScope");if(sc){sc.style.display=mgr?"":"none";if(!mgr){CS.scope="mine";}sc.querySelectorAll(".seg").forEach(b=>b.classList.toggle("on",b.dataset.scope===CS.scope));}
   const si=$("csSignIn");if(si)si.onclick=async()=>{try{CS.user=await CS.A.signIn();csRenderUser();if(CS.user)await csRefresh();}catch(e){csMsg(String(e.message||e),true);}};
   const so=$("csSignOut");if(so)so.onclick=async()=>{if($("csOverlay").classList.contains("landing")){await lgLogout(true);return;}await CS.A.signOut();CS.user=null;CS.clients=[];csRenderUser();csDetailPark();$("csList").innerHTML="";$("csDetail").innerHTML="";};}
-async function csRefresh(){if(!CS.user)return;csMsg("讀取中…");try{CS.clients=await CS.A.listClients();csMsg(`共 ${CS.clients.length} 位客戶`);}catch(e){csMsg(String(e.message||e),true);CS.clients=[];}csRenderList();if(typeof stWarnRender==="function")try{await stWarnRender();}catch(e){console.warn(e);}}
+async function csRefresh(){if(!CS.user)return;csMsg("讀取中…");try{CS.clients=await CS.A.listClients();}catch(e){csMsg(String(e.message||e),true);CS.clients=[];}csRenderList();csCountMsg();if(typeof stWarnRender==="function")try{await stWarnRender();}catch(e){console.warn(e);}}
 /* ---- v270：合約紀錄 ---- */
 function csToday(){const d=window._nyToday?new Date(window._nyToday):new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
 function csContractTouch(rec,plan){rec.contracts=Array.isArray(rec.contracts)?rec.contracts:[];const t=csToday();const L=rec.contracts[rec.contracts.length-1];
@@ -14728,7 +14958,7 @@ async function csSaveHere(){if(!CS.user){csMsg("請先登入",true);return;}let 
   let useSel=!!selRec;
   if(selRec&&selRec.name&&selRec.name!==nm){const pick=await csPickTarget(nm,selRec.name);if(!pick){csMsg("已取消");return;}useSel=pick==="sel";} /* v363：名字不一致 → 頁內對話框，預設存到工作台上的客戶 */
   let rec=(useSel?selRec:null)||CS.clients.find(r=>(r.name||"")===nm&&String(r.owner||"").toLowerCase()===CS.user.email)||null;
-  const label=prompt("這個版本的名稱",`${($("scenName")&&$("scenName").value)||"現況"} ${new Date().toISOString().slice(0,10)}`);if(label===null)return;
+  const label=prompt("這個版本的名稱",`${($("scenName")&&$("scenName").value)||"現況"} ${locISO().slice(0,10)}`);if(label===null)return;
   csMsg("儲存中…");try{
     if(!rec){rec=csRecordFromScreen();rec=await CS.A.saveClient(rec);CS.clients.push(rec);}
     if(typeof wsSaveActive==="function")wsSaveActive();
@@ -14775,7 +15005,7 @@ function csEditClient(id){const land=$("csOverlay").classList.contains("landing"
       csMsg(isNew?`客戶「${rec.name}」已建立並選取——按「存目前畫面為新版本」即可存入第一個版本`:closed?`已結案 ✓ 別忘了提醒「${rec.name}」：追蹤工具可以繼續記帳（工具在他手上）——哪天回來，就能直接用實際值建立新年度現況，重新規劃快很多。`:"已儲存");$("csDetail").innerHTML="";csRenderList();}catch(e){csMsg(String(e.message||e),true);}};}
 async function csExportAll(){if(!CS.user)return;csMsg("打包中…");try{const out={kind:"客戶庫備份",ver:1,time:csNow(),by:CS.user.email,clients:[]};
     for(const r of csFiltered()){const vs=await CS.A.listVersions(r.id);const vv=[];for(const v of vs){vv.push({label:v.label,time:v.time,by:v.by,data:await CS.A.getVersion(r.id,v.id)});}const c=Object.assign({},r);delete c._dir;delete c._file;c.versions=vv;out.clients.push(c);}
-    dlJSON(out,`客戶庫備份_${new Date().toISOString().slice(0,10)}.json`);csMsg(`已匯出 ${out.clients.length} 位客戶`);}catch(e){csMsg(String(e.message||e),true);}}
+    dlJSON(out,`客戶庫備份_${locISO().slice(0,10)}.json`);csMsg(`已匯出 ${out.clients.length} 位客戶`);}catch(e){csMsg(String(e.message||e),true);}}
 async function csImportFiles(files){if(!CS.user){csMsg("請先登入",true);return;}let n=0;
   for(const f of files){try{const j=JSON.parse(await f.text());
     if(j.kind==="客戶庫備份"&&Array.isArray(j.clients)){for(const c of j.clients){const vs=c.versions||[];const rec=Object.assign({},c);delete rec.versions;rec.id=rec.id||csId();rec.owner=rec.owner||CS.user.email;rec.nVer=vs.length;await CS.A.saveClient(rec);for(const v of vs)await CS.A.saveVersion(rec.id,v.label||"匯入",v.data,v.by||CS.user.email);if(!CS.clients.some(r=>r.id===rec.id))CS.clients.push(rec);n++;}}
@@ -14785,7 +15015,9 @@ async function csImportFiles(files){if(!CS.user){csMsg("請先登入",true);retu
   csMsg(`已匯入 ${n} 筆`);csRenderList();}
 $("csClose").onclick=csClose;$("csOverlay").addEventListener("click",e=>{if(e.target===$("csOverlay")&&!$("csOverlay").classList.contains("landing"))csClose();});
 $("csQ").addEventListener("input",csRenderList);$("csStatusF").addEventListener("change",csRenderList);$("csSort").addEventListener("change",csRenderList);
-$("csScope").querySelectorAll(".seg").forEach(b=>b.onclick=()=>{CS.scope=b.dataset.scope;$("csScope").querySelectorAll(".seg").forEach(x=>x.classList.toggle("on",x===b));csRenderList();});
+$("csScope").querySelectorAll(".seg").forEach(b=>b.onclick=()=>{CS.scope=b.dataset.scope;$("csScope").querySelectorAll(".seg").forEach(x=>x.classList.toggle("on",x===b));csRenderList();csCountMsg();});
+function csCountMsg(){if(!CS.clients||!CS.clients.length)return;const sh=$("csList")?$("csList").querySelectorAll("tr.csRow").length:CS.clients.length,all=CS.clients.length; /* v370 */
+  csMsg(sh<all?`${CS.scope==="mine"?"我的":"符合條件"} ${sh} 位（全部 ${all} 位）`:`共 ${all} 位客戶`);}
 $("csSaveHere").onclick=csSaveHere;$("csNew").onclick=()=>csEditClient(null);$("csExport").onclick=csExportAll;$("csImport").onclick=()=>$("csFile").click();$("csFile").addEventListener("change",e=>{csImportFiles([...e.target.files]);e.target.value="";});
 $("btnClientLib")&&$("btnClientLib").addEventListener("click",csOpen);
 /* ---------- v273：人員名單（同仁／試用）——名單存在主管根資料夾 _人員名單.json；每位同仁資料夾的 appProperties 帶 fpwRole／fpwExpires／fpwStatus，登入時檢查 ---------- */
@@ -14901,7 +15133,13 @@ function lgRenderChip(){if(typeof hdrModeRender==="function")try{hdrModeRender()
   if(!u){c.style.display="none";c.innerHTML="";}
   else{c.style.display="";c.innerHTML=`👤 <b>${csEsc(u.name||u.email)}</b>${csIsManager(u.email)?"<span class='bdg b-both'>主管</span>":""}${CS.access&&CS.access.fpwExpires?`<span class='bdg b-rx' title='${csEsc(CS.access.fpwRole||"")}期限'>至 ${csEsc(CS.access.fpwExpires)}</span>`:""}<button class="btn ghost sm" type="button" id="lgOut" title="登出並清空畫面">登出</button>`;$("lgOut").onclick=()=>lgLogout(false);}
   const h=$("csLandHd");if(h)h.innerHTML=u?`<span>👋 <b>${csEsc(u.name||u.email)}</b>，選一位客戶「開啟最新」，或按「＋ 新客戶」建立後進入工作台。</span><button class="btn ghost sm" type="button" id="csLandSkip">略過，直接進入工作台</button>`:"";
-  const sk=$("csLandSkip");if(sk)sk.onclick=()=>csClose();}
+  const sk=$("csLandSkip");if(sk)sk.onclick=()=>csLandSkipGo();}
+async function csLandSkipGo(){ /* v370：略過＝全新歸零（不帶示範資料、不建立客戶紀錄）；有未儲存修改先防呆 */
+  if(typeof qsGuard==="function"&&!(await qsGuard("開空白工作台")))return;
+  try{newClientReset(true);}catch(e){console.warn(e);}CS.sel=null;if(typeof qsClean==="function")setTimeout(()=>qsClean(""),0);csClose();
+  const msg="空白工作台（尚未建立客戶）：問診中隨時在上方「客戶」欄填姓名，按右上「💾 儲存」就會建立客戶並存第一版";if($("status"))$("status").textContent=msg;
+  setTimeout(()=>{const st=$("status");if(st&&!(($("clientName")||{}).value||"").trim())st.textContent=msg;},1200); /* 重算完成訊息會蓋掉 → 稍後再寫一次 */
+  const m=$("asMsg");if(m)m.textContent="";}
 async function lgLogout(noAsk){
   if(typeof qsGuard==="function"&&qsOn()&&qsDirty){if(!(await qsGuard("登出")))return;noAsk=true;} /* v367：有未儲存修改 → 頁內防呆取代 confirm */
   if(!noAsk&&!confirm("登出後會清空畫面上的客戶資料（目前內容會先自動存檔在這台電腦；要留在客戶庫請先「存目前畫面為新版本」）。確定登出？"))return;
@@ -14927,7 +15165,7 @@ function qsDay(){const d=new Date();return `${d.getFullYear()}-${String(d.getMon
 function qsRender(){const b=$("btnQuickSave"),s=$("qsState");const on=qsOn();if(b)b.style.display=on?"":"none";if(!s)return;s.style.display=on?"":"none";
   s.textContent=qsBusy?"儲存中…":qsDirty?"● 尚未儲存":qsLastAt?`已儲存 ${qsLastAt}`:"";s.className="qsState"+(qsDirty?" dirty":"");}
 function qsMark(){if(!qsOn()||qsDirty)return;qsDirty=true;qsRender();}
-function qsClean(at){qsDirty=false;if(at)qsLastAt=at;qsRender();}
+function qsClean(at){qsDirty=false;if(at)qsLastAt=at;qsRender();if(typeof asMarkSynced==="function")try{asMarkSynced();}catch(e){}}
 document.addEventListener("input",qsEv,true);document.addEventListener("change",qsEv,true);
 function qsEv(e){const t=e.target;if(!t||!(e.isTrusted||window.QS_TEST_ANY))return;if(t.closest&&t.closest("#csOverlay,#lgOverlay,#qsModal,#csPickModal,#delModal"))return;
   if(/^(uiZoom|helpAll|asOn|asPick|csQ|csStatusF|csSort)$/.test(t.id||""))return;qsMark();}
@@ -14936,7 +15174,9 @@ async function qsSave(){if(!qsOn()){if(typeof csOpen==="function")csOpen();retur
   qsBusy=true;qsRender();
   try{if(!Array.isArray(CS.clients)||!CS.clients.length){try{CS.clients=await CS.A.listClients();}catch(e){}}
     const me=String(CS.user.email||"").toLowerCase();
-    let rec=(CS.clients||[]).find(r=>r.id===CS.sel&&(r.name||"")===nm)||(CS.clients||[]).find(r=>(r.name||"")===nm&&String(r.owner||"").toLowerCase()===me)||null;
+    let rec=(CS.clients||[]).find(r=>r.id===CS.sel&&(r.name||"")===nm)||null;
+    if(!rec){const same=(CS.clients||[]).filter(r=>(r.name||"")===nm&&String(r.owner||"").toLowerCase()===me).sort((a,b)=>String(b.updated||"").localeCompare(String(a.updated||"")));const r2=same[0]||null; /* v370：同名但不是目前開啟的那位 → 先問（多位同名取最近更新的） */
+      if(r2){qsBusy=false;qsRender();const pick=await qsSameName(r2,same.length);qsBusy=true;qsRender();if(!pick){if($("status"))$("status").textContent="已取消儲存";return false;}rec=pick==="old"?r2:null;}}
     if(!rec){rec=csRecordFromScreen();rec=await CS.A.saveClient(rec);CS.clients.push(rec);}
     if(typeof wsSaveActive==="function")wsSaveActive();
     const data=workFileObj(),day=qsDay(),label=`${(($("scenName")||{}).value||"現況").trim()||"現況"} ${day}`;
@@ -14952,6 +15192,18 @@ async function qsSave(){if(!qsOn()){if(typeof csOpen==="function")csOpen();retur
     return true;}
   catch(e){if($("status"))$("status").textContent="儲存失敗："+(e.message||e);return false;}
   finally{qsBusy=false;qsRender();}}
+function qsSameName(r,nSame){ /* v370：同名客戶 → "old"＝存成他的新版本／"new"＝建立另一位／null＝取消 */
+  if(navigator.webdriver&&!window.QS_FORCE_GUARD)return Promise.resolve("old");
+  return new Promise(res=>{let m=$("qsSnModal");if(!m){m=document.createElement("div");m.id="qsSnModal";m.className="no-print";document.body.appendChild(m);}
+    const info=[r.hospital,r.dept].filter(Boolean).join("・"),upd=typeof csFmtT==="function"?csFmtT(r.updated):(r.updated||"");
+    m.innerHTML=`<div id="qsSnBox" role="dialog" aria-modal="true"><div class="qsT">客戶庫已有同名客戶「${esc(r.name)}」</div>
+      <div class="qsTx">已存在的這位：${info?esc(info)+"・":""}最近更新 ${esc(upd)}・${r.nVer||0} 個版本・狀態 ${esc(r.status||"")}${nSame>1?`（共 ${nSame} 位同名，這是最近更新的一位；要存到其他位請從客戶管理開啟他）`:""}<br>
+      目前畫面是<b>同一位醫師</b>（接著問診）→ 存成他的新版本；是<b>另一位同名的醫師</b> → 建立另一位客戶（之後可在「客戶資料」補醫院／科別區分）。</div>
+      <div class="qsBtns"><button type="button" class="btn ghost sm" id="qsSnNo">取消</button><button type="button" class="btn ghost sm" id="qsSnNew">＋ 建立另一位「${esc(r.name)}」</button><button type="button" class="btn sm" id="qsSnOld">💾 存成這位的新版本</button></div></div>`;
+    m.style.display="flex";const done=v=>{m.style.display="none";document.removeEventListener("keydown",kd,true);res(v);};
+    const kd=e=>{if(e.key==="Escape"){e.preventDefault();e.stopPropagation();done(null);}};document.addEventListener("keydown",kd,true);
+    $("qsSnNo").onclick=()=>done(null);$("qsSnNew").onclick=()=>done("new");$("qsSnOld").onclick=()=>done("old");m.onclick=e=>{if(e.target===m)done(null);};
+    setTimeout(()=>{try{$("qsSnNo").focus();}catch(e){}},30);});}
 function qsGuard(what){ /* 未儲存防呆：true＝可以繼續 */
   if(!qsOn()||!qsDirty)return Promise.resolve(true);
   if(navigator.webdriver&&!window.QS_FORCE_GUARD)return Promise.resolve(true);
