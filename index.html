@@ -334,6 +334,11 @@ table.rpTbl input.rpIn,table.rpTbl select.rpIn{font-family:var(--mono);font-size
 .rpCovs .rpCovT{font-family:system-ui;font-size:12px;font-weight:700;color:var(--accent)}
 .rcBtn{padding:1px 8px!important;font-size:11px!important;white-space:nowrap}
 rect.rcHit:hover{fill:rgba(38,56,79,.10)} /* v385：游標所在年齡的直欄 */
+/* v387：⑥-2 需求表分區——階段帶／公式列／輸入列縮排／應備列底色 */
+#protNeedBox tr.pnStage td{background:#dfe6f0;color:var(--accent);font-size:13px;border-top:2px solid var(--accent);padding:8px 8px 6px}
+#protNeedBox tr.pnFormula td{background:#f7f3e8;color:#7a6a3a;border-top:1px solid #e4d9c2;padding:7px 8px 4px;font-size:11px}
+#protNeedBox tr.pnIn td{background:#fcfbf7}#protNeedBox tr.pnIn td.rn{padding-left:26px;color:#555}
+#protNeedBox tr.pnNeed td{background:#fff6dd;border-bottom:2px solid #e4cf97}#protNeedBox tr.pnNeed td.rn{font-weight:700}
 @media print{body{zoom:1!important}.helpBtn{display:none}}
 body[data-dv="self"] .itmRow[data-dv="sp"],body[data-dv="sp"] .itmRow[data-dv="self"]{display:none}
 body[data-svc-tax="off"] .tab[data-view="view_est"],body[data-svc-tax="off"] .mtGrp[data-view="view_est"]{display:none!important}
@@ -508,7 +513,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v385</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v387</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -1546,8 +1551,8 @@ body:not(.rxLock) .bsCascade{display:block}
   <div class="plLockNote no-print" data-pl="prot"></div>
   <p class="cap">身故責任 = 生活費×年期 ＋ 房貸/房租餘額 ＋ 子女教育 ＋ 父母孝養×年期 ＋ 負債 ＋ 最後費用。房貸餘額可由資產負債表一鍵帶入。表尾「可抵充生息資產」＝身故時遺族能直接動用的錢（①-3 現金類＋投資類，依 ①-3b 歸屬分本人／配偶／共同各半）——只是參考，不自動抵充；要以資產承擔風險，在方案 ⑥-5 用「風險自留」明確指定來源與金額。</p>
   <div style="overflow-x:auto"><table class="pt" id="tblResp"></table></div>
-  <div id="respCurveBox"></div><!-- v379 家庭責任曲線 -->
-  <div style="margin-top:9px" class="no-print curOnly"><label class="chk" style="margin:0"><input type="checkbox" id="p_mort_auto" checked><span>負債三列自動帶入 ①-3（房貸＝自用＋投資不動產貸款；流動＝信貸＋卡循＋民間借貸；長期＝車貸＋學貸＋保單貸款；依 ①-3b 歸屬分攤——本人／配偶名下各自全額、「共同」依本人負擔 %；未逐筆的部分兩人都整筆）</span></label><span class="mini" id="pMortNote" style="margin:0 0 0 8px"></span></div>
+  <div style="margin-top:6px" class="no-print curOnly"><label class="chk" style="margin:0"><input type="checkbox" id="p_mort_auto" checked><span>負債三列自動帶入 ①-3（房貸＝自用＋投資不動產貸款；流動＝信貸＋卡循＋民間借貸；長期＝車貸＋學貸＋保單貸款；依 ①-3b 歸屬分攤——本人／配偶名下各自全額、「共同」依本人負擔 %；未逐筆的部分兩人都整筆）</span></label><span class="mini" id="pMortNote" style="margin:0 0 0 8px"></span></div>
+  <div id="respCurveBox"></div><!-- v379 家庭責任曲線；v387 移到勾選列之後 -->
 </div>
 
 <div class="panel">
@@ -3042,7 +3047,8 @@ const DEMO={ // 示範預設值（虛擬「陳醫師家庭」：受僱主治 42 
  "pr_sp_hosp_need":5000,"pr_sp_hosp_have":2000,"pr_sp_med_need":500000,"pr_sp_med_have":300000,
  "pr_sp_ltc_need":80000,"pr_sp_ltc_have":20000,
  "pr_kid0_ci_need":2000000,"pr_kid0_ca_need":2000000,"pr_kid0_hosp_need":3000,"pr_kid0_med_need":500000};
-const dv=id=>DEMO[id]!==undefined?DEMO[id]:"";
+let demoDefaults=true; /* v387：新客戶／載入客戶後 false → 之後重建的欄位（如新增子女的 ⑥-2 欄）不再帶示範值 */
+const dv=id=>(demoDefaults&&DEMO[id]!==undefined)?DEMO[id]:"";
 
 /* ---------- 資料層：建表 ---------- */
 function numCell(id){return `<td><input type="number" id="${id}" value="${dv(id)}" placeholder="0"></td>`;}
@@ -3158,7 +3164,20 @@ function itmGrpBar(kind,g,label,cnt,right,open){
     <span style="margin-left:auto;font-family:var(--mono);color:var(--sub)">${right}</span></div>`;
 }
 const ITM_NEWBOX=`class="itmNewBox" style="border:1.5px dashed var(--gold);border-radius:9px;padding:7px 8px 3px;margin-bottom:9px;background:#fffdf5"`;
-function itmNewHint(what){return `<div style="font-family:system-ui;font-size:11px;color:var(--gold);font-weight:700;margin:0 0 4px 2px">✎ 新增中——選好「類別」後就會自動歸到該群組</div>`;} // itmOvr：手動覆寫的欄位 id 清單
+function itmNewHint(what){return `<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 4px 2px"><span style="font-family:system-ui;font-size:11px;color:var(--gold);font-weight:700">✎ 新增中——填好後按「確認」才會併入明細與表格（Enter 也可以）</span><button type="button" class="btn sm no-print" data-itmok="${what||""}" style="padding:2px 12px">✓ 確認</button><span class="mini itmOkMsg" style="margin:0;color:var(--gD)"></span></div>`;} /* v387 */
+function itmLive(arr){return (arr||[]).filter(x=>!x._new);} /* v387：已確認的逐筆（新增中的不算） */
+function itmConfirm(kind){ /* v387：把該種類「新增中」的列併入（要先選類別） */
+  const arr=kind==="ast"?itmAssets:kind==="lia"?itmLiabs:kind==="inc"?itmIncs:itmExps;const rows=arr.filter(x=>x._new);if(!rows.length)return true;
+  const miss=rows.filter(x=>!x._cat); /* 新增列的資料層有預設類別，所以用「使用者有沒有選過」判斷 */
+  if(miss.length){const box=$(kind==="ast"?"itmAssetBox":kind==="lia"?"itmLiabBox":kind==="inc"?"itmIncBox":"itmExpBox");const m=box&&box.querySelector(".itmOkMsg");if(m)m.textContent="請先選「類別」再確認";return false;}
+  rows.forEach(x=>{delete x._new;delete x._cat;if(kind==="exp"&&typeof itmWhoFix==="function")itmWhoFix(x);
+    if(kind==="ast"&&itmAstUI.open&&!itmAstUI.open.all)itmAstUI.open[+String(x.bs||"0_0").split("_")[0]]=true;
+    if(kind==="lia"&&itmLiaUI.open&&!itmLiaUI.open.all)itmLiaUI.open[+x.key]=true;
+    if(kind==="inc"&&itmIncUI.open&&!itmIncUI.open.all)itmIncUI.open[x.who==="sp"?1:0]=true;
+    if(kind==="exp"&&itmExpUI.open&&!itmExpUI.open.all)itmExpUI.open[+String(x.ex||"0_0").split("_")[0]]=true;});
+  itmSave();itmSync();buildItems();if(kind==="lia"&&typeof itmLiabMeta==="function")itmLiabMeta();return true;}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("button[data-itmok]");if(!b)return;itmConfirm(b.dataset.itmok);});
+document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;const el=e.target;if(!el||!el.closest||el.tagName==="TEXTAREA")return;const nb=el.closest(".itmNewBox");if(!nb)return;const b=nb.querySelector("button[data-itmok]");if(b){e.preventDefault();itmConfirm(b.dataset.itmok);}}); // itmOvr：手動覆寫的欄位 id 清單
 const ITM_WHO=[["self","本人"],["sp","配偶"],["joint","共同"]];
 const ITM_REDEEM=[["all","全部贖回"],["part","部分贖回"],["annuity","年金式／特定時間"],["none","不贖回"]];
 const ITM_OWNED={"1_4":"保單登錄表"}; // 由其他模組專屬寫入的資產列：逐筆不提供、也不加總，避免兩邊互相蓋值
@@ -3245,9 +3264,9 @@ function itmLoad(){try{itmAssets=JSON.parse(($("itmAssetJson")||{}).value||"[]")
   itmExpUI={q:"",open:null};itmAstUI={q:"",open:null};itmLiaUI={q:"",open:null};itmIncUI={q:"",open:null};} // 重新載入 → 檢視狀態回到預設（超過 12 筆自動收合）
 function itmSync(quiet){ // 逐筆 → 類別表欄位（未被手動覆寫的列才寫）
   const sumA={},sumL={};
-  itmAssets.forEach(x=>{const k=x.bs||"0_0";if(ITM_OWNED[k])return; // 保價金由 ①-4 專屬，不由逐筆加總
+  itmLive(itmAssets).forEach(x=>{const k=x.bs||"0_0";if(ITM_OWNED[k])return; // 保價金由 ①-4 專屬，不由逐筆加總；v387 新增中不算
     sumA[k]=(sumA[k]||0)+(parseFloat(x.value)||0);}); // 資產負債表含全部逐筆；「計入生涯模擬」只影響模擬與追蹤
-  itmLiabs.forEach(x=>{const k=String(x.key===undefined?3:x.key);sumL[k]=(sumL[k]||0)+(parseFloat(x.balance)||0);});
+  itmLive(itmLiabs).forEach(x=>{const k=String(x.key===undefined?3:x.key);sumL[k]=(sumL[k]||0)+(parseFloat(x.balance)||0);});
   Object.keys(sumA).forEach(k=>{const id=`as_${k}`;if(itmOvr.indexOf(id)>=0)return;const e=$(id);if(e)e.value=Math.round(sumA[k]);});
   Object.keys(sumL).forEach(k=>{const id=`li_${k}`;if(itmOvr.indexOf(id)>=0)return;const e=$(id);if(e)e.value=Math.round(sumL[k]);});
   // 逐筆存在但該列已無明細 → 歸零（避免刪掉最後一筆後殘留）
@@ -3257,13 +3276,13 @@ function itmSync(quiet){ // 逐筆 → 類別表欄位（未被手動覆寫的�
     if(sumL[String(ri)]===undefined&&itmHad(id)&&itmOvr.indexOf(id)<0){const e=$(id);if(e)e.value=0;}});
   // 逐筆報酬率 → 投資類該列的「年化報酬」欄（依金額加權；有填才覆寫，供 ④-1 現況投組報酬推導）
   const rw={};
-  itmAssets.forEach(x=>{const k=x.bs||"0_0";if(!/^1_/.test(k))return;
+  itmLive(itmAssets).forEach(x=>{const k=x.bs||"0_0";if(!/^1_/.test(k))return;
     const r=parseFloat(x.r1),v=parseFloat(x.value)||0;if(!isFinite(r)||v<=0)return;
     rw[k]=rw[k]||{w:0,s:0};rw[k].w+=v;rw[k].s+=v*r;});
   Object.keys(rw).forEach(k=>{const e=$(`as_${k}_r`);if(e&&rw[k].w>0)e.value=+(rw[k].s/rw[k].w).toFixed(2);});
   // ---- 支出逐筆 → ①-2 支出表（月／年分別加總；起訖年齡改由 ②「同步」逐筆建時間帶）----
   const sumE={},ownE=itmExpOwned();
-  itmExps.forEach(x=>{const k=x.ex||"0_0";if(ownE[k])return;
+  itmLive(itmExps).forEach(x=>{const k=x.ex||"0_0";if(ownE[k])return;
     if(!((parseFloat(x.amt)||0)>0))return;
     const o=sumE[k]=sumE[k]||{m:0,y:0};if(itmExpMon(x))o.m+=itmExpCell(x);else o.y+=itmExpCell(x);});
   const expIds=[];
@@ -3273,7 +3292,7 @@ function itmSync(quiet){ // 逐筆 → 類別表欄位（未被手動覆寫的�
     if(expIds.indexOf(id)<0&&itmHad(id)&&itmOvr.indexOf(id)<0){const e=$(id);if(e)e.value=0;}})));
   // 理財支出：逐筆報酬率依年化金額加權 → 類別列的「年化報酬 %」欄
   {const rw={};
-   itmExps.forEach(x=>{const k=x.ex||"";if(!/^4_/.test(k))return;
+   itmLive(itmExps).forEach(x=>{const k=x.ex||"";if(!/^4_/.test(k))return;
      const r=parseFloat(x.r),a=itmExpAnn(x);if(!isFinite(r)||!(a>0))return;
      rw[k]=rw[k]||{w:0,s:0};rw[k].w+=a;rw[k].s+=a*r;});
    Object.keys(rw).forEach(k=>{const e=$(`exp_${k}_r`);if(e&&rw[k].w>0)e.value=+(rw[k].s/rw[k].w).toFixed(2);});}
@@ -3283,7 +3302,7 @@ function itmSync(quiet){ // 逐筆 → 類別表欄位（未被手動覆寫的�
     ["a1","a2"].forEach(f=>{const e=$(`exp_${k}_${f}`);if(e)e.value="";});});
   // ---- 收入逐筆 → ①-1 類別表（本人／配偶 × 月／年）----
   const sumI={},incIds=[];
-  itmIncs.forEach(x=>{itmIncFix(x);const a=itmIncCell(x);if(!(a>0))return;
+  itmLive(itmIncs).forEach(x=>{itmIncFix(x);const a=itmIncCell(x);if(!(a>0))return;
     const id=`inc_${x.who}_${x.ic}_${itmIncMon(x)?"m":"y"}`;sumI[id]=(sumI[id]||0)+a;});
   Object.keys(sumI).forEach(id=>{incIds.push(id);if(itmOvr.indexOf(id)>=0)return;const e=$(id);if(e)e.value=Math.round(sumI[id]);});
   INC_GROUPS.forEach((g,gi)=>g.rows.forEach((r,ri)=>["self","sp"].forEach(w=>["m","y"].forEach(f=>{const id=`inc_${w}_${gi}_${ri}_${f}`;
@@ -3378,7 +3397,7 @@ function buildItems(){
   ab.innerHTML=`<div class="axTitle" style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">資產明細
     <span class="mini" style="margin:0;font-weight:400">${dvCnt("ast",aAll)} 筆・${DVL}合計 ${NT(Math.round(tot))}${totOff?`（其中 ${NT(Math.round(totOff))} 不計入生涯模擬）`:""}</span>
     ${itmBar("ast",itmAstUI,aAll.length,"btnItmAddA","新增資產")}</div>`
-    +(aPin.length?`<div ${ITM_NEWBOX}>${itmNewHint()}`+aPin.map(o=>astRow(o.x,o.i)).join("")+`</div>`:"")
+    +(aPin.length?`<div ${ITM_NEWBOX}>${itmNewHint("ast")}`+aPin.map(o=>astRow(o.x,o.i)).join("")+`</div>`:"")
     +(aq&&!aShown.length?`<div class="mini">找不到符合「${esc(aq)}」的資產</div>`:"")
     +aGis.filter(g=>DVW==="all"||dvN("ast",aByG[g])>0).map(g=>{const list=aByG[g],op=aOpen(g);
       const gt=list.reduce((a,o)=>a+(parseFloat(o.x.value)||0)*dvItmShare("ast",o.x),0);
@@ -3391,7 +3410,7 @@ function buildItems(){
       ${ITM_OWNED[x.bs]?`<div style="grid-column:1/-1;font-family:system-ui;font-size:11px;color:var(--gD);margin-bottom:2px">⚠ 「${(ASSET_GROUPS[+x.bs.split("_")[0]].rows[+x.bs.split("_")[1]])}」由 <b>${ITM_OWNED[x.bs]}</b> 專屬彙總，此列不計入資產表——請改選其他類別，或把這張保單登錄到 ${polRegName()}。</div>`:""}
       ${x.saleNote?`<div style="grid-column:1/-1;font-family:system-ui;font-size:11px;color:var(--gold);margin-bottom:2px">🔁 ${esc(x.saleNote)}——由 ②-3 購屋精算「換屋」指定，資產負債表仍列今日現況</div>`:""}
       <div><div class="mini">名稱</div><input type="text" data-ia="${i}" data-if="name" value="${(x.name||"").replace(/"/g,"&quot;")}" placeholder="永豐大戶-台幣活存"></div>
-      <div><div class="mini">類別（對應資產表列）</div>${sel(x._new?"":(x.bs||"0_0"),x._new?[["","— 選類別 —"]].concat(cats):cats,`data-ia="${i}" data-if="bs"`)}</div>
+      <div><div class="mini">類別（對應資產表列）</div>${sel((x._new&&!x._cat)?"":(x.bs||"0_0"),x._new?[["","— 選類別 —"]].concat(cats):cats,`data-ia="${i}" data-if="bs"`)}</div>
       <div><div class="mini">歸屬</div>${sel(x.who||"self",ITM_WHO,`data-ia="${i}" data-if="who"`)}</div>
       <div><div class="mini">投入成本</div><input type="number" data-ia="${i}" data-if="cost" value="${x.cost||""}" placeholder="0"></div>
       <div><div class="mini">現在價值</div><input type="number" data-ia="${i}" data-if="value" value="${x.value||""}" placeholder="0"></div>
@@ -3431,7 +3450,7 @@ function buildItems(){
   lb.innerHTML=`<div class="axTitle" style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">負債明細
     <span class="mini" style="margin:0;font-weight:400">${dvCnt("lia",lAll)} 筆・${DVL}餘額合計 ${NT(Math.round(ltot))}・月付合計 ${NT(Math.round(lmon))}</span>
     ${itmBar("lia",itmLiaUI,lAll.length,"btnItmAddL","新增負債")}</div>`
-    +(lPin.length?`<div ${ITM_NEWBOX}>${itmNewHint()}`+lPin.map(o=>liaRow(o.x,o.i)).join("")+`</div>`:"")
+    +(lPin.length?`<div ${ITM_NEWBOX}>${itmNewHint("lia")}`+lPin.map(o=>liaRow(o.x,o.i)).join("")+`</div>`:"")
     +(lq&&!lShown.length?`<div class="mini">找不到符合「${esc(lq)}」的負債</div>`:"")
     +lGis.filter(g=>DVW==="all"||dvN("lia",lByG[g])>0).map(g=>{const list=lByG[g],op=lOpen(g);
       const gt=list.reduce((a,o)=>a+(parseFloat(o.x.balance)||0)*dvItmShare("lia",o.x),0);
@@ -3443,7 +3462,7 @@ function buildItems(){
     <div class="itmRow" data-dv="${x.who==="sp"?"sp":x.who==="joint"?"joint":"self"}" style="grid-template-columns:1.5fr 1.3fr .8fr .7fr 1.1fr .8fr 1fr .9fr .9fr auto">
       ${x.saleNote?`<div style="grid-column:1/-1;font-family:system-ui;font-size:11px;color:var(--gold);margin-bottom:2px">🔁 ${esc(x.saleNote)}——由 ②-3 購屋精算「換屋」指定</div>`:""}
       <div><div class="mini">名稱／銀行</div><input type="text" data-il="${i}" data-if="name" value="${(x.name||"").replace(/"/g,"&quot;")}" placeholder="國泰・自宅房貸"></div>
-      <div><div class="mini">類別</div>${sel(x._new?"":(x.key===undefined?3:x.key),(x._new?[["","— 選類別 —"]]:[]).concat(LIAB_ROWS.map((r,ri)=>[ri,r])),`data-il="${i}" data-if="key"`)}</div>
+      <div><div class="mini">類別</div>${sel((x._new&&!x._cat)?"":(x.key===undefined?3:x.key),(x._new?[["","— 選類別 —"]]:[]).concat(LIAB_ROWS.map((r,ri)=>[ri,r])),`data-il="${i}" data-if="key"`)}</div>
       <div><div class="mini">歸屬</div>${sel(x.who||"self",ITM_WHO,`data-il="${i}" data-if="who"`)}</div>
       <div><div class="mini" title="誰還貸款、責任就在誰身上（⑥-1 負債列與責任曲線依此分攤）：100＝本人、0＝配偶、中間＝共同依比例；直接改數字歸屬會跟著變">本人負擔 %</div><input type="number" data-il="${i}" data-if="share" value="${x.who==="sp"?0:x.who==="joint"?(x.share===undefined||x.share===""?50:x.share):100}" min="0" max="100" step="5" placeholder="100"></div>
       <div><div class="mini">目前餘額</div><input type="number" data-il="${i}" data-if="balance" value="${x.balance||""}" placeholder="0"></div>
@@ -3472,7 +3491,7 @@ function buildItems(){
     ib.innerHTML=`<div class="axTitle" style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">收入明細
       <span class="mini" style="margin:0;font-weight:400">${dvCnt("inc",iAll)} 筆・${DVL}年化合計 ${NT(Math.round(itot))}${nW?`（其中 ${nW} 筆設了起訖年齡，同步後各自成為時間帶收入）`:""}</span>
       ${itmBar("inc",itmIncUI,iAll.length,"btnItmAddI","新增收入")}</div>`
-      +(iPin.length?`<div ${ITM_NEWBOX}>${itmNewHint()}`+iPin.map(o=>incRow(o.x,o.i)).join("")+`</div>`:"")
+      +(iPin.length?`<div ${ITM_NEWBOX}>${itmNewHint("inc")}`+iPin.map(o=>incRow(o.x,o.i)).join("")+`</div>`:"")
       +(iq&&!iShown.length?`<div class="mini">找不到符合「${esc(iq)}」的收入</div>`:"")
       +iGis.filter(g=>DVW==="all"||(DVW==="sp"?g===1:g===0)).map(g=>{const list=iByG[g],op=iOpen(g);const gt=list.reduce((a,o)=>a+itmIncAnn(o.x)*dvItmShare("inc",o.x),0);
         return `<div style="margin-bottom:${op?"8px":"4px"}">
@@ -3483,7 +3502,7 @@ function buildItems(){
       return `<div class="itmRow" data-dv="${x.who==="sp"?"sp":"self"}" style="grid-template-columns:repeat(12,1fr)">
       <div style="grid-column:span 3"><div class="mini">名稱</div><input type="text" data-ii="${i}" data-if="name" value="${esc(x.name||"")}" placeholder="○○醫院 本薪"></div>
       <div style="grid-column:span 1"><div class="mini">誰的</div>${sel(x.who||"self",ITM_INC_WHO,`data-ii="${i}" data-if="who"`)}</div>
-      <div style="grid-column:span 3"><div class="mini">類別（對應收入表列）</div>${sel(x._new?"":k,x._new?[["","— 選類別 —"]].concat(icats):icats,`data-ii="${i}" data-if="ic"`)}</div>
+      <div style="grid-column:span 3"><div class="mini">類別（對應收入表列）</div>${sel((x._new&&!x._cat)?"":k,x._new?[["","— 選類別 —"]].concat(icats):icats,`data-ii="${i}" data-if="ic"`)}</div>
       <div style="grid-column:span ${(x.freq||"月")==="不定期"?1:2}"><div class="mini">金額（稅前）</div><input type="number" data-ii="${i}" data-if="amt" value="${x.amt||""}" placeholder="0"></div>
       <div style="grid-column:span ${(x.freq||"月")==="不定期"?2:1}"><div class="mini">頻率</div><div style="display:flex;align-items:center;gap:3px;line-height:1.1">${sel(x.freq||"月",ITM_INC_FREQ,`data-ii="${i}" data-if="freq"`).replace("<select ","<select style=\"flex:1 1 auto;min-width:56px\" ")}${
         (x.freq||"月")==="不定期"?`<input type="number" data-ii="${i}" data-if="nYr" value="${x.nYr||""}" placeholder="2" style="width:40px;flex:0 0 40px"><span style="font-family:system-ui;font-size:10px;color:var(--sub);white-space:nowrap">年一次</span>`:""}</div></div>
@@ -3518,7 +3537,7 @@ function buildItems(){
     eb.innerHTML=`<div class="axTitle" style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">支出明細
       <span class="mini" style="margin:0;font-weight:400">${dvCnt("exp",all)} 筆・${DVL}年化合計 ${NT(Math.round(etot))}${nWin?`（其中 ${nWin} 筆設了起訖年齡，按「②-1 同步」後各自成為時間帶支出）`:""}${(typeof ipTargets==="function"&&!ipTargets().length)?`　<span style="color:var(--gold)">有定期定額者請先填 ①-3b 投資標的，再回來連結</span>`:""}</span>
       ${itmBar("exp",itmExpUI,all.length,"btnItmAddE","新增支出")}</div>`
-      +(pinned.length?`<div ${ITM_NEWBOX}>${itmNewHint()}`+pinned.map(o=>expRow(o)).join("")+`</div>`:"")
+      +(pinned.length?`<div ${ITM_NEWBOX}>${itmNewHint("exp")}`+pinned.map(o=>expRow(o)).join("")+`</div>`:"")
       +(q&&!shown.length?`<div class="mini">找不到符合「${esc(q)}」的支出</div>`:"")
       +gis.filter(g=>DVW==="all"||dvN("exp",byG[g])>0).map(g=>{const list=byG[g],op=isOpen(g);
       return `<div style="margin-bottom:${op?"8px":"4px"}">
@@ -3532,7 +3551,7 @@ function buildItems(){
       return `<div class="itmRow" data-dv="${(x.pay||"本人")==="分攤"?"joint":x.pay==="配偶"?"sp":"self"}" style="grid-template-columns:repeat(12,1fr)${eown[k]?";border-color:var(--gD);background:#fdf3f0":""}">
       ${eown[k]?`<div style="grid-column:1/-1;font-family:system-ui;font-size:11px;color:var(--gD);margin-bottom:2px">⚠ 這一列目前由 <b>${eown[k]}</b> 專屬寫入（保單的保費歷年表／年繳保費會自己建時間帶），此筆不計入支出表——請改選其他類別，或把這筆保費登錄到 ${polRegName()}。</div>`:""}
       <div style="grid-column:span 3"><div class="mini">名稱</div><input type="text" data-ie="${i}" data-if="name" value="${(x.name||"").replace(/"/g,"&quot;")}" placeholder="玉山・自宅房貸月付"></div>
-      <div style="grid-column:span ${irr?2:3}"><div class="mini">類別（對應支出表列）</div>${sel(x._new?"":k,x._new?[["","— 選類別 —"]].concat(ecats):ecats,`data-ie="${i}" data-if="ex"`)}</div>
+      <div style="grid-column:span ${irr?2:3}"><div class="mini">類別（對應支出表列）</div>${sel((x._new&&!x._cat)?"":k,x._new?[["","— 選類別 —"]].concat(ecats):ecats,`data-ie="${i}" data-if="ex"`)}</div>
       <div style="grid-column:span 2"><div class="mini">金額（家庭合計）</div><input type="number" data-ie="${i}" data-if="amt" value="${x.amt||""}" placeholder="0"></div>
       <div style="grid-column:span ${irr?3:2}"><div class="mini">頻率</div><div style="display:flex;align-items:center;gap:3px;line-height:1.1">${sel(itmExpFreq(x),ITM_FREQ,`data-ie="${i}" data-if="freq"`).replace("<select ","<select style=\"flex:1 1 auto;min-width:56px\" ")}${
         irr?`<input type="number" data-ie="${i}" data-if="nYr" value="${x.nYr||""}" placeholder="2" style="width:40px;flex:0 0 40px"><span style="font-family:system-ui;font-size:10px;color:var(--sub);white-space:nowrap">年一次</span>`:""}</div></div>
@@ -3564,7 +3583,7 @@ $("itmExpBox")&&$("itmExpBox").addEventListener("input",e=>{const el=e.target,i=
   if(f==="assetRef"){const t=el.value?((typeof ipTargets==="function")?ipTargets().find(o=>o.id===el.value):null):null;
     if(t){x.assetName=t.x.name||"";x.assetBs=String(t.x.bs||"");x.r=ipTargetMuSg(t.x).mu;}else{x.assetRef="";x.assetName="";x.assetBs="";}
     itmSave();itmSync();buildItems();return;}
-  if(f==="ex"){itmWhoFix(x);delete x._new; // 選好類別 → 從「新增中」歸位到該群組
+  if(f==="ex"){itmWhoFix(x);x._cat=true; // v387：選好類別不再自動歸位，按「確認」才併入
     const g=+String(x.ex||"0_0").split("_")[0];if(itmExpUI.open&&!itmExpUI.open.all)itmExpUI.open[g]=true;}
   if(f==="pay"&&x.pay==="分攤"&&x.paySelf===undefined)x.paySelf=Math.round((parseFloat(x.amt)||0)/2);
   itmSave();itmSync();
@@ -3586,8 +3605,8 @@ function itmUIof(kind){return kind==="exp"?itmExpUI:kind==="ast"?itmAstUI:kind==
 function itmGroupKeys(kind){return kind==="exp"?EXP_GROUPS.map((_,i)=>i):kind==="ast"?ASSET_GROUPS.map((_,i)=>i):kind==="inc"?[0,1]:LIAB_ROWS.map((_,i)=>i);}
 $("itmIncBox")&&$("itmIncBox").addEventListener("input",e=>{const el=e.target,i=el.dataset.ii,f=el.dataset.if;if(i===undefined||!f)return;
   const x=itmIncs[+i];if(!x)return;if(f==="ic"&&el.value==="")return;x[f]=el.value;
-  if(f==="ic"){x.tax=ITM_TAX_DEF[x.ic]||"oth";delete x._new;}
-  if(f==="who"){delete x._new;if(itmIncUI.open&&!itmIncUI.open.all)itmIncUI.open[x.who==="sp"?1:0]=true;}
+  if(f==="ic"){x.tax=ITM_TAX_DEF[x.ic]||"oth";x._cat=true;} /* v387：按「確認」才併入 */
+  if(f==="who"){if(itmIncUI.open&&!itmIncUI.open.all)itmIncUI.open[x.who==="sp"?1:0]=true;}
   itmSave();itmSync();
   if(f==="ic"||f==="who"||f==="freq")buildItems();
   else{const a=$("itmIncBox").querySelector(`.itmAnn[data-iann="${i}"]`);if(a)a.textContent=NT(Math.round(itmIncAnn(x)));
@@ -3627,7 +3646,7 @@ $("itmAssetBox")&&$("itmAssetBox").addEventListener("input",e=>{const el=e.targe
   else x[f]=el.value===""?"":(parseFloat(el.value)||0);
   if(f==="useAmt")delete x.autoUse;
   itmSave();itmSync();
-  if(f==="bs"){delete x._new;const g=+String(x.bs||"0_0").split("_")[0];if(itmAstUI.open&&!itmAstUI.open.all)itmAstUI.open[g]=true;}
+  if(f==="bs"){x._cat=true;const g=+String(x.bs||"0_0").split("_")[0];if(itmAstUI.open&&!itmAstUI.open.all)itmAstUI.open[g]=true;} /* v387：按「確認」才併入 */
   if(f==="bs"||f==="sim"||f==="redeem"||f==="use")buildItems();
   else{const h=$("itmAssetBox").querySelector(".axTitle .mini");
     if(h){const t=itmAssets.reduce((a,y)=>a+(parseFloat(y.value)||0),0);
@@ -3644,7 +3663,7 @@ $("itmLiabBox")&&$("itmLiabBox").addEventListener("input",e=>{const el=e.target,
   itmSave();itmSync();itmLiabMeta();
   if(f==="who"){x.share=x.who==="sp"?0:x.who==="joint"?((x.share===undefined||x.share===""||x.share<=0||x.share>=100)?50:x.share):100;buildItems();} /* v381／v385：歸屬 → % 同步 */
   if(f==="share"){const v=x.share===""?NaN:+x.share;const who=isNaN(v)?x.who:(v>=100?"self":v<=0?"sp":"joint");if(who!==x.who){x.who=who;itmSave();itmSync();itmLiabMeta();const row=el.closest(".itmRow");const sel=row&&row.querySelector('select[data-if="who"]');if(sel)sel.value=who;if(row)row.dataset.dv=who==="sp"?"sp":who==="joint"?"joint":"self";}} /* v385：改 % → 歸屬跟著變（不重繪，避免打字被截斷） */
-  if(f==="key"){delete x._new;if(itmLiaUI.open&&!itmLiaUI.open.all)itmLiaUI.open[+el.value]=true;buildItems();}
+  if(f==="key"){x._cat=true;if(itmLiaUI.open&&!itmLiaUI.open.all)itmLiaUI.open[+el.value]=true;} /* v387：按「確認」才併入；不重繪，避免打字被截斷 */
   else if(f==="years"||f==="maturity"){ // 只更新對方欄位，不重繪（重繪會讓正在輸入的數字被截斷）
     const row=el.closest(".itmRow")||el.parentElement.parentElement;const o=row&&row.querySelector(`input[data-il="${i}"][data-if="${f==="years"?"maturity":"years"}"]`);
     if(o&&document.activeElement!==o)o.value=(f==="years"?x.maturity:x.years)||"";}});
@@ -3711,8 +3730,19 @@ function a2SimpleBuild(){A2_SIMPLE.forEach(c=>{const h=$(c.host);if(!h)return;
 function a2SibEl(id){const m=id.match(/^(inc_(?:self|sp)_\d+_\d+|exp_\d+_\d+)_([my])$/);return m?$(m[1]+"_"+(m[2]==="m"?"y":"m")):null;}
 function a2Sib(id){if(/_y$/.test(id))return "";const o=a2SibEl(id);const v=o?parseFloat(o.value)||0:0;return v?`明細年欄另有 ${NT(v)}（合計已含）`:"";} /* v329：年型格已合併顯示，只有月型格需要提示 */
 function a2CellVal(id){const t=$(id);if(!t)return "";if(/_y$/.test(id)){const s=a2SibEl(id);const m=s?parseFloat(s.value)||0:0;const y=parseFloat(t.value)||0;return m?String(Math.round(m*12+y)):t.value;}return t.value;} /* 年型格顯示整列年化 */
+function a2MemberVal(id,w,dd){ /* v386：簡表某格在本人／配偶分頁的份額（元；月型格回傳月額） */
+  let m;if((m=id.match(/^as_(\d+_\d+)$/)))return dd.as(m[1]);if((m=id.match(/^li_(\d+)$/)))return dd.li(+m[1]);
+  if((m=id.match(/^exp_(\d+_\d+)_([my])$/))){const v=(dd.E[m[1]]||{})[w]||0;return m[2]==="m"?v/12:v;}
+  if((m=id.match(/^inc_(self|sp)_/)))return m[1]===w?(parseFloat(a2CellVal(id))||0):0;return null;}
 function a2SimpleRefresh(){if(document.body.dataset.svcPlan!=="A2")return;
   const plWs=document.body.classList.contains("plWs"); /* v329：方案工作區唯讀 */
+  const dvw=(typeof dvWho==="function")?dvWho():"all";
+  if(dvw!=="all"){ /* v386：本人／配偶分頁 → 顯示該成員份額（依歸屬／付款人），唯讀；要改數字請切回「家庭合計」 */
+    let dd=null;try{dd=dvData(dvw);}catch(e){dd=null;}const nm=DV_LB[dvw]||dvw;
+    document.querySelectorAll("input[data-a2]").forEach(el=>{const v=dd?a2MemberVal(el.dataset.a2,dvw,dd):null;if(v===null)return;if(document.activeElement!==el)el.value=Math.round(v);el.readOnly=true;el.style.background="#eee";el.title=`${nm}份額：依 ①-3b 歸屬／付款人分攤；要改數字請切回「家庭合計」分頁`;
+      const hint=el.closest("tr").querySelector("[data-a2hint]");if(hint)hint.textContent=/^inc_/.test(el.dataset.a2)&&v===0&&!el.dataset.a2.includes(`_${dvw}_`)?`（${nm}分頁不計）`:`${nm}份額（依歸屬分攤；家庭合計 ${NT(Math.round(parseFloat(a2CellVal(el.dataset.a2))||0))}）`;});
+    const T={incTotal:"incTotal",expTotal:"expTotal",asTotal:"asTotal",liTotal:"liTotal",netWorth:"net"};
+    document.querySelectorAll("[data-a2tot]").forEach(el=>{const k=T[el.dataset.a2tot];el.textContent=dd&&k?NT(Math.round(dd.D[k]||0)):"";});return;}
   document.querySelectorAll("input[data-a2]").forEach(el=>{const t=$(el.dataset.a2);if(!t)return;if(document.activeElement!==el)el.value=a2CellVal(el.dataset.a2);el.readOnly=!!t.readOnly||plWs;el.style.background=el.readOnly?"#eee":"";el.title=plWs?"方案工作區唯讀：請切回現況修改":"";
     const hint=el.closest("tr").querySelector("[data-a2hint]");if(hint){const sib=a2Sib(el.dataset.a2);hint.textContent=(plWs?"現況資料（方案工作區唯讀）":t.readOnly?"來自逐筆明細（按「進階」改）":"")+(sib?((plWs||t.readOnly)?"・":"")+sib:"");}
     if(el.dataset.a2==="exp_3_2_y"&&typeof policies!=="undefined"){const pp=policies.filter(p=>p.src!=="bsAdj"&&polIsProt(p)&&(Array.isArray(p.premArr)?(p.premArr[0]||0):(+p.prem||0))>0); /* v336：定期壽險＋保障型 */ /* v328：①-4 有保障型保單 → 保費由保單帶入，此格唯讀 */
@@ -3796,7 +3826,7 @@ function dvMount(){const w=dvWho(),hs=dvHasSp();document.body.dataset.dv=w;
       +`<span class="mini" style="margin:0 0 0 8px;align-self:center">${w==="all"?"本人＋配偶＝家庭合計":"逐筆依付款人／歸屬歸列；共同、分攤與未逐筆的部分各算一半（稅賦依收入比）"}</span>`;});
   if($("expH2"))$("expH2").textContent=`現金支出表（${DV_LB[w]}・元）`;
   if($("bsH2"))$("bsH2").textContent=`資產負債表（${DV_LB[w]}・元）`;}
-document.addEventListener("click",e=>{const b=e.target.closest("[data-dv-seg] button[data-dv]");if(!b)return;dvWhoV=b.dataset.dv;try{renderKPI();}catch(x){console.warn(x);}try{if(typeof buildItems==="function")buildItems();}catch(x){console.warn(x);}}); // v283：逐筆群組列筆數／合計也跟著成員
+document.addEventListener("click",e=>{const b=e.target.closest("[data-dv-seg] button[data-dv]");if(!b)return;dvWhoV=b.dataset.dv;try{renderKPI();}catch(x){console.warn(x);}try{if(typeof buildItems==="function")buildItems();}catch(x){console.warn(x);}try{if(typeof a2SimpleRefresh==="function")a2SimpleRefresh();}catch(x){} /* v386：簡表跟著分頁 */}); // v283：逐筆群組列筆數／合計也跟著成員
 function dvNewPrem(who){ /* v295：方案新增保單（①-4 src=bsAdj）本年保費：prot＝⑥-5 增加保額（保障型）、fin＝①-3 轉入保單（理財型）；現況工作區沒有這類保單 → 0 */
   const o={prot:0,fin:0};const a0=V("g_self_cur")||num("startAge")||0;(typeof flows!=="undefined"?flows:[]).forEach(f=>{if(f.premSrc!=="new")return;const q=(typeof policies!=="undefined"?policies:[]).find(x=>x.src==="bsAdj"&&`保單保費・${x.name}`===f.name);
     const cls=f.premCls||(q&&/^as_/.test(q.key||"")?"fin":"prot");const v=(typeof flowVal==="function"?flowVal(f,a0,1):0)>0?((f.premE||(q&&q.prem)||Math.round((f.amt||0)*10000))*dvFlowShare(f,who||"all")):0;o[cls]+=v;});return o;}
@@ -3811,14 +3841,19 @@ const dvWhoShare=w=>w==="sp"?0:w==="joint"?0.5:1;
 function itmLiabShare(x,w){ /* v381：逐筆負債在 w（self|sp）的份額：本人名下 1／0、配偶名下 0／1、共同依「本人負擔 %」（空＝50） */
   const who=x.who||"self";let sh=1;if(who==="sp")sh=0;else if(who==="joint"){const p=(x.share===undefined||x.share==="")?50:parseFloat(x.share);sh=Math.min(1,Math.max(0,(isNaN(p)?50:p)/100));}
   return w==="sp"?1-sh:sh;}
+function dvLiabRatio(keys){ /* v386：①-3b 這些類別的負債，本人負擔比例（餘額加權）；沒有逐筆＝null */
+  const L=(typeof itmLiabs!=="undefined"?itmLive(itmLiabs):[]).filter(x=>(parseFloat(x.balance)||0)>0&&keys.includes(+(x.key===undefined||x.key===""?3:x.key)));if(!L.length)return null;
+  let t=0,sv=0;L.forEach(x=>{const b=parseFloat(x.balance)||0;t+=b;sv+=b*itmLiabShare(x,"self");});return t>0?sv/t:null;}
+const DV_LOAN_KEYS={"1_0":[0,1],"1_2":[2,3,4,5,6],"1_3":[7]}; /* ①-2 貸款列 ↔ ①-3b 負債類別 */
 function dvExpSplit(){const out={},rInc=dvIncShare();EXP_GROUPS.forEach((g,gi)=>g.rows.forEach((r,ri)=>{const k=`${gi}_${ri}`;
-  const items=(typeof itmExps!=="undefined"?itmExps:[]).filter(x=>(x.ex||"0_0")===k).map(x=>{const a=itmExpAnn(x),amt=parseFloat(x.amt)||0;return {v:a,self:amt>0?itmPaySelf(x)/amt:1};});
-  out[k]=dvSplitRow(ann(gi,ri,"exp"),items,gi===5?rInc:0.5);}));return out;} // 稅賦未逐筆的部分依收入比例分（所得稅跟著薪資走）
+  const items=(typeof itmExps!=="undefined"?itmLive(itmExps):[]).filter(x=>(x.ex||"0_0")===k).map(x=>{const a=itmExpAnn(x),amt=parseFloat(x.amt)||0;return {v:a,self:amt>0?itmPaySelf(x)/amt:1};});
+  let rs=gi===5?rInc:0.5;if(DV_LOAN_KEYS[k]){const lr=dvLiabRatio(DV_LOAN_KEYS[k]);if(lr!==null)rs=lr;} /* v386：貸款月付跟著負債歸屬（誰還貸款） */
+  out[k]=dvSplitRow(ann(gi,ri,"exp"),items,rs);}));return out;} // 稅賦未逐筆的部分依收入比例分（所得稅跟著薪資走）
 function dvAsSplit(){const out={};ASSET_GROUPS.forEach((g,gi)=>g.rows.forEach((r,ri)=>{const k=`${gi}_${ri}`;
-  const items=(typeof itmAssets!=="undefined"?itmAssets:[]).filter(x=>String(x.bs||"")===k).map(x=>({v:parseFloat(x.value)||0,self:dvWhoShare(x.who||"self")}));
+  const items=(typeof itmAssets!=="undefined"?itmLive(itmAssets):[]).filter(x=>String(x.bs||"")===k).map(x=>({v:parseFloat(x.value)||0,self:dvWhoShare(x.who||"self")}));
   out[k]=dvSplitRow(V(`as_${k}`),items);}));return out;}
 function dvLiSplit(){const out={};LIAB_ROWS.forEach((r,ri)=>{
-  const items=(typeof itmLiabs!=="undefined"?itmLiabs:[]).filter(x=>(x.key===undefined||x.key===""?3:+x.key)===ri).map(x=>({v:parseFloat(x.balance)||0,self:itmLiabShare(x,"self")}));
+  const items=(typeof itmLiabs!=="undefined"?itmLive(itmLiabs):[]).filter(x=>(x.key===undefined||x.key===""?3:+x.key)===ri).map(x=>({v:parseFloat(x.balance)||0,self:itmLiabShare(x,"self")}));
   out[ri]=dvSplitRow(V(`li_${ri}`),items);});return out;}
 function dvData(who){ // → {D,as(k),li(ri),who[,E,A,L]}
   if(who==="all")return {D,as:k=>V(`as_${k}`),li:ri=>V(`li_${ri}`),who:"all"};
@@ -3855,7 +3890,7 @@ function dvRenderTables(){const w=dvWho(),show=w!=="all";
     LIAB_ROWS.forEach((r,ri)=>{const o=dd.L[ri];if(!(o.fam>0))return;const v=o[w];tot+=v;
       h+=`<tr><td class="rn">${esc(r)}</td>${cell(v)}<td class="calc" style="color:var(--sub)">${N(o.fam)}</td><td class="mini" style="margin:0">${dvBasis(o)}</td></tr>`;});
     h+=`<tr class="sub"><td class="rn">負債總計</td>${cell(tot)}<td class="calc" style="color:var(--sub)">${N(D.liTotal)}</td><td></td></tr>
-      <tr class="sub"><td class="rn">${DV_LB[w]}淨值</td>${cell(dd.D.net)}<td class="calc" style="color:var(--sub)">${N(D.net)}</td><td></td></tr>`;$("tblLiabDv").innerHTML=h;}
+      <tr class="sub"><td class="rn">${DV_LB[w]}淨值</td><td class="calc">${N(dd.D.net)}</td><td class="calc" style="color:var(--sub)">${N(D.net)}</td><td></td></tr>`;$("tblLiabDv").innerHTML=h;} /* v386：負淨值也顯示 */
 }
 function kpiTile(l,v,h,cls){return `<div class="kpi ${cls}"><div class="l">${l}</div><div class="v">${v}</div><div class="h">${h}</div></div>`;}
 /* ---------- ①-5 收支總表＋資產負債表（上勤 2.0 版型：月／年／佔比；生息／自用；流動／長期；淨值） ---------- */
@@ -4902,6 +4937,7 @@ $("btnTrkExport")&&$("btnTrkExport").addEventListener("click",()=>{
 });
 /* ---------- 新客戶：先自動存檔目前客戶，再清空全部客戶資料（保留顧問資料、稅務參數、勞保勞退預設） ---------- */
 function newClientReset(silent){
+  demoDefaults=false; /* v387 */
   if(typeof asSave==="function"){const c=$("clientName").value.trim();if(c)try{asSave("newclient");}catch(e){}}
   if(typeof asPaused!=="undefined")asPaused=true;
   try{
@@ -5394,7 +5430,7 @@ const RESP_ROWS=[["遺族生活費（元/月）","life_m"],["生活費支應年�
    ①-3b 逐筆依「歸屬」——本人名下算本人、配偶名下算配偶、共同各半；①-3 類別列比逐筆多出來的部分視為共同（各半）。
    結果自動填進 ⑥-2 壽險列（責任分析／貸款清償後）的「風險自留」欄；取消勾選即可手填。 */
 function protOffset(w){ // w: self|sp → {amt, own, joint, parts:[...]}
-  const IE=(typeof itmAssets!=="undefined"?itmAssets:[]);
+  const IE=(typeof itmAssets!=="undefined"?itmLive(itmAssets):[]);
   const rowOk=bs=>/^(0_[0-9]|1_[0-3])$/.test(String(bs||""));
   let own=0,joint=0;const parts=[];const byRow={};
   IE.forEach(x=>{const bs=String(x.bs||"");if(!rowOk(bs))return;const v=parseFloat(x.value)||0;if(v<=0)return;
@@ -5798,9 +5834,9 @@ function policySync(){
       acts.push(`${who}壽險已備＝${NT(saSum)}`);}
   });
   { /* v328：保障給付（基礎六項）依被保險人加總 → ⑥-3 已備；子女進第一位子女欄；該鍵合計 >0 才覆寫 */
-    const covSum={},kinds=new Set();policies.filter(p=>p.src!=="bsAdj").forEach(p=>(p.coverages||[]).forEach(c=>{let k=covKey(c.kind);k=COV_TO_HAVE[k]||k;if(!k||!COV_BASE.includes(k))return; /* v335 */const amt=parseFloat(c.amount)||0;if(!(amt>0))return;
-      const w=p.insured==="配偶"?"sp":p.insured==="子女"?"kid0":"self";const id=`pr_${w}_${k}_have`;covSum[id]=(covSum[id]||0)+amt;kinds.add(c.kind);}));
-    let n=0;Object.entries(covSum).forEach(([id,v])=>{const e=$(id);if(!e)return;e.value=Math.round(v);n++;const t=$(id+"txt");if(t&&!t.value)t.value="保單登錄表合計";});
+    const covSum={},covSrc={},kinds=new Set();policies.filter(p=>p.src!=="bsAdj").forEach(p=>(p.coverages||[]).forEach(c=>{let k=covKey(c.kind);k=COV_TO_HAVE[k]||k;if(!k||!COV_BASE.includes(k))return; /* v335 */const amt=parseFloat(c.amount)||0;if(!(amt>0))return;
+      const w=p.insured==="配偶"?"sp":p.insured==="子女"?"kid0":"self";const id=`pr_${w}_${k}_have`;covSum[id]=(covSum[id]||0)+amt;kinds.add(c.kind);(covSrc[id]=covSrc[id]||[]).push(`${(p.name||"（未命名）").replace(/（.*?）/g,"").slice(0,18)}${covKey(c.kind)!==k?"・"+covKindNorm(c.kind).split("（")[0]:""} ${NT(Math.round(amt))}`);}));
+    let n=0;Object.entries(covSum).forEach(([id,v])=>{const e=$(id);if(!e)return;e.value=Math.round(v);n++;const t=$(id+"txt");if(t)t.value=(covSrc[id]||[]).join("＋");}); /* v387：說明列出保單與金額 */
     /* v332：有保單帶入的格唯讀（來源 ①-4），沒有的恢復手填 */
     document.querySelectorAll('#protHaveBox input[id$="_have"]').forEach(e=>{const on=!!covSum[e.id];e.dataset.polLock=on?"1":"";if(!(typeof bsIsPlan==="function"&&bsIsPlan())){e.readOnly=on;}e.classList.toggle("polLock",on);e.title=on?"由保單登錄表各保單的「保障給付」自動加總；要改請改保單":(e.title==="由保單登錄表各保單的「保障給付」自動加總；要改請改保單"?"":e.title);});
     if(n)acts.push(`保障給付已帶入 ⑥ 已備（${n} 欄：${[...kinds].join("、")}）`);}
@@ -5933,19 +5969,19 @@ function rpInc(){try{recalcData();return (D&&D.incTotal)||0;}catch(e){return 0;}
 /* ---- ⑥-2 風險需求（應備）---- */
 function buildProtNeed(){const box=$("protNeedBox");if(!box)return;const P=protPersons();
   const cell=(w,id,ph,txt)=>{regLb(id,`保障｜${rpWhoLb(w)}｜${ph}`);return `<td><input type="${txt?"text":"number"}" id="${id}" value="${dv(id)}" placeholder="${txt?"如 林口長庚":"0"}"${txt?' style="text-align:left"':""}></td>`;};
-  const row=(lb,f,txt,only)=>`<tr><td class="rn">${lb}</td>${P.map(([w])=>only&&isKid(w)?`<td class="calc" style="color:#bbb">—</td>`:cell(w,f(w),lb,txt)).join("")}</tr>`;
+  const row=(lb,f,txt,only,cls)=>`<tr${cls?` class="${cls}"`:""}><td class="rn">${lb}</td>${P.map(([w])=>only&&isKid(w)?`<td class="calc" style="color:#bbb">—</td>`:cell(w,f(w),lb,txt)).join("")}</tr>`;
   let h=`<table class="pt"><tr><th style="text-align:left;min-width:170px">項目</th>${P.map(([w,nm])=>`<th>${isKid(w)?`<input type="text" id="kidname_${w.slice(3)}" value="${esc(nm)}" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:3px 8px;border:1px solid var(--line);border-radius:6px;background:var(--paper);width:96px">`:nm}</th>`).join("")}</tr>
-    <tr class="sub"><td colspan="${P.length+1}" style="font-weight:700;text-align:left">住院期（住院日額總和＝病房費＋看護費＋薪資補償）</td></tr>
-    ${row("期望醫院",w=>`pr_${w}_hosp_hospital`,true)}${row("病房費用（元/日）",w=>`pr_${w}_hosp_room`)}${row("看護費用（元/日）",w=>`pr_${w}_hosp_care`)}${row("薪資補償（元/日）",w=>`pr_${w}_hosp_sal`)}
-    <tr><td class="rn"><b>住院日額總和（應備・元/日）</b><div class="protSub">三格有值時自動加總；都空白可直接填</div></td>${P.map(([w])=>cell(w,`pr_${w}_hosp_need`,"住院日額應備")).join("")}</tr>
-    ${row("住院醫療雜費（應備）",w=>`pr_${w}_med_need`)}
-    <tr class="sub"><td colspan="${P.length+1}" style="font-weight:700;text-align:left">休養與照護期</td></tr>
-    ${row("失能安養（元/月）",w=>`pr_${w}_ltc_need`)}
-    ${RP_LUMP.map(([k,lb])=>`<tr class="sub"><td colspan="${P.length+1}" style="font-weight:400;text-align:left;font-size:11px">${lb}＝（年薪 × 倍數 ＋ 治療費）${k==="acc"?"× 加權":""}——倍數、治療費分開跟客戶談；兩格都空白時可直接填應備</td></tr>
-    ${row(`${lb}｜年薪倍數`,w=>`pr_${w}_${k}_mult`,false,true)}${row(`${lb}｜治療費`,w=>`pr_${w}_${k}_treat`)}${k==="acc"?row("意外失能｜加權倍率（空＝2.5：以第七級失能反推，第七級給付比例 40%，1÷0.4＝2.5）",w=>`pr_${w}_acc_fac`,false,true):""}
-    <tr><td class="rn"><b>${lb}（應備）</b><div class="protSub" id="pr_lump_${k}_hint"></div></td>${P.map(([w])=>cell(w,`pr_${w}_${k}_need`,lb)).join("")}</tr>`).join("")}
-    <tr class="sub"><td colspan="${P.length+1}" style="font-weight:700;text-align:left">身故後家庭責任期（由 ⑥-1 自動）／替代情境</td></tr>
-    <tr><td class="rn">壽險應備（⑥-1 責任分析）</td>${P.map(([w])=>isKid(w)?`<td class="calc" style="color:#bbb">—</td>`:`<td class="calc" id="pr_${w}_resp_needC" style="text-align:right"></td>`).join("")}</tr>
+    <tr class="sub pnStage"><td colspan="${P.length+1}" style="font-weight:700;text-align:left">住院期（住院日額總和＝病房費＋看護費＋薪資補償）</td></tr>
+    ${row("期望醫院",w=>`pr_${w}_hosp_hospital`,true,false,"pnIn")}${row("病房費用（元/日）",w=>`pr_${w}_hosp_room`,false,false,"pnIn")}${row("看護費用（元/日）",w=>`pr_${w}_hosp_care`,false,false,"pnIn")}${row("薪資補償（元/日）",w=>`pr_${w}_hosp_sal`,false,false,"pnIn")}
+    <tr class="pnNeed"><td class="rn">住院日額總和（應備・元/日）<div class="protSub" style="font-weight:400">三格有值時自動加總；都空白可直接填</div></td>${P.map(([w])=>cell(w,`pr_${w}_hosp_need`,"住院日額應備")).join("")}</tr>
+    ${row("住院醫療雜費（應備）",w=>`pr_${w}_med_need`,false,false,"pnNeed")}
+    <tr class="sub pnStage"><td colspan="${P.length+1}" style="font-weight:700;text-align:left">休養與照護期</td></tr>
+    ${row("失能安養（應備・元/月）",w=>`pr_${w}_ltc_need`,false,false,"pnNeed")}
+    ${RP_LUMP.map(([k,lb])=>`<tr class="sub pnFormula"><td colspan="${P.length+1}" style="font-weight:400;text-align:left">${lb}＝（年薪 × 倍數 ＋ 治療費）${k==="acc"?"× 加權":""}——倍數、治療費分開跟客戶談；兩格都空白時可直接填應備</td></tr>
+    ${row(`${lb}｜年薪倍數`,w=>`pr_${w}_${k}_mult`,false,true,"pnIn")}${row(`${lb}｜治療費`,w=>`pr_${w}_${k}_treat`,false,false,"pnIn")}${k==="acc"?row("意外失能｜加權倍率（空＝2.5：以第七級失能反推，第七級給付比例 40%，1÷0.4＝2.5）",w=>`pr_${w}_acc_fac`,false,true,"pnIn"):""}
+    <tr class="pnNeed"><td class="rn">${lb}（應備）<div class="protSub" style="font-weight:400" id="pr_lump_${k}_hint"></div></td>${P.map(([w])=>cell(w,`pr_${w}_${k}_need`,lb)).join("")}</tr>`).join("")}
+    <tr class="sub pnStage"><td colspan="${P.length+1}" style="font-weight:700;text-align:left">身故後家庭責任期（由 ⑥-1 自動）／替代情境</td></tr>
+    <tr class="pnNeed"><td class="rn">壽險應備（⑥-1 責任分析）</td>${P.map(([w])=>isKid(w)?`<td class="calc" style="color:#bbb">—</td>`:`<td class="calc" id="pr_${w}_resp_needC" style="text-align:right"></td>`).join("")}</tr>
     ${row("壽險（貸款清償後）",w=>`pr_${w}_resp2_need`,false,true)}${row("失能安養（貸款清償後・元/月）",w=>`pr_${w}_ltc2_need`,false,true)}
   </table>
   <div class="scRow no-print curOnly" style="margin-top:6px"><button class="btn sm" id="btnAddKid">＋ 新增子女</button>${kidCount>0?`<button class="btn danger sm" id="btnDelKid">－ 移除最後一位子女</button>`:""}<button class="btn ghost sm" id="btnFillResp2">以「應備 − 家庭總負債」帶入貸款清償後責任額</button></div>`;
@@ -6093,7 +6129,7 @@ function rcLoanBal(bal,rate,monthly,yrs,t){ /* 第 t 年末餘額（元）：有
   if(monthly>0){let b=bal;for(let m=0;m<t*12;m++){b=b*(1+r/12)-monthly;if(b<=0)return 0;}return b;}
   const n=yrs>0?yrs:20;return Math.max(0,bal*(1-t/n));}
 function rcLoanSeries(n,w){ /* [mortArr,otherArr]（元）：①-3b 逐筆負債優先（v381 依歸屬分攤到 w；①-3 比逐筆多出的部分兩人都整筆）；沒有逐筆用 ①-3 彙總＋①-2 房貸年付（兩人都整筆） */
-  w=w||"self";const mort=new Float64Array(n),other=new Float64Array(n);const L=(typeof itmLiabs!=="undefined"?itmLiabs:[]).filter(x=>(parseFloat(x.balance)||0)>0);
+  w=w||"self";const mort=new Float64Array(n),other=new Float64Array(n);const L=(typeof itmLiabs!=="undefined"?itmLive(itmLiabs):[]).filter(x=>(parseFloat(x.balance)||0)>0);
   const li0=V("li_0")+V("li_1"),ann=V("exp_1_0_m")*12+V("exp_1_0_y");const oth=V("li_2")+V("li_3")+V("li_4")+V("li_5")+V("li_6")+V("li_7");
   if(L.length){let im=0,io=0;L.forEach(x=>{const k=+(x.key===undefined||x.key===""?3:x.key);const isM=k===0||k===1;const bal=parseFloat(x.balance)||0;if(isM)im+=bal;else io+=bal;const sh=itmLiabShare(x,w);if(sh<=0)return;for(let t=0;t<n;t++){const b=rcLoanBal(bal,parseFloat(x.rate)||0,parseFloat(x.monthly)||0,parseFloat(x.years)||0,t);(isM?mort:other)[t]+=b*sh;}});
     const rm=li0-im,ro=oth-io;if(rm>5000)for(let t=0;t<n;t++)mort[t]+=rcLoanBal(rm,2.2,ann/12,0,t);if(ro>5000)for(let t=0;t<n;t++)other[t]+=rcLoanBal(ro,0,0,5,t);
@@ -6434,7 +6470,7 @@ const RESP_LIAB_AUTO=[["mort",["li_0","li_1"],"房貸"],["liq",["li_3","li_4","l
 function respMortSync(){const cb=$("p_mort_auto");if(!cb||!$("p_self_mort"))return;const on=cb.checked;const plan=typeof bsIsPlan==="function"&&bsIsPlan();const TT="由 ①-3 自動帶入；要手填請取消上方勾選";
   RESP_LIAB_AUTO.forEach(([k])=>["self","sp"].forEach(w=>{const e=$(`p_${w}_${k}`);if(!e)return;e.readOnly=on||e.classList.contains("rpLock");e.classList.toggle("polLock",on);e.title=on?TT:(e.title===TT?"":e.title);}));
   if(!on||plan){if($("pMortNote"))$("pMortNote").textContent=on?"方案工作區：沿用現況帶入值":"手填模式";return;}
-  let chg=false;const parts=[];const LI=(typeof itmLiabs!=="undefined"?itmLiabs:[]).filter(x=>(parseFloat(x.balance)||0)>0);
+  let chg=false;const parts=[];const LI=(typeof itmLiabs!=="undefined"?itmLive(itmLiabs):[]).filter(x=>(parseFloat(x.balance)||0)>0);
   RESP_LIAB_AUTO.forEach(([k,ids,lb])=>{const tot=Math.round(ids.reduce((s,id)=>s+rawV(id),0));const keys=ids.map(id=>+id.replace("li_",""));
     const by={self:0,sp:0};let itm=0;LI.forEach(x=>{const key=+(x.key===undefined||x.key===""?3:x.key);if(!keys.includes(key))return;const b=parseFloat(x.balance)||0;itm+=b;by.self+=b*itmLiabShare(x,"self");by.sp+=b*itmLiabShare(x,"sp");});
     const rest=Math.max(0,tot-itm); /* v381：未逐筆的部分兩人都整筆（保守） */
@@ -8408,6 +8444,7 @@ $("nyFile")&&$("nyFile").addEventListener("change",e=>{const f=e.target.files[0]
 $("btnNyJump")&&$("btnNyJump").addEventListener("click",()=>{mtShowView("view_scen");setTimeout(()=>{const x=$("nySec");if(x)x.scrollIntoView({behavior:"smooth",block:"start"});},120);});
 $("arvSrcSeg")&&$("arvSrcSeg").addEventListener("click",e=>{const b=e.target.closest("button[data-src]");if(!b)return;$("arvSrcSeg").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));if($("arvOut").innerHTML)arvBuild();});
 function applySnapshot(s){ // 還原一個方案快照（結構資料先於欄位值）
+  demoDefaults=false; /* v387 */
   if(typeof hbtApplyDef==="function"&&!(s&&s.values&&s.values.hbt_y1!==undefined))try{hbtApplyDef();}catch(e){} /* v373：舊檔沒有房地合一參數 → 用你的預設 */
   if(s.goals){goals=JSON.parse(JSON.stringify(s.goals));buildGoals();}
   if(typeof hbLoad==="function")hbLoad();
