@@ -514,7 +514,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v395</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v396</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -4953,6 +4953,7 @@ function newClientReset(silent){
     // 四大表＋責任分析：清空
     document.querySelectorAll("#tblIncome input,#tblExpense input,#tblAsset input,#tblLiab input,#tblResp input").forEach(e=>{if(e.type==="number"||e.type==="text")e.value="";else if(e.type==="checkbox")e.checked=false;});
     document.querySelectorAll("#tblExpense select").forEach(e=>{e.selectedIndex=0;});
+    if($("p_edu_split"))$("p_edu_split").value="even";if($("p_edu_share"))$("p_edu_share").value=50; /* v396 */
     [1,2,7,6,5].forEach((r,ri)=>{const e=$(`exp_4_${ri}_r`);if(e)e.value=r;});
     [7,3.5,7,6,2,0,0,0,0,2].forEach((r,ri)=>{const e=$(`as_1_${ri}_r`);if(e)e.value=r;}); /* v301：新客戶清空時 ①-3 投資類「年化報酬」預設值一併被清成空白 → 現況 μ 推估為 0%、藍圖／⑤ 以零報酬計算；改為回復預設 */
     ["noteJson","eduJson","famJson","estHeirJson","estAllocJson","liMetaJson","siJson","trkAssetsJson","inc_self_basis","inc_sp_basis","bsAdjJson","retAdjJson","txSrc","txExtJson","journeyJson","nyMetaJson"].forEach(id=>{if($(id))$(id).value="";});
@@ -5460,7 +5461,9 @@ function buildResp(){
   let h=`<tr><th style="text-align:left;min-width:170px">責任項目</th><th>本人</th><th>配偶</th></tr>`;
   RESP_ROWS.forEach(([r,k])=>{
     const a=`p_self_${k}`,b=`p_sp_${k}`;regLb(a,`責任｜本人｜${r}`);regLb(b,`責任｜配偶｜${r}`);
-    h+=`<tr><td class="rn">${r}${k==="edu"?`<div class="protSub" id="pEduNote" style="font-weight:400"></div>`:k==="par_m"?`<div class="protSub" id="pParNote" style="font-weight:400"></div>`:""}</td>${numCell(a)}${numCell(b)}</tr>`;}); /* v388：教育列說明；v390：孝養列說明 */
+    const eduCtl=`<div class="protSub" style="font-weight:400;margin-top:4px">分攤 <select id="p_edu_split" style="width:auto;display:inline-block;padding:2px 6px;font-size:11px"><option value="even">均分</option><option value="sal">依薪資比例（①-1 薪資）</option><option value="cust">自訂</option></select> 本人 <input type="number" id="p_edu_share" min="0" max="100" step="1" value="50" style="width:58px;display:inline-block;text-align:right;padding:2px 5px;font-size:11px"> %<span data-tip="[b]子女教育費用怎麼分給本人／配偶[/b]　壽險補的是「走掉的人原本會出的那一份」，所以教育費依分攤比例分到兩欄。||均分（預設）：各 50%。||依薪資比例：用 ①-1「薪資」列（月薪×12＋年額，不含獎金、其他收入）算本人占比；配偶薪資 0（單薪）＝本人 100%；兩邊都沒填＝暫時均分。||自訂：問診時夫妻說好的比例，填本人 %。||①-0a 沒勾配偶＝本人 100%。">ⓘ</span></div>`; /* v396 */
+    h+=`<tr><td class="rn">${r}${k==="edu"?eduCtl+`<div class="protSub" id="pEduNote" style="font-weight:400"></div>`:k==="par_m"?`<div class="protSub" id="pParNote" style="font-weight:400"></div>`:""}</td>${numCell(a)}${numCell(b)}</tr>`;}); /* v388：教育列說明；v390：孝養列說明；v396：教育分攤 */
+  regLb("p_edu_split","責任｜子女教育分攤方式");regLb("p_edu_share","責任｜子女教育本人 %"); /* v396 */
   regLb("p_etax_on","責任｜遺產稅稅源計入");regLb("p_self_etax","責任｜本人｜遺產稅稅源");regLb("p_sp_etax","責任｜配偶｜遺產稅稅源"); /* v381 */
   h+=`<tr><td class="rn"><label class="chk" style="margin:0;display:inline-flex"><input type="checkbox" id="p_etax_on"><span>遺產稅稅源（今日稅額）</span></label> <span data-tip="[b]遺產稅稅源（預設不計入）[/b]　勾選後把「今天身故要繳的遺產稅」當成一筆責任，計入壽險應備、責任曲線與報告書。||本人欄由「遺產稅」頁面的現況試算自動帶入（請先在該頁按「帶入」並填不動產現值）；配偶欄請手填（該頁只試算本人為被繼承人）。||責任曲線把它視同最後費用：不隨年數遞減，終身型保額先留給它；資產會成長、稅會變多，但工作台只用今天的稅額（避免把客戶推向晚年買大額終身壽險）；真正的稅源規劃仍在遺產稅頁面。">ⓘ</span></td><td><input type="number" id="p_self_etax" value="${dv("p_self_etax")}" placeholder="0" readonly data-pol-lock="1" title="由遺產稅頁面現況試算自動帶入"></td><td><input type="number" id="p_sp_etax" value="${dv("p_sp_etax")}" placeholder="0" title="遺產稅頁只試算本人；配偶請手填"></td></tr>`;
   h+=`<tr class="sub"><td class="rn" style="font-weight:700">壽險應備總額（自動）</td><td class="calc" id="respSelf" style="text-align:right"></td><td class="calc" id="respSp" style="text-align:right"></td></tr>`;
@@ -6146,11 +6149,27 @@ function parRespSync(){const any=parRespRows().length>0;const plan=typeof bsIsPl
       else if(e.dataset.polLock==="1"){e.dataset.polLock="";e.classList.remove("polLock");if(!plan){e.readOnly=false;e.title="";}}});
     if(any)notes.push(`<b>${w==="self"?"本人":"配偶"}</b>：${rows.length?rows.map(r=>`${esc(r.name||"（未命名）")} ${NT(Math.round(r.mon))}/月到 ${r.end} 歲`).join("＋")+`＝${NT(Math.round(tot))} → 年期 ${yrs}、等值月額 ${NT(mon)}`:"0（不是由此人付）"}`);});
   const note=$("pParNote");if(note)note.innerHTML=any?`由逐筆支出帶入（依付款人；曲線依各筆訖年齡逐年扣）<br>${notes.join("<br>")}`:"手填；或在逐筆支出「撫育費用｜父母孝養／其他長輩」登錄後自動帶入（依付款人分給本人／配偶）";return any;} /* v395：分行 */
-function eduRespSync(){ /* ⑥-1 子女教育費用：教育規劃有內容 → 本人、配偶都帶全額（任一方走了學費都要全部出）、唯讀；沒有 → 手填 */
-  const rows=eduRespRows();const tot=Math.round(eduRespTotal(rows));const plan=typeof bsIsPlan==="function"&&bsIsPlan();const T="由子女教育規劃帶入（今日幣值、不扣已準備資產）；要改請改教育規劃";
-  ["self","sp"].forEach(w=>{const e=$(`p_${w}_edu`);if(!e)return;if(tot>0){if(!plan&&(parseFloat(e.value)||0)!==tot)e.value=tot;e.readOnly=true;e.dataset.polLock="1";e.classList.add("polLock");e.title=T;}
+/* v396：子女教育費用分攤。even＝均分、sal＝①-1 薪資比例（只看薪資列）、cust＝自訂本人 %；單身＝本人 100% */
+function eduSplitMode(){const e=$("p_edu_split");const v=e?e.value:"even";return /^(even|sal|cust)$/.test(v)?v:"even";}
+function eduSalary(w){return V(`inc_${w}_0_0_m`)*12+V(`inc_${w}_0_0_y`);}
+function eduShareSelf(){const hasSp=!$("bio_hasSp")||$("bio_hasSp").checked;if(!hasSp)return 1;const m=eduSplitMode();
+  if(m==="sal"){const a=eduSalary("self"),b=eduSalary("sp");return a+b>0?a/(a+b):0.5;}
+  if(m==="cust"){const e=$("p_edu_share");const p=e&&e.value!==""?parseFloat(e.value):50;return Math.max(0,Math.min(100,isFinite(p)?p:50))/100;}
+  return 0.5;}
+function eduSplitLb(){const hasSp=!$("bio_hasSp")||$("bio_hasSp").checked;if(!hasSp)return "單身，本人 100%";const m=eduSplitMode();const pct=Math.round(eduShareSelf()*100);
+  if(m==="sal"){const a=eduSalary("self"),b=eduSalary("sp");return a+b>0?`依 ①-1 薪資比例 本人 ${pct}%／配偶 ${100-pct}%`:"依薪資比例（①-1 薪資未填 → 暫均分 50%／50%）";}
+  return m==="cust"?`自訂 本人 ${pct}%／配偶 ${100-pct}%`:"均分 50%／50%";}
+function eduRespSync(){ /* ⑥-1 子女教育費用：教育規劃有內容 → 依分攤比例帶入本人／配偶（v396；之前是兩欄全額）、唯讀；沒有 → 手填 */
+  const rows=eduRespRows();const tot=Math.round(eduRespTotal(rows));const plan=typeof bsIsPlan==="function"&&bsIsPlan();const T="由子女教育規劃帶入（今日幣值、不扣已準備資產）；要改請改教育規劃或分攤方式";
+  const hasSp=!$("bio_hasSp")||$("bio_hasSp").checked;const m=eduSplitMode();const shS=eduShareSelf();const pct=Math.round(shS*100);
+  const shE=$("p_edu_share");if(shE){if(m!=="cust"||!hasSp){if(!plan&&shE.value!==String(pct))shE.value=pct;shE.readOnly=true;shE.dataset.polLock="1";shE.classList.add("polLock");shE.title=hasSp?"由分攤方式算出；要手填請選「自訂」":"單身：本人 100%";}
+    else{shE.dataset.polLock="";shE.classList.remove("polLock");if(!plan){shE.readOnly=false;shE.title="";if(shE.value==="")shE.value=50;}}}
+  const sel=$("p_edu_split");if(sel&&!plan)sel.disabled=!hasSp;
+  const vals={self:Math.round(tot*shS)};vals.sp=tot-vals.self;
+  ["self","sp"].forEach(w=>{const e=$(`p_${w}_edu`);if(!e)return;if(tot>0){if(!plan&&(parseFloat(e.value)||0)!==vals[w])e.value=vals[w];e.readOnly=true;e.dataset.polLock="1";e.classList.add("polLock");e.title=T;}
     else if(e.dataset.polLock==="1"){e.dataset.polLock="";e.classList.remove("polLock");if(!plan){e.readOnly=false;e.title="";}}});
-  const note=$("pEduNote");if(note)note.innerHTML=tot>0?`由教育規劃帶入（今日幣值、本人配偶同額）<br>${esc(eduRespTxt(rows)).split("；").join("<br>")}`:"手填；或在子女教育規劃選好學制後自動帶入（A2 在本頁下方；其他在 ②-2）";return tot;} /* v395：每位子女一行 */
+  const W=v=>Math.round(v/1e4).toLocaleString("en-US")+" 萬";
+  const note=$("pEduNote");if(note)note.innerHTML=tot>0?`由教育規劃帶入（今日幣值；${eduSplitLb()}）<br>${hasSp?`<b>本人</b> ${W(vals.self)}・<b>配偶</b> ${W(vals.sp)}<br>`:""}${esc(eduRespTxt(rows)).split("；").join("<br>")}`:"手填；或在子女教育規劃選好學制後自動帶入（A2 在本頁下方；其他在 ②-2）；帶入時依上方分攤方式分給本人／配偶";return tot;} /* v395：每位子女一行；v396：分攤 */
 function eduPlace(){ /* A2：教育規劃區塊搬到 ⑥-1；其他方案放回 ②-2 */
   const g=$("eduGrp");if(!g)return;const a2=document.body.dataset.svcPlan==="A2";const host=a2?$("eduHostA2"):$("eduHostGoal");if(!host)return;
   if(g.parentElement!==host)host.appendChild(g);const cap=$("eduA2Cap");if(cap)cap.style.display=a2?"":"none";if(a2&&!g.open){g.open=true;}if(a2&&typeof eduRender==="function")try{eduRender();}catch(e){}}
@@ -6206,6 +6225,7 @@ function rcCompute(w){ /* → {cur,n,ages,parts:{k:Float64Array 元},need,ins,in
   const cur=Math.round(V("g_self_cur")||num("startAge")||40);const lifeY=Math.max(0,V(`p_${w}_life_y`)),parY=Math.max(0,V(`p_${w}_par_y`));
   const [mort0,oth0]=rcLoanSeries(60,w);const nm=rcNewMortSeries(cur,60,w);
   const eR=(typeof eduRespRows==="function")?eduRespRows():[];const eduPlan=eR.length>0&&eduRespTotal(eR)>0; /* v388 */
+  const eduSh=(typeof eduShareSelf==="function")?(w==="sp"?1-eduShareSelf():eduShareSelf()):1; /* v396：教育費依分攤比例 */
   const pR=(typeof parRespRows==="function")?parRespRows(w):[];const parPlan=(typeof parRespRows==="function")&&parRespRows().length>0; /* v390／v393：依付款人；全家有逐筆就走逐筆（這個人沒付＝0） */
   let n=Math.max(lifeY,parY,rcKidEduYrs());if(eduPlan){const last=Math.max(...eR.map(r=>r.age+(parseFloat(r.years)||0)))-cur;if(isFinite(last))n=Math.max(n,last);}for(let t=59;t>=0;t--){if(mort0[t]>0||oth0[t]>0||nm[t]>0){n=Math.max(n,t+1);break;}}
   const lifeSelf=V("g_self_life")||90,dSp=(V("g_sp_cur")||cur)-cur,lifeEnd=(w==="sp"&&V("g_sp_life")>0)?V("g_sp_life")-dSp:lifeSelf; /* 責任只看到被保險人的預期壽命 */
@@ -6215,7 +6235,7 @@ function rcCompute(w){ /* → {cur,n,ages,parts:{k:Float64Array 元},need,ins,in
   const lifeM=V(`p_${w}_life_m`),edu=V(`p_${w}_edu`),parM=V(`p_${w}_par_m`),fin=V(`p_${w}_final`),eduY=rcKidEduYrs()||lifeY;
   const mortAuto=!$("p_mort_auto")||$("p_mort_auto").checked;const mortIn=V(`p_${w}_mort`),liqIn=V(`p_${w}_liq`)+V(`p_${w}_lt`);
   for(let t=0;t<n;t++){parts.mort[t]=mortAuto?mort0[t]:rcLoanBal(mortIn,2.2,(V("exp_1_0_m")*12+V("exp_1_0_y"))/12,0,t);parts.newMort[t]=nm[t];parts.other[t]=mortAuto?oth0[t]:rcLoanBal(liqIn,0,0,5,t);
-    parts.life[t]=lifeM*12*Math.max(0,lifeY-t);parts.edu[t]=eduPlan?eduRespAt(t,eR):(eduY>0?edu*Math.max(0,1-t/eduY):0);parts.par[t]=parPlan?parRespAt(t,pR):parM*12*Math.max(0,parY-t);parts.fin[t]=fin;parts.etax[t]=etax;}
+    parts.life[t]=lifeM*12*Math.max(0,lifeY-t);parts.edu[t]=eduPlan?eduRespAt(t,eR)*eduSh:(eduY>0?edu*Math.max(0,1-t/eduY):0);parts.par[t]=parPlan?parRespAt(t,pR):parM*12*Math.max(0,parY-t);parts.fin[t]=fin;parts.etax[t]=etax;}
   const need=new Float64Array(n);for(let t=0;t<n;t++)need[t]=Object.values(parts).reduce((s,a)=>s+a[t],0);
   const ins=rcInsSeries(w,cur,n,false),insPlan=rcInsSeries(w,cur,n,true);const isPlan=typeof bsIsPlan==="function"&&bsIsPlan();const line=isPlan?insPlan:ins;
   let peak={v:0,age:cur};for(let t=0;t<n;t++)if(need[t]>peak.v)peak={v:need[t],age:cur+t};
@@ -7468,7 +7488,7 @@ function a2UwSection(sl,E,Wn){ /* v327：財務核保參考——照保險公司
   <tr><td class="rn">往來銀行</td><td colspan="${hasSp?2:1}">${tx("uw_bank")?E(tx("uw_bank")):"—"}</td></tr></table>
   <p class="cap">告知書另需：不動產座落與坪數、公司負責人之營業類別／設立時間／近三年平均營利所得／員工人數——由客戶補填。</p>`;}
 function a2Resp(v,w){const n=k=>parseFloat(v[`p_${w}_${k}`])||0;
-  const items=[["遺族生活費",n("life_m")*12*n("life_y"),n("life_m")*n("life_y")>0?`${NT(n("life_m"))}/月 × ${n("life_y")} 年`:""],["房貸／房租餘額",n("mort"),""],["子女教育費用",n("edu"),""],["父母孝養",n("par_m")*12*n("par_y"),n("par_m")?`${NT(n("par_m"))}/月 × ${n("par_y")} 年`:""],["流動負債",n("liq"),""],["長期負債",n("lt"),""],["最後費用",n("final"),""]];
+  const items=[["遺族生活費",n("life_m")*12*n("life_y"),n("life_m")*n("life_y")>0?`${NT(n("life_m"))}/月 × ${n("life_y")} 年`:""],["房貸／房租餘額",n("mort"),""],["子女教育費用",n("edu"),(()=>{if(!(n("edu")>0)||v.p_edu_share===undefined)return "";const p=parseFloat(v.p_edu_share);if(!isFinite(p))return "";const m=v.p_edu_split;const lb=m==="sal"?"依薪資比例":m==="cust"?"自訂":"均分";const my=w==="sp"?100-p:p;return my>=100?"":`${lb} ${w==="sp"?"配偶":"本人"} ${Math.round(my)}%`;})()],["父母孝養",n("par_m")*12*n("par_y"),n("par_m")?`${NT(n("par_m"))}/月 × ${n("par_y")} 年`:""],["流動負債",n("liq"),""],["長期負債",n("lt"),""],["最後費用",n("final"),""]];
   if(v.p_etax_on===true||v.p_etax_on==="true")items.push(["遺產稅稅源（今日稅額）",n("etax"),""]); /* v381 */
   return {items,total:items.reduce((a,x)=>a+x[1],0)};}
 function a2Prot(sl,skipFn){ // 每位成員 × 列 → {need,have,plan,ret,yrs}（方案：套用該方案 bsAdj 的 pr_ 建議）
@@ -8486,7 +8506,7 @@ $("arvSrcSeg")&&$("arvSrcSeg").addEventListener("click",e=>{const b=e.target.clo
 function applySnapshot(s){ // 還原一個方案快照（結構資料先於欄位值）
   demoDefaults=false; /* v387 */
   /* v391：快照裡沒有的結構欄位（舊檔）要先清空，否則前一位客戶的卡片備註、教育規劃、家族圖、房屋…會殘留在畫面並在下次存檔時混進這位客戶（結構載入在 applyValues 之前，所以放最前面） */
-  if(s&&s.values){const SJ=["noteJson","eduJson","famJson","estHeirJson","estAllocJson","liMetaJson","siJson","trkAssetsJson","inc_self_basis","inc_sp_basis","bsAdjJson","retAdjJson","txSrc","txExtJson","journeyJson","nyMetaJson","hbHousesJson"];SJ.forEach(id=>{if(s.values[id]===undefined&&$(id))$(id).value="";});}
+  if(s&&s.values){const SJ=["noteJson","eduJson","famJson","estHeirJson","estAllocJson","liMetaJson","siJson","trkAssetsJson","inc_self_basis","inc_sp_basis","bsAdjJson","retAdjJson","txSrc","txExtJson","journeyJson","nyMetaJson","hbHousesJson"];SJ.forEach(id=>{if(s.values[id]===undefined&&$(id))$(id).value="";});if(s.values.p_edu_split===undefined&&$("p_edu_split"))$("p_edu_split").value="even";} /* v396：舊快照沒有分攤方式 → 均分 */
   if(typeof hbtApplyDef==="function"&&!(s&&s.values&&s.values.hbt_y1!==undefined))try{hbtApplyDef();}catch(e){} /* v373：舊檔沒有房地合一參數 → 用你的預設 */
   if(s.goals){goals=JSON.parse(JSON.stringify(s.goals));buildGoals();}
   if(typeof hbLoad==="function")hbLoad();
