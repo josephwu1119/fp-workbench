@@ -333,6 +333,7 @@ table.rpTbl input.rpIn,table.rpTbl select.rpIn{font-family:var(--mono);font-size
 .rpCovs{margin-top:6px;padding:6px 9px;border:1px dashed var(--line);border-radius:7px;background:#fbfaf7}
 .rpCovs .rpCovT{font-family:system-ui;font-size:12px;font-weight:700;color:var(--accent)}
 .rcBtn{padding:1px 8px!important;font-size:11px!important;white-space:nowrap}
+#tblResp td.rn{white-space:normal}#tblResp .protSub{white-space:normal;max-width:620px;line-height:1.45}#tblResp .protSub b{font-weight:600;color:#555} /* v395：⑥-1 說明列可換行、分段 */
 rect.rcHit:hover,rect.pmHit:hover{fill:rgba(38,56,79,.10)} /* v385／v389：游標所在年齡的直欄 */
 /* v387：⑥-2 需求表分區——階段帶／公式列／輸入列縮排／應備列底色 */
 #protNeedBox tr.pnStage td{background:#dfe6f0;color:var(--accent);font-size:13px;border-top:2px solid var(--accent);padding:8px 8px 6px}
@@ -513,7 +514,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v394</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v395</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -6143,13 +6144,13 @@ function parRespSync(){const any=parRespRows().length>0;const plan=typeof bsIsPl
   ["self","sp"].forEach(w=>{const rows=parRespRows(w);const yrs=rows.length?Math.max(...rows.map(r=>r.yrs)):0;const tot=rows.reduce((s,r)=>s+r.mon*12*r.yrs,0);const mon=yrs>0?Math.round(tot/12/yrs):0; /* 年期取最晚、月額取等值（月額×12×年期＝各筆合計） */
     [["par_m",mon],["par_y",yrs]].forEach(([k,v])=>{const e=$(`p_${w}_${k}`);if(!e)return;if(any){if(!plan&&(parseFloat(e.value)||0)!==v)e.value=v;e.readOnly=true;e.dataset.polLock="1";e.classList.add("polLock");e.title=T;}
       else if(e.dataset.polLock==="1"){e.dataset.polLock="";e.classList.remove("polLock");if(!plan){e.readOnly=false;e.title="";}}});
-    if(any)notes.push(`${w==="self"?"本人":"配偶"}（依付款人）：${rows.length?rows.map(r=>`${r.name||"（未命名）"} ${NT(Math.round(r.mon))}/月到 ${r.end} 歲`).join("＋")+`＝${NT(Math.round(tot))}，年期 ${yrs}、等值月額 ${NT(mon)}`:"0（這些費用不是由此人付）"}`);});
-  const note=$("pParNote");if(note)note.textContent=any?`由逐筆支出帶入——${notes.join("；")}（曲線依各筆訖年齡逐年扣）`:"手填；或在逐筆支出「撫育費用｜父母孝養／其他長輩」登錄後自動帶入（依付款人分給本人／配偶）";return any;}
+    if(any)notes.push(`<b>${w==="self"?"本人":"配偶"}</b>：${rows.length?rows.map(r=>`${esc(r.name||"（未命名）")} ${NT(Math.round(r.mon))}/月到 ${r.end} 歲`).join("＋")+`＝${NT(Math.round(tot))} → 年期 ${yrs}、等值月額 ${NT(mon)}`:"0（不是由此人付）"}`);});
+  const note=$("pParNote");if(note)note.innerHTML=any?`由逐筆支出帶入（依付款人；曲線依各筆訖年齡逐年扣）<br>${notes.join("<br>")}`:"手填；或在逐筆支出「撫育費用｜父母孝養／其他長輩」登錄後自動帶入（依付款人分給本人／配偶）";return any;} /* v395：分行 */
 function eduRespSync(){ /* ⑥-1 子女教育費用：教育規劃有內容 → 本人、配偶都帶全額（任一方走了學費都要全部出）、唯讀；沒有 → 手填 */
   const rows=eduRespRows();const tot=Math.round(eduRespTotal(rows));const plan=typeof bsIsPlan==="function"&&bsIsPlan();const T="由子女教育規劃帶入（今日幣值、不扣已準備資產）；要改請改教育規劃";
   ["self","sp"].forEach(w=>{const e=$(`p_${w}_edu`);if(!e)return;if(tot>0){if(!plan&&(parseFloat(e.value)||0)!==tot)e.value=tot;e.readOnly=true;e.dataset.polLock="1";e.classList.add("polLock");e.title=T;}
     else if(e.dataset.polLock==="1"){e.dataset.polLock="";e.classList.remove("polLock");if(!plan){e.readOnly=false;e.title="";}}});
-  const note=$("pEduNote");if(note)note.textContent=tot>0?`由教育規劃帶入（今日幣值）：${eduRespTxt(rows)}`:"手填；或在子女教育規劃選好學制後自動帶入（A2 在本頁下方；其他在 ②-2）";return tot;}
+  const note=$("pEduNote");if(note)note.innerHTML=tot>0?`由教育規劃帶入（今日幣值、本人配偶同額）<br>${esc(eduRespTxt(rows)).split("；").join("<br>")}`:"手填；或在子女教育規劃選好學制後自動帶入（A2 在本頁下方；其他在 ②-2）";return tot;} /* v395：每位子女一行 */
 function eduPlace(){ /* A2：教育規劃區塊搬到 ⑥-1；其他方案放回 ②-2 */
   const g=$("eduGrp");if(!g)return;const a2=document.body.dataset.svcPlan==="A2";const host=a2?$("eduHostA2"):$("eduHostGoal");if(!host)return;
   if(g.parentElement!==host)host.appendChild(g);const cap=$("eduA2Cap");if(cap)cap.style.display=a2?"":"none";if(a2&&!g.open){g.open=true;}if(a2&&typeof eduRender==="function")try{eduRender();}catch(e){}}
