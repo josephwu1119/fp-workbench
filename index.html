@@ -513,7 +513,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v391</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v394</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -3179,6 +3179,8 @@ function itmConfirm(kind){ /* v387：把該種類「新增中」的列併入（�
     if(kind==="exp"&&itmExpUI.open&&!itmExpUI.open.all)itmExpUI.open[+String(x.ex||"0_0").split("_")[0]]=true;});
   itmSave();itmSync();buildItems();if(kind==="lia"&&typeof itmLiabMeta==="function")itmLiabMeta();return true;}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("button[data-itmok]");if(!b)return;itmConfirm(b.dataset.itmok);});
+/* v394：數字格有焦點時滾動滾輪，瀏覽器會改數值（Chrome／Firefox 行為）；使用者常是誤點到格子就捲頁面 → 滾輪一動先失焦，捲動照常、數字不變 */
+document.addEventListener("wheel",e=>{const a=document.activeElement;if(a&&a.tagName==="INPUT"&&a.type==="number"&&!a.readOnly)a.blur();},{passive:true,capture:true});
 document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;const el=e.target;if(!el||!el.closest||el.tagName==="TEXTAREA")return;const nb=el.closest(".itmNewBox");if(!nb)return;const b=nb.querySelector("button[data-itmok]");if(b){e.preventDefault();itmConfirm(b.dataset.itmok);}}); // itmOvr：手動覆寫的欄位 id 清單
 const ITM_WHO=[["self","本人"],["sp","配偶"],["joint","共同"]];
 const ITM_REDEEM=[["all","全部贖回"],["part","部分贖回"],["annuity","年金式／特定時間"],["none","不贖回"]];
@@ -6134,12 +6136,15 @@ function eduRespAt(t,rows){const cur=Math.round(V("g_self_cur")||num("startAge")
 function eduRespTxt(rows){rows=rows||eduRespRows();const W=v=>Math.round(v/1e4).toLocaleString("en-US")+" 萬";const by={};rows.forEach(r=>{const st=(String(r.name||"").split("・")[1]||"其他");const o=by[r.kid]=by[r.kid]||{tot:0,st:{}};const v=(parseFloat(r.pv)||0)*(parseFloat(r.years)||0);o.tot+=v;o.st[st]=(o.st[st]||0)+v;});
   return Object.entries(by).map(([k,o])=>`${k} ${W(o.tot)}（${Object.entries(o.st).map(([n,v])=>`${n} ${W(v)}`).join("＋")}）`).join("；");}
 /* v390：父母孝養由逐筆支出帶入。rows＝撫育費用列 2_0（父母孝養費）、2_1（其他長輩撫養費）的已確認列；月額＝年化÷12；訖＝a2（本人歲；空＝nYr 年、再空＝20 年） */
-function parRespRows(){const cur=Math.round(V("g_self_cur")||num("startAge")||40);return (typeof itmExps!=="undefined"?itmLive(itmExps):[]).filter(x=>x.ex==="2_0"||x.ex==="2_1").map(x=>{const ann=itmExpAnn(x);const a2=parseFloat(x.a2)||0;const nYr=parseFloat(x.nYr)||0;const end=a2>cur?a2:(nYr>0?cur+nYr:cur+20);return {name:x.name||"",mon:ann/12,end,yrs:Math.max(0,end-cur)};}).filter(r=>r.mon>0&&r.yrs>0);}
+function parRespRows(w){ /* v393：w＝self|sp → 該人負擔的部分（依「付款人」：本人／配偶／分攤金額）；不給 w＝全家 */
+  const cur=Math.round(V("g_self_cur")||num("startAge")||40);return (typeof itmExps!=="undefined"?itmLive(itmExps):[]).filter(x=>x.ex==="2_0"||x.ex==="2_1").map(x=>{const ann=itmExpAnn(x);const amt=parseFloat(x.amt)||0;const shS=amt>0?itmPaySelf(x)/amt:1;const sh=w==="self"?shS:w==="sp"?1-shS:1;const a2=parseFloat(x.a2)||0;const nYr=parseFloat(x.nYr)||0;const end=a2>cur?a2:(nYr>0?cur+nYr:cur+20);return {name:x.name||"",mon:ann/12*sh,end,yrs:Math.max(0,end-cur),pay:x.pay||"本人"};}).filter(r=>r.mon>0&&r.yrs>0);}
 function parRespAt(t,rows){const cur=Math.round(V("g_self_cur")||num("startAge")||40);const a=cur+t;return (rows||parRespRows()).reduce((s,r)=>s+r.mon*12*Math.max(0,r.end-a),0);}
-function parRespSync(){const rows=parRespRows();const yrs=rows.length?Math.max(...rows.map(r=>r.yrs)):0;const tot=rows.reduce((s,r)=>s+r.mon*12*r.yrs,0);const mon=yrs>0?Math.round(tot/12/yrs):0; /* 年期取最晚、月額取等值（月額×12×年期＝各筆合計），⑥-1 總額才等於曲線今年的孝養責任 */const plan=typeof bsIsPlan==="function"&&bsIsPlan();const T="由逐筆支出「撫育費用｜父母孝養／其他長輩」帶入；要改請改逐筆支出";
-  ["self","sp"].forEach(w=>[["par_m",mon],["par_y",yrs]].forEach(([k,v])=>{const e=$(`p_${w}_${k}`);if(!e)return;if(rows.length){if(!plan&&(parseFloat(e.value)||0)!==v)e.value=v;e.readOnly=true;e.dataset.polLock="1";e.classList.add("polLock");e.title=T;}
-    else if(e.dataset.polLock==="1"){e.dataset.polLock="";e.classList.remove("polLock");if(!plan){e.readOnly=false;e.title="";}}}));
-  const note=$("pParNote");if(note)note.textContent=rows.length?`由逐筆支出帶入：${rows.map(r=>`${r.name||"（未命名）"} ${NT(Math.round(r.mon))}/月到 ${r.end} 歲`).join("＋")}＝合計 ${NT(Math.round(tot))}；年期取最晚 ${yrs} 年、月額取等值 ${NT(mon)}（曲線依各筆訖年齡逐年扣）`:"手填；或在逐筆支出「撫育費用｜父母孝養／其他長輩」登錄後自動帶入";return rows;}
+function parRespSync(){const any=parRespRows().length>0;const plan=typeof bsIsPlan==="function"&&bsIsPlan();const T="由逐筆支出「撫育費用｜父母孝養／其他長輩」依付款人帶入；要改請改逐筆支出";const notes=[];
+  ["self","sp"].forEach(w=>{const rows=parRespRows(w);const yrs=rows.length?Math.max(...rows.map(r=>r.yrs)):0;const tot=rows.reduce((s,r)=>s+r.mon*12*r.yrs,0);const mon=yrs>0?Math.round(tot/12/yrs):0; /* 年期取最晚、月額取等值（月額×12×年期＝各筆合計） */
+    [["par_m",mon],["par_y",yrs]].forEach(([k,v])=>{const e=$(`p_${w}_${k}`);if(!e)return;if(any){if(!plan&&(parseFloat(e.value)||0)!==v)e.value=v;e.readOnly=true;e.dataset.polLock="1";e.classList.add("polLock");e.title=T;}
+      else if(e.dataset.polLock==="1"){e.dataset.polLock="";e.classList.remove("polLock");if(!plan){e.readOnly=false;e.title="";}}});
+    if(any)notes.push(`${w==="self"?"本人":"配偶"}（依付款人）：${rows.length?rows.map(r=>`${r.name||"（未命名）"} ${NT(Math.round(r.mon))}/月到 ${r.end} 歲`).join("＋")+`＝${NT(Math.round(tot))}，年期 ${yrs}、等值月額 ${NT(mon)}`:"0（這些費用不是由此人付）"}`);});
+  const note=$("pParNote");if(note)note.textContent=any?`由逐筆支出帶入——${notes.join("；")}（曲線依各筆訖年齡逐年扣）`:"手填；或在逐筆支出「撫育費用｜父母孝養／其他長輩」登錄後自動帶入（依付款人分給本人／配偶）";return any;}
 function eduRespSync(){ /* ⑥-1 子女教育費用：教育規劃有內容 → 本人、配偶都帶全額（任一方走了學費都要全部出）、唯讀；沒有 → 手填 */
   const rows=eduRespRows();const tot=Math.round(eduRespTotal(rows));const plan=typeof bsIsPlan==="function"&&bsIsPlan();const T="由子女教育規劃帶入（今日幣值、不扣已準備資產）；要改請改教育規劃";
   ["self","sp"].forEach(w=>{const e=$(`p_${w}_edu`);if(!e)return;if(tot>0){if(!plan&&(parseFloat(e.value)||0)!==tot)e.value=tot;e.readOnly=true;e.dataset.polLock="1";e.classList.add("polLock");e.title=T;}
@@ -6200,7 +6205,7 @@ function rcCompute(w){ /* → {cur,n,ages,parts:{k:Float64Array 元},need,ins,in
   const cur=Math.round(V("g_self_cur")||num("startAge")||40);const lifeY=Math.max(0,V(`p_${w}_life_y`)),parY=Math.max(0,V(`p_${w}_par_y`));
   const [mort0,oth0]=rcLoanSeries(60,w);const nm=rcNewMortSeries(cur,60,w);
   const eR=(typeof eduRespRows==="function")?eduRespRows():[];const eduPlan=eR.length>0&&eduRespTotal(eR)>0; /* v388 */
-  const pR=(typeof parRespRows==="function")?parRespRows():[];const parPlan=pR.length>0; /* v390 */
+  const pR=(typeof parRespRows==="function")?parRespRows(w):[];const parPlan=(typeof parRespRows==="function")&&parRespRows().length>0; /* v390／v393：依付款人；全家有逐筆就走逐筆（這個人沒付＝0） */
   let n=Math.max(lifeY,parY,rcKidEduYrs());if(eduPlan){const last=Math.max(...eR.map(r=>r.age+(parseFloat(r.years)||0)))-cur;if(isFinite(last))n=Math.max(n,last);}for(let t=59;t>=0;t--){if(mort0[t]>0||oth0[t]>0||nm[t]>0){n=Math.max(n,t+1);break;}}
   const lifeSelf=V("g_self_life")||90,dSp=(V("g_sp_cur")||cur)-cur,lifeEnd=(w==="sp"&&V("g_sp_life")>0)?V("g_sp_life")-dSp:lifeSelf; /* 責任只看到被保險人的預期壽命 */
   n=Math.max(5,Math.min(60,Math.ceil(n)+1,Math.max(5,Math.round(lifeEnd)-cur+1)));
@@ -6238,7 +6243,7 @@ function rcSvg(R,opts){ /* 堆疊柱＋壽險階梯線；寬 760 */
   const insNow=R.line[0];const insLb=`壽險 ${(insNow/1e4).toLocaleString("en-US",{maximumFractionDigits:0})} 萬`;
   const legend=order.filter(k=>R.parts[k].some(v=>v>0)).map(k=>`<span style="display:inline-flex;align-items:center;gap:4px;margin-right:10px"><i style="display:inline-block;width:12px;height:12px;background:${RC_COLORS[k]};border:1px solid #ccc"></i>${RC_LB[k]}</span>`).join("")+`<span style="display:inline-flex;align-items:center;gap:4px;margin-right:10px"><i style="display:inline-block;width:14px;height:0;border-top:2.2px solid #9c3a2e"></i>既有壽險</span>`+(R.isPlan?`<span style="display:inline-flex;align-items:center;gap:4px"><i style="display:inline-block;width:14px;height:0;border-top:2.2px dashed #1d6b4f"></i>既有＋方案新增</span>`:"");
   /* v385：每個年齡一個透明命中區（<title> 原生提示；⑥-1 另有浮動提示） */
-  let hits="";for(let t=0;t<n;t++){const tip=rcTipText(R,t,"\n");hits+=`<rect class="rcHit" data-t="${t}" x="${xT(t).toFixed(1)}" y="${T}" width="${bw.toFixed(1)}" height="${ih}" fill="transparent" style="cursor:crosshair"><title>${E(tip)}</title></rect>`;}
+  let hits="";for(let t=0;t<n;t++){const tip=rcTipText(R,t,"\n");hits+=`<rect class="rcHit" data-t="${t}" x="${xT(t).toFixed(1)}" y="${T}" width="${bw.toFixed(1)}" height="${ih}" fill="transparent" style="cursor:crosshair">${opts.noTitle?"":`<title>${E(tip)}</title>`}</rect>`;} /* v393：⑥-1 用浮動提示，不放 <title>（否則兩張卡片） */
   const svg=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;height:auto;display:block;font-family:system-ui" data-rcw="${R.w}">${g}${bars}${lines}${hits}
     <line x1="${xT(pt).toFixed(1)}" y1="${T-6}" x2="${xT(pt).toFixed(1)}" y2="${T+ih}" stroke="#b08a3c" stroke-dasharray="4,3"/><text x="${(xT(pt)+5).toFixed(1)}" y="${T-10}" font-size="11" font-weight="700" fill="#26384f">${E(peakLb)}</text>
     <text x="${W-Rm}" y="${(yW(insNow)-5).toFixed(1)}" text-anchor="end" font-size="11" font-weight="700" fill="#9c3a2e">${E(insLb)}</text>${xs}
@@ -6258,13 +6263,13 @@ function rcSummary(R,plain){ /* 文字摘要＋建議句 */
 function rcPersons(){const out=[["self","本人"]];if(!$("bio_hasSp")||$("bio_hasSp").checked)out.push(["sp","配偶"]);return out;}
 function rcRender(){const box=$("respCurveBox");if(!box)return;
   window._rcLast={};
-  try{box.innerHTML=rcPersons().map(([w,nm])=>{const R=rcCompute(w);if(!(R.peak.v>0))return "";window._rcLast[w]=R;return `<div style="margin-top:10px;position:relative" class="rcWrap"><div class="axTitle" style="margin-bottom:4px">${nm}｜家庭責任曲線</div><p class="cap" style="margin:0 0 4px">每個年齡的責任額（房貸餘額逐年攤還、生活費與孝養照剩餘年數遞減、教育費依子女教育規劃各階段逐年扣（沒做規劃時到最小子女 22 歲直線遞減）、最後費用固定、勾選的遺產稅稅源固定；現住房貸與新屋房貸依「誰償還」分攤），對照既有壽險（定期壽險到「保障到期年齡」後扣掉；團體壽險與社保身故給付算到退休）。柱子高出紅線的部分，就是萬一身故時家人要自己接住的缺口。</p>${rcSvg(R)}<div class="note" style="margin:6px 0 0">${rcSummary(R)}</div></div>`;}).join("");
+  try{box.innerHTML=rcPersons().map(([w,nm])=>{const R=rcCompute(w);if(!(R.peak.v>0))return "";window._rcLast[w]=R;return `<div style="margin-top:10px;position:relative" class="rcWrap"><div class="axTitle" style="margin-bottom:4px">${nm}｜家庭責任曲線</div><p class="cap" style="margin:0 0 4px">每個年齡的責任額（房貸餘額逐年攤還、生活費與孝養照剩餘年數遞減、教育費依子女教育規劃各階段逐年扣（沒做規劃時到最小子女 22 歲直線遞減）、最後費用固定、勾選的遺產稅稅源固定；現住房貸與新屋房貸依「誰償還」分攤），對照既有壽險（定期壽險到「保障到期年齡」後扣掉；團體壽險與社保身故給付算到退休）。柱子高出紅線的部分，就是萬一身故時家人要自己接住的缺口。</p>${rcSvg(R,{noTitle:true})}<div class="note" style="margin:6px 0 0">${rcSummary(R)}</div></div>`;}).join("");
   }catch(e){console.warn("rcRender",e);box.innerHTML="";}
   if(!box._rcTip){ /* v385：浮動提示（滑鼠跟著走）；innerHTML 每次重畫會清掉，所以存在 box._rcTip 每次再掛回去 */
     const tip=document.createElement("div");tip.className="rcTip";box._rcTip=tip;tip.style.cssText="display:none;position:absolute;z-index:30;pointer-events:none;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.12);padding:6px 9px;font-family:system-ui;font-size:11.5px;line-height:1.5;color:var(--ink);white-space:pre;max-width:280px";
     box.style.position="relative";
     box.addEventListener("mousemove",e=>{const h=e.target.closest&&e.target.closest("rect.rcHit");if(!h){tip.style.display="none";return;}const svg=h.closest("svg");const R=window._rcLast&&window._rcLast[svg.dataset.rcw];if(!R){tip.style.display="none";return;}
-      tip.textContent=rcTipText(R,+h.dataset.t,"\n");tip.style.display="block";const br=box.getBoundingClientRect();let x=e.clientX-br.left+14,y=e.clientY-br.top+14;if(x+tip.offsetWidth>br.width-8)x=e.clientX-br.left-tip.offsetWidth-14;tip.style.left=x+"px";tip.style.top=y+"px";});
+      tip.textContent=rcTipText(R,+h.dataset.t,"\n");tip.style.display="block";const br=box.getBoundingClientRect();const z=parseFloat(getComputedStyle(document.body).zoom)||1; /* v393：字級縮放 */let x=(e.clientX-br.left)/z+14,y=(e.clientY-br.top)/z+14;if(x+tip.offsetWidth>br.width/z-8)x=(e.clientX-br.left)/z-tip.offsetWidth-14;tip.style.left=x+"px";tip.style.top=y+"px";});
     box.addEventListener("mouseleave",()=>{tip.style.display="none";});}
   box.appendChild(box._rcTip);
   try{rcRpNote();}catch(e){}}
@@ -6486,7 +6491,7 @@ function premChartRender(){const box=$("premChartBox");if(!box)return;try{
     const tabs=[{name:"年繳總保費",M:S.total},{name:"保障型",M:S.prot},{name:"理財型",M:S.fin}].concat(S.items.map(it=>({name:it.name,M:it.M})));
     let ti=premTabSel[wn]||0;if(ti>=tabs.length)ti=0;const tb=tabs[ti];const segs=[];for(let a=a1;a<=last;a+=10){const seg=[];for(let k=a;k<Math.min(a+10,last+1);k++)seg.push(k);segs.push(seg);}
     const tsum=Object.entries(tb.M).filter(([k])=>+k>=a1&&+k<=last).reduce((s,[,v])=>s+v,0);
-    h+=`<div class="premPerson"><div class="axTitle" style="margin:6px 0 2px">${esc(wn)}｜未來每年保費支出${isPl?"（本方案）":"（現況）"}</div><div class="cap" style="margin:0 0 2px">${a1}～${last} 歲共 ${last-a1+1} 年：保障型 ${N(totP)}、理財型 ${N(totI)}、年繳總保費合計 ${N(tot)}；最後一筆保費在 ${last} 歲。</div>${premChartSVG(S,a1,a2,{cur:cM&&cAges.length?cM:null})}
+    h+=`<div class="premPerson"><div class="axTitle" style="margin:6px 0 2px">${esc(wn)}｜未來每年保費支出${isPl?"（本方案）":"（現況）"}</div><div class="cap" style="margin:0 0 2px">${a1}～${last} 歲共 ${last-a1+1} 年：保障型 ${N(totP)}、理財型 ${N(totI)}、年繳總保費合計 ${N(tot)}；最後一筆保費在 ${last} 歲。</div>${premChartSVG(S,a1,a2,{cur:cM&&cAges.length?cM:null,noTitle:true})}
       <div class="premTabs" style="margin:8px 0 4px">${tabs.map((t,i)=>`<button type="button" class="btn ${i===ti?"":"ghost"} sm" data-premtab="${i}" data-premwn="${esc(wn)}" style="margin:0 6px 4px 0">${esc(t.name)}</button>`).join("")}</div>
       <div style="overflow-x:auto"><table class="pt premTbl"><tbody>${segs.map(seg=>`<tr class="premAge">${seg.map(k=>`<th style="text-align:center">${k===a1?`<span style="background:#fff;color:var(--accent);border-radius:10px;padding:0 7px;font-weight:700">${k} 歲・今</span>`:`${k} 歲`}</th>`).join("")}</tr><tr>${seg.map(k=>`<td class="calc" style="text-align:center">${tb.M[k]?N(tb.M[k])+" 元":"—"}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
       <div class="cap" style="margin:2px 0 8px">${esc(tb.name)}：${a1}～${last} 歲合計 ${N(tsum)} 元</div></div>`;});
@@ -6495,7 +6500,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("button[data-prem
 /* v389：⑥-6 保費線圖浮動提示——命中區帶 data-tip，滑鼠跟著走 */
 (function(){const box=$("premChartBox");if(!box)return;const tip=document.createElement("div");tip.className="rcTip";tip.style.cssText="display:none;position:absolute;z-index:30;pointer-events:none;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.12);padding:6px 9px;font-family:system-ui;font-size:11.5px;line-height:1.5;color:var(--ink);white-space:pre;max-width:320px";
   box.style.position="relative";box.appendChild(tip);const keep=()=>{if(tip.parentElement!==box)box.appendChild(tip);};
-  box.addEventListener("mousemove",e=>{keep();const h=e.target.closest&&e.target.closest("rect.pmHit");if(!h){tip.style.display="none";return;}tip.textContent=h.dataset.tip||"";tip.style.display="block";const br=box.getBoundingClientRect();let x=e.clientX-br.left+14,y=e.clientY-br.top+14;if(x+tip.offsetWidth>br.width-8)x=e.clientX-br.left-tip.offsetWidth-14;tip.style.left=x+"px";tip.style.top=y+"px";});
+  box.addEventListener("mousemove",e=>{keep();const h=e.target.closest&&e.target.closest("rect.pmHit");if(!h){tip.style.display="none";return;}tip.textContent=h.dataset.tip||"";tip.style.display="block";const br=box.getBoundingClientRect();const z=parseFloat(getComputedStyle(document.body).zoom)||1; /* v393：字級縮放 */let x=(e.clientX-br.left)/z+14,y=(e.clientY-br.top)/z+14;if(x+tip.offsetWidth>br.width/z-8)x=(e.clientX-br.left)/z-tip.offsetWidth-14;tip.style.left=x+"px";tip.style.top=y+"px";});
   box.addEventListener("mouseleave",()=>{tip.style.display="none";});})();
 /* v339：房貸餘額自動帶入——①-3 改動（recalcData）或勾選切換時同步；方案工作區不動（現況資料） */
 const RESP_LIAB_AUTO=[["mort",["li_0","li_1"],"房貸"],["liq",["li_3","li_4","li_7"],"流動"],["lt",["li_2","li_5","li_6"],"長期"]]; /* v340 */
@@ -7597,7 +7602,7 @@ function premChartSVG(S,a1,a2,o){o=o||{};a1=Math.round(a1);a2=Math.round(a2);con
   lab.forEach(k=>{const cx=X(k),cy=Y(tot[k]);const anc=cx>W-R-44?"end":cx<L+44?"start":"middle";s+=`<circle cx="${f(cx)}" cy="${f(cy)}" r="4.5" fill="#b08a3c" stroke="#fff" stroke-width="2"/><text x="${f(cx)}" y="${f(cy-9)}" text-anchor="${anc}" font-size="10.5" font-weight="700" fill="#1f2937" stroke="#fff" stroke-width="3" paint-order="stroke">${N(tot[k])}</text>`;});
   for(let k=a1;k<=a2;k++){const tt=lines.map(l=>`${l.name} ${N(l.M[k]||0)}`).join("；")+(cur?`；現況總保費 ${N(cur[k]||0)}`:"");
     const tip=[`${k} 歲`].concat(lines.filter((l,i)=>i===0||(l.M[k]||0)>0).map((l,i)=>(i?"　":"")+`${l.name.length>22?l.name.slice(0,21)+"…":l.name} ${N(l.M[k]||0)}`)).concat(cur?[`現況總保費 ${N(cur[k]||0)}`]:[]).join("\n"); /* v389：浮動提示用 */
-    s+=`<rect class="pmHit" data-tip="${tip.replace(/&/g,"&amp;").replace(/"/g,"&quot;")}" x="${f(L+(k-a1)*bw)}" y="${T}" width="${f(bw)}" height="${ph}" fill="transparent" style="cursor:crosshair"><title>${k} 歲：${tt}</title></rect>`;}
+    s+=`<rect class="pmHit" data-tip="${tip.replace(/&/g,"&amp;").replace(/"/g,"&quot;")}" x="${f(L+(k-a1)*bw)}" y="${T}" width="${f(bw)}" height="${ph}" fill="transparent" style="cursor:crosshair">${o.noTitle?"":`<title>${k} 歲：${tt}</title>`}</rect>`;}
   rows.forEach((row,ri)=>{const ly=Y0+28+ri*16;row.forEach(g=>{s+=`<line x1="${f(g.x)}" x2="${f(g.x+13)}" y1="${ly}" y2="${ly}" stroke="${g.color}" stroke-width="${g.w}"${g.dash?` stroke-dasharray="${g.dash}"`:""}/>${g.dash?"":`<circle cx="${f(g.x+6.5)}" cy="${ly}" r="3" fill="${g.color}"/>`}<text x="${f(g.x+18)}" y="${ly+3.5}" font-size="10" fill="#4b5563">${g.name.length>26?g.name.slice(0,25)+"…":g.name}</text>`;});});
   return s+`</svg>`;}
 function rptA2Build(X){
@@ -9856,6 +9861,7 @@ function bioSync(){
   if(typeof txRecalc==="function")txRecalc();
   syncRanges();syncLabels();schedule();
   bioRefresh();
+  if(typeof eduRender==="function"&&$("eduGrp")&&$("eduGrp").open)try{eduRender();}catch(e){} /* v393：子女改了，教育規劃區塊（含 A2 在 ⑥-1）即時更新 */
   $("bioMsg").textContent=`已同步 ✓ 本人 ${aS} 歲${hasSp&&aP!==null?`、配偶 ${aP} 歲`:""}${ks.length?`、子女 ${ks.length} 名（6 歲以下 ${kid6}）`:""}・勞保法定請領 ${bioLaborAge(V("bio_self_y"))} 歲${txImported&&$("tx_dep")&&(+$("tx_dep").value)!==(ks.length+Math.max(0,Math.round(V("bio_dep"))))?`・受扶養人數依試算工具匯入（${$("tx_dep").value} 人，①-0a 算得 ${ks.length+Math.max(0,Math.round(V("bio_dep")))}）`:""}${occ==="clinic"?"・已預設開業醫免補充保費":""}`;
 }
 buildBio();svcApply();
@@ -11012,16 +11018,16 @@ $("tblGoals").addEventListener("click",e=>{
   goals.splice(+b.dataset.del,1);buildGoals();
 });
 /* ---------- v364 子女教育規劃快選：逐階段挑學制 → 依各子女出生年換算本人年齡 → 寫回 ②-2「教育金」目標 ---------- */
-const EDU_REGIONS=[["tpe","台北市"],["ntpc","新北市"],["tyn","桃園市"],["txg","台中市"]];
+const EDU_REGIONS=[["tpe","台北市"],["ntpc","新北市"],["tyn","桃園市"],["hsc","新竹縣市"],["txg","台中市"]]; /* v392：新竹 */
 /* 金額＝今日值・每年（元）；est＝推估（查無可靠公開資料）；once＝入學一次性費用（建校費等） */
 const EDU_STAGES=[
  {k:"nur",lb:"托嬰",a0:0,a1:2,fund:"budget",opts:[
    ["home","自己／家人照顧",{all:0}],
-   ["pub","公托（扣中央托育補助後）",{tpe:48000,ntpc:24000,tyn:24000,txg:18000}],
-   ["qp","準公共托嬰（扣補助後）",{tpe:120000,ntpc:108000,tyn:96000,txg:109000}],
-   ["prv","私立托嬰",{tpe:270000,ntpc:258000,tyn:264000,txg:210000}],
-   ["qpn","準公共保母日托（扣補助後）",{tpe:72000,ntpc:66000,tyn:48000,txg:24000},{est:1}],
-   ["nanny","私人保母包月",{tpe:630000,ntpc:540000,tyn:540000,txg:630000}]]},
+   ["pub","公托（扣中央托育補助後）",{tpe:48000,ntpc:24000,tyn:24000,hsc:60000,txg:18000}],
+   ["qp","準公共托嬰（扣補助後）",{tpe:120000,ntpc:108000,tyn:96000,hsc:84000,txg:109000}],
+   ["prv","私立托嬰",{tpe:270000,ntpc:258000,tyn:264000,hsc:252000,txg:210000}],
+   ["qpn","準公共保母日托（扣補助後）",{tpe:72000,ntpc:66000,tyn:48000,hsc:48000,txg:24000},{est:1}],
+   ["nanny","私人保母包月",{tpe:630000,ntpc:540000,tyn:540000,hsc:540000,txg:630000}]]},
  {k:"kg",lb:"幼兒園",a0:2,a1:6,fund:"budget",opts:[
    ["pub","公立幼兒園（第一胎月繳上限 1,000）",{all:12000}],
    ["np","非營利幼兒園（月繳上限 2,000）",{all:24000}],
@@ -11031,18 +11037,18 @@ const EDU_STAGES=[
    ["eng","全美語／高價幼兒園",{all:400000}]]},
  {k:"es",lb:"國小",a0:6,a1:12,fund:"budget",opts:[
    ["pub","公立國小（午餐、雜費）",{all:30000},{est:1}],
-   ["prv","私立國小",{tpe:185000,ntpc:185000,tyn:200000,txg:200000}],
-   ["bil","私立雙語國小",{tpe:300000,ntpc:300000,tyn:330000,txg:350000}],
-   ["intl","國際學校",{tpe:883526,ntpc:883526,tyn:564000,txg:564000},{once:{tpe:350000,ntpc:350000},fund:"capital"}]]},
+   ["prv","私立國小",{tpe:185000,ntpc:185000,tyn:200000,hsc:200000,txg:200000}],
+   ["bil","私立雙語國小",{tpe:300000,ntpc:300000,tyn:330000,hsc:380000,txg:350000}],
+   ["intl","國際學校",{tpe:883526,ntpc:883526,tyn:564000,hsc:450000,txg:564000},{once:{tpe:350000,ntpc:350000,hsc:65000},fund:"capital"}]]},
  {k:"jh",lb:"國中",a0:12,a1:15,fund:"budget",opts:[
    ["pub","公立國中（午餐、雜費）",{all:30000},{est:1}],
-   ["prv","私立國中",{tpe:170000,ntpc:170000,tyn:175000,txg:135000}],
+   ["prv","私立國中",{tpe:170000,ntpc:170000,tyn:175000,hsc:170000,txg:135000}],
    ["bil","私立雙語／實驗國中",{all:330000},{est:1}],
-   ["intl","國際學校",{tpe:979470,ntpc:979470,tyn:608000,txg:608000},{once:{tpe:350000,ntpc:350000},fund:"capital"}]]},
+   ["intl","國際學校",{tpe:979470,ntpc:979470,tyn:608000,hsc:550000,txg:608000},{once:{tpe:350000,ntpc:350000,hsc:65000},fund:"capital"}]]},
  {k:"sh",lb:"高中",a0:15,a1:18,fund:"budget",opts:[
    ["pub","公立高中（學費全免，雜費）",{all:15000},{est:1}],
-   ["prv","私立高中（學費全免，雜費＋課輔＋餐費）",{tpe:120000,ntpc:120000,tyn:110000,txg:100000},{est:1}],
-   ["intl","國際學校",{tpe:979470,ntpc:979470,tyn:672000,txg:672000},{once:{tpe:350000,ntpc:350000},fund:"capital"}]]},
+   ["prv","私立高中（學費全免，雜費＋課輔＋餐費）",{tpe:120000,ntpc:120000,tyn:110000,hsc:110000,txg:100000},{est:1}],
+   ["intl","國際學校",{tpe:979470,ntpc:979470,tyn:672000,hsc:650000,txg:672000},{once:{tpe:350000,ntpc:350000,hsc:65000},fund:"capital"}]]},
  {k:"uni",lb:"大學",a0:18,a1:22,fund:"capital",opts:[
    ["pub","國內公立大學",{all:60000}],
    ["prv","國內私立大學",{all:100000}],
@@ -11053,14 +11059,14 @@ const EDU_STAGES=[
    ["pub","國內研究所",{all:60000},{est:1}],
    ["us","美國研究所（學費＋食宿）",{all:2000000},{est:1}]]}];
 const EDU_ADDS=[
- ["anqin","安親班",{tpe:60000,ntpc:48000,tyn:66000,txg:66000},6,12,"budget"],
+ ["anqin","安親班",{tpe:60000,ntpc:48000,tyn:66000,hsc:72000,txg:66000},6,12,"budget"],
  ["eng","兒童美語",{all:60000},4,12,"budget",1],
  ["art","才藝（每週一堂）",{all:48000},4,12,"budget"],
  ["cram","國中補習（2 科小班）",{all:86400},12,15,"budget"],
  ["cramh","高中補習（2 科）",{all:96000},15,18,"budget",1],
  ["tutor","家教（每週一次）",{all:43200},12,18,"budget"],
  ["dorm","大學住宿生活費",{all:180000},18,22,"capital",1]];
-const EDU_SRC="[b]預設金額來源（今日值・每年，可直接改）[/b]||托嬰：親子天下 2026 托嬰中心費用（北新桃中公托／準公托／私托）、2026 保母費用；公托與準公托已扣中央托育補助第一胎 7,000／13,000。||幼兒園：親子天下 2026 公幼／非營利／準公共月繳上限；雙語＝新北月 1.6–2 萬、台中家長實帳約 21–23 萬／年；全美語月 3 萬以上（風傳媒 2025）。||國小：私校七雄學雜費 16–21 萬／年（今周刊 2025）；台北靜心雙語約 30 萬；台中葳格／普霖斯頓等 25–50 萬；桃園有得每學期 16–17 萬；台北美國學校 K–5 約 88 萬＋建校費 35 萬；台中馬禮遜 K–5 約 56 萬（2025-26）。||國中：七雄國中部每學期 5–12 萬（今周刊 2025-12）；台中衛道／曉明／明道國一 5.3–6.1 萬／學期；桃園傳統私中年總 15–20 萬；國際學校同上。||高中：公私立高中職學費全免（不排富，雜費自付）。||大學：台大文學院 25,230／學期；高醫醫學系 72,385／學期（114）；私大文法商約 10 萬／年；美國大學年總：中西部公立 140–170 萬、東西岸私立 250–280 萬。||課外：安親班月費（2024 行情：台北 4–6 千、精華區 6 千–1 萬；新北 3–5 千；桃園、台中 3.5–7.5 千）；國中補習小班每科每月 2,400–4,800；家教每週一次 2,400–4,800／月；鋼琴一對一每堂 500–1,200。||標「推估」者查無可靠公開資料，請依客戶實況改。";
+const EDU_SRC="[b]預設金額來源（今日值・每年，可直接改）[/b]||托嬰：親子天下 2026 托嬰中心費用（北新桃中公托／準公托／私托）、2026 保母費用；公托與準公托已扣中央托育補助第一胎 7,000／13,000。||幼兒園：親子天下 2026 公幼／非營利／準公共月繳上限；雙語＝新北月 1.6–2 萬、台中家長實帳約 21–23 萬／年；全美語月 3 萬以上（風傳媒 2025）。||國小：私校七雄學雜費 16–21 萬／年（今周刊 2025）；台北靜心雙語約 30 萬；台中葳格／普霖斯頓等 25–50 萬；桃園有得每學期 16–17 萬；台北美國學校 K–5 約 88 萬＋建校費 35 萬；台中馬禮遜 K–5 約 56 萬（2025-26）。||國中：七雄國中部每學期 5–12 萬（今周刊 2025-12）；台中衛道／曉明／明道國一 5.3–6.1 萬／學期；桃園傳統私中年總 15–20 萬；國際學校同上。||高中：公私立高中職學費全免（不排富，雜費自付）。||大學：台大文學院 25,230／學期；高醫醫學系 72,385／學期（114）；私大文法商約 10 萬／年；美國大學年總：中西部公立 140–170 萬、東西岸私立 250–280 萬。||課外：安親班月費（2024 行情：台北 4–6 千、精華區 6 千–1 萬；新北 3–5 千；桃園、台中 3.5–7.5 千）；國中補習小班每科每月 2,400–4,800；家教每週一次 2,400–4,800／月；鋼琴一對一每堂 500–1,200。||新竹（v392）：托嬰依親子天下 2026（公托約 1.2 萬、準公托 1.9–2.2 萬、私托 1.7–2.3 萬、準公共保母 1.55–1.8 萬／月，已扣補助）；雙語國小＝康橋新竹小學部約 38 萬／年、國中雙語班約 35 萬；國際學校以新竹美國學校 2018 學費（小 36 萬、中 44 萬、高 52 萬／年）加 25% 推估，首度申請＋註冊約 6.5 萬；傳統私小／私中、私立高中、安親班、到府保母查無新竹公開行情，比照桃園推估。||標「推估」者查無可靠公開資料，請依客戶實況改。";
 function eduAmt(m,rg){return m&&(m[rg]!==undefined?m[rg]:m.all!==undefined?m.all:0);}
 function eduOpt(st,ok){return st.opts.find(o=>o[0]===ok)||null;}
 function eduLoad(){let o={};try{o=JSON.parse(($("eduJson")||{}).value||"{}")||{};}catch(e){}o.region=o.region||"tpe";if(o.g===undefined)o.g="";o.infl=!!o.infl;o.kids=Array.isArray(o.kids)?o.kids:[];return o;}
