@@ -516,7 +516,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v412</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v414</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -1570,7 +1570,7 @@ body:not(.rxLock) .bsCascade{display:block}
 
 <div class="panel">
   <div class="kicker">⑥-3　保單登錄表</div>
-  <h2>保單登錄表（理財型／傳承型＋保障型）→ 已有保險彙整（現況已備）</h2>
+  <h2 id="polH2" data-cur="保單登錄表（理財型／傳承型＋保障型）→ 已有保險彙整（現況已備）" data-plan="現況保單（唯讀）＋本方案新增保單（由 ⑥-5 建議產生）">保單登錄表（理財型／傳承型＋保障型）→ 已有保險彙整（現況已備）</h2>
   <div class="plLockNote no-print" data-pl="prot"></div>
   <div id="polEditorHost63"><div id="protPolBlock" style="border:1.5px solid var(--gold);background:#fffaf0;border-radius:10px;padding:10px 14px;margin:6px 0 12px">
     <div style="font-weight:700;color:var(--accent);font-family:system-ui;font-size:13px">保單登錄表——理財型／傳承型與保障型都在這裡，主約接自己的附約</div>
@@ -1823,7 +1823,7 @@ body:not(.rxLock) .bsCascade{display:block}
   <h2>這個方案，我們建議客戶做哪些事</h2>
   <p class="cap">把散在各分頁的顧問建議攤成一張表，講解時照著唸：② 目標可接受調整（問診談定的優先序）→ ①-1／①-2 收支 → ①-3 資產負債 → ⑥-2 保障 → ④-2 處方投入。每列附「牽動了哪裡」；這張表也是報告書「規劃與建議／執行計畫表」的底稿。
     <b>客戶選案後</b>在「客戶確認」欄逐項記錄接受／不接受／延後與預計執行年月——不接受的項目會從模擬與 advice.json 排除（報告書仍列出並標 ✕），這樣「只做投資、不做保險」的方案跑出來的數字才是客戶真正會走的路。</p>
-  <div class="scRow no-print" style="margin-bottom:8px;flex-wrap:wrap"><button class="btn sm" id="btnRxSum">重整總表</button><button class="btn ghost sm" id="btnRxSumCopy">📋 複製為文字</button><button class="btn ghost sm" id="btnAdviceExport">⬇ 匯出 advice.json（給追蹤工具）</button>
+  <div class="scRow no-print" style="margin-bottom:8px;flex-wrap:wrap"><button class="btn sm" id="btnRxSum">重整總表</button><button class="btn ghost sm" id="btnRxFoldAll" title="各來源群組只留標題列（講解時一組一組點開）">▸ 全部收合</button><button class="btn ghost sm" id="btnRxOpenAll">▾ 全部展開</button><button class="btn ghost sm" id="btnRxSumCopy">📋 複製為文字</button><button class="btn ghost sm" id="btnAdviceExport">⬇ 匯出 advice.json（給追蹤工具）</button>
     <button class="btn ghost sm" id="btnRxSelect" style="border-color:var(--gold);color:var(--gold)">✔ 客戶選定此方案</button>
     <button class="btn sm" id="btnTrkExport2" title="客戶選定方案後，把方案預算與建議帶進追蹤工具，讓客戶開始記帳">📤 匯出給追蹤工具</button>
     <select id="trkBudgetMode" class="sm" title="方案工作區匯出時，追蹤工具的預算要用哪一套數字" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--paper)"><option value="plan">預算＝方案（含顧問建議）</option><option value="cur">預算＝現況（建議另列）</option></select>
@@ -7161,12 +7161,13 @@ function rxSummaryRender(){
   const stCol=(o)=>{const t=stTxt(o);if(!t)return "";const c=o.status==="done"?"var(--gA)":o.status==="dropped"?"var(--gD)":o.status==="partial"?"var(--gold)":"var(--sub)";return `<span style="color:${c};font-weight:700">${t}</span>${o.note2?`<br><span style="color:var(--sub)">${o.note2}</span>`:""}`;};
   const cols=hasSt?7:6;
   let h=`${selName===nm&&selDate?`<div class="note good" style="margin-bottom:8px"><b>客戶已選定本方案</b>（${selDate}）——請逐項確認接受／不接受${document.body.dataset.svcPlan==="A2"?"（A2 保險方案不匯出追蹤工具）":"，再匯出 advice.json 給追蹤工具"}。</div>`:selName&&selName!==nm?`<div class="mini" style="margin-bottom:6px">客戶選定的是「${selName}」${selDate?`（${selDate}）`:""}，目前檢視的是「${nm}」。</div>`:""}
-  <div style="overflow-x:auto"><table class="dt aln" style="margin:0"><tr><th style="width:34px">#</th><th style="text-align:left">來源</th><th style="text-align:left;min-width:220px">顧問建議</th><th style="text-align:left">說明</th><th style="text-align:left">牽動了哪裡</th><th style="text-align:left;min-width:230px" class="no-print">客戶確認・預計執行</th>${hasSt?`<th style="text-align:left">執行狀態（追蹤工具）</th>`:""}</tr>`;
+  <div style="overflow-x:auto"><table class="dt aln" style="margin:0"><tr><th style="width:34px">#</th><th style="text-align:left">來源</th><th style="text-align:left;min-width:220px">顧問建議</th><th style="text-align:left;min-width:96px">說明</th><th style="text-align:left;min-width:120px">牽動了哪裡</th><th style="text-align:left;min-width:230px" class="no-print">客戶確認・預計執行</th>${hasSt?`<th style="text-align:left">執行狀態（追蹤工具）</th>`:""}</tr>`;
   let g="",n=0,T=[`【${nm}】顧問建議總表`];
   const accTxt=o=>!o||!o.accept?"":o.accept==="yes"?"客戶接受":o.accept==="no"?"客戶不接受":"客戶延後";
-  L.forEach((x,i)=>{if(x.grp!==g){g=x.grp;h+=`<tr class="sub"><td colspan="${cols}" class="rn" style="text-align:left">${g}</td></tr>`;T.push("",g);}n++;
-    const done=x.st&&x.st.status==="done",dec=x.st&&x.st.accept==="no"&&rxExclOn();
-    h+=`<tr${done?' style="opacity:.75"':dec?' style="opacity:.6;background:#fdf3f2"':""}><td class="calc">${n}</td><td class="rn" style="font-weight:400">${x.src}</td><td style="text-align:left;font-weight:700${dec?";text-decoration:line-through":""}">${x.what}${done?' <span class="bdg" style="background:var(--gA);color:#fff">已在現況</span>':""}${dec?' <span class="bdg" style="background:var(--gD);color:#fff">已排除</span>':""}</td><td style="text-align:left;font-family:system-ui;font-size:11px">${x.note||""}</td><td style="text-align:left;font-family:system-ui;font-size:11px;color:var(--sub)">${x.eff||""}</td><td class="no-print" style="text-align:left;white-space:nowrap">${accSel(x.st,i)}</td>${hasSt?`<td style="text-align:left;font-family:system-ui;font-size:11px">${stCol(x.st)}</td>`:""}</tr>`;
+  window._rxFold=window._rxFold||new Set();const gCnt={};L.forEach(x=>{gCnt[x.grp]=(gCnt[x.grp]||0)+1;}); /* v413：群組收合 */
+  L.forEach((x,i)=>{if(x.grp!==g){g=x.grp;const fd=window._rxFold.has(g);h+=`<tr class="sub rxGrp" data-rxg="${esc(g)}" style="cursor:pointer" title="點一下收合／展開這一組"><td colspan="${cols}" class="rn" style="text-align:left"><span class="rxCaret" style="display:inline-block;width:14px;color:var(--sub)">${fd?"▸":"▾"}</span>${g}<span class="mini" style="margin:0 0 0 8px;font-weight:400">${gCnt[g]} 筆${fd?"・已收合":""}</span></td></tr>`;T.push("",g);}n++;
+    const done=x.st&&x.st.status==="done",dec=x.st&&x.st.accept==="no"&&rxExclOn();const fold=window._rxFold.has(x.grp);
+    h+=`<tr data-rxrow="${esc(x.grp)}"${fold?' class="rxFolded"':""} style="${fold?"display:none;":""}${done?"opacity:.75":dec?"opacity:.6;background:#fdf3f2":""}"><td class="calc">${n}</td><td class="rn" style="font-weight:400">${x.src}</td><td style="text-align:left;font-weight:700${dec?";text-decoration:line-through":""}">${x.what}${done?' <span class="bdg" style="background:var(--gA);color:#fff">已在現況</span>':""}${dec?' <span class="bdg" style="background:var(--gD);color:#fff">已排除</span>':""}</td><td style="text-align:left;font-family:system-ui;font-size:11px">${x.note||""}</td><td style="text-align:left;font-family:system-ui;font-size:11px;color:var(--sub)">${x.eff||""}</td><td class="no-print" style="text-align:left;white-space:nowrap">${accSel(x.st,i)}</td>${hasSt?`<td style="text-align:left;font-family:system-ui;font-size:11px">${stCol(x.st)}</td>`:""}</tr>`;
     T.push(`${n}. [${x.src}] ${x.what}${x.note?"——"+x.note:""}${x.eff?"（"+x.eff+"）":""}${accTxt(x.st)?"　【"+accTxt(x.st)+(x.st.when?" "+x.st.when:"")+"】":""}${x.st&&x.st.status?"　【"+stTxt(x.st)+"】":""}`);});
   const accC={yes:0,no:0,later:0,pend:0};L.forEach(x=>{if(!x.st)return;const v=x.st.accept||"";if(v==="yes")accC.yes++;else if(v==="no")accC.no++;else if(v==="later")accC.later++;else accC.pend++;});
   const stSum=hasSt?(()=>{const c={done:0,partial:0,pending:0,dropped:0};L.forEach(x=>{if(x.st&&x.st.status&&c[x.st.status]!==undefined)c[x.st.status]++;});return `・執行狀態：已執行 ${c.done}／部分 ${c.partial}／待執行 ${c.pending}／放棄 ${c.dropped}（已執行者其效果已在現況，方案不再疊加）`;})():"";
@@ -7180,6 +7181,9 @@ function rxAcceptSave(){ // 客戶確認變更 → 寫回各來源 JSON、依設
   if(typeof wsSaveActive==="function")try{wsSaveActive();}catch(e){}
   if(rxExclOn()&&typeof bsRecalcSoon==="function")bsRecalcSoon();else rxSummaryRender();
 }
+$("rxSumBox")&&$("rxSumBox").addEventListener("click",e=>{const tr=e.target.closest("tr.rxGrp");if(!tr)return;const g=tr.dataset.rxg;window._rxFold=window._rxFold||new Set();if(window._rxFold.has(g))window._rxFold.delete(g);else window._rxFold.add(g);rxSummaryRender();}); /* v413 */
+function rxFoldAll(on){window._rxFold=new Set();if(on)rxSummaryItems().forEach(x=>window._rxFold.add(x.grp));rxSummaryRender();} /* v413 */
+$("btnRxFoldAll")&&$("btnRxFoldAll").addEventListener("click",()=>rxFoldAll(true));$("btnRxOpenAll")&&$("btnRxOpenAll").addEventListener("click",()=>rxFoldAll(false));
 $("rxSumBox")&&$("rxSumBox").addEventListener("change",e=>{const t=e.target;
   if(t.dataset.rxacc!==undefined){const o=rxSumRef[+t.dataset.rxacc];if(o){o.accept=t.value;rxAcceptSave();}}
   else if(t.dataset.rxwhen!==undefined){const o=rxSumRef[+t.dataset.rxwhen];if(o){o.when=t.value;rxAcceptSave();}}});
@@ -7492,7 +7496,7 @@ function rptBuild(){
     if(on("rpt_s11"))h+=secClosing();if(on("rpt_s12"))h+=secAppendix();if(on("rpt_s14"))h+=secYearly(slots);if(on("rpt_s13"))h+=secContact();
   }
   const planName=(typeof wsSlots!=="undefined"&&wsSlots[wsActive])?wsSlots[wsActive].name:"現況";
-  const css=`:root{${rptCssVars()}}@page{size:A4;margin:16mm 14mm}body{font-family:"Noto Serif TC","PMingLiU",serif;color:#222;margin:0;padding:24px 28px;font-size:12.5px;line-height:1.7}
+  const css=`:root{${rptCssVars()}}@page{size:A4;margin:16mm 14mm}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{font-family:"Noto Serif TC","PMingLiU",serif;color:#222;margin:0;padding:24px 28px;font-size:12.5px;line-height:1.7}
   .cover{border-bottom:3px double #b08a3c;padding:18px 0 14px;margin-bottom:18px}.cover h1{font-size:26px;margin:0 0 6px;letter-spacing:2px}.cover .sub{color:#666;font-size:12px}.cover .who{font-size:15px;margin-top:8px}
   section{margin:0 0 22px;page-break-inside:avoid}h2{font-size:16px;border-left:5px solid #b08a3c;padding-left:9px;margin:20px 0 10px;letter-spacing:1px}h3{font-size:13.5px;margin:12px 0 4px;color:#7a5a1e}.lead{margin:0 0 8px;color:#444}.sub{font-size:12px;font-weight:700;color:#555;margin:8px 0 2px}.slotBlk{page-break-inside:auto}.part{page-break-before:always}
   table.t{border-collapse:collapse;width:100%;font-size:11.5px;margin:4px 0 8px}table.t th{background:#f3eee2;border:1px solid #cfc6b0;padding:5px 7px;text-align:left;font-weight:700}table.t td{border:1px solid #d8d2c2;padding:4px 7px;vertical-align:top}
@@ -7513,7 +7517,7 @@ function rptBuild(){
   const who=plans.length?`${E(client)}　｜　現況＋${plans.map(x=>E(x.name)).join("、")}`:`${E(client)}　｜　現況`;
   const head=`<div class="cover"><h1>理財規劃報告書</h1><div class="who">${who}</div><div class="sub">${[svcPlanTxt()?`服務方案：${E(svcPlanTxt())}`:"",`報告日期 ${E(date)}`,by?`本人 ${a0} 歲`:"",adv||org?`${E(org)}${adv?" "+E(adv):""}`:"",mode==="seq"?"方式一：先現況、再依序各方案":"方式二：現況與方案並排比較"].filter(Boolean).map(t=>`<span style="white-space:nowrap">${t}</span>`).join(`<span style="padding:0 .6em;color:#999">・</span>`)}</div></div>`; /* v307：分段不在段中間斷行 */
   return `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><title>理財規劃報告書｜${E(client)}</title><style>${css}</style></head><body>
-  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button></div>${head}${h}${typeof noteRptHtml==="function"?noteRptHtml():""}
+  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button><div style="font-size:11px;color:#666;background:#fff;border:1px solid #ddd;border-radius:6px;padding:4px 8px;margin-top:4px;max-width:260px;font-family:system-ui">列印對話框請取消「頁首及頁尾」（Chrome：更多設定；Safari：Safari 區塊「列印頁首與頁尾」），頁首才不會印出日期時間與網頁標題。</div></div>${head}${h}${typeof noteRptHtml==="function"?noteRptHtml():""}
   <div class="foot">${E(org)}${adv?"・"+E(adv):""}　${E(date)}　理財規劃報告書</div>
   <script>(function(){function fit(){document.querySelectorAll("table.yr").forEach(function(t){t.style.zoom=1;var nat=t.scrollWidth||t.offsetWidth,sw=t.parentElement.clientWidth||nat;
     t.style.setProperty("--zs",Math.min(1,sw/nat));t.style.setProperty("--zp",Math.min(1,1010/nat));t.style.zoom="";});}
@@ -7807,9 +7811,10 @@ function rptA2Build(X){
   if(!CP.length){h+=S("人身風險診斷",`<p class="cap">「現況」尚未填寫 ⑥ 責任分析與風險需求（應備額度）——請先在「現況」完成 ⑥-1、⑥-2 並儲存。</p>`);}
   else{
     // 02 人身風險診斷（每位成員）
-    let body="";CP.forEach(P=>{
+    let body="";CP.forEach((P,pi)=>{
       const anyRet=P.rows.some(r=>r.ret>0);
-      const respT=P.w==="self"||P.w==="sp"?`<h3>${E(P.nm)}｜人身風險需求分析－責任</h3><table class="t"><tr>${P.resp.items.map(x=>`<th style="text-align:right">${E(x[0])}</th>`).join("")}<th style="text-align:right">合計</th></tr><tr>${P.resp.items.map(x=>`<td class="n">${Wn(x[1])}${x[2]?`<div class="cap" style="text-align:right">${E(x[2])}</div>`:""}</td>`).join("")}<td class="n" style="font-weight:700">${Wn(P.resp.total)}</td></tr></table>`:"";
+      const thL=t=>({"房貸／房租餘額":"房貸／房租<br>餘額","流動負債":"流動<br>負債","長期負債":"長期<br>負債"})[t]||E(t); /* v414：表頭不逐字直排 */
+      const respT=P.w==="self"||P.w==="sp"?`<h3>${E(P.nm)}｜人身風險需求分析－責任</h3><table class="t"><tr>${P.resp.items.map(x=>`<th style="text-align:right;white-space:nowrap">${thL(x[0])}</th>`).join("")}<th style="text-align:right">合計</th></tr><tr>${P.resp.items.map(x=>`<td class="n">${Wn(x[1])}${x[2]?`<div class="cap" style="text-align:right">${E(x[2])}</div>`:""}</td>`).join("")}<td class="n" style="font-weight:700">${Wn(P.resp.total)}</td></tr></table>`:"";
       const med=P.rows.filter(r=>r.k==="hosp"||r.k==="med"),sev=P.rows.filter(r=>["ci","ca","acc","ltc"].includes(r.k));
       const mini=(t,L)=>L.length?`<h3>${E(P.nm)}｜人身風險需求分析－${t}</h3><table class="t"><tr>${L.map(r=>`<th style="text-align:right">${E(r.lb)}</th>`).join("")}</tr><tr>${L.map(r=>`<td class="n">${Wn(r.need)}</td>`).join("")}</tr></table>`:"";
       let tb=`<h3>${E(P.nm)}｜人身風險需求總表</h3><table class="t a2Tot"><colgroup><col style="width:15%"><col style="width:29%"><col style="width:16%"><col style="width:16%"><col style="width:14%"><col style="width:10%"></colgroup><tr><th>人身風險階段</th><th>需求項目</th><th style="text-align:right">應備額度</th><th style="text-align:right">已備</th><th style="text-align:right">差額</th><th style="text-align:center">完成率</th></tr>`;
@@ -7821,7 +7826,7 @@ function rptA2Build(X){
         if(H)cols.push([`住院日額總和（元/日）${parts?"<div class=\"cap\" style=\"font-weight:400\">＝病房＋看護＋薪資補償</div>":""}`,`<b>${Wn(H.need)}</b>`]);if(M)cols.push(["住院醫療雜費",Wn(M.need)]);
         return `<h3>${E(P.nm)}｜人身風險需求分析－醫療${hp?`<span style="font-weight:400;color:#666;font-size:.85em">　期望醫院：${E(hp)}</span>`:""}</h3><table class="t"><tr>${cols.map(c=>`<th style="text-align:right">${c[0]}</th>`).join("")}</tr><tr>${cols.map(c=>`<td class="n">${c[1]}</td>`).join("")}</tr></table>`;})(); /* v298：醫療表與責任表同型，組成各一欄 */
       let rcH="";try{if((P.w==="self"||P.w==="sp")&&typeof rcCompute==="function"){const R=rcCompute(P.w);if(R.peak.v>0)rcH=`<h3>${E(P.nm)}｜家庭責任曲線</h3>${rcSvg(R,{w:720,h:280})}<p class="cap">${rcSummary(R)}</p>`;}}catch(e){} /* v379 */
-      body+=`<div class="a2Blk">${respT}${rcH}${medT}${mini("重病／失能",sev)}${a2HaveTbl(curS,P,E,N)}</div><div class="a2Blk">${tb}</div>`;});
+      body+=`<div class="a2Blk a2Person"${pi>0?' style="page-break-before:always;break-before:page"':""}>${respT}${rcH}${medT}${mini("重病／失能",sev)}${a2HaveTbl(curS,P,E,N)}</div><div class="a2Blk">${tb}</div>`;}); /* v414：配偶、子女各自新頁 */
     {const cv=a2Vals(curS);const on=cv.pr_retnote_on===true||cv.pr_retnote_on==="true";if(on)body+=`<div class="a2Ret"><b>客戶自述：</b>${E((cv.pr_retnote||"").trim()||"打算以自有資產承擔部分風險（尚未量化）")}——目前尚未量化；規劃方案時以「風險自留」指定哪筆資產、承擔多少、幾年內到位，再決定保險要補多少。</div>`;}
     body+=`<p class="cap">應備＝⑥-1 責任分析與 ⑥-2 各項需求；已備＝已登錄保單的保障給付（含社保身故給付）。完成率＝已備 ÷ 應備（純保險口徑；以資產承擔的「風險自留」在規劃方案中決定）。</p>`;
     h+=S("人身風險診斷",body);
@@ -7865,7 +7870,7 @@ function rptA2Build(X){
         who.forEach(wn=>{const M=a2PremByAge(pols,a0,wn),MP=a2PremByAge(pols,a0,wn,"保障型"),MI=a2PremByAge(pols,a0,wn,"理財型");const ages=Object.keys(M).map(Number).sort((a,b)=>a-b);if(!ages.length)return;const a1=Math.min(a0||ages[0],ages[0]),a2=ages[ages.length-1];const rows=[];for(let a=a1;a<=a2;a+=10){const seg=[];for(let k=a;k<Math.min(a+10,a2+1);k++)seg.push(k);rows.push(seg);}
           const cM=curS?a2PremByAge(a2Pols(curS),a0,wn):null,cAges=cM?Object.keys(cM).map(Number):[];const chart=premChartSVG(premSeries(pols,a0,wn),a1,Math.max(a2,...cAges),{cur:cM&&cAges.length?cM:null}); /* v341 */
           const tot=ages.reduce((a,k)=>a+M[k],0),totP=Object.values(MP).reduce((a,v)=>a+v,0),totI=Object.values(MI).reduce((a,v)=>a+v,0);
-          pt+=`<div class="a2Blk"><h3>${E(pl.name)}｜${E(wn)} 未來每年保費支出一覽表</h3>${chart?`<div class="a2PremChart">${chart}</div>`:""}<table class="t a2Prem">${rows.map(seg=>`<tr><th>年齡（本人軸）</th>${seg.map(k=>`<td class="c">${k}</td>`).join("")}</tr><tr><th>保障型</th>${seg.map(k=>`<td class="n">${MP[k]?N(MP[k]):"—"}</td>`).join("")}</tr><tr><th>理財型</th>${seg.map(k=>`<td class="n">${MI[k]?N(MI[k]):"—"}</td>`).join("")}</tr><tr class="tot"><th>合計</th>${seg.map(k=>`<td class="n" style="color:#1f4e79">${M[k]?N(M[k]):"—"}</td>`).join("")}</tr>`).join("")}</table>
+          pt+=`<div class="a2Blk a2PremBlk"><h3>${E(pl.name)}｜${E(wn)} 未來每年保費支出一覽表</h3>${chart?`<div class="a2PremChart">${chart}</div>`:""}<table class="t a2Prem">${rows.map(seg=>`<tbody><tr><th>年齡（本人軸）</th>${seg.map(k=>`<td class="c">${k}</td>`).join("")}</tr><tr><th>保障型</th>${seg.map(k=>`<td class="n">${MP[k]?N(MP[k]):"—"}</td>`).join("")}</tr><tr><th>理財型</th>${seg.map(k=>`<td class="n">${MI[k]?N(MI[k]):"—"}</td>`).join("")}</tr><tr class="tot"><th>合計</th>${seg.map(k=>`<td class="n" style="color:#1f4e79">${M[k]?N(M[k]):"—"}</td>`).join("")}</tr></tbody>`).join("")}</table>
           <p class="cap">${a1}～${a2} 歲共 ${a2-a1+1} 年：保障型 ${N(Math.round(totP))}、理財型 ${N(Math.round(totI))}、合計 ${N(Math.round(tot))}；最後一筆保費在 ${a2} 歲（${a2-a1+1} 年內繳清）。</p></div>`;});});
       if(pt)h+=S("各方案未來每年保費支出",`<p class="cap">依保單登錄的保費歷年表（無歷年表者以年繳保費 × 剩餘年期推算），含本方案新增保單；年齡為本人年齡軸，自目前年齡起列到最後一筆保費的年度。保障型＝醫療／失能／意外／定期壽險／終身壽險；理財型＝儲蓄／利變／投資型／年金。圖：金色粗線＝年繳總保費（標示起始、最高、最後一年），細線＝各張保單，灰虛線＝現況總保費（本方案新增保單前）。</p>${pt}`);
     }
@@ -7880,7 +7885,7 @@ function rptA2Build(X){
   if(typeof a2UwSection==="function")try{h+=S("財務核保參考",a2UwSection(curS,E,Wn));}catch(e){console.warn(e);} /* v327 */
   if(typeof secContact==="function")h+=S("聯絡我們",secContact().replace(/<h2>[^<]*<\/h2>/,"").replace(/^<section>|<\/section>$/g,""),"");
   const tocH=`<div class="a1Toc"><h2>目錄</h2><ol>${toc.map(t=>`<li>${E(t)}</li>`).join("")}</ol></div>`;
-  const css=`:root{${rptCssVars()}}@page{size:A4;margin:16mm 14mm}body{font-family:"Noto Serif TC","PMingLiU",serif;color:#222;margin:0;padding:24px 28px;font-size:12.5px;line-height:1.7}
+  const css=`:root{${rptCssVars()}}@page{size:A4;margin:16mm 14mm}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{font-family:"Noto Serif TC","PMingLiU",serif;color:#222;margin:0;padding:24px 28px;font-size:12.5px;line-height:1.7}
   .cover{padding:60px 0 30px;margin-bottom:10px;border-bottom:3px double #b08a3c;page-break-after:always}.cover .tag{display:inline-block;background:#26384f;color:#fff;font-family:system-ui;font-size:12px;letter-spacing:2px;padding:3px 12px;border-radius:3px}
   .cover h1{font-size:32px;margin:14px 0 4px;letter-spacing:4px}.cover .en{font-family:system-ui;letter-spacing:6px;color:#8a7a55;font-size:13px}.cover .who{font-size:17px;margin-top:40px}.cover .sub{color:#666;font-size:12px;margin-top:6px}
   section{margin:0 0 22px}h2{font-size:17px;border-left:5px solid #b08a3c;padding-left:9px;margin:22px 0 10px;letter-spacing:1px;page-break-after:avoid}h3{font-size:13.5px;margin:12px 0 4px;color:#7a5a1e;page-break-after:avoid;break-after:avoid}.lead{margin:0 0 8px;color:#444}
@@ -7893,10 +7898,10 @@ function rptA2Build(X){
   .a2Ret{font-size:11.5px;color:#5a4a1e;background:#fbf7ea;border-left:3px solid #b08a3c;padding:6px 10px;margin:2px 0 10px;line-height:1.7}table.a2New{table-layout:fixed}table.a2New td{white-space:normal}table.a2Prem th{white-space:nowrap;width:74px}tr.a2Chg td{background:#fff5d6}tr.a2Chg td:nth-child(2){color:#8a5a00;font-weight:700}table.a2Prem td{font-size:11px}.a2PremChart{margin:2px 0 8px;page-break-inside:avoid}
   .cap{font-size:11px;color:#777;margin:2px 0 0}.closing{font-size:13px;line-height:1.9;padding:6px 10px;border-left:3px solid #ddd}.contact{margin-top:6px;font-size:12px;color:#444}
   svg text{font-family:system-ui,"Noto Sans TC",sans-serif}.foot{margin-top:26px;font-size:10.5px;color:#999;text-align:center;border-top:1px solid #eee;padding-top:8px}.noprint{position:fixed;right:14px;top:10px}
-  @media print{.noprint{display:none}table{page-break-inside:avoid;break-inside:avoid}tr{page-break-inside:avoid}table.a2App{page-break-inside:auto;break-inside:auto}h3{page-break-after:avoid;break-after:avoid}} /* v350：長表允許跨頁，避免整頁留白 */`;
+  @media print{.noprint{display:none}table{page-break-inside:avoid;break-inside:avoid}tr{page-break-inside:avoid}table.a2App{page-break-inside:auto;break-inside:auto}.a2PremBlk,table.a2Prem{page-break-inside:auto;break-inside:auto}.a2PremBlk .a2PremChart,table.a2Prem tbody{page-break-inside:avoid;break-inside:avoid}.a2PremBlk h3{page-break-after:avoid;break-after:avoid}h3{page-break-after:avoid;break-after:avoid}} /* v350：長表允許跨頁，避免整頁留白 */`;
   const cover=`<div class="cover"><span class="tag">A2 保險系統診斷</span><h1>保險規劃報告書</h1><div class="en">INSURANCE PLAN</div><div class="who">${E(client)}</div><div class="sub">服務方案：${E(svcPlanTxt())}　・　報告日期 ${E(date)}${a0?`　・　本人 ${a0} 歲`:""}</div><div class="sub">${E(org||"")}${adv?"　顧問 "+E(adv):""}${contact?"　・　"+E(contact):""}</div></div>`;
   return `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><title>保險規劃報告書（A2）｜${E(client)}</title><style>${css}</style></head><body>
-  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button></div>${cover}${tocH}${h}${typeof noteRptHtml==="function"?noteRptHtml():""}
+  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button><div style="font-size:11px;color:#666;background:#fff;border:1px solid #ddd;border-radius:6px;padding:4px 8px;margin-top:4px;max-width:260px;font-family:system-ui">列印對話框請取消「頁首及頁尾」（Chrome：更多設定；Safari：Safari 區塊「列印頁首與頁尾」），頁首才不會印出日期時間與網頁標題。</div></div>${cover}${tocH}${h}${typeof noteRptHtml==="function"?noteRptHtml():""}
   <div class="foot">${E(org)}${adv?"・"+E(adv):""}　${E(date)}　保險規劃報告書（A2）</div></body></html>`;
 }
 
@@ -8022,7 +8027,7 @@ function rptA1Build(X){
   h+=S("聯絡我們",secContact().replace(/^<section>|<\/section>$/g,"").replace(/<h2>[^<]*<\/h2>/,""),"");
   // 目錄
   const tocH=`<section class="a1Toc"><h2>目錄</h2><ol>${toc.map(t=>`<li>${E(t)}</li>`).join("")}</ol></section>`;
-  const css=`:root{${rptCssVars()}}@page{size:A4;margin:16mm 14mm}body{font-family:"Noto Serif TC","PMingLiU",serif;color:#222;margin:0;padding:24px 28px;font-size:12.5px;line-height:1.7}
+  const css=`:root{${rptCssVars()}}@page{size:A4;margin:16mm 14mm}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{font-family:"Noto Serif TC","PMingLiU",serif;color:#222;margin:0;padding:24px 28px;font-size:12.5px;line-height:1.7}
   .cover{padding:60px 0 30px;margin-bottom:10px;border-bottom:3px double #b08a3c;page-break-after:always}.cover .tag{display:inline-block;background:#26384f;color:#fff;font-family:system-ui;font-size:12px;letter-spacing:2px;padding:3px 12px;border-radius:3px}
   .cover h1{font-size:32px;margin:14px 0 4px;letter-spacing:4px}.cover .en{font-family:system-ui;letter-spacing:6px;color:#8a7a55;font-size:13px}.cover .who{font-size:17px;margin-top:40px}.cover .sub{color:#666;font-size:12px;margin-top:6px}
   section{margin:0 0 22px}h2{font-size:17px;border-left:5px solid #b08a3c;padding-left:9px;margin:22px 0 10px;letter-spacing:1px;page-break-after:avoid}h3{font-size:13.5px;margin:12px 0 4px;color:#7a5a1e;page-break-after:avoid}.lead{margin:0 0 8px;color:#444}
@@ -8046,7 +8051,7 @@ function rptA1Build(X){
   @media print{.noprint{display:none}table{page-break-inside:avoid;break-inside:avoid}tr{page-break-inside:avoid}}`;
   const cover=`<div class="cover"><span class="tag">A1 財報系統</span><h1>財務報告書</h1><div class="en">FINANCIAL PLAN</div><div class="who">${E(client)}</div><div class="sub">服務方案：${E(svcPlanTxt())}　・　報告日期 ${E(date)}${a0?`　・　本人 ${a0} 歲`:""}</div><div class="sub">${E(org||"")}${adv?"　顧問 "+E(adv):""}${contact?"　・　"+E(contact):""}</div></div>`;
   return `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><title>財務報告書（A1）｜${E(client)}</title><style>${css}</style></head><body>
-  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button></div>${cover}${tocH}${h}${typeof noteRptHtml==="function"?noteRptHtml():""}
+  <div class="noprint"><button onclick="window.print()" style="padding:6px 12px;font-size:13px;cursor:pointer">🖨 列印／存 PDF</button><div style="font-size:11px;color:#666;background:#fff;border:1px solid #ddd;border-radius:6px;padding:4px 8px;margin-top:4px;max-width:260px;font-family:system-ui">列印對話框請取消「頁首及頁尾」（Chrome：更多設定；Safari：Safari 區塊「列印頁首與頁尾」），頁首才不會印出日期時間與網頁標題。</div></div>${cover}${tocH}${h}${typeof noteRptHtml==="function"?noteRptHtml():""}
   <div class="foot">${E(org)}${adv?"・"+E(adv):""}　${E(date)}　財務報告書（A1）</div></body></html>`;
 }
 const A1_KEYMAP=[[/^inc_1_/,["free","save","spend"]],[/^inc_/,["save","spend"]],[/^exp_0_1$/,["life","casual","save"]],[/^exp_0_/,["life","spend","save"]],[/^exp_1_/,["loan","spend","save"]],
@@ -10805,9 +10810,10 @@ function bsRenderCascade(){
     else if(it.t==="償還債務"&&amt){const pay=parseFloat(it.pay)||0;L.push(`<b>償還 ${nm} ${M(amt)}</b>${v} <span class="arrow">⇒</span> 活存 −${M(amt)}${pay?`<span class="arrow">⇒</span> 貸款支出 −${M(pay)}/年`:""}<span class="arrow">⇒</span> ⑥-1 負債 −${M(amt)}<span class="arrow">⇒</span> ⑦ 負債扣除 −${M(amt)}`);}
     else if((it.t==="增加"||it.t==="減少")&&amt)L.push(`<b>${nm} ${it.t} ${M(amt)}</b>${v}`);
   });});
-  const cash=V("as_0_0");if(bsIsPlan()&&cash<0)L.push(`<span class="warn">⚠ 方案活存為負（${NT(cash)}）：轉出／償還金額超過可用現金，請調整。</span>`);
-  box.innerHTML=`<h4>⇣ 自動連動（這些建議牽動了哪裡）</h4>`+(L.length?`<ul>${L.map(x=>`<li>${x}</li>`).join("")}</ul>`:`<span style="color:var(--sub)">尚無建議——點各列「＋類型」加入。</span>`);
+  const cash=V("as_0_0");const cashWarn=(bsIsPlan()&&cash<0)?`<div class="warn" style="margin-top:6px">⚠ 方案活存為負（${NT(cash)}）：轉出／償還金額超過可用現金，請調整。</div>`:"";
+  box.innerHTML=`<details${window._bsCascadeOpen?" open":""}><summary style="cursor:pointer;list-style:revert"><h4 style="display:inline;margin:0">⇣ 自動連動（這些建議牽動了哪裡）${L.length?`（${L.length} 項）`:""}</h4> <span style="color:var(--sub);margin-left:8px">${L.length?"點開看每筆建議牽動了哪裡":"尚無建議——點各列「＋類型」加入"}</span></summary>${L.length?`<ul style="margin-top:6px">${L.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}</details>${cashWarn}`; /* v413：可收合 */
 }
+document.addEventListener("toggle",e=>{const d=e.target;if(d&&d.tagName==="DETAILS"&&d.parentElement&&d.parentElement.id==="bsCascade")window._bsCascadeOpen=d.open;},true); /* v413 */
 function bsPersist(){const h=$("bsAdjJson");if(!h)return;const o={};Object.entries(bsAdj).forEach(([k,v])=>{if(v&&v.length)o[k]=v;});h.value=JSON.stringify(o);}
 var ADJ_TO_HTML="";
 function bsMountAll(){
@@ -10908,7 +10914,7 @@ function rpLockInputs(){ /* v296：方案工作區 ⑥-1／⑥-2／⑥-3（含 �
   const on=typeof bsIsPlan==="function"&&bsIsPlan();
   document.querySelectorAll("#tblResp input,#tblResp select,#protNeedBox input,#protNeedBox select,#protHaveBox input,#protHaveBox select,#pr_retnote_on,#pr_retnote").forEach(e=>{if(e.type==="hidden")return;if(e.closest&&e.closest(".polFilterBar"))return; /* v411：篩選列不鎖 */
     if(e.tagName==="SELECT"||e.type==="checkbox"){e.disabled=on;}else{e.readOnly=on||e.dataset.polLock==="1"||(/^p_(self|sp)_(mort|liq|lt)$/.test(e.id)&&$("p_mort_auto")&&$("p_mort_auto").checked);} /* v339 */e.classList.toggle("rpLock",on);if(on)e.title="方案工作區唯讀：請切回現況修改";else if(e.title==="方案工作區唯讀：請切回現況修改")e.title=e.dataset.polLock==="1"?"由保單登錄表各保單的「保障給付」自動加總；要改請改保單":"";});} /* v332：①-4 帶入的已備格在現況也唯讀 */
-function plLockRender(){const on=typeof bsIsPlan==="function"&&bsIsPlan();document.body.classList.toggle("plWs",on);if(typeof a2SimpleRefresh==="function")try{a2SimpleRefresh();}catch(e){} /* v329 */if(typeof nyMark==="function")try{nyMark();}catch(e){}try{rpLockInputs();}catch(e){}
+function plLockRender(){const on=typeof bsIsPlan==="function"&&bsIsPlan();document.body.classList.toggle("plWs",on);{const h=$("polH2");if(h)h.textContent=on?h.dataset.plan:h.dataset.cur;} /* v413 */if(typeof a2SimpleRefresh==="function")try{a2SimpleRefresh();}catch(e){} /* v329 */if(typeof nyMark==="function")try{nyMark();}catch(e){}try{rpLockInputs();}catch(e){}
   const notes=document.querySelectorAll(".plLockNote");if(!on){notes.forEach(n=>n.innerHTML="");return;}
   let n=0;try{n=plDiff().length;}catch(e){}
   const nm=(wsSlots[wsActive]||{}).name||"方案";
