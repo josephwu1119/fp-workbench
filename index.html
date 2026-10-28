@@ -516,7 +516,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v410</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v412</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -5510,12 +5510,12 @@ var policies=[];
 const POL_TYPES=["終身壽險","定期壽險","儲蓄／利變壽險","年金險","投資型保單","醫療／失能／意外（保障型）"];
 /* v328：保單保障給付種類 [名稱, ⑥ 鍵（基礎六項進 ⑥-3 已備；細項只供年檢總覽）, 單位] */
 const COV_KINDS=[["意外失能","acc","元"],["重大疾病","ci","元"],["癌症一次金","ca","元"],["住院日額","hosp","元/日"],["醫療雜費","med","元"],["失能安養","ltc","元/月"],
-  ["意外住院日額","accHosp","元/日"],["意外實支實付","accMed","元"],["癌症住院日額","caHosp","元/日"],["實支病房費","medRoom","元/日"],["住院手術","medSurg","元"],["門診雜費","medOpd","元"],["門診手術","medOpdSurg","元"],
+  ["意外住院日額","accHosp","元/日"],["意外實支實付","accMed","元"],["癌症住院日額","caHosp","元/日"],["實支病房費","medRoom","元/日"],["住院手術（實支）","medSurgR","元"],["住院手術（定額）","medSurg","元"],["門診雜費","medOpd","元"],["門診手術（實支）","medOpdSurgR","元"],["門診手術（定額）","medOpdSurg","元"], /* v412：手術分實支／定額 */
   ["定期壽險附約（身故保額）","lifeTerm","元"],["意外身故","accDeath","元"],["意外失能扶助金","accLtc","元/月"], /* v382 */
   ["失能一次金","disLump","元"],["長期照顧一次金","ltcLump","元"],["長期照顧保險金","ltcCare","元/月"], /* v407：長照月額（與失能扶助金分列） */["雙豁免（豁免＋失能一次金折現給付・疾病＋意外）","waiver","元"],["保費豁免（僅免繳保費・不計一次金）","waiverOnly","不計"]]; /* v334／v335；v377 豁免分兩種 */
 const COV_TO_HAVE={disLump:"acc",waiver:"acc"}; /* v335：併入 ⑥ 已備「意外（失能）一次給付」 */
 const COV_BASE=["acc","ci","ca","hosp","med","ltc"];
-const COV_RE=[["waiver",/雙豁免|豁免.*折現|折現/],["waiverOnly",/豁免/],["ltcLump",/長照一次|長期照顧一次|長照.*一次金/],["ltcCare",/長期照顧保險金|長照保險金|長照.*月|長期照顧.*月|長照給付/],["disLump",/失能一次|失能.*一次金/],["accDeath",/意外身故|意外死亡/],["accLtc",/意外失能扶助|意外月扶|意外扶助|意外失能月/],["accHosp",/意外住院|意外日額/],["accMed",/意外實支|意外醫療/],["caHosp",/癌症住院|癌症日額/],["medRoom",/病房/],["medOpdSurg",/門診手術/],["medOpd",/門診/],["medSurg",/住院手術|手術/],
+const COV_RE=[["waiver",/雙豁免|豁免.*折現|折現/],["waiverOnly",/豁免/],["ltcLump",/長照一次|長期照顧一次|長照.*一次金/],["ltcCare",/長期照顧保險金|長照保險金|長照.*月|長期照顧.*月|長照給付/],["disLump",/失能一次|失能.*一次金/],["accDeath",/意外身故|意外死亡/],["accLtc",/意外失能扶助|意外月扶|意外扶助|意外失能月/],["accHosp",/意外住院|意外日額/],["accMed",/意外實支|意外醫療/],["caHosp",/癌症住院|癌症日額/],["medRoom",/病房/],["medOpdSurgR",/門診手術.*實支|實支.*門診手術/],["medSurgR",/住院手術.*實支|實支.*住院手術|手術.*實支/],["medOpdSurg",/門診手術/],["medOpd",/門診/],["medSurg",/住院手術|手術/], /* v412 */
   ["acc",/意外|失能一次/],["ci",/重疾|重大疾病|重大傷病|特定傷病/],["ca",/癌/],["ltc",/失能安養|失能扶助|長照|長期照顧|安養|月給付|扶助/],["hosp",/日額|住院/],["med",/雜費|實支|醫療/]];
 /* v397：要保人豁免（豁免他人保單）：商品名「（被保人：○○○）」→ 括號內的人才是豁免附約的實際被保人（觸發豁免的人） */
 function waiverInsOf(name){const m=String(name||"").match(/[（(]\s*被保人\s*[:：]\s*([^）)]+?)\s*[）)]/);return m?m[1].trim():"";}
@@ -5528,7 +5528,7 @@ function covPending(c){return !(parseFloat(c.amount)>0)&&covKey(c.kind)!=="waive
 function covKindsFromFns(s){ /* 保單整理表第 4 列「保障型－醫療雜費＋住院日額」→ [{kind,amount:0}]（壽險／豁免不入給付；壽險走身故保額） */
   const out=[];String(s||"").split(/[＋+、,，\/／]/).map(t=>t.trim()).filter(Boolean).filter(t=>!/^(主約|附約)$/.test(t)).forEach(lb=>{ /* v338 */if(/定期壽/.test(lb)){if(!out.some(o=>o.kind==="定期壽險附約（身故保額）"))out.push({kind:"定期壽險附約（身故保額）",amount:0});return;} /* v382 */if(/壽險|終身壽/.test(lb)||(/身故/.test(lb)&&!/意外/.test(lb)))return; /* v334：意外身故是給付種類；v335：豁免→保費豁免（折現） */let k="";for(const [kk,re] of COV_RE){if(re.test(lb)){k=kk;break;}}if(!k&&/失能/.test(lb))k="acc";
     const kd=COV_KINDS.find(x=>x[1]===k);if(kd&&!out.some(o=>o.kind===kd[0]))out.push({kind:kd[0],amount:0});});return out;}
-function covKindNorm(kind){kind=String(kind||"").trim();if(kind==="失能安養月額")return "失能安養";if(kind==="保費豁免（折現）"||kind==="雙豁免（豁免＋折現給付一次金）")return "雙豁免（豁免＋失能一次金折現給付・疾病＋意外）";return kind;} /* v377：舊名「保費豁免（折現）」＝雙豁免 */ /* v331：追蹤工具 v1.41～v1.73 舊名 */
+function covKindNorm(kind){kind=String(kind||"").trim().replace(/\((實支|定額)\)$/,"（$1）");if(kind==="住院手術")return "住院手術（定額）";if(kind==="門診手術")return "門診手術（定額）"; /* v412：舊名＝定額 */if(kind==="失能安養月額")return "失能安養";if(kind==="保費豁免（折現）"||kind==="雙豁免（豁免＋折現給付一次金）")return "雙豁免（豁免＋失能一次金折現給付・疾病＋意外）";return kind;} /* v377：舊名「保費豁免（折現）」＝雙豁免 */ /* v331：追蹤工具 v1.41～v1.73 舊名 */
 function covKey(kind){kind=covKindNorm(kind);const x=COV_KINDS.find(k=>k[0]===kind);return x?x[1]:"";}
 /* v382：定期壽險附約（保障給付 lifeTerm）——身故保額的一部分，有自己的到期年齡（空＝同卡片） */
 function polLifeRider(p){return ((p&&p.coverages)||[]).filter(c=>covKey(c.kind)==="lifeTerm").reduce((s,c)=>s+(parseFloat(c.amount)||0),0);}
@@ -5616,7 +5616,7 @@ function buildPolicies(){
   const match=p=>(!F.who||(p.insured||"本人")===F.who)&&(!F.type||(F.type==="prot"?polIsProt(p):!polIsProt(p)))&&(!F.q||nq(p.name+" "+(p.company||"")+" "+(p.policyNo||"")+" "+(p.type||"")).indexOf(nq(F.q))>=0);
   const ordered=ordered0.filter(i=>match(policies[i]));const hidden=ordered0.length-ordered.length;
   const chip=(lb,on,attr)=>`<button type="button" class="btn ghost sm polFc${on?" on":""}" ${attr} style="padding:1px 9px;font-size:11px${on?";background:var(--accent);color:#fff":""}">${lb}</button>`;
-  const bar=policies.length>=4?`<div class="no-print" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 8px;font-family:system-ui;font-size:12px"><span class="mini" style="margin:0">被保人</span>${chip(`全部 ${policies.length}`,!F.who,'data-pfw=""')}${whos.map(k=>chip(`${k} ${cnt[k]}`,F.who===k,`data-pfw="${k}"`)).join("")}<span class="mini" style="margin:0 0 0 8px">類型</span>${chip("全部",!F.type,'data-pft=""')}${chip("保障型",F.type==="prot",'data-pft="prot"')}${chip("理財型",F.type==="fin",'data-pft="fin"')}<input type="text" id="polQ" value="${esc(F.q)}" placeholder="搜尋商品／公司／保單號碼" style="width:200px;font-size:12px;padding:3px 7px;margin-left:8px"><button type="button" class="btn ghost sm" id="polFoldAll" style="padding:1px 9px;font-size:11px;margin-left:auto">全部收合</button><button type="button" class="btn ghost sm" id="polOpenAll" style="padding:1px 9px;font-size:11px">全部展開</button>${hidden?`<span class="mini" style="margin:0 0 0 6px">（已隱藏 ${hidden} 張）</span>`:""}</div>`:"";
+  const bar=policies.length>=4?`<div class="no-print polFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 8px;font-family:system-ui;font-size:12px"><span class="mini" style="margin:0">被保人</span>${chip(`全部 ${policies.length}`,!F.who,'data-pfw=""')}${whos.map(k=>chip(`${k} ${cnt[k]}`,F.who===k,`data-pfw="${k}"`)).join("")}<span class="mini" style="margin:0 0 0 8px">類型</span>${chip("全部",!F.type,'data-pft=""')}${chip("保障型",F.type==="prot",'data-pft="prot"')}${chip("理財型",F.type==="fin",'data-pft="fin"')}<input type="text" id="polQ" value="${esc(F.q)}" placeholder="搜尋商品／公司／保單號碼" style="width:200px;font-size:12px;padding:3px 7px;margin-left:8px"><button type="button" class="btn ghost sm" id="polFoldAll" style="padding:1px 9px;font-size:11px;margin-left:auto">全部收合</button><button type="button" class="btn ghost sm" id="polOpenAll" style="padding:1px 9px;font-size:11px">全部展開</button>${hidden?`<span class="mini" style="margin:0 0 0 6px">（已隱藏 ${hidden} 張）</span>`:""}</div>`:"";
   box.innerHTML=bar+(ordered.map(i=>card(policies[i],i)).join("")||(policies.length?`<div class="mini">沒有符合篩選的保單——清掉上方篩選再看。</div>`:`<div class="mini">尚未登錄保單——按「＋ 登錄一張理財型／傳承型保單」、「＋ 登錄一張保障型保單」或「📥 匯入原有規劃_保單整理表」。</div>`));
   box.querySelectorAll("[data-pfw]").forEach(b=>b.onclick=()=>{F.who=b.dataset.pfw;buildPolicies();});box.querySelectorAll("[data-pft]").forEach(b=>b.onclick=()=>{F.type=b.dataset.pft;buildPolicies();});
   {const q=$("polQ");if(q){q.oninput=()=>{clearTimeout(window._polQT);const v=q.value;window._polQT=setTimeout(()=>{F.q=v;buildPolicies();const q2=$("polQ");if(q2){q2.focus();try{q2.setSelectionRange(q2.value.length,q2.value.length);}catch(e){}}},250);};}
@@ -5786,7 +5786,8 @@ function premMergeDet(r,wb){try{if(!wb||!r||!r.pols)return r;const nm=wb.SheetNa
       const mx=parseFloat(col(row,"最高續保年齡","繳費至年齡","續保至年齡","最高繳費年齡"));if(mx>0)d.maxAge=mx; /* v407 */
       const cv0=parseFloat(String(col(row,"目前保價金")).replace(/,/g,""));if(cv0>0)d.cv0=cv0;const cr=parseFloat(col(row,"保價金推估利率%","保價金推估利率","推估利率%"));if(cr>0)d.cvRate=cr;const bn=col(row,"備註");if(bn&&d.note.indexOf(bn)<0)d.note=(d.note?d.note+"；":"")+bn;if(!d.member&&mem)d.member=mem;
       if(kind){const amt=parseFloat(String(col(row,"保額")).replace(/,/g,""))||0;const ta=col(row,"保障到期年齡");const unit=col(row,"單位");
-        if(/身故保額|^壽險$|主約壽險|壽險主約/.test(kind)){d.sa=amt;d.saTa=ta;}else{const k=detKindKey(kind);const kd=k?COV_KINDS.find(x=>x[1]===k):null;d.covs.push({kind:kd?kd[0]:kind,key:k,amount:amt,ta,unit,raw:kind,note:col(row,"備註")});}}
+        if(/身故保額|^壽險$|主約壽險|壽險主約/.test(kind)){d.sa=amt;d.saTa=ta;}else{let k=detKindKey(kind);const bn9=col(row,"備註");if(/^(住院手術|門診手術)$/.test(kind.replace(/\s/g,""))){if(/實支/.test(bn9))k+="R";else if(!/定額|手術表|比例|固定金額/.test(bn9)){d.surgDef=(d.surgDef||0)+1;r.surgDef=(r.surgDef||0)+1;}} /* v412：規格第 9 條——備註含實支→實支、含定額（或手術表／比例／固定金額）→定額、都沒有→定額並提示 */
+        const kd=k?COV_KINDS.find(x=>x[1]===k):null;d.covs.push({kind:kd?kd[0]:kind,key:k,amount:amt,ta,unit,raw:kd?kd[0]:kind,note:bn9});}}
       last=d;}
     r.pols.forEach(p=>{const q=dets.find(d=>d.policyNo&&p.policyNo&&d.policyNo===p.policyNo&&norm(d.product)===norm(p.product))||dets.find(d=>norm(d.product)&&norm(d.product)===norm(p.product)&&(!d.member||!p.member||d.member===p.member))||dets.find(d=>norm(d.product)&&norm(p.product)&&(norm(p.product).indexOf(norm(d.product))>=0||norm(d.product).indexOf(norm(p.product))>=0)&&(!d.member||!p.member||d.member===p.member));if(q)p.det=q;});
     r.detSheet=nm;r.detN=dets.length;}catch(e){console.warn(e);}return r;}
@@ -5823,7 +5824,7 @@ function premImpRender(){
     <div class="scRow">${r.members.map((m,i)=>`<label style="font-size:12px;font-family:system-ui">${m}</label><select data-pmem="${m}" style="font-family:'Noto Serif TC',serif;font-size:12px;padding:4px;border:1px solid var(--line);border-radius:6px;background:var(--paper)">${opts(guess(m,i))}</select>`).join("")}</div>
     <div style="overflow-x:auto;margin-top:6px"><table class="dt" style="margin:0"><tr><th>被保人</th><th>類型</th><th>保單號碼</th><th>商品名稱</th><th>今年（民國 ${thisROC}）起尚需繳</th><th>首年保費</th><th>合計</th><th>保價金表</th><th>保障明細</th></tr>
     ${r.pols.map(p=>{const fut=p.years.filter(y=>y.roc>=thisROC&&y.prem>0);const tot=fut.reduce((a,y)=>a+y.prem,0);const cva=premCvArr(p);
-      return `<tr><td>${p.member||"—"}</td><td>${p.cat||"—"}</td><td class="mono" style="font-size:11px">${p.policyNoRaw}</td><td style="text-align:left">${p.product}</td><td class="calc">${fut.length?`${fut.length} 年（${fut[0].roc}–${fut[fut.length-1].roc}）`:"已繳清"}</td><td class="calc">${fut.length?NT(fut[0].prem):"—"}</td><td class="calc">${NT(tot)}</td><td class="calc">${cva?`${cva.arr.length} 年（今年 ${NT(cva.arr[0])}）`:"—"}</td><td class="mini" style="margin:0">${p.det?`${p.det.covs.length?p.det.covs.length+" 項":""}${p.det.sa>0?(p.det.covs.length?"＋":"")+"身故保額":""}${p.det.rider==="附約"?"・附約":""}${p.det.cvRate>0&&!cva?"・保價金推估":""}`||"✓":"—"}</td></tr>`;}).join("")}</table></div>
+      return `<tr><td>${p.member||"—"}</td><td>${p.cat||"—"}</td><td class="mono" style="font-size:11px">${p.policyNoRaw}</td><td style="text-align:left">${p.product}</td><td class="calc">${fut.length?`${fut.length} 年（${fut[0].roc}–${fut[fut.length-1].roc}）`:"已繳清"}</td><td class="calc">${fut.length?NT(fut[0].prem):"—"}</td><td class="calc">${NT(tot)}</td><td class="calc">${cva?`${cva.arr.length} 年（今年 ${NT(cva.arr[0])}）`:"—"}</td><td class="mini" style="margin:0">${p.det?`${p.det.covs.length?p.det.covs.length+" 項":""}${p.det.sa>0?(p.det.covs.length?"＋":"")+"身故保額":""}${p.det.rider==="附約"?"・附約":""}${p.det.cvRate>0&&!cva?"・保價金推估":""}${p.det.surgDef?`・<span style="color:#b45309">手術 ${p.det.surgDef} 列未標實支／定額→預設定額</span>`:""}`||"✓":"—"}</td></tr>`;}).join("")}</table></div>
     <div class="scRow no-print" style="margin-top:8px"><button class="btn sm" id="btnPremApply" type="button">確認匯入保單登錄表（同名保單覆蓋、其餘新增；保障型保費改走歷年表，①-2 商業保險列歸零）</button><button class="btn ghost sm" id="btnPremCancel" type="button">取消</button></div>
     <p class="cap" style="margin:6px 0 0">匯入後每張保單帶一條逐年保費序列（本人年齡軸；今年以前的年份不取），保障型歸 ⑥。工作簿若有第二張「保價金表」（版型同保費表、格＝年末保價金），會一併帶成逐年保價金並把今年值填進「目前保價金」，藍圖多一條「含保單現價」虛線；沒有的話請於各保單填現價。已繳費期滿的保單也會登錄（保費序列為空）。</p></div>`;
   $("btnPremCancel").addEventListener("click",()=>{box.innerHTML="";premImpParsed=null;});
@@ -5890,6 +5891,7 @@ function premImpApply(){
   if(typeof policySync==="function")policySync();
   $("polMsg").textContent=`保單整理表已匯入 ✓ 新增 ${nNew}、覆蓋 ${nUpd}${nSkip?`、略過 ${nSkip}`:""}`;
   if(r.detSheet)notes.push(`已讀「${r.detSheet}」${r.detN} 張保單的明細（公司、險種、主約附約、保額、給付、到期年齡${r.pols.some(p=>p.det&&p.det.cvRate>0)?"、保價金推估":""}）`); /* v402 */
+  if(r.surgDef)notes.push(`<b>${r.surgDef} 列「住院手術／門診手術」備註沒寫實支或定額，已預設「定額」</b>——實支實付型請把給付項目改寫「住院手術（實支）」「門診手術（實支）」或備註加「實支」後重匯，或在保單卡片把給付種類改成（實支）`); /* v412 */
   if(!r.cvSheet&&finFirst>0)notes.push(`這份檔沒有「保價金表」（CSV 只有一張工作表，或工作簿沒放第二張）——理財型保單的<b>目前保價金／現價</b>請在 ${polRegName()} 各保單填`); /* v337 */
   {const nzP=policies.filter(p=>(p.coverages||[]).some(covPending)); /* v397 */const nz=nzP.length;if(nz){notes.push(`${nz} 張保障型保單已依第 4 列功能字建好「保障給付」種類，<b>金額請在各保單補上</b>（已展開、摘要列標「給付待填」）`);polOpenSet=new WeakSet();nzP.forEach(p=>polOpenSet.add(p));buildPolicies();}} /* v328／v336 */
   premImpBoxEl().innerHTML=`<div class="note good" style="margin-top:8px"><b>已匯入 ${nNew+nUpd} 張保單並同步。</b>${notes.length?"<br>"+notes.join("；"):""}<br>被保人為「子女／其他」的保單，要保人預設本人（保費由本人繳）；若要保人是子女本人，請在該保單改要保人，同步時會依保全架構處理。</div>`;
@@ -5898,6 +5900,7 @@ function premImpApply(){
 $("btnPremImp")&&$("btnPremImp").addEventListener("click",()=>{premImpHost="premImpBox";$("filePremImp").click();});
 /* v352：匯入只剩一個入口（⑥-3） */
 $("filePremImp")&&$("filePremImp").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;premImportFile(f);e.target.value="";});
+document.addEventListener("toggle",e=>{const d=e.target;if(d&&d.tagName==="DETAILS"&&d.parentElement&&d.parentElement.id==="polNote")window._polNoteOpen=d.open;},true); /* v411 */
 function policySync(){
   const cur=V("g_self_cur")||num("startAge");
   const warn=[],acts=[];
@@ -5984,7 +5987,7 @@ function policySync(){
   });
   buildFlows();if(typeof schedule==="function")schedule();
   $("polMsg").textContent="已同步 ✓";if($("polMsgProt"))$("polMsgProt").textContent="已同步 ✓";
-  $("polNote").innerHTML=`<div class="note good"><b>同步內容：</b>${acts.join("；")}。</div>`+
+  $("polNote").innerHTML=`<details class="note good" style="padding:8px 12px"${window._polNoteOpen?" open":""}><summary style="cursor:pointer;font-weight:700">同步內容（${acts.length} 項）<span class="mini" style="margin:0 0 0 8px;font-weight:400">點開看每張保單同步了什麼</span></summary><div style="margin-top:6px">${acts.join("；")}。</div></details>`+
     (warn.length?`<div class="note warn">${warn.join("<br>")}</div>`:"")+
     `<div class="mini" style="margin-top:4px">稅務提醒：大額或高齡投保有實質課稅檢核、死亡給付適用最低稅負制 3,740 萬免稅額——本表為簡化模型，不替代個案稅務意見。
     同步會<b>覆寫</b>資產表保價金、風險規劃已備（壽險列）、遺產稅保額/保價金欄位；若這些欄位另有手動調整，請於同步後複核。</div>`;
@@ -6051,7 +6054,7 @@ const ACC_FAC_DEF=2.5; /* v348：以第七級失能反推——傷害險第七�
 function rpLumpTx(w,k,g){const G=g||V;const m=G(`pr_${w}_${k}_mult`),t=G(`pr_${w}_${k}_treat`);if(!(m>0||t>0))return "";const f=k==="acc"?(G(`pr_${w}_acc_fac`)||ACC_FAC_DEF):1;const sal=rpSalary(w);return `年薪 ${NT(Math.round(sal))} × ${m} 倍${t>0?`＋治療費 ${NT(t)}`:""}${f!==1?` × ${f}`:""}`;}
 function rpNeed(w,k){return k==="resp"?respNeed(w):V(`pr_${w}_${k}_need`);}
 /* v406：⑥ 七列下面的細項列（限意外或口徑不同，另計、不入完成率） */
-const RP_SUB_PARENT={accHosp:"hosp",medRoom:"hosp",accMed:"med",medSurg:"med",medOpd:"med",medOpdSurg:"med",caHosp:"ca",accLtc:"ltc",ltcCare:"ltc",ltcLump:"ltc",accDeath:"resp"};
+const RP_SUB_PARENT={accHosp:"hosp",medRoom:"hosp",accMed:"med",medSurgR:"med",medSurg:"med",medOpd:"med",medOpdSurgR:"med",medOpdSurg:"med",caHosp:"ca",accLtc:"ltc",ltcCare:"ltc",ltcLump:"ltc",accDeath:"resp"};
 /* v407：拆列——同一個應備、各自算已備／規劃／差額／完成率（意外列只看意外本身，不加疾病及意外） */
 const RP_SPLIT={accHosp:"住院日額（意外）",accLtc:"失能安養（意外）",ltcCare:"失能安養（長照）"};
 function rpSplitLb(k){return `<span style="color:var(--sub)">└</span> ${RP_SPLIT[k]}<span class="protSub" style="display:inline;margin-left:6px;font-weight:400">${k==="ltcCare"?"長照保險金月額":"限意外所致"}・同一應備各自算完成率</span>`;}
@@ -6432,7 +6435,7 @@ function rpPolFill(it,p,k){it.pol=p.name;it.v=p.name;it.saDown=Math.round(rpPolC
 function rpPolAdjOf(p){ /* ⑥-3 卡片用：本方案對這張保單的調整 [{t,saDown}] */
   if(typeof rpIsPlan!=="function"||!rpIsPlan()||typeof bsAdj==="undefined")return [];const out=[];Object.entries(bsAdj).forEach(([k,L])=>{if(!/^pr_/.test(k))return;(L||[]).forEach(it=>{if((it.t==="解約"||it.t==="減額繳清")&&(it.pol||it.v)===p.name)out.push(it);});});return out;}
 function rpPolAdjLb(p){const L=rpPolAdjOf(p);if(!L.length)return "";return `<span class="polBadge" style="background:#fdf3f0;color:var(--gD);border:1px solid var(--gD)">本方案：${L.map(it=>it.t+(it.saDown?" −"+NT(Math.round(+it.saDown||0)):"")).join("、")}</span>`;}
-const RP_SUB=["accHosp","accMed","caHosp","medRoom","medSurg","medOpd","medOpdSurg","accDeath","accLtc","ltcCare","ltcLump","waiverOnly"]; /* v407：＋長期照顧保險金 */ /* v401：⑥-5 可選的 ⑥-3 細項（不進 ⑥ 七列、進保障總覽方案欄） */
+const RP_SUB=["accHosp","accMed","caHosp","medRoom","medSurgR","medSurg","medOpd","medOpdSurgR","medOpdSurg","accDeath","accLtc","ltcCare","ltcLump","waiverOnly"]; /* v407：＋長期照顧保險金 */ /* v401：⑥-5 可選的 ⑥-3 細項（不進 ⑥ 七列、進保障總覽方案欄） */
 function rpSubKinds(){return RP_SUB.map(k=>COV_KINDS.find(x=>x[1]===k)).filter(Boolean);}
 function rpCatLb(k){const r=RP_CATS.concat(RP_ALT).find(x=>x[0]===k);if(r)return r[1];const c=COV_KINDS.find(x=>x[1]===k);return c?c[0]:k;} /* v401 */
 function rpCatOpts(sel,kid){return RP_CATS.concat(RP_ALT).filter(([k])=>!(kid&&/resp|ltc2/.test(k))).map(([k,lb])=>`<option value="${k}"${k===sel?" selected":""}>${lb}</option>`).join("")+`<optgroup label="細項（不入 ⑥ 七列，進 ⑥-7 保障總覽）">${rpSubKinds().map(([lb,k,u])=>`<option value="${k}"${k===sel?" selected":""}>${lb}${u==="元"?"":`（${u}）`}</option>`).join("")}</optgroup>`;} /* v401 */
@@ -6582,7 +6585,7 @@ function rpImpRender(){const box=$("rpImpBox");if(!box||!rpImpParsed)return;cons
     const wxi=waiverInsOf(p.product); /* v397 */
     return p.fns.map((t,j)=>t.skip?`<div>${E(t.label)}→<small>僅保費豁免（不計一次金）${wxi?`・要保人豁免（${E(wxi)}）`:""}</small></div>`:`<div>${E(t.label)}→${t.k?(PROT_ROWS.find(r=>r[1]===t.k)||[t.k])[0].split("（")[0]:`<select data-pol="${i}" data-fn="${j}" data-f="k" style="font-size:12px;padding:2px">${catOpts("acc")}</select>`} <input type="number" data-pol="${i}" data-fn="${j}" data-f="amt" value="${t.amt>0?t.amt:(t.waiver?rpWaiverPV(p.pa,disc):"")}" placeholder="保額" style="width:104px;font-size:12px;padding:2px 4px"> <small>${unitOf(t.k||"acc")}${t.waiver?"・自動折現":""}${t.waiver&&wxi?`・<b>計入 ${E(wxi)}</b>（要保人豁免）`:""}</small></div>`).join("");};
   box.innerHTML=`<div style="border:1px solid var(--gold);border-radius:10px;padding:10px 12px;margin-top:8px;background:#fffaf0">
-    <div class="axTitle" style="margin-bottom:6px">${tgt?`整理表：選一欄套到這張保單的歷年保費`:`建議保單整理表：讀到 ${P.length} 張保單、${members.length} 位被保人——請對應家庭成員、確認功能與保額後建為方案建議`}</div>
+    <div class="axTitle" style="margin-bottom:6px">${tgt?`整理表：選一欄套到這張保單的歷年保費`:`建議保單整理表：讀到 ${P.length} 張保單、${members.length} 位被保人——請對應家庭成員、確認功能與保額後建為方案建議`}${!tgt&&rpImpParsed&&rpImpParsed.surgDef?`<div class="mini" style="margin:4px 0 0;color:#b45309">${rpImpParsed.surgDef} 列「住院手術／門診手術」備註沒寫實支或定額，已預設「定額」（實支實付型請改寫「住院手術（實支）」「門診手術（實支）」）</div>`:""}</div>
     <div class="scRow">${members.map((m,i)=>`<label style="font-size:12px;font-family:system-ui">${E(m)}</label><select data-pmem="${E(m)}" style="font-size:12px;padding:4px;border:1px solid var(--line);border-radius:6px;background:var(--paper)">${wopts(guess(m,i))}</select>`).join("")}${tgt?"":`<label style="font-size:12px;font-family:system-ui;margin-left:10px">豁免折現率</label><input type="number" id="rpImpDisc" value="${disc}" step="0.5" style="width:56px;font-size:12px;padding:3px"> <span class="mini" style="margin:0">%（雙豁免第二筆給付＝未繳保費折現，用第 1 年的值當失能已備）</span>`}</div>
     <div style="overflow-x:auto;margin-top:6px"><table class="dt" style="margin:0"><tr>${tgt?"<th></th>":""}<th>被保人</th><th>類型</th><th>商品名稱</th><th>今年起尚需繳</th><th>首年保費</th><th>合計</th>${tgt?"":"<th>進入</th><th style=\"text-align:left\">功能 → ⑥ 列／保額</th>"}</tr>
     ${P.map((p,i)=>`<tr>${tgt?`<td><input type="radio" name="rpImpPick" value="${i}"${i===0?" checked":""}></td>`:""}<td>${E(p.member||"—")}</td><td>${E(p.cat||"—")}${p.fns.length?`<div class="mini" style="margin:0">${E(p.fns.map(t=>t.label).join("＋"))}</div>`:""}</td><td style="text-align:left">${E(p.product)}${p.company||p.rider?`<div class="mini" style="margin:0">${E(p.company||"")}${p.rider==="附約"?`・附約${p.riderOfTxt?`（主約：${E(p.riderOfTxt)}）`:""}`:p.rider?"・主約":""}${p.detType?"・"+E(p.detType):""}</div>`:""}</td><td class="calc">${p.pa.length?`${p.pa.length} 年${p.off?`（${p.off} 年後起）`:""}`:"已繳清／無"}</td><td class="calc">${p.pa.length?NT(p.pa[0]):"—"}</td><td class="calc">${NT(p.pa.reduce((s,v)=>s+v,0))}</td>${tgt?"":`<td class="mini" style="margin:0">${p.fin?"①-3 轉入保單":"⑥-5 增加保額"}${p.fns.length>1||(p.fin&&p.fns.length)?"＋連結列":""}</td><td style="text-align:left">${fnCell(p,i)}</td>`}</tr>`).join("")}</table></div>
@@ -7685,14 +7688,14 @@ function a2HaveTbl(sl,P,E,N){ // v286：02 已有保險彙整（壽險自動分�
     <tr><td>原年保費（現況保單）</td><td class="n">${N(Math.round(prem))}</td><td class="cap">${inc>0?(()=>{const soc=typeof rpSocPrem==="function"?rpSocPrem():0,B=premBudget(inc);return `保費支出比 ${(prem/inc*100).toFixed(1)}%（÷ 家庭年收入 ${N(Math.round(inc))}；${premStat(prem/inc).lb}）${soc>0?`；含社保自付 ${((prem+soc)/inc*100).toFixed(1)}%`:""}；預算區間 ${N(Math.round(B.lo))}～${N(Math.round(B.hi))}`;})():""}</td></tr></table>`;}
 /* v328：保障總覽——四個檢視重點 ＋ 三情境日額合計、兩情境身故金合計、保費總計；現況／方案並排 */
 const YC_GROUPS=[["身故金｜保護身價",[["lifeTerm","壽險（定期）","元"],["lifeWhole","壽險（終身／儲蓄／投資型）","元"],["accDeath","意外身故（意外險）","元"]]],
- ["醫療｜保護存款",[["hosp","住院日額","元/日"],["medRoom","實支實付・病房費","元/日"],["med","實支實付・住院雜費","元"],["medSurg","實支實付・住院手術","元"],["medOpd","實支實付・門診雜費","元"],["medOpdSurg","實支實付・門診手術","元"],["accHosp","意外住院日額","元/日"],["accMed","意外實支實付","元"]]],
+ ["醫療｜保護存款",[["hosp","住院日額","元/日"],["medRoom","實支實付・病房費","元/日"],["med","實支實付・住院雜費","元"],["medSurgR","實支實付・住院手術（實支）","元"],["medSurg","住院手術（定額）","元"],["medOpd","實支實付・門診雜費","元"],["medOpdSurgR","實支實付・門診手術（實支）","元"],["medOpdSurg","門診手術（定額）","元"], /* v412：實支／定額分列不合併 */["accHosp","意外住院日額","元/日"],["accMed","意外實支實付","元"]]],
  ["重大傷病｜保護收入",[["ci","重大傷病／重大疾病","元"],["ca","癌症一次金（初罹重度）","元"],["caHosp","癌症住院日額","元/日"]]],
  ["失能長照｜保護尊嚴",[["acc","失能一次金合計（⑥ 已備：意外失能＋失能一次金＋雙豁免折現給付）","元"],["accPure","　其中 意外失能一次金","元"],["disLump","　其中 失能一次金（疾病＋意外）","元"],["waiver","　其中 雙豁免・失能一次金折現給付（疾病＋意外・未繳保費折現）","元"],["accOther","　其中 未分列（⑥ 已備手填／追蹤工具帶入、或方案新增未指定細項）","元"],["ltcLump","長期照顧一次金","元"],["accLtc","意外失能扶助金","元/月"],["ltc","失能扶助金（疾病及意外）","元/月"],["ltcCare","長期照顧保險金","元/月"]]]]; /* v332：年金月領屬理財型，不列保障；v334：意外分列 */
 function a2YcVals(sl,w){ /* 現況：基礎六項取 ⑥ 已備（與 ⑥ 同口徑）；壽險分列、細項、年金、保費取 ①-4 保單 */
   const v=a2Vals(sl),g=id=>parseFloat(v[id])||0,who=w==="sp"?"配偶":w==="self"?"本人":"子女";const pols=(w==="self"||w==="sp"||w==="kid0")?a2Pols(sl).filter(p=>(p.insured||"本人")===who&&p.src!=="bsAdj"):[]; /* v400：子女保單只掛第一位子女欄（與 ⑥-3 已備同口徑） */
   const o={};COV_BASE.forEach(k=>o[k]=g(`pr_${w}_${k}_have`));
   const covSum=k=>pols.reduce((a,p)=>a+(p.coverages||[]).filter(c=>covKey(c.kind)===k).reduce((s,c)=>s+(parseFloat(c.amount)||0),0),0);
-  ["accHosp","accMed","caHosp","medRoom","medSurg","medOpd","medOpdSurg","accDeath","accLtc","disLump","ltcLump","ltcCare","waiver","accPure"].forEach(k=>o[k]=covSum(k==="accPure"?"acc":k));
+  ["accHosp","accMed","caHosp","medRoom","medSurgR","medSurg","medOpd","medOpdSurgR","medOpdSurg","accDeath","accLtc","disLump","ltcLump","ltcCare","waiver","accPure"].forEach(k=>o[k]=covSum(k==="accPure"?"acc":k)); /* v412 */
   if(!(o.accDeath>0))o.accDeath=o.accPure>0?o.accPure:o.acc; /* v335：意外身故未分列 → 以保單登錄的意外失能一次金視同（沒有保單時退回 ⑥ 已備） */ /* v334：意外險未分列「意外身故」時，以意外失能一次金（⑥ 已備）視同意外身故 */
   o.altPair=pols.some(p=>{if(typeof polAltCov!=="function")return false;const S=polAltCov(p);return [...S].some(i=>/^(medRoom|hosp)$/.test(covKey(((p.coverages||[])[i]||{}).kind)));}); /* v403：有「實支病房費／住院日額」二擇一的實支附約 */
   o.lifeTerm=pols.filter(p=>/定期壽險/.test(p.type||"")).reduce((a,p)=>a+(+p.sa||0),0)+pols.reduce((a,p)=>a+polLifeRider(p),0); /* v382：含附約 */o.life=g(`pr_${w}_resp_have`);o.lifeWhole=Math.max(0,o.life-o.lifeTerm);
@@ -10869,11 +10872,12 @@ function plLockMsg(){const now=Date.now();if(now-plMsgT<1500)return;plMsgT=now;
   if(t&&plIsLocked(t)){e.preventDefault();e.stopPropagation();if(ev==="mousedown")plLockMsg();}},true));
 document.addEventListener("focusin",e=>{if(plIsLocked(e.target)){e.target.blur();plLockMsg();}},true);
 document.addEventListener("keydown",e=>{if(e.key!=="Tab"&&plIsLocked(document.activeElement)){e.preventDefault();plLockMsg();}},true);
-function plBaseIds(){const ids=new Set(["itmIncJson","itmExpJson","itmAssetJson","itmLiabJson","itmOvrJson","liMetaJson","inc_self_basis","inc_sp_basis"]);
+const PL_BIO_IDS=["bio_self_y","bio_self_sex","bio_hasSp","bio_sp_y","bio_sp_sex","bio_dep","famJson"]; /* v412：①-0a 基本資料與家族圖也納入「現況 vs 方案沿用資料」 */
+function plBaseIds(){const ids=new Set(["itmIncJson","itmExpJson","itmAssetJson","itmLiabJson","itmOvrJson","liMetaJson","inc_self_basis","inc_sp_basis"].concat(PL_BIO_IDS));
   document.querySelectorAll("#tblIncome [id],#tblExpense [id],#tblAsset [id],#tblLiab [id],#tblResp [id],#protNeedBox [id],#protHaveBox [id],#riskQBox [id]").forEach(el=>{if(!el.matches("input,select"))return;if(el.closest(".bsAdjCol,.adjHost"))return;if(el.type==="file"||el.type==="button")return;if(/^pr_.*_(plan|plantxt|ret|rettxt|retyrs)$/.test(el.id))return;ids.add(el.id);}); /* v302：③ 問卷、⑥-1～⑥-2（含社保、客戶自述）也納入「現況 vs 方案沿用資料」比對；方案欄位（plan／ret）除外 */
   ["pr_retnote_on","pr_retnote"].forEach(id=>ids.add(id));
   return [...ids].filter(id=>$(id));}
-function plDiffGroups(d){const g=new Set();d.forEach(id=>{if(id==="__policies")g.add("⑥-3 保單");else if(/^ra_/.test(id))g.add("③ 問卷");else if(/^p_|^pr_|^si_|^ss_/.test(id))g.add("⑥ 保障");else g.add("① 四大表");});return ["① 四大表","③ 問卷","⑥ 保障","⑥-3 保單"].filter(x=>g.has(x)).join("／");} /* v409 */
+function plDiffGroups(d){const g=new Set();d.forEach(id=>{if(id==="__policies")g.add("⑥-3 保單");else if(id==="__bioKids"||PL_BIO_IDS.includes(id))g.add("①-0a 基本資料／家族圖");else if(/^ra_/.test(id))g.add("③ 問卷");else if(/^p_|^pr_|^si_|^ss_/.test(id))g.add("⑥ 保障");else g.add("① 四大表");});return ["①-0a 基本資料／家族圖","① 四大表","③ 問卷","⑥ 保障","⑥-3 保單"].filter(x=>g.has(x)).join("／");} /* v409／v412 */
 function plAstNorm(v){let a=[];try{a=JSON.parse(v||"[]")||[];}catch(e){a=[];}return JSON.stringify(a.map(x=>{const o={...x};PL_AST_KEEP.concat(["_new"]).forEach(k=>delete o[k]);return o;}));}
 function plValNorm(id,v){if(id==="itmAssetJson")return plAstNorm(v);if(typeof v==="boolean")return v?"1":"";if(/Json$/.test(id)){try{return JSON.stringify(JSON.parse(v||(id==="liMetaJson"?"{}":"[]")));}catch(e){return String(v||"");}}
   const n=parseFloat(v);return (v===""||v==null)?"":isFinite(n)&&String(v).trim()!==""&&/^[-\d.]/.test(String(v).trim())?String(+n):String(v);}
@@ -10882,14 +10886,17 @@ function plPolNorm(L){return JSON.stringify((Array.isArray(L)?L:[]).filter(p=>p&
 function plDiff(){if(!bsIsPlan()||!wsSlots[0]||!wsSlots[0].snap||!wsSlots[0].snap.values)return [];const V0=wsSlots[0].snap.values;
   const d=plBaseIds().filter(id=>V0[id]!==undefined&&plValNorm(id,V0[id])!==plValNorm(id,plCurVal($(id))));
   if(Array.isArray(wsSlots[0].snap.policies)&&typeof policies!=="undefined"&&plPolNorm(wsSlots[0].snap.policies)!==plPolNorm(policies))d.push("__policies"); /* v409 */
+  if(Array.isArray(wsSlots[0].snap.bioKids)&&typeof bioKids!=="undefined"&&JSON.stringify(wsSlots[0].snap.bioKids.map(y=>bioYr(y)).filter(Boolean).sort())!==JSON.stringify(bioKids.map(y=>bioYr(y)).filter(Boolean).sort()))d.push("__bioKids"); /* v412 */
   return d;}
 function plSyncFromCur(){const d=plDiff();if(!d.length)return 0;const V0=wsSlots[0].snap.values;
   if(d.includes("__policies")){const keep=(typeof policies!=="undefined"?policies:[]).filter(p=>p&&p.src==="bsAdj");policies=JSON.parse(JSON.stringify((wsSlots[0].snap.policies||[]).filter(p=>p&&p.src!=="bsAdj"))).concat(keep);try{buildPolicies();}catch(e){}try{policySync();}catch(e){}} /* v409：⑥-3 保單以現況為準（方案影子筆保留，bsMountAll 會重建） */
-  d.forEach(id=>{if(id==="__policies")return;const el=$(id),v=V0[id];
+  if(d.includes("__bioKids")){bioKids=(wsSlots[0].snap.bioKids||[]).slice();if(typeof buildBioKids==="function")buildBioKids();} /* v412 */
+  d.forEach(id=>{if(id==="__policies"||id==="__bioKids")return;const el=$(id),v=V0[id];
     if(id==="itmAssetJson"){let cur=[],src=[];try{cur=JSON.parse(el.value||"[]")||[];}catch(e){}try{src=JSON.parse(v||"[]")||[];}catch(e){}
       const out=src.map(x=>{const o={...x};const m=cur.find(c=>(c.name||"")===(x.name||"")&&(c.bs||"")===(x.bs||"")&&(c.who||"")===(x.who||""));if(m)PL_AST_KEEP.forEach(k=>{if(m[k]!==undefined)o[k]=m[k];else delete o[k];});return o;});
       el.value=JSON.stringify(out);return;}
     if(el.type==="checkbox"||el.type==="radio")el.checked=!!v;else el.value=v;});
+  if(d.includes("__bioKids")||d.some(id=>PL_BIO_IDS.includes(id))){try{if(typeof fgRestore==="function")fgRestore();}catch(e){}try{if(typeof bioSync==="function")bioSync();}catch(e){}} /* v412：家族圖與 ①-0a 同步全站 */
   if(typeof itmLoad==="function"){itmLoad();buildItems();itmSync(true);}
   try{recalcData();}catch(e){}
   if(d.some(id=>/^ra_/.test(id)))try{renderRisk();}catch(e){}
@@ -10899,7 +10906,7 @@ function plSyncFromCur(){const d=plDiff();if(!d.length)return 0;const V0=wsSlots
   return d.length;}
 function rpLockInputs(){ /* v296：方案工作區 ⑥-1／⑥-2／⑥-3（含 ⑥-4 客戶自述）唯讀 */
   const on=typeof bsIsPlan==="function"&&bsIsPlan();
-  document.querySelectorAll("#tblResp input,#tblResp select,#protNeedBox input,#protNeedBox select,#protHaveBox input,#protHaveBox select,#pr_retnote_on,#pr_retnote").forEach(e=>{if(e.type==="hidden")return;
+  document.querySelectorAll("#tblResp input,#tblResp select,#protNeedBox input,#protNeedBox select,#protHaveBox input,#protHaveBox select,#pr_retnote_on,#pr_retnote").forEach(e=>{if(e.type==="hidden")return;if(e.closest&&e.closest(".polFilterBar"))return; /* v411：篩選列不鎖 */
     if(e.tagName==="SELECT"||e.type==="checkbox"){e.disabled=on;}else{e.readOnly=on||e.dataset.polLock==="1"||(/^p_(self|sp)_(mort|liq|lt)$/.test(e.id)&&$("p_mort_auto")&&$("p_mort_auto").checked);} /* v339 */e.classList.toggle("rpLock",on);if(on)e.title="方案工作區唯讀：請切回現況修改";else if(e.title==="方案工作區唯讀：請切回現況修改")e.title=e.dataset.polLock==="1"?"由保單登錄表各保單的「保障給付」自動加總；要改請改保單":"";});} /* v332：①-4 帶入的已備格在現況也唯讀 */
 function plLockRender(){const on=typeof bsIsPlan==="function"&&bsIsPlan();document.body.classList.toggle("plWs",on);if(typeof a2SimpleRefresh==="function")try{a2SimpleRefresh();}catch(e){} /* v329 */if(typeof nyMark==="function")try{nyMark();}catch(e){}try{rpLockInputs();}catch(e){}
   const notes=document.querySelectorAll(".plLockNote");if(!on){notes.forEach(n=>n.innerHTML="");return;}
@@ -14072,8 +14079,10 @@ function preCheck(){
   // 家族圖 vs 基本資料
   try{const S=FG.S;const pu=S.unions[S.primary];const fgSp=!!(pu&&pu.partner&&!pu.partner.dead&&(pu.type==="married"||pu.type==="separated"));
     if(fgSp!==hasSp)warn("⓪",`家族圖${fgSp?"有":"無"}配偶（婚姻／分居），①-0a 勾選「${hasSp?"有":"無"}配偶」——請在家族圖修正關係型態或成員`,"view_fam");
-    const nk=S.unions.reduce((a,u)=>a+(u.children||[]).filter(c=>!c.dead&&!c.step).length,0);const nb=(typeof bioKids!=="undefined"?bioKids:[]).filter(Boolean).length;
-    if(nk!==nb)warn("⓪",`家族圖在世子女 ${nk} 人，①-0a 子女出生年 ${nb} 筆——通常是家族圖子女沒填出生年`,"view_fam");
+    const fgK=[];S.unions.forEach(u=>(u.children||[]).forEach(c=>{if(!c.dead&&!c.step)fgK.push(c);}));const nk=fgK.length;let nb=(typeof bioKids!=="undefined"?bioKids:[]).filter(Boolean).length;
+    if(nk!==nb&&nk>0&&fgK.every(c=>bioYr(c.birth))&&typeof fgToBio==="function"){try{fgToBio();if(typeof buildBioKids==="function")buildBioKids();}catch(e){}nb=(typeof bioKids!=="undefined"?bioKids:[]).filter(Boolean).length;} /* v412：家族圖子女都有出生年 → 以家族圖為準補 ①-0a，不再空報 */
+    if(nk!==nb){const wsNm=(typeof wsSlots!=="undefined"&&wsSlots[wsActive||0])?wsSlots[wsActive||0].name:"現況";const miss=fgK.filter(c=>!bioYr(c.birth)).map(c=>c.name||c.label||"子女");
+      warn("⓪",`「${wsNm}」工作區：家族圖在世子女 ${nk} 人（出生年 ${fgK.map(c=>c.birth||"未填").join("、")||"—"}），①-0a 子女出生年 ${nb} 筆（${(typeof bioKids!=="undefined"?bioKids:[]).filter(Boolean).join("、")||"—"}）${miss.length?`——家族圖的 ${miss.join("、")} 沒填出生年，請在家族圖補上`:"——請到 ①-0a 按「重新同步全站」或在家族圖按「依 ①-0a 更新」"}`,"view_fam");}
     if(S.self.birth&&!bioYr(S.self.birth))warn("⓪",`家族圖本人出生年「${S.self.birth}」無法解析（填民國或西元數字）`,"view_fam");}catch(e){}
   // 退休支出
   if($("retireMonthly")&&!(num("retireMonthly")>0))warn("②-1","退休月支出為 0——退休期不會有生活費支出","view_goal");
@@ -15180,8 +15189,8 @@ if(typeof asInit==="function")try{asInit();}catch(e){console.warn(e);}
 <!-- ===== 客戶庫（v257）：本機 IndexedDB／Google 雲端硬碟 兩種存放層；客戶清單、狀態標籤、多版本、搜尋排序、我的／全部 ===== -->
 <style>
 /* v335：方案工作區保單登錄唯讀 */
-body.plWs :is(#polList,#polListProt) :is(input,select){pointer-events:none;background:#f1efe9!important;color:#6b7280!important}
-body.plWs :is(#polList,#polListProt) button:not([data-polopen]):not([data-polclose]){display:none!important}
+body.plWs :is(#polList,#polListProt) :is(input,select):not(.polFilterBar *){pointer-events:none;background:#f1efe9!important;color:#6b7280!important}
+body.plWs :is(#polList,#polListProt) button:not([data-polopen]):not([data-polclose]):not(.polFilterBar *){display:none!important} /* v411：篩選列在方案工作區照常可用 */
 body.plWs :is(#btnAddPol,#btnPremImp,#btnPolSync,#btnAddPolProt,#btnPremImpProt,#btnPolSyncProt,#premImpBox,#premImpBoxProt){display:none!important}
 /* v333：保障型卡片隱藏理財欄 */
 .polCard.polProt .finOnly{visibility:hidden}
