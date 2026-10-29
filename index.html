@@ -373,6 +373,7 @@ body[data-svc-tax="off"] .tab[data-view="view_est"],body[data-svc-tax="off"] .mt
 }
 
 /* ===== 總目錄（左側常駐，取代頂部分頁列與本頁目錄）===== */
+details.polSec>summary.polSecSum{cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px}details.polSec>summary.polSecSum::-webkit-details-marker{display:none}details.polSec>summary.polSecSum::before{content:"▸";font-size:11px;color:var(--sub);width:12px;flex:none}details.polSec[open]>summary.polSecSum::before{content:"▾"} /* v416 */
 #mainToc{position:fixed;top:0;left:0;bottom:0;width:262px;background:#fff;border-right:1px solid var(--line);overflow-y:auto;padding:14px 8px 40px;z-index:70;display:none}
 #mainToc.open{display:block;box-shadow:4px 0 20px rgba(0,0,0,.15)}
 @media(min-width:1100px){#mainToc{display:block}.wrap{margin-left:282px;margin-right:16px}}
@@ -516,7 +517,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v414</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v416</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -2938,9 +2939,19 @@ $("mainToc").addEventListener("click",e=>{
   mtShowView(kid.dataset.view);
   document.querySelectorAll("#mainToc .mtKid").forEach(k=>k.classList.toggle("sel",k===kid));
   const el=$(kid.dataset.t);if(el){if(el.tagName==="DETAILS")el.open=true;setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),40);}
+  window._mtSpyHold=Date.now()+1200; /* v416：點目錄後 1.2 秒內不被捲動偵測搶走標記 */
   $("mainToc").classList.remove("open");
 });
 $("mtBtn").addEventListener("click",e=>{e.stopPropagation();$("mainToc").classList.toggle("open");});
+/* v416：總目錄跟著捲動——目前分頁裡最接近視窗頂端的節點標 .sel，並把它捲進目錄可見範圍 */
+window._mtSpyHold=0;var _mtSpyT=null;
+function mtSpy(){if(Date.now()<window._mtSpyHold)return;const cur=document.querySelector(".view.on");if(!cur)return;const vid=cur.id;
+  const kids=[...document.querySelectorAll(`#mainToc .mtKid[data-view="${vid}"]`)].filter(k=>k.offsetParent!==null||true);if(!kids.length)return;
+  const lim=150;let best=null,bestTop=-Infinity;kids.forEach(k=>{const el=$(k.dataset.t);if(!el||el.offsetParent===null)return;const top=el.getBoundingClientRect().top;if(top<=lim&&top>bestTop){bestTop=top;best=k;}});
+  if(!best)best=kids.find(k=>{const el=$(k.dataset.t);return el&&el.offsetParent!==null;});if(!best||best.classList.contains("sel"))return;
+  kids.forEach(k=>k.classList.toggle("sel",k===best));const grp=best.closest(".mtGrp");if(grp)grp.classList.add("open");
+  const box=$("mainToc");if(box&&!box.matches(":hover")){const r=best.getBoundingClientRect(),b=box.getBoundingClientRect();if(r.top<b.top+40||r.bottom>b.bottom-40)best.scrollIntoView({block:"center",behavior:"smooth"});}}
+window.addEventListener("scroll",()=>{if(_mtSpyT)return;_mtSpyT=setTimeout(()=>{_mtSpyT=null;try{mtSpy();}catch(e){}setTimeout(()=>{try{mtSpy();}catch(e){}},500);},120);},{passive:true}); /* 捲動後版面可能再長高（延遲繪圖），0.5 秒後再對一次 */
 document.addEventListener("click",e=>{if(!e.target.closest("#mainToc,#mtBtn"))$("mainToc").classList.remove("open");});
 mtBuild();
 /* ---------- 字級（zoom）與說明顯示：偏好存瀏覽器 ---------- */
@@ -6045,6 +6056,10 @@ function rpAdjItems(w){ // 本方案對 w 的保障建議：[{key,k,idx,it}]
   Object.entries(bsAdj).forEach(([key,items])=>{const m=key.match(/^pr_([a-zA-Z0-9]+)_([a-zA-Z0-9]+)$/);if(!m||(w&&m[1]!==w))return;(items||[]).forEach((it,idx)=>out.push({key,w:m[1],k:m[2],idx,it}));});
   return out;}
 function rpIsPlan(){return typeof bsIsPlan==="function"&&bsIsPlan();}
+/* v416：⑥-3 下半部區塊收合——現況預設開、方案預設收；手動開收記住（鍵＝工作區類型＋區塊） */
+window._polSecOpen=window._polSecOpen||{};
+function polSecApply(){const pl=rpIsPlan();document.querySelectorAll("#protHaveBox details.polSec").forEach(d=>{const k=(pl?"P:":"C:")+d.dataset.sec;const v=window._polSecOpen[k];d.open=(v===undefined)?!pl:!!v;const sm=d.querySelector("summary");if(sm){let cp=sm.querySelector(".polSecCap");if(!cp){sm.insertAdjacentHTML("beforeend",`<span class="polSecCap mini" style="margin:0 0 0 10px;font-weight:400"></span>`);cp=sm.querySelector(".polSecCap");}cp.textContent=pl?"方案工作區預設收合・點開查看現況資料":"點標題收合";}});}
+document.addEventListener("toggle",e=>{const d=e.target;if(d&&d.tagName==="DETAILS"&&d.classList.contains("polSec")&&d.closest("#protHaveBox")){window._polSecOpen[(rpIsPlan()?"P:":"C:")+d.dataset.sec]=d.open;}},true);
 function rpHospAuto(w){return V(`pr_${w}_hosp_room`)+V(`pr_${w}_hosp_care`)+V(`pr_${w}_hosp_sal`);}
 /* v347：一次給付應備＝(年薪 × 倍數 ＋ 治療費) × 加權 */
 const RP_LUMP=[["acc","意外失能一次給付"],["ci","重大傷病一次給付"],["ca","癌症一次給付"]];
@@ -6091,16 +6106,16 @@ function buildProtNeed(){const box=$("protNeedBox");if(!box)return;const P=protP
 function buildProtHave(){const box=$("protHaveBox");if(!box)return;const P=protPersons();const hasSp=!$("bio_hasSp")||$("bio_hasSp").checked;
   const WS=hasSp?["self","sp"]:["self"];
   // 社會保險
-  let h=`<div class="axTitle" style="margin-bottom:6px">社會保險（身故給付＝投保薪資 × 基數）</div><table class="pt"><tr><th style="text-align:left;min-width:120px">險別</th>${WS.map(w=>`<th colspan="3">${rpWhoLb(w)}</th>`).join("")}</tr><tr><th></th>${WS.map(()=>`<th>投保薪資（月）</th><th>基數（月）</th><th>身故給付</th>`).join("")}</tr>`;
+  let h=`<details class="polSec" data-sec="ss" open><summary class="axTitle polSecSum" style="margin-bottom:6px">社會保險（身故給付＝投保薪資 × 基數）</summary><table class="pt"><tr><th style="text-align:left;min-width:120px">險別</th>${WS.map(w=>`<th colspan="3">${rpWhoLb(w)}</th>`).join("")}</tr><tr><th></th>${WS.map(()=>`<th>投保薪資（月）</th><th>基數（月）</th><th>身故給付</th>`).join("")}</tr>`;
   SI_KINDS.forEach(([k,lb])=>{h+=`<tr><td class="rn">${lb}</td>${WS.map(w=>{const a=`si_${w}_${k}_sal`,b=`si_${w}_${k}_mo`;regLb(a,`社保｜${rpWhoLb(w)}｜${lb}｜投保薪資`);regLb(b,`社保｜${rpWhoLb(w)}｜${lb}｜基數`);
     return `<td><input type="number" id="${a}" value="${dv(a)}" placeholder="0">${k==="labor"?`<div class="protSub" id="si_${w}_labor_hint" style="white-space:normal;text-align:left"></div>`:""}</td><td><input type="number" id="${b}" value="${dv(b)}" placeholder="0" step="1"></td><td class="calc" id="si_${w}_${k}_death" style="text-align:right"></td>`;}).join("")}</tr>`;});
   h+=`<tr class="sub"><td class="rn" style="font-weight:700">社保身故給付合計</td>${WS.map(w=>`<td colspan="2" class="cap" style="text-align:right">計入壽險已備 →</td><td class="calc" id="si_${w}_deathT" style="text-align:right;font-weight:700"></td>`).join("")}</tr></table>
-  <p class="cap">勞保：平均月投保薪資 × 基數（遺屬一次金 30 個月＋喪葬 5 個月＝35；或依年資）；公保、軍保、農保、國保依各制度基數填入。追蹤工具匯入的勞保投保薪資會自動帶入。<b>勞保投保薪資的入口</b>：B／A1 以 ②-1 已有退休金清單為準（清單有勞保列時這裡唯讀）；A2 直接在這裡填。</p>`;
+  <p class="cap">勞保：平均月投保薪資 × 基數（遺屬一次金 30 個月＋喪葬 5 個月＝35；或依年資）；公保、軍保、農保、國保依各制度基數填入。追蹤工具匯入的勞保投保薪資會自動帶入。<b>勞保投保薪資的入口</b>：B／A1 以 ②-1 已有退休金清單為準（清單有勞保列時這裡唯讀）；A2 直接在這裡填。</p></details>`; /* v416 */
   // 商業保險（每位成員一表）
   P.forEach(([w,nm])=>{const kid=isKid(w);const cur=!rpIsPlan();
     const r=(lb,id,auto,note)=>{const t=id+"txt";if(!auto){regLb(id,`保障｜${nm}｜${lb}｜已備`);regLb(t,`保障｜${nm}｜${lb}｜已備內容`);}
       return `<tr><td class="rn">${lb}${note?`<div class="protSub">${note}</div>`:""}</td><td>${auto?`<div class="calc" id="${id}C" style="text-align:right"></div>`:`<input type="number" id="${id}" value="${dv(id)}" placeholder="0">`}</td><td>${auto?`<div class="protSub" id="${id}Ctx"></div>`:`<input type="text" id="${t}" value="${dv(t)}" placeholder="內容說明（保單組成）" style="text-align:left">`}</td></tr>`;};
-    h+=`<div class="axTitle" style="margin:14px 0 6px">${esc(nm)}｜商業保險彙整</div><table class="pt"><tr><th style="text-align:left;min-width:170px">項目</th><th style="min-width:110px">已備（保額／保障）</th><th style="min-width:200px">內容說明</th></tr>`;
+    h+=`<details class="polSec" data-sec="have_${w}" open><summary class="axTitle polSecSum" style="margin:14px 0 6px">${esc(nm)}｜商業保險彙整</summary><table class="pt"><tr><th style="text-align:left;min-width:170px">項目</th><th style="min-width:110px">已備（保額／保障）</th><th style="min-width:200px">內容說明</th></tr>`;
     if(!kid){h+=`<tr class="sub"><td colspan="3" style="font-weight:700;text-align:left">壽險（身故給付）——由保單登錄表各保單的身故保額自動彙總（灰底唯讀，要改請改保單）</td></tr>`;
       RP_LIFE.forEach(([lk,lb])=>{h+=r(lb,`pr_${w}_life_${lk}`,true);});
       regLb(`pr_${w}_grplife`,`保障｜${nm}｜團體壽險｜已備`);
@@ -6114,11 +6129,11 @@ function buildProtHave(){const box=$("protHaveBox");if(!box)return;const P=protP
       h+=`<tr class="sub"><td class="rn" style="font-weight:700">子女保單合計（保額／現金價值）</td><td class="calc" id="pr_kid0_lifeTC" style="text-align:right;font-weight:700"></td><td class="protSub" id="pr_kid0_lifeTCtx"></td></tr>`;
       h+=`<tr class="sub"><td colspan="3" style="font-weight:700;text-align:left">醫療與重病／失能保障——<span style="font-weight:400">灰底＝由保單登錄表各保單的「保障給付」自動加總（要改請改保單）；白底＝保單沒涵蓋的項目，可直接手填</span></td></tr>`;}
     [["acc","意外（失能）／一次金（含失能一次金、雙豁免折現）"],["ci","重大傷病（重大疾病）／一次金"],["ca","癌症醫護／一次金"],["hosp","住院日額（元/日）"],["med","住院醫療雜費"],["ltc","失能安養（元/月）"]].forEach(([k,lb])=>{h+=r(lb,`pr_${w}_${k}_have`);});
-    h+=`</table>`;});
+    h+=`</table></details>`;}); /* v416 */
   // 保費與保費支出比
-  h+=`<div class="axTitle" style="margin:14px 0 6px">保費彙整（現況保單・年繳）</div><table class="pt" id="rpPremTbl"><tr><th style="text-align:left">被保險人</th><th>年保費</th><th>保費支出比</th></tr></table>
+  h+=`<details class="polSec" data-sec="prem" open><summary class="axTitle polSecSum" style="margin:14px 0 6px">保費彙整（現況保單・年繳）</summary><table class="pt" id="rpPremTbl"><tr><th style="text-align:left">被保險人</th><th>年保費</th><th>保費支出比</th></tr></table>
   <div id="rpPremBudget" class="protSub" style="text-align:left;margin:4px 0 0"></div>
-  <p class="cap">保費支出比＝年保費 ÷ 家庭年收入（①-1）；<b>以商業保險為主</b>，社會保險自付（①-1「健保」＋「社會保險（勞保、公保）」）並列參考。一般建議 10%～15%：低於 10% 多半是保障不足，超過 15% 會擠壓儲蓄。方案的解約／減額與新增保單對保費的影響看 ⑥-5「保費總和」。</p>
+  <p class="cap">保費支出比＝年保費 ÷ 家庭年收入（①-1）；<b>以商業保險為主</b>，社會保險自付（①-1「健保」＋「社會保險（勞保、公保）」）並列參考。一般建議 10%～15%：低於 10% 多半是保障不足，超過 15% 會擠壓儲蓄。方案的解約／減額與新增保單對保費的影響看 ⑥-5「保費總和」。</p></details>
   <details id="ssEst" style="margin:10px 0 0"><summary class="ssEstSum">🧮 社會保險自付估算器<span class="ssEstSub">①-1 還沒填勞保、健保自付額時，點開估算後按「→ 填入 ①-1」</span></summary>
   <table class="pt" id="ssTbl"><tr><th style="text-align:left">對象</th><th>投保身分</th><th>勞保投保薪資（月）</th><th>健保投保金額（月）</th><th>眷口</th><th>勞保自付／年</th><th>健保自付／年</th><th>合計／年</th></tr>
   ${WS.map(w=>{regLb(`ss_${w}_role`,`社保自付｜${rpWhoLb(w)}｜身分`);regLb(`ss_${w}_lsal`,`社保自付｜${rpWhoLb(w)}｜勞保投保薪資`);regLb(`ss_${w}_nhi`,`社保自付｜${rpWhoLb(w)}｜健保投保金額`);regLb(`ss_${w}_dep`,`社保自付｜${rpWhoLb(w)}｜眷口`);
@@ -6126,7 +6141,7 @@ function buildProtHave(){const box=$("protHaveBox");if(!box)return;const P=protP
   <tr class="sub"><td class="rn" style="font-weight:700">家庭合計（估）</td><td colspan="4" class="protSub" style="text-align:left;white-space:normal">費率：勞保 <input type="number" id="ss_lrate" value="${dv("ss_lrate")}" placeholder="12.5" step="0.1" style="width:58px">%（含就保 1%）・健保 <input type="number" id="ss_hrate" value="${dv("ss_hrate")}" placeholder="5.17" step="0.01" style="width:58px">%</td><td colspan="2" style="text-align:right"><button class="btn ghost sm" type="button" id="btnSsFill">→ 填入 ①-1</button></td><td class="calc" id="ss_total" style="text-align:right;font-weight:700"></td></tr></table>
   <div class="protSub" id="ssFillMsg" style="margin:2px 0 0"></div>
   <p class="cap">勞保自付＝投保薪資 × 費率 × 負擔比例 × 12；健保自付＝投保金額 × 費率 × 負擔比例 × (1＋眷口) × 12。受僱 20%／30%、負責人與職業工會沒有就業保險（費率 −1%）。空白格依 ①-0b、⑥-3 社保欄與 ①-1 月薪自動推（灰字＝自動值）。上面「社會保險自付」永遠讀 ①-1，這裡只是算給你填。社保是固定成本，方案不會動它，所以只並列、不打狀態。</p></details>`;
-  box.innerHTML=h;
+  box.innerHTML=h;try{polSecApply();}catch(e){} /* v416：套用收合預設 */
   try{const si=JSON.parse(($("siJson")||{}).value||"[]")||[];si.forEach(r=>{const w=/配偶/.test(r.who||"")?"sp":"self";const a=$(`si_${w}_labor_sal`),b=$(`si_${w}_labor_mo`);if(a&&!(parseFloat(a.value)>0)&&parseFloat(r.laborSalary)>0){a.value=Math.round(r.laborSalary);if(b&&!(parseFloat(b.value)>0))b.value=35;}});}catch(e){} // 追蹤工具 socialInsurance → 勞保投保薪資（基數預設 35：遺屬一次金 30＋喪葬 5）
 }
 /* ---- ⑥-4 風險需求表（診斷）---- */
@@ -6356,7 +6371,7 @@ function rcSvg(R,opts){ /* 堆疊柱＋壽險階梯線；寬 760 */
   let xs="";const stepA=n>40?10:5;for(let t=0;t<n;t+=stepA)xs+=`<text x="${(xT(t)+bw/2).toFixed(1)}" y="${H-Bm+14}" text-anchor="middle" font-size="10" fill="#666">${R.cur+t}</text>`;
   const pk=R.peak;const pt=pk.age-R.cur;const peakLb=`高點 ${(pk.v/1e4).toLocaleString("en-US",{maximumFractionDigits:0})} 萬（${pk.age} 歲）`;
   const insNow=R.line[0];const insLb=`壽險 ${(insNow/1e4).toLocaleString("en-US",{maximumFractionDigits:0})} 萬`;
-  const legend=order.filter(k=>R.parts[k].some(v=>v>0)).map(k=>`<span style="display:inline-flex;align-items:center;gap:4px;margin-right:10px"><i style="display:inline-block;width:12px;height:12px;background:${RC_COLORS[k]};border:1px solid #ccc"></i>${RC_LB[k]}</span>`).join("")+`<span style="display:inline-flex;align-items:center;gap:4px;margin-right:10px"><i style="display:inline-block;width:14px;height:0;border-top:2.2px solid #9c3a2e"></i>既有壽險</span>`+(R.isPlan?`<span style="display:inline-flex;align-items:center;gap:4px"><i style="display:inline-block;width:14px;height:0;border-top:2.2px dashed #1d6b4f"></i>既有＋方案新增</span>`:"");
+  const legend=order.filter(k=>R.parts[k].some(v=>v>0)).map(k=>`<span style="display:inline-flex;align-items:center;gap:4px;margin-right:10px"><svg width="12" height="12" style="flex:none"><rect x="0.5" y="0.5" width="11" height="11" fill="${RC_COLORS[k]}" stroke="#ccc"/></svg>${RC_LB[k]}</span>`).join("")+`<span style="display:inline-flex;align-items:center;gap:4px;margin-right:10px"><svg width="14" height="4" style="flex:none"><line x1="0" y1="2" x2="14" y2="2" stroke="#9c3a2e" stroke-width="2.2"/></svg>既有壽險</span>`+(R.isPlan?`<span style="display:inline-flex;align-items:center;gap:4px"><svg width="14" height="4" style="flex:none"><line x1="0" y1="2" x2="14" y2="2" stroke="#1d6b4f" stroke-width="2.2" stroke-dasharray="4 3"/></svg>既有＋方案新增</span>`:""); /* v415：圖例改 SVG，列印不掉色 */
   /* v385：每個年齡一個透明命中區（<title> 原生提示；⑥-1 另有浮動提示） */
   let hits="";for(let t=0;t<n;t++){const tip=rcTipText(R,t,"\n");hits+=`<rect class="rcHit" data-t="${t}" x="${xT(t).toFixed(1)}" y="${T}" width="${bw.toFixed(1)}" height="${ih}" fill="transparent" style="cursor:crosshair">${opts.noTitle?"":`<title>${E(tip)}</title>`}</rect>`;} /* v393：⑥-1 用浮動提示，不放 <title>（否則兩張卡片） */
   const svg=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;height:auto;display:block;font-family:system-ui" data-rcw="${R.w}">${g}${bars}${lines}${hits}
@@ -10914,7 +10929,7 @@ function rpLockInputs(){ /* v296：方案工作區 ⑥-1／⑥-2／⑥-3（含 �
   const on=typeof bsIsPlan==="function"&&bsIsPlan();
   document.querySelectorAll("#tblResp input,#tblResp select,#protNeedBox input,#protNeedBox select,#protHaveBox input,#protHaveBox select,#pr_retnote_on,#pr_retnote").forEach(e=>{if(e.type==="hidden")return;if(e.closest&&e.closest(".polFilterBar"))return; /* v411：篩選列不鎖 */
     if(e.tagName==="SELECT"||e.type==="checkbox"){e.disabled=on;}else{e.readOnly=on||e.dataset.polLock==="1"||(/^p_(self|sp)_(mort|liq|lt)$/.test(e.id)&&$("p_mort_auto")&&$("p_mort_auto").checked);} /* v339 */e.classList.toggle("rpLock",on);if(on)e.title="方案工作區唯讀：請切回現況修改";else if(e.title==="方案工作區唯讀：請切回現況修改")e.title=e.dataset.polLock==="1"?"由保單登錄表各保單的「保障給付」自動加總；要改請改保單":"";});} /* v332：①-4 帶入的已備格在現況也唯讀 */
-function plLockRender(){const on=typeof bsIsPlan==="function"&&bsIsPlan();document.body.classList.toggle("plWs",on);{const h=$("polH2");if(h)h.textContent=on?h.dataset.plan:h.dataset.cur;} /* v413 */if(typeof a2SimpleRefresh==="function")try{a2SimpleRefresh();}catch(e){} /* v329 */if(typeof nyMark==="function")try{nyMark();}catch(e){}try{rpLockInputs();}catch(e){}
+function plLockRender(){const on=typeof bsIsPlan==="function"&&bsIsPlan();document.body.classList.toggle("plWs",on);try{polSecApply();}catch(e){} /* v416 */{const h=$("polH2");if(h)h.textContent=on?h.dataset.plan:h.dataset.cur;} /* v413 */if(typeof a2SimpleRefresh==="function")try{a2SimpleRefresh();}catch(e){} /* v329 */if(typeof nyMark==="function")try{nyMark();}catch(e){}try{rpLockInputs();}catch(e){}
   const notes=document.querySelectorAll(".plLockNote");if(!on){notes.forEach(n=>n.innerHTML="");return;}
   let n=0;try{n=plDiff().length;}catch(e){}
   const nm=(wsSlots[wsActive]||{}).name||"方案";
