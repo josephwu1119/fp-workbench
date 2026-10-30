@@ -517,7 +517,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v423</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v424</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -5563,7 +5563,7 @@ function buildPolicies(){
     const open=polOpenSet.has(p)||!(p.name||"").trim();
     if(!open){const pr=Array.isArray(p.premArr)&&p.premArr.length?p.premArr[0]:(+p.prem||0);const cov=(p.coverages||[]).filter(c=>(parseFloat(c.amount)||0)>0).length,cov0=(p.coverages||[]).filter(covPending).length; /* v336；v397：不計者不算待填 */
       return `<div class="polCard polMini${isProt?" polProt":""}${p.rider==="附約"?" polRider":""}" data-polopen="${i}" title="點一下展開" style="border:1px solid ${p.src==="bsAdj"?"var(--gold)":"var(--line)"};border-radius:10px;padding:7px 11px;margin-bottom:6px;background:${p.src==="bsAdj"?"#fdf9ee":"#fff"};display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap">
-        <span style="color:var(--sub)">${p.rider==="附約"?"　└":"▸"}</span><span class="polBadge${isProt?" prot":""}">${isProt?"保障型":"理財型"}</span><b class="polNm">${esc(p.name)}</b>${rpPolAdjLb(p)}<span class="mini" style="margin:0">${esc(p.type||"")}${p.company?"・"+esc(p.company):""}${p.rider==="附約"?`・<b>附約</b>${p.riderOf?"（主約："+esc(p.riderOf)+"）":""}`:""}・${esc(p.insured||"本人")}${p.policyNo?`・No.${esc(p.policyNo)}`:""}</span>
+        <span style="color:var(--sub)">${p.rider==="附約"?"　└":"▸"}</span><span class="polBadge${isProt?" prot":""}">${isProt?"保障型":"理財型"}</span><b class="polNm">${esc(p.name)}</b>${rpPolAdjLb(p)}${polU15Lb(p)}<span class="mini" style="margin:0">${esc(p.type||"")}${p.company?"・"+esc(p.company):""}${p.rider==="附約"?`・<b>附約</b>${p.riderOf?"（主約："+esc(p.riderOf)+"）":""}`:""}・${esc(p.insured||"本人")}${p.policyNo?`・No.${esc(p.policyNo)}`:""}</span>
         <span class="mini" style="margin:0 0 0 auto;font-family:var(--mono)">${(+p.sa||0)>0?`保額 ${NT(+p.sa)}　`:""}${polLifeRider(p)>0?`附約壽險 ${NT(polLifeRider(p))}　`:""}${(+p.cv||0)>0?`現價 ${NT(+p.cv)}　`:""}${pr>0?`保費 ${NT(Math.round(pr))}/年`:""}${cov?`　給付 ${cov} 項`:""}${cov0?`　<b style="color:var(--gD)">給付待填 ${cov0} 項</b>`:""}</span>
         <button class="btn ghost sm no-print" type="button" data-polopen="${i}" style="padding:1px 8px">展開</button></div>`;}
     const sel=(f,opts)=>`<select data-pi="${i}" data-pf="${f}" ${POL_SEL}${ro}>${opts.map(o=>`<option${p[f]===o?" selected":""}>${o}</option>`).join("")}</select>`;
@@ -6451,6 +6451,11 @@ function rpPolCovAmt(p,k){ /* 該保單在給付項目 k 的已備金額：壽�
 function rpPolFill(it,p,k){it.pol=p.name;it.v=p.name;it.saDown=Math.round(rpPolCovAmt(p,k));const pr=Array.isArray(p.premArr)&&p.premArr.length?p.premArr[0]:(+p.prem||0);it.premDown=Math.round(pr);if(it.t==="解約")it.cv=Math.round(+p.cv||0);}
 function rpPolAdjOf(p){ /* ⑥-3 卡片用：本方案對這張保單的調整 [{t,saDown}] */
   if(typeof rpIsPlan!=="function"||!rpIsPlan()||typeof bsAdj==="undefined")return [];const out=[];Object.entries(bsAdj).forEach(([k,L])=>{if(!/^pr_/.test(k))return;(L||[]).forEach(it=>{if((it.t==="解約"||it.t==="減額繳清")&&(it.pol||it.v)===p.name)out.push(it);});});return out;}
+function polU15Lb(p){ /* v424：被保險人為未滿 15 歲子女、該人身故合計超過喪葬費用上限 */
+  try{const ins=p.insured||"本人";if(ins==="本人"||ins==="配偶")return "";const P=protPersons();const kid=P.find(([k,n])=>/^kid/.test(k)&&n===ins)||(ins==="子女"?P.find(([k])=>k==="kid0"):null);if(!kid)return "";
+    const age=a2KidAge(null,kid[0]);if(age===null||age>=15)return "";const own=(parseFloat(p.sa)||0)+(typeof polLifeRider==="function"?polLifeRider(p)||0:0)+(p.coverages||[]).reduce((a,c)=>a+(covKey(c.kind)==="accDeath"?(parseFloat(c.amount)||0):0),0);if(!(own>0))return "";
+    const cap=kidU15Cap(null),tot=kidDeathTot(ins,policies);if(tot<=cap)return "";
+    return `<span class="polBadge" style="background:#fbf3df;color:#8a5a00;border:1px solid #d7b86d" title="保險法 §107／§135：未滿 15 歲身故給付只有喪葬費用保險金有效，上限＝遺產稅喪葬費扣除額的一半；壽險＋意外險所有保單合併計算，其餘滿 15 歲時始生效">未滿 15 歲・${kid[1]} 身故合計 ${NT(Math.round(tot))} ＞ 上限 ${NT(cap)}</span>`;}catch(e){return "";}}
 function rpPolAdjLb(p){const L=rpPolAdjOf(p);if(!L.length)return "";return `<span class="polBadge" style="background:#fdf3f0;color:var(--gD);border:1px solid var(--gD)">本方案：${L.map(it=>it.t+(it.saDown?" −"+NT(Math.round(+it.saDown||0)):"")).join("、")}</span>`;}
 const RP_SUB=["accHosp","accMed","caHosp","caHospSub","medRoom","hospAlt","medSurgR","medSurg","medOpd","medOpdSurgR","medOpdSurg","accDeath","accLtc","ltcCare","ltcLump","waiverOnly"]; /* v407：＋長期照顧保險金 */ /* v401：⑥-5 可選的 ⑥-3 細項（不進 ⑥ 七列、進保障總覽方案欄） */
 function rpSubKinds(){return RP_SUB.map(k=>COV_KINDS.find(x=>x[1]===k)).filter(Boolean);}
@@ -7631,6 +7636,11 @@ const A1_PAL=["#5b8fd6","#e39a2c","#6bb36b","#c86b9a","#8a7bd1","#d8584a","#3fb3
 const A2_STAGES=[["住院期",["hosp","med"]],["休養與照護期",["ca","ci","acc","ltc"]],["身故後家庭責任期",["resp"]]];
 const A2_LB={resp:"身故後一次給付（責任分析）",resp2:"身故後一次給付（貸款清償後）",acc:"意外失能一次給付",ci:"重大傷病一次給付",ca:"癌症一次給付",hosp:"住院日額總和（元/日）",med:"住院醫療雜費",ltc:"每月失能安養給付（元/月）",ltc2:"每月失能安養（貸款清償後）"};
 function a2PolCls(p){return /醫療|失能|意外|定期壽險|終身壽險/.test(String(p.type||""))?"保障型":"理財型";} // 保費分類：保障型／理財型
+/* v424：未滿 15 歲身故給付上限（保險法 §107 第 2 項）＝遺產稅喪葬費扣除額 ÷ 2；v＝快照 values（沒給就讀目前畫面） */
+function kidU15Cap(v){const f=parseFloat(v&&v.estT_funeral!==undefined?v.estT_funeral:(typeof V==="function"?V("estT_funeral"):0))||1380000;return Math.round(f/2);}
+function a2KidAge(sl,w){if(!/^kid\d+$/.test(String(w||"")))return null;const i=parseInt(w.slice(3))||0;const bk=(sl&&sl.sn&&Array.isArray(sl.sn.bioKids))?sl.sn.bioKids:(typeof bioKids!=="undefined"?bioKids:[]);const y=bk[i];return (y&&typeof bioAge==="function")?bioAge(y):null;}
+function a2KidY15(sl,w){const i=parseInt(String(w||"").slice(3))||0;const bk=(sl&&sl.sn&&Array.isArray(sl.sn.bioKids))?sl.sn.bioKids:(typeof bioKids!=="undefined"?bioKids:[]);const y=typeof bioYr==="function"?bioYr(bk[i]):0;return y?y+15-1911:null;} /* 滿 15 歲那年（民國） */
+function kidDeathTot(insNm,pols){const L=(pols||[]).filter(p=>p.src!=="bsAdj"&&(p.insured||"本人")===insNm);let t=0;L.forEach(p=>{t+=parseFloat(p.sa)||0;if(typeof polLifeRider==="function")t+=polLifeRider(p)||0;(p.coverages||[]).forEach(c=>{if(covKey(c.kind)==="accDeath")t+=parseFloat(c.amount)||0;});});return t;} /* 壽險身故＋意外身故 合計 */
 function a2Vals(sl){ // 快照的欄位值（現況：wsSlots[0]；方案：各自快照）
   const sn=sl&&sl.sn;return (sn&&sn.values)||{};}
 function a2Adj(sl){let o={};try{o=JSON.parse((a2Vals(sl).bsAdjJson)||"{}")||{};}catch(e){o={};}return o;}
@@ -7741,15 +7751,19 @@ function a2YcSection(cur,pl,E,N,skipFn){
     const row=(lb,k,u,cls)=>`<tr${cls?` class="${cls}"`:""}><td>${lb}</td><td class="n">${cell(a[k],u)}</td>${b?`<td class="n"${Math.round(b[k])!==Math.round(a[k])?' style="font-weight:700;color:#b08a3c"':""}>${cell(b[k],u)}</td>`:""}</tr>`;
     const sum=o=>({dN:o.hosp,dA:o.hosp+o.accHosp,dC:o.hosp+o.caHosp,kN:o.life,kA:o.life+o.accDeath}); /* v334 */const sa=sum(a),sb=b?sum(b):null;
     const srow=(lb,k,u)=>`<tr><td>${lb}</td><td class="n">${cell(sa[k],u)}</td>${sb?`<td class="n"${Math.round(sb[k])!==Math.round(sa[k])?' style="font-weight:700;color:#b08a3c"':""}>${cell(sb[k],u)}</td>`:""}</tr>`;
+    const kAge=a2KidAge(cur,w),u15=kAge!==null&&kAge<15,cap=kidU15Cap(v),y15=u15?a2KidY15(cur,w):null; /* v424：未滿 15 歲身故給付上限 */
+    const krow=(lb,k)=>{if(!u15)return srow(lb,k,"元");const cellK=x=>{const c=Math.min(x,cap);return `${cell(c,"元")}${x>cap?`<div class="cap" style="font-size:10px;color:#8a5a00">保額合計 ${N(Math.round(x))}・超過部分滿 15 歲${y15?`（民國 ${y15} 年）`:""}起生效</div>`:""}`;};
+      return `<tr><td>${lb} <span style="font-family:system-ui;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:#fbf3df;color:#8a5a00;white-space:nowrap">未滿 15 歲・喪葬費用上限 ${N(cap)}</span></td><td class="n">${cellK(sa[k])}</td>${sb?`<td class="n">${cellK(sb[k])}</td>`:""}</tr>`;};
     h+=`<h3>${E(nm)}｜保障總覽</h3><table class="t a2App"><tr><th style="text-align:left">項目</th><th style="text-align:right">現況</th>${b?'<th style="text-align:right">方案</th>':""}</tr>
       ${YC_GROUPS.map(([g,rows])=>`<tr><td colspan="${b?3:2}" style="background:#f3efe4;font-weight:700">${g}</td></tr>`+rows.map(([k,lb,u])=>row(a.altKeys&&a.altKeys.has(k)?`${lb} <span style="font-family:system-ui;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:${k==="hospAlt"?"#e6f2ec":"#fbf3df"};color:${k==="hospAlt"?"#1d6b4f":"#8a5a00"};white-space:nowrap">${a.altKeys.has("hospAlt")?(k==="hospAlt"?"二擇一 B・日額":"二擇一 A・實支"):"二擇一"}</span>`:lb,k,u)).join("")).join("")}
       ${a.altPair?`<tr><td colspan="${b?3:2}" class="cap" style="font-size:10.5px;color:#666">二擇一（A 或 B 擇優給付，同一次住院不重複計算）：A＝實支實付・病房費＋住院雜費（憑單據）；B＝日額轉換權（不拿單據改領日額）。B 不入 ⑥ 住院日額已備，定額型住院日額（住院天數 × 日額、可疊加）才計入。</td></tr>`:""}
       <tr><td colspan="${b?3:2}" style="background:#e9eef5;font-weight:700">日額合計（住院一天領多少）</td></tr>${srow("一般住院","dN","元/日")}${srow("意外住院（＋意外日額）","dA","元/日")}${srow("癌症住院（＋癌症日額）","dC","元/日")}
-      <tr><td colspan="${b?3:2}" style="background:#e9eef5;font-weight:700">身故金合計</td></tr>${srow("一般身故（壽險）","kN","元")}${srow("意外身故（壽險＋意外險）","kA","元")}
+      <tr><td colspan="${b?3:2}" style="background:#e9eef5;font-weight:700">身故金合計</td></tr>${krow("一般身故（壽險）","kN")}${krow("意外身故（壽險＋意外險）","kA")}
+      ${u15?`<tr><td colspan="${b?3:2}" class="cap" style="font-size:10.5px;color:#666">${E(nm)} 現 ${kAge} 歲：依保險法第 107 條（傷害險依第 135 條準用），未滿 15 歲的身故給付只有「喪葬費用保險金」有效，上限＝遺產稅喪葬費扣除額 ${N(cap*2)} 的一半＝${N(cap)}，壽險＋意外險所有保單合併計算；其餘死亡給付於滿 15 歲時始生效。失能、醫療、實支、日額不受此限。</td></tr>`:""}
       <tr class="tot"><td>保費總計（年）</td><td class="n">${cell(a.prem,"元")}</td>${b?`<td class="n">${cell(b.prem,"元")}</td>`:""}</tr></table>`;});
   h+=`<p class="cap">家庭被動收入（①-1 理財收入）約 ${N(Math.round(fin/12))} 元／月。細項（實支各項、意外／癌症日額）來自各保單的「保障給付」登錄，未登錄顯示 —。</p>`;return h;}
 /* v330：⑥-7 面板——同 a2YcSection，資料直接取目前畫面（現況欄位＋①-4 保單）；方案工作區另算一欄 */
-function ycLiveSlots(){const vals=collectValues();const cur={name:"現況",sn:{values:vals,policies:(typeof policies!=="undefined"?policies:[]),kidCount:(typeof kidCount!=="undefined"?kidCount:0)}}; /* v400：子女欄 */
+function ycLiveSlots(){const vals=collectValues();const cur={name:"現況",sn:{values:vals,policies:(typeof policies!=="undefined"?policies:[]),kidCount:(typeof kidCount!=="undefined"?kidCount:0),bioKids:(typeof bioKids!=="undefined"?bioKids.slice():[])}}; /* v424：子女年齡 */ /* v400：子女欄 */
   const isPlan=typeof bsIsPlan==="function"&&bsIsPlan();const pl=isPlan?{name:(wsSlots[wsActive]||{}).name||"方案",sn:{values:{bsAdjJson:JSON.stringify(typeof bsAdj!=="undefined"?bsAdj:{})}}}:null;return {cur,pl};}
 function ycRender(){const box=$("ycBox");if(!box)return;try{const {cur,pl}=ycLiveSlots();const N=v=>Number(v||0).toLocaleString("en-US");
     box.innerHTML=a2YcSection(cur,pl,esc,N,typeof bsSkip==="function"?bsSkip:null);}catch(e){console.warn(e);box.innerHTML=`<div class="mini">無法產生：${esc(String(e))}</div>`;}}
@@ -7848,6 +7862,7 @@ function rptA2Build(X){
       const thL=t=>({"房貸／房租餘額":"房貸／房租<br>餘額","流動負債":"流動<br>負債","長期負債":"長期<br>負債"})[t]||E(t); /* v414：表頭不逐字直排 */
       const respT=P.w==="self"||P.w==="sp"?`<h3>${E(P.nm)}｜人身風險需求分析－責任</h3><table class="t"><tr>${P.resp.items.map(x=>`<th style="text-align:right;white-space:nowrap">${thL(x[0])}</th>`).join("")}<th style="text-align:right">合計</th></tr><tr>${P.resp.items.map(x=>`<td class="n">${Wn(x[1])}${x[2]?`<div class="cap" style="text-align:right">${E(x[2])}</div>`:""}</td>`).join("")}<td class="n" style="font-weight:700">${Wn(P.resp.total)}</td></tr></table>`:"";
       const med=P.rows.filter(r=>r.k==="hosp"||r.k==="med"),sev=P.rows.filter(r=>["ci","ca","acc","ltc"].includes(r.k));
+      const u15N=(()=>{const age=a2KidAge(curS,P.w);if(age===null||age>=15)return "";const cap=kidU15Cap(a2Vals(curS)),tot=kidDeathTot(P.nm,a2Pols(curS))||kidDeathTot("子女",a2Pols(curS));return `<p class="cap" style="border-left:3px solid #d7b86d;padding-left:8px">${E(P.nm)} 現 ${age} 歲，未滿 15 歲：依保險法第 107 條（傷害險依第 135 條準用），身故給付只有「喪葬費用保險金」有效，上限為遺產稅喪葬費扣除額的一半（目前 ${N(cap)}），壽險與意外險所有保單合併計算；其餘死亡給付於滿 15 歲時始生效。${tot>cap?`目前登錄的身故保額合計 ${N(Math.round(tot))}，超過上限的部分在滿 15 歲前不生效。`:""}因此子女的保障重點放在醫療、重大傷病與失能，不以身故保額為主。</p>`;})(); /* v424 */
       const mini=(t,L)=>L.length?`<h3>${E(P.nm)}｜人身風險需求分析－${t}</h3><table class="t"><tr>${L.map(r=>`<th style="text-align:right">${E(r.lb)}</th>`).join("")}</tr><tr>${L.map(r=>`<td class="n">${Wn(r.need)}</td>`).join("")}</tr></table>`:"";
       let tb=`<h3>${E(P.nm)}｜人身風險需求總表</h3><table class="t a2Tot"><colgroup><col style="width:15%"><col style="width:29%"><col style="width:16%"><col style="width:16%"><col style="width:14%"><col style="width:10%"></colgroup><tr><th>人身風險階段</th><th>需求項目</th><th style="text-align:right">應備額度</th><th style="text-align:right">已備</th><th style="text-align:right">差額</th><th style="text-align:center">完成率</th></tr>`;
       A2_STAGES.forEach(([st,keys])=>{const L=P.rows.filter(r=>keys.includes(r.k));if(!L.length)return;L.forEach((r,i)=>{const cov=r.have,gap=cov-r.need;
@@ -7858,7 +7873,7 @@ function rptA2Build(X){
         if(H)cols.push([`住院日額總和（元/日）${parts?"<div class=\"cap\" style=\"font-weight:400\">＝病房＋看護＋薪資補償</div>":""}`,`<b>${Wn(H.need)}</b>`]);if(M)cols.push(["住院醫療雜費",Wn(M.need)]);
         return `<h3>${E(P.nm)}｜人身風險需求分析－醫療${hp?`<span style="font-weight:400;color:#666;font-size:.85em">　期望醫院：${E(hp)}</span>`:""}</h3><table class="t"><tr>${cols.map(c=>`<th style="text-align:right">${c[0]}</th>`).join("")}</tr><tr>${cols.map(c=>`<td class="n">${c[1]}</td>`).join("")}</tr></table>`;})(); /* v298：醫療表與責任表同型，組成各一欄 */
       let rcH="";try{if((P.w==="self"||P.w==="sp")&&typeof rcCompute==="function"){const R=rcCompute(P.w);if(R.peak.v>0)rcH=`<h3>${E(P.nm)}｜家庭責任曲線</h3>${rcSvg(R,{w:720,h:280})}<p class="cap">${rcSummary(R)}</p>`;}}catch(e){} /* v379 */
-      body+=`<div class="a2Blk a2Person"${pi>0?' style="page-break-before:always;break-before:page"':""}>${respT}${rcH}${medT}${mini("重病／失能",sev)}${a2HaveTbl(curS,P,E,N)}</div><div class="a2Blk">${tb}</div>`;}); /* v414：配偶、子女各自新頁 */
+      body+=`<div class="a2Blk a2Person"${pi>0?' style="page-break-before:always;break-before:page"':""}>${respT}${u15N}${rcH}${medT}${mini("重病／失能",sev)}${a2HaveTbl(curS,P,E,N)}</div><div class="a2Blk">${tb}</div>`;}); /* v414：配偶、子女各自新頁 */
     {const cv=a2Vals(curS);const on=cv.pr_retnote_on===true||cv.pr_retnote_on==="true";if(on)body+=`<div class="a2Ret"><b>客戶自述：</b>${E((cv.pr_retnote||"").trim()||"打算以自有資產承擔部分風險（尚未量化）")}——目前尚未量化；規劃方案時以「風險自留」指定哪筆資產、承擔多少、幾年內到位，再決定保險要補多少。</div>`;}
     body+=`<p class="cap">應備＝⑥-1 責任分析與 ⑥-2 各項需求；已備＝已登錄保單的保障給付（含社保身故給付）。完成率＝已備 ÷ 應備（純保險口徑；以資產承擔的「風險自留」在規劃方案中決定）。</p>`;
     h+=S("人身風險診斷",body);
