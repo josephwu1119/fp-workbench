@@ -517,7 +517,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v426</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v429</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -1299,7 +1299,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <div class="fld"><div class="lb"><span>退休組合 σ %</span></div><input type="number" id="sigB" value="20" step="0.5"></div>
   </div>
   <label class="chk"><input type="checkbox" id="deRisk" checked><span>退休後降風險（glide path：退休起投組改用提領期 μ／σ；既有部位同步降 μB−μC；與 ④-1 的 glide 同口徑）</span></label>
-  <label class="chk" title="v378 起預設與 ④-1 同口徑：每年結餘只有 ①-2 理財支出（續扣，含方案處方）進投資組合，其餘與存款留在活存（利率＝④-1 活存利率）；勾選＝舊口徑，結餘與存款全部以退休組合 μ 滾"><input type="checkbox" id="simAllIn"><span>結餘全部投入投資組合（舊口徑；預設關＝只投入 ①-2 理財支出，其餘留活存，與 ④-1 同）</span></label>
+  <label class="chk" title="v378 起預設與 ④-1 同口徑：每年結餘只有 ①-2 理財支出（續扣）與 ④-2 處方／④-3 平衡型的投入（v429 起，視同約定扣款；期初單筆從活存移入）進投資組合，其餘與存款留在活存（利率＝④-1 活存利率）；勾選＝舊口徑，結餘與存款全部以退休組合 μ 滾"><input type="checkbox" id="simAllIn"><span>結餘全部投入投資組合（舊口徑；預設關＝只投入 ①-2 理財支出，其餘留活存，與 ④-1 同）</span></label>
   <div class="row2">
     <div class="fld"><div class="lb"><span>提領期 μ %</span></div><input type="number" id="muC" value="5" step="0.1"></div>
     <div class="fld"><div class="lb"><span>提領期 σ %</span></div><input type="number" id="sigC" value="10" step="0.5"></div>
@@ -1918,7 +1918,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <label class="chk" style="margin:0"><input type="checkbox" id="rpt_s14" checked><span>12-2 逐年資金流向</span></label>
     <span class="rptBdWrap" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--sub);font-family:system-ui">細度<div class="segRow" id="rptBdSeg" style="margin:0"><button type="button" class="seg" data-lv="n">總額</button><button type="button" class="seg" data-lv="g">大類</button><button type="button" class="seg on" data-lv="r">細類</button><button type="button" class="seg" data-lv="i">逐筆</button></div><input type="hidden" id="rpt_bdLv" value="r"></span>
     <label class="chk" style="margin:0"><input type="checkbox" id="rpt_s13" checked><span>13 聯絡我們</span></label>
-    <label class="chk a2keep" style="margin:0" title="開業醫（D 軌）：報告書不印年結餘列，申報階梯只印在方案章節並加註法定標準；①-0 職業身分＝開業醫時自動勾選"><input type="checkbox" id="rpt_clinic"><span>開業醫模式</span></label></div>
+    <input type="checkbox" id="rpt_clinic" style="display:none"><span class="mini a2keep" id="rptClinicNote" style="margin:0;font-weight:400" title="開業醫模式自動判定：①-0a 職業身分＝開業醫 ＋ 服務方案＝B 全方位 ＋ 勾「＋ 稅務及傳承規劃」。啟用時報告書不印年結餘／儲蓄率列，申報階梯（目標所需申報水準）只印在方案章節並加註「全額如實申報為法定標準」"></span></div>
   <div class="scRow no-print"><button class="btn" id="btnRptOpen">📄 產生報告書（新分頁）</button><button class="btn ghost" id="btnRptDl">⬇ 下載 HTML</button><span class="status" id="rptMsg"></span></div>
 </div>
 
@@ -2055,6 +2055,8 @@ function simulate(P,N,collect){
   /* v378：結餘口徑——只有 ①-2 理財支出（續扣）進投組，其餘留活存 Z（利率 r0）；allIn＝舊口徑 */
   const allIn=!!P.allIn,r0Z=Math.max(0,P.r0||0),keepOnZ=P.keepOn!==false;
   const keepArr=new Float64Array(nY);if(!allIn&&typeof P.keepFn==="function"){for(let t=0;t<nY;t++){let k=0;try{k=P.keepFn(P,t)||0;}catch(e){k=0;}keepArr[t]=Math.max(0,k);}}
+  if(!allIn&&P.planArr&&P.planArr.length){for(let t=0;t<nY&&t<P.planArr.length;t++){const a=P.planArr[t];if(isFinite(a)&&a>0)keepArr[t]+=a;}} /* v429：④-2 處方＋④-3 平衡型的月投＝約定扣款，進投資組合（與 ④-1 藍圖同口徑） */
+  const planLump0=(!allIn&&P.planLump>0)?P.planLump:0;
 
   let okH=0,okHS=0,okR=0,okB=0,raid=0;
   let spendSum=0,spendN=0,cutPaths=0,bucketUseSum=0;
@@ -2064,6 +2066,7 @@ function simulate(P,N,collect){
     let A=Math.max(0,P.houseAcc0-emOffA),B=Math.max(0,P.retireAcc0-emOffB),C=0,D=0,Z=0; // C＝現金桶、D＝收益桶、Z＝活存（v378）；A／B 先扣掉專款與不動用部位
     if(emOffB>P.retireAcc0)A=Math.max(0,A-(emOffB-P.retireAcc0)); // 定存專款超過可動用存款的部分，從投資池扣
     if(!allIn){Z=B;B=0;} /* v378：存款（扣預備金）留在活存，不自動變投資 */
+    if(planLump0>0){const l=Math.min(Z,planLump0);Z-=l;B+=l;} /* v429：④-2／④-3 期初單筆從活存移到投資組合 */
     let bought=false,hOK=!buyOn,hSelf=!buyOn,rd=false,depAge=-1,bqFail=false;
     let W=0,prevW=0,r0=0,cut=false,bucketUse=0,wInit=false,bktInit=false;
     const path=collect?new Float64Array(nY):null;
@@ -2250,6 +2253,7 @@ function readP(){
     seqScen:$("seqScen").value,
     bucketOn:$("bucketOn").checked, cashYears:num("cashYears"), cashRate:num("cashRate")/100,
     allIn:!!($("simAllIn")&&$("simAllIn").checked), r0:(typeof bpDeriveR0==="function")?bpDeriveR0():0, keepOn:!$("bp_keepOnShort")||$("bp_keepOnShort").checked, keepFn:(typeof bpKeepYearW==="function")?bpKeepYearW:null, /* v378 */
+    planArr:(typeof svPlanArr==="function")?svPlanArr():null, planLump:(typeof svPlanLump==="function")?svPlanLump():0, /* v429 */
     bondYears:num("bondYears"), bondMu:num("bondMu")/100, bondSigma:num("bondSigma")/100,
     annuityMonthly:num("annuityMonthly"), flows:(typeof flows!=="undefined"?flows:[]),
     stressRet:num("stressRet")/100, stressInfl:num("stressInfl")/100,
@@ -7248,13 +7252,17 @@ function rptBuild(){
   const secSummary=(cols)=>{const row=(l,k,f)=>`<tr><td>${l}</td>${cols.map((sl,j)=>`<td class="n${j?" b":""}">${f(sl.sum?sl.sum[k]:null)}</td>`).join("")}</tr>`;
     const W_=v=>v==null?"—":Wf(v);
     return `<section><h2>摘要：現況${cols.length>1?" vs 方案":""}</h2><table class="t"><tr><th>指標</th>${cols.map(sl=>`<th>${E(sl.name)}${sl.i?"（執行建議後）":"（維持目前行為）"}</th>`).join("")}</tr>
-    ${row("退休成功率（蒙地卡羅）","srRetire",pct)}${row("綜合成功率（含所有目標）","srBoth",pct)}${row("期末資產中位數","finalP50",W_)}${row("生涯藍圖期末資產","bpFinal",W_)}${row("年收入（稅後帶入）","income",W_)}${row("年支出（帶入）","expense",W_)}
-    ${clinicMode?"":`<tr><td>年結餘</td>${cols.map((sl,j)=>`<td class="n${j?" b":""}">${sl.sum&&sl.sum.income!=null?Wf(sl.sum.income-sl.sum.expense):"—"}</td>`).join("")}</tr>`}${svcTaxOn()?row("預估遺產稅（元）","estTax",v=>v==null?"—":N(v)):""}</table>
-    <p class="cap">各欄取該工作區最近快照（蒙地卡羅 ${NT(Math.max(600,num("nsim")||0))} 條路徑、同種子）。</p></section>`;};
+    ${(()=>{const rc=sl=>(sl.rpt&&sl.rpt.retCompl!=null)?sl.rpt.retCompl:null;return `<tr><td><b>退休完成率（生涯藍圖・主數字）</b></td>${cols.map((sl,j)=>`<td class="n${j?" b":""}">${pct(rc(sl))}</td>`).join("")}</tr>`;})() /* v429：主數字＝藍圖完成率，成功率是把握度 */}
+    ${row("退休成功率（蒙地卡羅・把握度）","srRetire",pct)}${row("綜合成功率（含所有目標・把握度）","srBoth",pct)}${row("期末資產中位數","finalP50",W_)}${row("生涯藍圖期末資產","bpFinal",W_)}${(()=>{const tot=sl=>{const r0=rowsOf(sl);if(!r0)return null;const inc=Object.values(r0.inc).reduce((a,b0)=>a+b0,0),exp=Object.values(r0.exp).reduce((a,b0)=>a+b0,0);return {inc,exp,net:inc-exp};}; /* v428：與 03 收支表同口徑 */
+      const T=cols.map(tot);const r=(l,f)=>`<tr><td>${l}</td>${cols.map((sl,j)=>`<td class="n${j?" b":""}">${T[j]?Wf(f(T[j])/1e4):"—"}</td>`).join("")}</tr>`;
+      return r("家庭總收入（年）",t=>t.inc)+r("家庭總支出（年・含稅與保費）",t=>t.exp)+(clinicMode?"":r("年結餘",t=>t.net));})()}${svcTaxOn()?row("預估遺產稅（元）","estTax",v=>v==null?"—":N(v)):""}</table>
+    <p class="cap">各欄取該工作區最近快照（蒙地卡羅 ${NT(Math.max(600,num("nsim")||0))} 條路徑、同種子）。看法：先看<b>完成率</b>（藍圖逐年推算、整個家庭一起算的主數字），再看<b>成功率</b>（把市場波動放進來，運氣不好時撐不撐得住的把握度）；兩者用同一套報酬假設。</p></section>`;};
   const secFamily=()=>{ // 00 背景與目標：家族圖＋收支資產摘要＋財務目標總額（照簡報版型）
     const svg=(typeof fgSvgForReport==="function")?fgSvgForReport():"";
-    recalcData();const d=D||{};const W_=v=>fmtW((v||0)/1e4);
-    const re=(V("as_2_0")||0)+(V("as_1_9")||0);
+    recalcData();let d=D||{};const W_=v=>fmtW((v||0)/1e4);
+    let re=(V("as_2_0")||0)+(V("as_1_9")||0);
+    {const r0=curS?rowsOf(curS):null;if(r0){const sm=(o,pre)=>Object.entries(o).filter(([k])=>!pre||k.startsWith(pre)).reduce((a,[,v])=>a+(+v||0),0); /* v428：00 一律印現況（報告書常在方案工作區產生） */
+      const inc=sm(r0.inc),exp=sm(r0.exp);d={incTotal:inc,expTotal:exp,surplus:inc-exp,cashlike:sm(r0.as,"0_"),inv:sm(r0.as,"1_"),liTotal:sm(r0.li)};re=(+r0.as["2_0"]||0)+(+r0.as["1_9"]||0);}}
     const cur=V("g_self_cur")||a0,dSp=(V("g_sp_cur")||cur)-cur;
     const rows=[];
     const retRow=(w,lb)=>{const ret=V(`g_${w}_ret`),life=V(`g_${w}_life`),pvm=V(`g_${w}_pvm`),i=V(`g_${w}_infl`)/100;if(!(pvm>0))return;
@@ -7320,24 +7328,25 @@ function rptBuild(){
     ${cols.map(sl=>{const R2=sl.rpt||{};const em=(R2.earmarks||[]),nt=(R2.svNotes||[]);if(!em.length&&!nt.length)return "";
       const byUse={};em.forEach(e=>{(byUse[e.label]=byUse[e.label]||[]).push(e);});
       const emRows=Object.keys(byUse).map(lb=>`<tr><td>${E(lb)}</td><td>${byUse[lb].map(e=>`${E(e.name)} ${N(e.amt)}${e.auto?"（自動指派）":""}`).join("、")}</td><td class="n">${N(byUse[lb].reduce((a,e)=>a+e.amt,0))}</td><td>${lb==="不動用"?"永遠不變現":lb==="備用"?"有需要就贖回，不綁目標":lb==="退休"?"退休前鎖定，退休當年起可動用":"到期前鎖定，到期優先支付該目標"}</td></tr>`).join("");
-      const ntRows=nt.map(x=>`<tr><td>${E(x.label)}</td><td class="c">${x.kind==="budget"?(x.cov>=0.999?"結餘可支應":"結餘不足"):pill(x.cov)}</td><td>${E(x.text)}</td></tr>`).join("");
-      return `<h3>${cols.length>1?E(sl.name)+"：":""}既有部位用途與藍圖對照</h3>${emRows?`<table class="t"><tr><th>用途</th><th>部位</th><th>合計（元）</th><th>藍圖處理</th></tr>${emRows}</table>`:""}${ntRows?`<table class="t"><tr><th>目標</th><th>專戶完成率<br><small style="font-weight:400">（④-3 新投入）</small></th><th>藍圖對照（這個目標實際上怎麼付）</th></tr>${ntRows}</table><p class="cap">專戶完成率＝④-3 只用剩餘資源（現金池、月結餘）與指定給該目標的既有部位另開專戶的完成率，只看「這個專戶夠不夠」；藍圖對照＝整個家庭資產負債表一起算時，該目標到期怎麼付、有沒有動到老本。兩者可能一高一低：專戶夠、但整個家庭撐不到那一年，以藍圖與蒙地卡羅為準。</p>`:""}`;}).join("")}</section>`;};
+      const ntRows=nt.map(x=>`<tr><td>${E(x.label)}</td><td class="c" style="font-size:11px;color:#666">${x.kind==="budget"?(x.cov>=0.999?"結餘可支應":"結餘不足"):(x.cov==null?"—":(x.cov*100).toFixed(0)+"%")}</td><td>${E(x.text)}</td></tr>`).join(""); /* v429：附註口徑不用彩色 pill，主數字只有上表的完成率 */
+      return `<h3>${cols.length>1?E(sl.name)+"：":""}既有部位用途與藍圖對照</h3>${emRows?`<table class="t"><tr><th>用途</th><th>部位</th><th>合計（元）</th><th>藍圖處理</th></tr>${emRows}</table>`:""}${ntRows?`<table class="t"><tr><th>目標</th><th><small style="font-weight:400">專戶自給率（附註・④-3 新投入）</small></th><th>藍圖對照（這個目標實際上怎麼付）</th></tr>${ntRows}</table><p class="cap">專戶自給率是附註：④-3 只用剩餘資源（現金池、月結餘）與指定給該目標的既有部位另開專戶，看「這個專戶自己夠不夠」；主數字是上表的完成率（整個家庭資產負債表一起算）。兩者可能一高一低：專戶夠、但整個家庭撐不到那一年，以完成率與成功率為準。</p>`:""}`;}).join("")}</section>`;};
   // 03／04：cols＝要並排的工作區；withDiff＝最後一欄加「差異（vs 第一欄）」
   const secCashflow=(cols,tag,withDiff)=>{cols=cols.filter(sl=>rowsOf(sl));const R=cols.map(rowsOf);if(!R[0])return "";const base=R[0]; // 只有輕量快照（自動存檔）的工作區沒有明細列，略過該欄而不中斷
     const cell=(k,tbl,j)=>{const v=R[j]?R[j][tbl][k]:null;const chg=j&&R[j]&&Math.abs(v-base[tbl][k])>0.5;return `<td class="n${chg?" chg":""}">${v==null?"—":N(v)}</td>`;};
     const dcell=(k,tbl)=>{if(!withDiff||cols.length<2)return "";const d=(R[cols.length-1][tbl][k]||0)-(base[tbl][k]||0);const good=tbl==="inc"?d>0:d<0;return `<td class="n" style="color:${d?(good?"#1d6b4f":"#8e2a1e"):"#999"}">${d?(d>0?"+":"−")+N(Math.abs(d)):"—"}</td>`;};
     const head=(lb)=>`<tr><th>${lb}</th>${cols.map(sl=>`<th>${E(sl.name)}</th>`).join("")}${withDiff&&cols.length>1?"<th>差異</th>":""}</tr>`;
-    const totals=R.map(r0=>({inc:Object.values(r0.inc).reduce((a,b0)=>a+b0,0),exp:Object.values(r0.exp).reduce((a,b0)=>a+b0,0),fin:EXP_GROUPS[4].rows.reduce((a,x,ri)=>a+(r0.exp[`4_${ri}`]||0),0)+(r0.exp["4_np"]||0)}));
+    const totals=R.map(r0=>({inc:Object.values(r0.inc).reduce((a,b0)=>a+b0,0),exp:Object.values(r0.exp).reduce((a,b0)=>a+b0,0),fin:EXP_GROUPS[4].rows.reduce((a,x,ri)=>a+(r0.exp[`4_${ri}`]||0),0)+(r0.exp["4_np"]||0)+(r0.exp["4p"]||0)})); /* v429：規劃投入視為儲蓄 */
     const tcell=(f,goodUp)=>cols.map((sl,j)=>`<td class="n">${N(f(totals[j]))}</td>`).join("")+(withDiff&&cols.length>1?`<td class="n" style="color:${(()=>{const d=f(totals[cols.length-1])-f(totals[0]);return d?((goodUp?d>0:d<0)?"#1d6b4f":"#8e2a1e"):"#999";})()}">${(()=>{const d=f(totals[cols.length-1])-f(totals[0]);return isFinite(d)&&d?(d>0?"+":"−")+N(Math.abs(d)):"—";})()}</td>`:"");
     let inc="";INC_GROUPS.forEach((g,gi)=>{let sub="",gt=R.map(()=>0);g.rows.forEach((r0,ri)=>{const k=`${gi}_${ri}`;const any=R.some(x=>x&&x.inc[k]);R.forEach((x,j)=>gt[j]+=x?x.inc[k]||0:0);if(any)sub+=`<tr><td class="i">${E(r0.split("（")[0])}</td>${cols.map((sl,j)=>cell(k,"inc",j)).join("")}${dcell(k,"inc")}</tr>`;});
       inc+=`<tr class="g"><td>${E(g.g)}</td>${gt.map(v=>`<td class="n">${N(v)}</td>`).join("")}${withDiff&&cols.length>1?`<td class="n" style="color:${(()=>{const d=gt[gt.length-1]-gt[0];return d?(d>0?"#1d6b4f":"#8e2a1e"):"#999";})()}">${(()=>{const d=gt[gt.length-1]-gt[0];return d?(d>0?"+":"−")+N(Math.abs(d)):"—";})()}</td>`:""}</tr>`+sub;});
     let exp="";EXP_GROUPS.forEach((g,gi)=>{let sub="",gt=R.map(()=>0);g.rows.forEach((r0,ri)=>{const k=`${gi}_${ri}`;const any=R.some(x=>x&&x.exp[k]);R.forEach((x,j)=>gt[j]+=x?x.exp[k]||0:0);if(any)sub+=`<tr><td class="i">${E(r0.split("（")[0])}</td>${cols.map((sl,j)=>cell(k,"exp",j)).join("")}${dcell(k,"exp")}</tr>`;});
       {const k=`${gi}_np`;if(R.some(x=>x&&x.exp[k])){R.forEach((x,j)=>gt[j]+=x?x.exp[k]||0:0);sub+=`<tr><td class="i">${gi===3?"方案新增保單保費（⑥-5）":"方案轉入保單保費（①-3）"}</td>${cols.map((sl,j)=>cell(k,"exp",j)).join("")}${dcell(k,"exp")}</tr>`;}} /* v301 */
+      if(gi===4){const k="4p";if(R.some(x=>x&&x.exp[k])){R.forEach((x,j)=>gt[j]+=x?x.exp[k]||0:0);sub+=`<tr><td class="i">規劃投入（④-2 處方＋④-3 平衡型・第 1 年月投×12）</td>${cols.map((sl,j)=>cell(k,"exp",j)).join("")}${dcell(k,"exp")}</tr>`;}} /* v429：年結餘被拿去投資的部分看得到 */
       exp+=`<tr class="g"><td>${E(g.g)}</td>${gt.map(v=>`<td class="n">${N(v)}</td>`).join("")}${withDiff&&cols.length>1?`<td class="n" style="color:${(()=>{const d=gt[gt.length-1]-gt[0];return d?(d<0?"#1d6b4f":"#8e2a1e"):"#999";})()}">${(()=>{const d=gt[gt.length-1]-gt[0];return d?(d>0?"+":"−")+N(Math.abs(d)):"—";})()}</td>`:""}</tr>`+sub;});
     const nv=(t)=>t.inc-t.exp,sv=(t,raw)=>t.inc?(raw?((t.fin+t.inc-t.exp)/t.inc*100):((t.fin+t.inc-t.exp)/t.inc*100).toFixed(1)+"%"):(raw?NaN:"—");
     return `<section><h2>03　收支表（年化・元）${tag||""}</h2><div class="two"><table class="t">${head("收入")}${inc}<tr class="tot"><td>家庭總收入</td>${tcell(t=>t.inc,true)}</tr></table>
     <table class="t">${head("支出")}${exp}<tr class="tot"><td>家庭總支出</td>${tcell(t=>t.exp,false)}</tr>${clinicMode?"":`<tr class="tot"><td>年結餘（收入−支出）</td>${tcell(nv,true)}</tr>`}<tr><td class="i">其中理財支出（視為儲蓄）</td>${tcell(t=>t.fin,true)}</tr>
-    ${clinicMode?"":`<tr><td class="i">名目儲蓄率＝（理財支出＋結餘）／收入</td>${cols.map((sl,j)=>`<td class="n">${sv(totals[j])}</td>`).join("")}${withDiff&&cols.length>1?"<td class=\"n\">—</td>":""}</tr>`}</table></div>${cols.length>1?`<p class="cap">方案欄＝現況＋該方案顧問建議之即時效果（褐色＝與現況不同）；已由追蹤工具回報執行完成者，其效果視為已在現況。</p>`:""}</section>`;};
+    ${clinicMode?"":`<tr><td class="i">名目儲蓄率＝（理財支出＋結餘）／收入</td>${cols.map((sl,j)=>`<td class="n">${sv(totals[j])}</td>`).join("")}${withDiff&&cols.length>1?"<td class=\"n\">—</td>":""}</tr>`}</table></div>${cols.length>1?`<p class="cap">方案欄＝現況＋該方案顧問建議之即時效果（褐色＝與現況不同）；已由追蹤工具回報執行完成者，其效果視為已在現況。${R.some(x=>x&&x.exp["4p"])?"「規劃投入」＝方案把年結餘拿去投資的部分（④-2 處方與 ④-3 平衡型的第 1 年月投；期初單筆不在此列），視為儲蓄，所以年結餘變小、儲蓄率不變。":""}</p>`:""}</section>`;};
   const secBalance=(cols,tag,withDiff)=>{cols=cols.filter(sl=>rowsOf(sl));const R=cols.map(rowsOf);if(!R[0])return "";const base=R[0];
     const cell=(k,tbl,j)=>{const v=R[j]?R[j][tbl][k]:null;const chg=j&&R[j]&&Math.abs(v-base[tbl][k])>0.5;return `<td class="n${chg?" chg":""}">${v==null?"—":N(v)}</td>`;};
     const dc=(d,goodUp=true)=>withDiff&&cols.length>1?`<td class="n" style="color:${d?((goodUp?d>0:d<0)?"#1d6b4f":"#8e2a1e"):"#999"}">${d?(d>0?"+":"−")+N(Math.abs(d)):"—"}</td>`:"";
@@ -7361,7 +7370,7 @@ function rptBuild(){
         <tr><th colspan="2" class="c" style="background:#8392a8;color:#fff;text-align:center">風險轉嫁</th>${retCols?`<th ${retCols>1?'colspan="2"':'rowspan="2"'} class="c" style="background:#8392a8;color:#fff;text-align:center">風險自留</th>`:""}</tr>
         <tr><th style="text-align:center">已備</th><th style="text-align:center">${isPlan?"本方案規劃":"建議規劃"}</th>${retCols>1?'<th style="text-align:center">金額／來源</th><th style="text-align:center">預計準備期間</th>':""}</tr>${rows}</table>${anyYrs?`<p class="cap">「預計準備期間」＝自留金額預計幾年內累積到位；期間內自留尚未存滿，「今日」完成率只計已備＋規劃。</p>`:""}`;});
     const sayOn=$("pr_retnote_on")&&$("pr_retnote_on").checked,sayTx=(($("pr_retnote")||{}).value||"").trim();
-    const sayP=sayOn?`<p><b>客戶自述：</b>${E(sayTx||"打算以自有資產承擔部分風險（尚未量化）")}${isPlan?"——本方案在下表以「風險自留」量化：指定承擔的資產、金額與到位年期。":"——目前尚未量化；規劃方案時以「風險自留」指定哪筆資產、承擔多少、幾年內到位，再決定保險要補多少。"}</p>`:"";
+    const sayP=sayOn?`<p><b>客戶自述：</b>${E(sayTx||"打算以自有資產承擔部分風險（尚未量化）")}${isPlan?((()=>{try{return protPersons().some(([w])=>PROT_ROWS.some(([,k])=>V(`pr_${w}_${k}_ret`)>0));}catch(e){return true;}})()?"——本方案在下表以「風險自留」量化：指定承擔的資產、金額與到位年期。":"——本方案未安排風險自留，缺口以下表的保險規劃處理。"):"——目前尚未量化；規劃方案時以「風險自留」指定哪筆資產、承擔多少、幾年內到位，再決定保險要補多少。"}</p>`:"";
     let rp="";try{const pr=riskProfile();if(!pr.incomplete){const list=riskGoalList();const pSp=(typeof riskHasSp==="function"&&riskHasSp())?riskProfile("sp"):null;
       const gapTxt=q=>Math.abs(q.gap)>=25?`——落差 ${Math.abs(q.gap)} 分，${q.gap>0?"能力高於意願：可承擔但心理上偏保守，配置以能安心續抱為先":"意願高於能力：心理上敢冒險但財務緩衝不足，配置須先補地基"}`:"";
       rp=`<h3>投資風險屬性</h3><p>本人：風險承受<b>能力</b> ${pr.capacity} 分、承受<b>意願</b> ${pr.tolerance} 分（0–100）${gapTxt(pr)}。${pSp?(pSp.incomplete?"配偶問卷未完成，配偶與共同目標暫用本人屬性。":`配偶：能力 ${pSp.capacity} 分、意願 ${pSp.tolerance} 分${gapTxt(pSp)}。共同目標（含退休）取兩人較保守者。`):""}各目標依歸屬取屬性、依「起用時間＋提領期間」判定檔位：</p>
@@ -7408,7 +7417,7 @@ function rptBuild(){
           return `<tr><td>${E(d.name)}</td><td>${d.from.age} 歲・${d.kind==="house"?"總價 ":""}${fv(d,d.from.pv)}</td><td><b>${d.to.age} 歲・${d.kind==="house"?"總價 ":""}${fv(d,d.to.pv)}</b></td><td class="n">${pc(d.b.bp)} → <b>${pc(d.r.bp)}</b></td><td class="n">${pc(d.b.mc)} → <b>${pc(d.r.mc)}</b></td><td class="n">${pc(d.b.ret)} → <b>${pc(d.r.ret)}</b></td></tr>`;}).join("");
         return `<div class="sub">${E(sl.name)}</div><table class="t"><tr><th>目標</th><th>調整前</th><th>調整後</th><th>④-1 確定性完成率</th><th>⑤ 目標成功率</th><th>退休把握度</th></tr>${trs}</table>`;}).filter(Boolean).join("");
       return blocks?`<h3>目標沙盤：調整前後把握度</h3><p class="lead">在醫師可接受的範圍內把目標的金額或時間調到「站得住」——每一列是一次採用：左邊是原設定，右邊是採用值；三個數字分別是平均路徑的完成率、含波動的目標成功率、對退休把握度的牽動。購屋以整間房（總價／購屋年齡）調整，頭期款與房貸由購屋精算連動。</p>${blocks}`:"";})();
-    return `<section><h2>07　財務現況：生涯資產模擬${tag||""}</h2><p class="lead">生涯藍圖是「照目前的收支、投資與扣款走下去」家庭資產逐年的樣子（確定性推算）；蒙地卡羅把市場波動放進來，跑 600 條可能的路徑，看有多少比例能撐到規劃終點。</p>${cmp}${cols.map(slotCharts).join("")}${sbSec}</section>`;};
+    return `<section><h2>07　財務現況：生涯資產模擬${tag||""}</h2><p class="lead">生涯藍圖是「照目前的收支、投資與扣款走下去」家庭資產逐年的樣子（確定性推算）；蒙地卡羅把市場波動放進來，跑 ${NT(Math.max(600,num("nsim")||0))} 條可能的路徑，看有多少比例能撐到規劃終點。</p>${cmp}${cols.map(slotCharts).join("")}${sbSec}</section>`;};
   const secEstate=()=>{ // 07-2 資產傳承：繼承人結構＋遺產稅推估＋建議前後
     if(typeof estProject!=="function"||!$("est_year"))return "";
     let rows,k,v,H,B,rows2=null,v2=null;
@@ -8447,6 +8456,7 @@ function makeSnapshot(light){ // light＝自動存檔用：不跑蒙地卡羅／
     INC_GROUPS.forEach((g,gi)=>g.rows.forEach((r0,ri)=>{rows.inc[`${gi}_${ri}`]=["self","sp"].reduce((a,w)=>a+V(`inc_${w}_${gi}_${ri}_m`)*12+V(`inc_${w}_${gi}_${ri}_y`),0);}));
     EXP_GROUPS.forEach((g,gi)=>g.rows.forEach((r0,ri)=>{rows.exp[`${gi}_${ri}`]=V(`exp_${gi}_${ri}_m`)*12+V(`exp_${gi}_${ri}_y`);}));
     try{if(typeof dvNewPrem==="function"){const NP=dvNewPrem("all");if(NP.prot>0)rows.exp["3_np"]=Math.round(NP.prot);if(NP.fin>0)rows.exp["4_np"]=Math.round(NP.fin);}}catch(e){} /* v301：方案新增保單保費（⑥-5 保障型→保險費、①-3 轉入保單→理財支出）併入報告書 03 收支表，與 ①-5 同口徑 */
+    try{if(typeof bsIsPlan==="function"&&bsIsPlan()&&Array.isArray(svPlan)){const pi=svPlan.reduce((a,q)=>a+((q.arr&&isFinite(q.arr[0]))?q.arr[0]:0),0)*12*1e4;if(pi>0.5)rows.exp["4p"]=Math.round(pi);}}catch(e){} /* v429：規劃投入＝④-2 處方＋④-3 平衡型 第 1 年月投×12（鍵不以 4_ 開頭：arvBase 的 invest 已另加 rx1） */
     ASSET_GROUPS.forEach((g,gi)=>g.rows.forEach((r0,ri)=>{rows.as[`${gi}_${ri}`]=V(`as_${gi}_${ri}`);}));
     LIAB_ROWS.forEach((r0,ri)=>{rows.li[`${ri}`]=V(`li_${ri}`);});
     rpt.rows=rows;
@@ -8984,6 +8994,10 @@ $("tblScen").addEventListener("click",e=>{
   }
 });
 /* ---- 從方案快照重建模擬參數（不動目前畫面）---- */
+function svPlanArr(){ /* v429：④-2 處方＋④-3 平衡型 各年月投×12（萬），供 ⑤ 當約定扣款 */
+  if(typeof svPlan==="undefined"||!Array.isArray(svPlan)||!svPlan.length)return null;let n=0;svPlan.forEach(q=>{if(q.arr&&q.arr.length>n)n=q.arr.length;});if(!n)return null;
+  const out=new Float64Array(n);svPlan.forEach(q=>{if(!q.arr)return;for(let t=0;t<q.arr.length;t++){const a=q.arr[t];if(isFinite(a)&&a>0)out[t]+=a*12;}});return out;}
+function svPlanLump(){if(typeof svPlan==="undefined"||!Array.isArray(svPlan))return 0;return svPlan.reduce((a,q)=>a+((q.lump>0&&isFinite(q.lump))?q.lump:0),0);}
 function readPFrom(v,flowsArr,goalsArr){
   const gv=id=>{const x=parseFloat(v[id]);return isNaN(x)?0:x;};
   const gb=id=>v[id]===true||v[id]==="true";
@@ -9738,7 +9752,7 @@ function buildTaxCalc(){
       $("tx_pen_salary").value=occ==="emp"?+amt.toFixed(2):0;$("tx_pen_gross").value=occ==="emp"?0:+amt.toFixed(2);txRecalc();if(typeof bsRecalc==="function")try{bsRecalc();}catch(e){}
       $("txPenHint").textContent=`已由 ⑦ 帶入 ${amt.toFixed(2)} 萬/年（${occ==="emp"?"受僱者・自薪資扣":"自營作業者／雇主本人・自所得總額扣"}）`;};
     hint();document.addEventListener("change",e=>{if(e.target&&e.target.id==="bio_occ")hint();});setTimeout(hint,0);} /* bio_occ 由 ①-0a 稍後建立，用事件委派 */
-  document.addEventListener("change",e=>{if(!(e.target&&e.target.id==="bio_occ"))return;const occ=e.target.value;if($("tx_nhi2own"))$("tx_nhi2own").checked=(occ==="clinic");if($("rpt_clinic"))$("rpt_clinic").checked=(occ==="clinic");if(typeof txRecalc==="function")try{txRecalc();}catch(x){}if(typeof rcModeRender==="function")try{rcModeRender();}catch(x){}}); /* v318：開業醫 → 執行業務收入免補充保費、報告書開業醫模式 預設勾 */
+  document.addEventListener("change",e=>{if(!(e.target&&e.target.id==="bio_occ"))return;const occ=e.target.value;if($("tx_nhi2own"))$("tx_nhi2own").checked=(occ==="clinic");if(typeof clinicAutoApply==="function")clinicAutoApply(); /* v427 */if(typeof txRecalc==="function")try{txRecalc();}catch(x){}if(typeof rcModeRender==="function")try{rcModeRender();}catch(x){}}); /* v318：開業醫 → 執行業務收入免補充保費、報告書開業醫模式 預設勾 */
   box.addEventListener("input",e=>{ // 事業體欄位：就地寫回，不重建（避免打字失焦）
     const bz=e.target.dataset.bz;
     if(bz!==undefined){const f=e.target.dataset.bf,b=bizList[+bz];
@@ -9983,12 +9997,15 @@ function svcA2Apply(){const code=(typeof svcPlanCode==="function"&&svcPlanCode()
   if(typeof eduPlace==="function")try{eduPlace();}catch(e){} /* v388 */
   if(typeof polEditorPlace==="function")try{polEditorPlace();}catch(e){} /* v352：A1 登錄表在 ①-4 */
   if(H.home){const cur=document.querySelector(".view.on");if(cur&&H.views.includes(cur.id)){const t=document.querySelector(`.tab[data-view="${H.home}"]`);if(t)t.click();}}}
-function svcApply(){const on=svcTaxOn();document.body.dataset.svcTax=on?"on":"off";try{svcA2Apply();}catch(e){console.warn(e);}
+function svcApply(){const on=svcTaxOn();document.body.dataset.svcTax=on?"on":"off";try{svcA2Apply();}catch(e){console.warn(e);}try{clinicAutoApply();}catch(e){} /* v427 */
   if($("svcTaxNote"))$("svcTaxNote").textContent=on?"⑦ 遺產稅推估與報告書「資產傳承」啟用":"未勾選：⑦ 遺產稅推估已隱藏，報告書不含資產傳承與遺產稅";
   if(typeof a1LiveRender==="function")try{a1LiveRender();}catch(e){}
   if($("rptA1Note"))$("rptA1Note").style.display=(typeof svcPlanCode==="function"&&svcPlanCode()==="A1")?"":"none";
   const r7=$("rpt_s7b");if(r7){r7.disabled=!on;const lb=r7.closest("label");if(lb){lb.style.opacity=on?"":".45";lb.title=on?"":"未勾選「＋ 稅務及傳承規劃」（①-0a 服務方案）";}}
   const v=$("view_est");if(!on&&v&&v.classList.contains("on")){const t=document.querySelector('.tab[data-view="view_fam"]');if(t)t.click();}}
+/* v427：開業醫模式自動判定——開業醫 ＋ B 全方位 ＋ 稅務及傳承規劃 */
+function clinicAutoOn(){const occ=($("bio_occ")&&$("bio_occ").value)||"";return occ==="clinic"&&svcPlanCode()==="B2"&&svcTaxOn();}
+function clinicAutoApply(){const on=clinicAutoOn();if($("rpt_clinic"))$("rpt_clinic").checked=on;const n=$("rptClinicNote");if(n){const occ=($("bio_occ")&&$("bio_occ").value)||"";n.innerHTML=on?`<b style="color:var(--gD)">開業醫模式：啟用</b>（職業身分＝開業醫 ＋ B 全方位 ＋ 稅務及傳承規劃）— 不印年結餘／儲蓄率，申報階梯只在方案章節並加註法定標準`:`開業醫模式：未啟用（需 職業身分＝開業醫 ＋ 服務方案 B 全方位 ＋ 勾「＋ 稅務及傳承規劃」；目前 ${occ==="clinic"?"開業醫":"非開業醫"}／${svcPlanCode()||"未指定"}／${svcTaxOn()?"含稅務":"未勾稅務"}）`;}}
 document.addEventListener("change",e=>{if(e.target&&(e.target.id==="svc_tax"||e.target.id==="svc_plan"))svcApply();});
 function buildBioKids(){
   const box=$("bioKidList");if(!box)return;
@@ -10091,7 +10108,7 @@ function bioSync(){
   if($("lc_claim"))$("lc_claim").value=bioLaborAge(V("bio_self_y"));
   const occ=$("bio_occ").value;
   if($("tx_nhi2own"))$("tx_nhi2own").checked=(occ==="clinic"); // 開業醫：執行業務收入已以此身分投保 → 免補充保費
-  if($("rpt_clinic"))$("rpt_clinic").checked=(occ==="clinic"); /* v318：報告書開業醫模式 */
+  if(typeof clinicAutoApply==="function")clinicAutoApply(); /* v318／v427：報告書開業醫模式自動判定 */
   if($("clientName")&&$("bio_name").value.trim())$("clientName").value=$("bio_name").value.trim();
   if(typeof fgSeedFromBio==="function")try{fgSeedFromBio(false);}catch(e){}
   if(typeof fgSyncCore==="function")try{fgSyncCore();}catch(e){console.warn(e);} /* v322：①-0a → 家族圖（本人／配偶／子女 出生年與性別） */
@@ -10541,7 +10558,7 @@ function rcSolve(){
   const NTn=x=>NT(Math.round(x)),W=x=>fmtW(x/10000);
   if(base.totalInc<=0){$("rc_out").innerHTML=`<div class="note warn" style="margin:0">①-0b 稅務基準與 ①-1 收入都是空的——請先填 ①-1 收入或 ①-0b 基準。</div>`;$("rc_msg").textContent="";return;}
   const E=(rcExtra&&rcExtra.ok)?rcExtra.x*1e4:0;   // 現金口徑：藍圖到終點不耗竭還缺的「新現金」（稅後、元/年）
-  const I=rcRealIncW(true),R=base.totalInc;       // I＝現況 ①-1 實際家庭總收入（方案寫入的曝光新現金不算）；R＝①-0b 申報總收入。I−R＝已經在花、只是沒申報的部分（曝光它只多稅不多錢）
+  const R=base.totalInc,I=Math.max(rcRealIncW(true),R); /* v428：①-1 若是淨額口徑而申報總收入是毛收入口徑，取大者，避免把口徑差當新現金 */       // I＝現況 ①-1 實際家庭總收入（方案寫入的曝光新現金不算）；R＝①-0b 申報總收入。I−R＝已經在花、只是沒申報的部分（曝光它只多稅不多錢）
   const keepW=rcKeepW();
   // 兩條約束取大：
   //  ① 申報要養得起花費：disp(X) ≥ need
@@ -10550,7 +10567,7 @@ function rcSolve(){
   // 方案已寫入「曝光至」時：R 是剝掉那筆後的現況申報，但藍圖缺口 E 是在「已含那筆新現金」的狀態下量的 → 現金口徑要把已寫入那筆帶來的新現金加回去，X 才是總額
   const wrD=canExpose&&typeof rawV==="function"?Math.max(0,((V("tx_extra")||0)-(rawV("tx_extra")||0))*1e4):0;
   const cashHave=wrD>0?Math.max(0,cashOf(wrD)):0;
-  const Ek=E>0?E+cashHave:0;
+  const Ek=(E>0||cashHave>0)?E+cashHave:0; /* v428 */
   let Xc=0,Xk=0;
   if(gap>1){if(rcNetState(5e8).disp<need){$("rc_out").innerHTML=`<div class="note warn" style="margin:0">額外申報 5,000 萬內仍無法補足缺口 ${NTn(gap)}——請檢視目標是否過重或延長準備期。</div>`;$("rc_msg").textContent="";return;}
     let lo=0,hi=5e8;for(let i=0;i<40;i++){const m=(lo+hi)/2;if(rcNetState(m).disp>=need)hi=m;else lo=m;}Xc=hi;}
@@ -10571,7 +10588,7 @@ function rcSolve(){
     const box=(c,t)=>`<div class="note" style="margin:0 0 10px;border-left:4px solid ${c}"><b>結論：</b>${t}</div>`;
     const PF=rcIsCur()?"維持目前行為":"依本方案";
     if(rcExtra&&!rcExtra.ok)return box("var(--gD)",`目標太重——每年再多 5,000 萬稅後現金流藍圖仍會耗竭。先回 ②-2 談「可接受調整」（降額、延後、取消），再談收入。`);
-    if(dep===null&&X<=1)return box("var(--gA)",`${PF}，目標都達得到，申報收入也養得起——申報水準不需調整，也不需提高收入。`);
+    if(dep===null&&X<=1)return box("var(--gA)",canExpose?(wrD>0?`${PF}（含已寫入的申報水準 ${NTn(R+wrD)}），目標都達得到——不需再調整。`:`${PF}，目標都達得到，申報收入也養得起——申報水準不需調整。`):`${PF}，目標都達得到，收入也養得起——不需要提高收入。`); /* v428 */
     if(dep===null)return box(canExpose?"var(--gD)":"var(--gold)",canExpose
       ?`目標達得到，但申報收入的稅後金流與現在的支出＋投入有距離（${NTn(gap)}/年）——<b>申報收入需調整至 ${NTn(tgtInc)}</b>，所得稅 +${NTn(dTax)}/年。`
       :`目標達得到，但方案投入比申報收入的稅後結餘多 <b>${NTn(gap)}/年</b>——藍圖是靠動用存款在撐（存款夠，所以沒耗竭）。受僱醫師<b>沒有申報調整的空間</b>；三條路擇一：把 ④-2／④-3 的年投入降到結餘內（藍圖仍達標就代表投入可以少一點）、到其他院所兼診提高收入約 ${NTn(X)}（稅前）、或回 ②-2 調整目標。`);
@@ -10584,7 +10601,7 @@ function rcSolve(){
       :`受僱醫師沒有申報調整的空間，只能<b>提高收入約 ${NTn(X)}（稅前，稅後約 ${NTn(X-dTax)}）</b>——例如到其他院所兼診、增加門診量——或回 ②-2 調整目標；提高的收入也要開方案投出去才算數。`}`);};
   const exNote=bookGap+((rcExtra&&rcExtra.idleUsed&&rcExtra.idle>0)?`<div class="mini" style="margin:6px 0 0">目標年投入含「結餘投出去 ${rcExtra.idle} 萬/年」＝稅後收入扣掉生活＋續扣＋既有規劃後沒安排投資的結餘（藍圖裡先躺在活存），反推先假設它投進 μB 專戶至退休${rcExtra.x>0?"，再算還缺多少":"——這樣就夠了"}。</div>`:"")
     +((rcExtra&&rcExtra.x>0)?`<div class="mini" style="margin:6px 0 0">目標年投入含「補足缺口 ${rcExtra.x} 萬/年」＝${rcExtra.idleUsed?"結餘投出去之後，":"在現有規劃之上，"}每年還缺這麼多<b>投入（稅後新現金）</b>（假設投入 μB 專戶至退休），④-1 藍圖才能到規劃終點不耗竭（所有目標 100%）。${canExpose?"申報調整":"提高收入"}之後這筆錢要真的投出去才算數——${rcIsCur()?"請開方案後在 ④-2 開成處方":"請回 ④-2 開成處方"}。</div>`:"");
-  const vh=verdictFn();
+  const vh=verdictFn()+((canExpose&&wrD>0&&X>1&&Math.abs(X-wrD)>1000)?`<div class="note warn" style="margin:0 0 10px">本方案已寫入申報水準 <b>${NTn(R+wrD)}</b>；這次反推是 <b>${NTn(R+X)}</b>（${R+X>R+wrD?"還要再加 ":"可下修 "}${NTn(Math.abs(X-wrD))}）——按「寫成 ①-1 建議」會覆蓋上一筆。</div>`:""); /* v428 */
   const stat=(l,v,sub,c)=>`<div class="stat"><div class="l">${l}</div><div class="v" style="font-size:18px${c?";color:"+c:""}">${v}</div><div class="l" style="margin-top:3px;font-size:9.5px">${sub||""}</div></div>`;
   if(X<=1){
     rcLast={X:0,tgtInc:R,baseInc:R,need};
@@ -10596,20 +10613,21 @@ function rcSolve(){
     let preW=base,atW=base,R0=R,tgtW=R;if(wrAmt>0){if(canExpose||txAdj<=0.5){atW=rcNetState(wrAmt);tgtW=R+wrAmt;}else{preW=rcNetState(-wrAmt);R0=R-wrAmt;}}
     const dTaxW=atW.taxAll-preW.taxAll;
     const tiles=`<div class="subRow" style="grid-template-columns:repeat(3,1fr);gap:8px">${
-      stat("現況申報總收入",NTn(R0),`${($("txSrc")&&$("txSrc").value)||"①-0b 手動"}${(R0<R-0.5)?"・本方案增額前（概估）":""}・稅後可支配 ${NTn(preW.disp)}・有效稅費率 ${(preW.eff*100).toFixed(1)}%`)+
+      stat(canExpose?"現況申報總收入":"現況總收入（稅前）",NTn(R0),`${($("txSrc")&&$("txSrc").value)||"①-0b 手動"}${(R0<R-0.5)?"・本方案增額前（概估）":""}・稅後可支配 ${NTn(preW.disp)}・有效稅費率 ${(preW.eff*100).toFixed(1)}%`)+
       stat(canExpose?"目標所需申報水準":"目標稅前收入",NTn(tgtW),wrAmt>0?`＝現況＋${rcIsCur()?"":"本方案已寫入的"}${canExpose?"申報調整":"增額"} ${NTn(wrAmt)}・稅後可支配 ${NTn(atW.disp)}・有效稅費率 ${(atW.eff*100).toFixed(1)}%`:`與現況相同・稅後可支配 ${NTn(base.disp)}（≥ 年需求 ${NTn(need)}）`,"var(--gold)")+
-      stat(canExpose?"距離目標所需申報水準":"差額：要提高收入（稅前）",wrAmt>0?NTn(wrAmt):"0",wrAmt>0?`所得稅 +${NTn(dTaxW)}/年（增額段 ${(dTaxW/wrAmt*100).toFixed(1)}%）・已寫入 ①-1，再反推不需更多`:`申報收入的稅後金流已養得起生活＋投入，${canExpose?"申報水準不需調整":"不需要提高收入"}`,wrAmt>0?"var(--gD)":"var(--gA)")
+      stat(canExpose?"距離目標所需申報水準":"差額：要提高收入（稅前）",wrAmt>0?NTn(wrAmt):"0",wrAmt>0?`所得稅 +${NTn(dTaxW)}/年（增額段 ${(dTaxW/wrAmt*100).toFixed(1)}%）・已寫入 ①-1，再反推不需更多`:(canExpose?`申報收入的稅後金流已養得起生活＋投入，申報水準不需調整`:`收入的稅後金流已養得起生活＋投入，不需要提高收入`),wrAmt>0?"var(--gD)":"var(--gA)")
     }</div>
     <div style="overflow-x:auto;margin-top:8px"><table class="dt aln" style="margin:0">
-      <tr><th style="text-align:left">項目</th><th>現況申報</th><th>${canExpose?"目標所需申報水準":"目標"}</th><th>差異</th></tr>
-      <tr><td class="rn">申報總收入</td><td class="calc">${NTn(R0)}</td><td class="calc" style="font-weight:800">${NTn(tgtW)}</td><td class="calc" style="color:${wrAmt>0?"var(--gD)":"var(--sub)"}">${wrAmt>0?"+":""}${NTn(wrAmt)}</td></tr>
+      <tr><th style="text-align:left">項目</th><th>${canExpose?"現況申報":"現況"}</th><th>${canExpose?"目標所需申報水準":"目標"}</th><th>差異</th></tr>
+      <tr><td class="rn">${canExpose?"申報總收入":"總收入（稅前）"}</td><td class="calc">${NTn(R0)}</td><td class="calc" style="font-weight:800">${NTn(tgtW)}</td><td class="calc" style="color:${wrAmt>0?"var(--gD)":"var(--sub)"}">${wrAmt>0?"+":""}${NTn(wrAmt)}</td></tr>
       <tr><td class="rn">稅負（綜所稅＋補充保費${(txCompute().corpSide||0)>0?"＋公司端":""}${atW.nhi1>0?"＋健保費增額":""}）</td><td class="calc">${NTn(preW.taxAll)}</td><td class="calc" style="font-weight:800">${NTn(atW.taxAll)}</td><td class="calc" style="color:${wrAmt>0?"var(--gD)":"var(--sub)"}">${wrAmt>0?"+":""}${NTn(dTaxW)}</td></tr>
       ${atW.nhi1>0?`<tr><td class="rn" style="padding-left:18px">其中健保費增額（投保金額 ${NTn(atW.ins0)} → ${NTn(atW.ins1)}／月）</td><td class="calc">0</td><td class="calc">${NTn(atW.nhi1)}</td><td class="calc" style="color:var(--gD)">+${NTn(atW.nhi1)}</td></tr>`:""}
       <tr><td class="rn">稅後可支配 vs 年需求 ${NTn(need)}</td><td class="calc">${NTn(preW.disp)}<span class="mini" style="margin:0 0 0 4px">${preW.disp>=need?"足夠":"缺 "+NTn(need-preW.disp)}</span></td><td class="calc" style="font-weight:800">${NTn(atW.disp)}</td><td class="calc" style="color:var(--gA)">${wrAmt>0?"+":""}${NTn(atW.disp-preW.disp)}</td></tr>
     </table></div>`;
-    $("rc_out").innerHTML=vh+tiles+`<div class="note good" style="margin:8px 0 0"><b>${rcLastDep===null?"現況申報的稅後金流已足以支應生活與所有目標 ✓":"現況申報的稅後金流養得起生活＋所需投入 ✓（錢要真的投出去才會達標）"}</b><br>
-      家庭年稅後可支配 <b>${NTn(base.disp)}</b> ≥ 年需求 <b>${NTn(need)}</b>（生活 ${NTn(live*1e4)}＋目標投入 ${NTn(inv*1e4)}）——申報水準不需再調整。${exNote}</div>`+rcTxStratHTML(need,0,R)+(canExpose?rcLadderHTML(R,base,live,keepW,{tgt:tgtW,src:wrAmt>0?(rcLoopDone[wsActive]===Math.round(tgtW)?"loop":"solve"):"none"}):""); /* v300：不需曝光時也列試算工具策略七；v318：申報階梯 */
-    $("rc_msg").textContent=rcLastDep===null?"已足夠 ✓ 申報水準不需調整，也不需提高收入":`申報收入足夠，但目前行為 ${rcLastDep} 歲耗竭——結餘沒投出去，${rcIsCur()?"請開方案用 ④-3／④-2 投進目標":"請提高 ④-2／④-3 的投入"}`;if(!rcLoopMode&&typeof rcSave==="function")rcSave();return;
+    const lvTx=canExpose?(wrAmt>0?`已寫入的申報水準（${NTn(tgtW)}）`:"現況申報"):"現況收入",dispTx=(canExpose&&wrAmt>0)?atW.disp:base.disp; /* v428 */
+    $("rc_out").innerHTML=vh+tiles+`<div class="note good" style="margin:8px 0 0"><b>${rcLastDep===null?`${lvTx}的稅後金流已足以支應生活與所有目標 ✓`:`${lvTx}的稅後金流養得起生活＋所需投入 ✓（錢要真的投出去才會達標）`}</b><br>
+      家庭年稅後可支配 <b>${NTn(dispTx)}</b> ≥ 年需求 <b>${NTn(need)}</b>（生活 ${NTn(live*1e4)}＋目標投入 ${NTn(inv*1e4)}）——${canExpose?(wrAmt>0?"不需再調整":"申報水準不需再調整"):"不需要提高收入"}。${(canExpose&&wrAmt>0&&!(inv>0))?`<br><span class="mini" style="margin:0">目標投入是 0——寫入申報調整後還沒回 ④-3 重新求解，新現金先躺在活存；重解後再按「反推」核對。</span>`:""}${exNote}</div>`+rcTxStratHTML(need,0,R)+(canExpose?rcLadderHTML(R,base,live,keepW,{tgt:tgtW,src:wrAmt>0?(rcLoopDone[wsActive]===Math.round(tgtW)?"loop":"solve"):"none"}):""); /* v300：不需曝光時也列試算工具策略七；v318：申報階梯 */
+    $("rc_msg").textContent=rcLastDep===null?(canExpose?(wrAmt>0?`已足夠 ✓ 已寫入的申報水準 ${NTn(tgtW)} 可完成目標，不需再調整`:"已足夠 ✓ 申報水準不需調整"):"已足夠 ✓ 不需要提高收入"):`申報收入足夠，但目前行為 ${rcLastDep} 歲耗竭——結餘沒投出去，${rcIsCur()?"請開方案用 ④-3／④-2 投進目標":"請提高 ④-2／④-3 的投入"}`;if(!rcLoopMode&&typeof rcSave==="function")rcSave();return;
   }
   const costPerInv=inv>0?dTax/(inv*1e4):0;
   rcLast={X,tgtInc,baseInc:R,need};
@@ -10621,8 +10639,8 @@ function rcSolve(){
       stat(canExpose?"距離目標所需申報水準":"差額：要提高收入（稅前）",NTn(X),`所得稅 +${NTn(dTax)}/年（增額段 ${X>0?(dTax/X*100).toFixed(1):0}%）・${canExpose?"申報方式在試算工具策略七討論":"兼診、增加門診量等"}${why?"・"+why:""}`,"var(--gD)")
     }</div>
     <div style="overflow-x:auto;margin-top:8px"><table class="dt aln" style="margin:0">
-      <tr><th style="text-align:left">項目</th><th>現況申報</th><th>${canExpose?"目標所需申報水準":"目標"}</th><th>差異</th></tr>
-      <tr><td class="rn">申報總收入</td><td class="calc">${NTn(R)}</td><td class="calc" style="font-weight:800">${NTn(tgtInc)}</td><td class="calc" style="color:var(--gD)">+${NTn(X)}</td></tr>
+      <tr><th style="text-align:left">項目</th><th>${canExpose?"現況申報":"現況"}</th><th>${canExpose?"目標所需申報水準":"目標"}</th><th>差異</th></tr>
+      <tr><td class="rn">${canExpose?"申報總收入":"總收入（稅前）"}</td><td class="calc">${NTn(R)}</td><td class="calc" style="font-weight:800">${NTn(tgtInc)}</td><td class="calc" style="color:var(--gD)">+${NTn(X)}</td></tr>
       <tr><td class="rn">稅負（綜所稅＋補充保費${(txCompute().corpSide||0)>0?"＋公司端":""}${at.nhi1>0?"＋健保費增額":""}）</td><td class="calc">${NTn(base.taxAll)}</td><td class="calc" style="font-weight:800">${NTn(at.taxAll)}</td><td class="calc" style="color:var(--gD)">+${NTn(dTax)}</td></tr>
       ${at.nhi1>0?`<tr><td class="rn" style="padding-left:18px">其中健保費增額（投保金額 ${NTn(at.ins0)} → ${NTn(at.ins1)}／月）</td><td class="calc">0</td><td class="calc">${NTn(at.nhi1)}</td><td class="calc" style="color:var(--gD)">+${NTn(at.nhi1)}</td></tr>`:""}
       <tr><td class="rn">稅後可支配 vs 年需求 ${NTn(need)}</td><td class="calc">${NTn(base.disp)}<span class="mini" style="margin:0 0 0 4px">${gap>1?`缺 ${NTn(gap)}`:"足夠"}</span></td><td class="calc" style="font-weight:800">${NTn(at.disp)}</td><td class="calc" style="color:var(--gA)">+${NTn(at.disp-base.disp)}</td></tr>
@@ -10756,7 +10774,7 @@ function bsComputeDelta(){
       if(it.t==="增加")add(y,+amt);else if(it.t==="降低至"||it.t==="提高至")add(y,amt-base);
       if(+m[1]===0&&(it.t==="增加"||it.t==="降低至"||it.t==="提高至")){const f=bsTaxFieldFor(0,m[2],it.who);txDelta[f]=(txDelta[f]||0)+(it.t==="增加"?amt:amt-base);} // 工作收入變動＝薪資申報同步變動（受僱兼診、減診）
       else if(it.t==="曝光至"&&amt>0){const f=bsTaxFieldFor(m[1],m[2],it.who);txTgt[f]=f==="tx_extra"?Math.max(txTgt[f]||0,amt):(txTgt[f]||0)+amt; // 曝光至：申報所得改變 → 稅負差額進 ①-2 所得稅
-        if(f==="tx_extra"&&typeof rcRealIncW==="function"){const I0=rcRealIncW(true);if(amt>I0+1)add(y,amt-I0);}} // 總額語意：曝光到的數超過 ①-1 實際收入的部分＝從外帳帶進來的新現金（進本列收入）；沒超過的部分本來就在花，只多稅不多錢
+        if(f==="tx_extra"&&typeof rcRealIncW==="function"){let D0=0;try{const r=txCompute();D0=r?r.totalInc:0;}catch(e){}const I0=Math.max(rcRealIncW(true),D0);if(amt>I0+1)add(y,amt-I0);}} /* v428：申報總收入可能是毛收入口徑（taxprofile），新現金從 max(①-1, 現況申報) 起算 */ // 總額語意：曝光到的數超過 ①-1 實際收入的部分＝從外帳帶進來的新現金（進本列收入）；沒超過的部分本來就在花，只多稅不多錢
       return;}
     if((m=id.match(/^pr_([a-zA-Z0-9]+)_([a-zA-Z0-9]+)$/))){const w=m[1],k=m[2];
       if(it.t==="增加保額"){add(`pr_${w}_${k}_plan`,+amt);if(k==="hospSub")add(`pr_${w}_hosp_plan`,+amt);} /* v425：住院補貼日額計入住院日額 */
@@ -12797,7 +12815,12 @@ buildFlows();
 
 /* ---------- 生涯資產模擬藍圖（規劃後＝依 ④-2 求解計畫執行） ---------- */
 /* 現況報酬率自動推導（取代已移除的 ④-1 目前投組報酬／存款利率欄位）*/
-function bpDeriveRC(){ // 投組報酬＝①-3 投資類資產（as_1）持有報酬現值加權；無部位時退回 muA
+function bpPlanMu(){ /* v429：方案工作區的藍圖與 ⑤ 蒙地卡羅同一套報酬——既有投資部位 μA、續扣 μB、退休後降 μB−μC（勾「退休後降風險」）；現況工作區回 null（⑤ 由 ①-3 推導、本來就同源） */
+  if(typeof wsActive==="undefined"||wsActive===0)return null;const mA=parseFloat(($("muA")||{}).value);if(!(mA>0))return null;
+  const mB=parseFloat(($("muB")||{}).value),mC=parseFloat(($("muC")||{}).value),dr=!$("deRisk")||$("deRisk").checked;
+  return {r1:mA/100,rB:(mB>0?mB:mA)/100,glide:dr?Math.max(0,((mB>0?mB:mA)-(mC>0?mC:0)))/100:0};}
+function bpDeriveRC(){ // 投組報酬＝①-3 投資類資產（as_1）持有報酬現值加權；無部位時退回 muA；方案工作區＝⑤ μA（v429）
+  {const pm=bpPlanMu();if(pm)return pm.r1;}
   let sum=0,wt=0;
   ASSET_GROUPS[1].rows.forEach((r,ri)=>{const v=V(`as_1_${ri}`),rt=V(`as_1_${ri}_r`);if(v>0){sum+=v;wt+=v*rt;}});
   return sum>0?(wt/sum)/100:((num("muA")||5)/100);
@@ -12807,7 +12830,7 @@ function bpTdRate(){const e=$("bp_tdRate");return e?Math.max(0,parseFloat(e.valu
 function bpBuckets(P,rc){
   const dest=(typeof illiqDest!=="undefined")?illiqDest:"cash";
   const picked=(typeof illiqPicked==="function")?illiqPicked().map(r=>r.k):[];
-  return bpBucketsCore(P,rc,(typeof itmAssets!=="undefined"?itmAssets:[]),dest,picked,{tdRow:V("as_0_1")/10000,tdRate:bpTdRate(),invOrd:bpInvOrd(),residUse:residUseList()});
+  return bpBucketsCore(P,rc,(typeof itmAssets!=="undefined"?itmAssets:[]),dest,picked,{tdRow:V("as_0_1")/10000,tdRate:bpTdRate(),invOrd:bpInvOrd(),residUse:residUseList(),muOvr:(typeof bpPlanMu==="function")?bpPlanMu():null}); /* v429 */
 }
 function bpBucketsFrom(P,rc,v){ // 方案快照版：讀快照裡的 itmAssetJson
   let arr=[];try{arr=JSON.parse(v.itmAssetJson||"[]")||[];}catch(e){arr=[];}
@@ -12830,11 +12853,12 @@ function bpBucketsCore(P,rc,list,dest,picked,td){ // td：{tdRow:①-3 定存列
   const mk=(x,i,isTd)=>{const anA=parseFloat(x.anAge)||0,anM=(parseFloat(x.anAmt)||0);
     // 年金式必須同時有「發生起始年齡」與「年金金額」才成立；缺一則退回部分贖回（否則會變成永遠動不到的死錢）
     const md0=x.redeem||"part",md=(md0==="annuity"&&!(anA>0&&(anM>0||isTd)))?"part":md0; // 定存「特定時間」＝到期整筆轉活存，只需到期年齡
-    const r1=num1(x.r1,null)!==null?num1(x.r1,0)/100:(isTd?td.tdRate:rc);
+    const ovr=(!isTd&&td.muOvr)?td.muOvr:null; /* v429：方案工作區既有投資部位一律 μA、退休後交給 glide（與 ⑤ 同口徑） */
+    const r1=ovr?ovr.r1:(num1(x.r1,null)!==null?num1(x.r1,0)/100:(isTd?td.tdRate:rc));
     return {name:(x.name||(isTd?"定存":"投資部位")).slice(0,14),
     bal:(parseFloat(x.value)||0)/10000,
     r1,
-    r2:isTd?r1:(num1(x.r2,null)!==null?num1(x.r2,0)/100:null), // 定存：退休後不降、不受 glide
+    r2:isTd?r1:(ovr?null:(num1(x.r2,null)!==null?num1(x.r2,0)/100:null)), // 定存：退休後不降、不受 glide
     mode:md,td:!!isTd,
     anAmt:(isTd&&md==="annuity")?1e9:anM/10000,anAge:anA,anYrs:(isTd&&md==="annuity")?1:(parseFloat(x.anYrs)||0),
     ord:num1(x.ord,isTd?i-1000:i),src:i,degraded:md!==md0,use:(x.use==="none"||x.use==="free"||x.use==="emerg"||x.softUse)?"":(x.use||""),emerg:false};};
@@ -13121,7 +13145,7 @@ function emergTdW(list){ // 標為「緊急預備金」的逐筆部位合計（�
   return ((list!==undefined?list:(typeof itmAssets!=="undefined"?itmAssets:[]))||[]).reduce((a,x)=>{if(x.sim===false||x.use!=="emerg")return a;const v=(parseFloat(x.value)||0)/1e4;if(v<=0)return a;const ua=(parseFloat(x.useAmt)||0)/1e4;return a+(ua>0?Math.min(v,ua):v);},0);}
 function emergTdWFrom(v){let arr=[];try{arr=JSON.parse((v||{}).itmAssetJson||"[]")||[];}catch(e){}return emergTdW(arr);}
 function astUseLabel(u){if(!u)return "未指定";if(u==="ret")return "退休";if(u==="free")return "備用";if(u==="emerg")return "緊急預備金";if(u==="none")return "不動用";return String(u).replace(/^goal:/,"");}
-function astUseRate(x){const r=parseFloat(x.r1);if(isFinite(r))return r/100;return String(x.bs||"")==="0_1"?bpTdRate():((typeof bpDeriveRC==="function")?bpDeriveRC():0.05);}
+function astUseRate(x){{const pm=(typeof bpPlanMu==="function")?bpPlanMu():null;if(pm&&String(x.bs||"")!=="0_1")return pm.r1;} /* v429 */const r=parseFloat(x.r1);if(isFinite(r))return r/100;return String(x.bs||"")==="0_1"?bpTdRate():((typeof bpDeriveRC==="function")?bpDeriveRC():0.05);}
 function residUseList(){try{const a=JSON.parse(($("bp_residUse")||{}).value||"[]");return Array.isArray(a)?a:[];}catch(e){return [];}} // 未逐筆部位（其他投資部位／①-3 定存列）的指派：[{src:"inv"|"td",use,amt(元)}]，只由 ④-3 自動指派寫入
 function residUseSave(a){const e=$("bp_residUse");if(e)e.value=JSON.stringify(a||[]);}
 function residUseName(src){return src==="td"?"定存（①-3 列）":"其他投資部位（未逐筆）";}
@@ -13242,9 +13266,10 @@ function runBlueprint(){
   const expA=new Float64Array(n);
   for(let t=0;t<n;t++)expA[t]=base.expense[t]+goalOut[t];
   // 現況報酬率自動推導：投組報酬＝①-3 投資類資產持有報酬加權；存款（活存）利率＝④-1 現金管理紀律 bp_r0（預設 0%）
+  const pmBP=(typeof bpPlanMu==="function")?bpPlanMu():null; /* v429：方案工作區＝⑤ 的 μA／μB／μB−μC */
   const rc=bpDeriveRC(),r0=bpDeriveR0();
-  // 現況退休後降風險（多時段報酬／glide）：退休當年起，既有部位與續扣桶報酬下調 baseGlide 百分點（下限存款利率）
-  const baseGlide=Math.max(0,num("bp_baseGlide")||0)/100;
+  // 現況退休後降風險（多時段報酬／glide）：退休當年起，既有部位與續扣桶報酬下調 baseGlide 百分點（下限存款利率）；方案工作區＝μB−μC
+  const baseGlide=pmBP?pmBP.glide:Math.max(0,num("bp_baseGlide")||0)/100;
   const retTB=Math.max(0,P.retireAge-a0);
   // ---- 緊急預備金地板與贖回順序（④-1 現金管理紀律）----
   const bufM=Math.max(0,num("bp_bufM")),bufW=Math.max(0,num("bp_bufW"));
@@ -13282,6 +13307,7 @@ function runBlueprint(){
     // 定期定額是約定扣款：大額支出年度仍照扣，缺口由贖回補（取消勾選＝當年沒結餘就停扣）
     const keepOn=!$("bp_keepOnShort")||$("bp_keepOnShort").checked;
     const keepRows=bpKeepRows(); // 逐筆優先：①-2b 的理財支出各自有金額、年化報酬、扣款起訖（5 筆定期定額各扣到不同年齡都表達得出來）；連結既有標的者報酬隨它、扣款進它的桶
+    if(pmBP){keepRows.items.forEach(x=>{x[1]=pmBP.rB*100;});rkE=pmBP.rB;} /* v429：方案工作區續扣桶＝μB（⑤ 把續扣投進退休組合） */
     {
       const items=keepRows.items;
       const sum=items.reduce((s,x)=>s+x[0],0);
@@ -13632,10 +13658,12 @@ function renderBlueprint(){
   if($("bpGlideMsg")){
     const bg=Math.max(0,num("bp_baseGlide")||0),planSpread=Math.max(0,(num("muB")||0)-(num("muC")||0));
     const nBlank=(typeof itmAssets!=="undefined"?itmAssets:[]).filter(x=>x.sim!==false&&/^1_[0-3]$/.test(String(x.bs||""))&&(parseFloat(x.value)||0)>0&&!(x.r2!==undefined&&x.r2!=="")).length;
-    $("bpGlideMsg").textContent=bg>0
+    const pmG=(typeof bpPlanMu==="function")?bpPlanMu():null; /* v429 */
+    if(pmG){$("bpGlideMsg").textContent=`方案工作區：既有投資部位一律 μA ${(pmG.r1*100).toFixed(1)}%、續扣桶 μB ${(pmG.rB*100).toFixed(1)}%、退休後降 ${(pmG.glide*100).toFixed(1)} 百分點（與 ⑤ 蒙地卡羅同口徑；①-3 各列／逐筆報酬只在現況工作區使用）`;$("bpGlideMsg").style.color="var(--sub)";}
+    else{$("bpGlideMsg").textContent=bg>0
       ?`未填退休後 % 者退休當年起降 ${bg} 百分點（目前 ${nBlank} 筆逐筆吃預設）；④-2 新標的專戶 glide μB−μC＝${planSpread.toFixed(1)}`
       :`未填退休後 % 者維持單一報酬（${nBlank} 筆逐筆吃預設）；④-2 新標的專戶 glide μB−μC＝${planSpread.toFixed(1)}`;
-    $("bpGlideMsg").style.color=bg>0?"var(--sub)":"var(--gD)";
+    $("bpGlideMsg").style.color=bg>0?"var(--sub)":"var(--gD)";}
   }
   if($("bpTdRateHint")){const tds=(typeof itmAssets!=="undefined"?itmAssets:[]).filter(x=>x.sim!==false&&String(x.bs||"")==="0_1"&&(parseFloat(x.value)||0)>0);const nR=tds.filter(x=>isFinite(parseFloat(x.r1))).length;
     $("bpTdRateHint").textContent=tds.length?(nR===tds.length?`（①-3b 定存 ${tds.length} 筆已各自填報酬，此值只用於 ①-3 彙總多出的部分）`:`（①-3b 定存 ${tds.length-nR} 筆未填報酬者用此值）`):"（①-3 定存列的報酬）";}
@@ -13811,6 +13839,7 @@ function renderBlueprint(){
 $("btnBlueprint").addEventListener("click",()=>{if(preGate("更新藍圖"))renderBlueprint();});
 $("btnPreCheck")&&$("btnPreCheck").addEventListener("click",()=>{let L=[];try{L=preCheck();}catch(e){}renderPreCheck(L,"");});
 ["bp_bufM","bp_bufW","bp_baseGlide","bp_r0"].forEach(id=>$(id).addEventListener("input",()=>{renderBlueprint();if(typeof syncCurMuSig==="function")syncCurMuSig();}));
+["muA","muB","muC","deRisk"].forEach(id=>{const e=$(id);if(e)e.addEventListener("change",()=>{if(typeof wsActive!=="undefined"&&wsActive!==0&&typeof renderBlueprint==="function")renderBlueprint();});}); /* v429：方案工作區藍圖跟 ⑤ 的 μ 連動 */
 document.addEventListener("click",e=>{const b=e.target.closest("button[data-bpx]");if(!b)return;
   const k=b.dataset.bpx;if(k==="inc")bpXInc=!bpXInc;else if(k==="exp")bpXExp=!bpXExp;else if(k==="goal")bpXGoal=!bpXGoal;else if(k==="inv")bpXInv=!bpXInv;renderBlueprint();});
 $("bpXLvSeg")&&$("bpXLvSeg").addEventListener("click",e=>{const b=e.target.closest("button[data-lv]");if(!b)return;
@@ -14598,7 +14627,8 @@ function ipTargets(){ // 可加碼的既有標的：①-3b 投資類（股票／
 }
 function ipTargetMuSg(t){ // 加碼既有標的的 μ／σ：①-3b 逐筆報酬率（未填→①-3 該列報酬率→現況 rc）、類別預設 σ
   const ri=+String(t.bs||"1_0").split("_")[1];const rowR=(typeof V==="function")?V(`as_1_${ri}_r`):0;
-  const mu=isFinite(parseFloat(t.r1))?parseFloat(t.r1):(rowR>0?rowR:(typeof bpDeriveRC==="function"?bpDeriveRC()*100:6));
+  const pm=(typeof bpPlanMu==="function")?bpPlanMu():null;
+  const mu=pm?pm.r1*100:(isFinite(parseFloat(t.r1))?parseFloat(t.r1):(rowR>0?rowR:(typeof bpDeriveRC==="function"?bpDeriveRC()*100:6))); /* v429：方案工作區＝μA */
   return {mu:+(mu).toFixed(2),sg:(typeof SIGMA_BY_CAT!=="undefined"&&SIGMA_BY_CAT[ri])||15};}
 function ipTarget(p){ // 依 id 找；找不到（①-0 匯入重建了逐筆）退回名稱＋列別，並把新 id 寫回處方
   if(!p||!p.assetRef)return null;const T=ipTargets();let t=T.find(o=>o.id===p.assetRef);
@@ -15016,7 +15046,7 @@ function runSolver(){
       if(saleA){const reqW=spec.arr.reduce((s2,v)=>s2+v,0),payW=Math.min(saleA.amt,reqW);
         html+=`<div class="mini" style="margin-top:5px;color:var(--gold)">賣房淨得（換屋・${esc(saleA.h.label)}）：${saleA.s.sellAge} 歲賣出現住自宅，淨得 ${fmtW(saleA.s.net/1e4)}（售價 ${fmtW(saleA.s.priceNom/1e4)} − 賣方費用 ${fmtW(saleA.s.sellCost/1e4)} − 房貸餘額 ${fmtW(saleA.s.loanBal/1e4)}），其中 <b>${fmtW(payW)}</b> 支付本目標（覆蓋 ${reqW>0?Math.min(100,Math.round(payW/reqW*100)):0}%）；上表完成率已含，專戶只解差額。藍圖裡這筆錢賣屋當年進存款、到期支付。</div>`;}
       const nowAvail=Math.max(0,Mbase-usedAt(0));
-      html+=`<div class="mini" style="margin-top:5px">以「平衡型」納入計畫：現金池剩 ${fmtW(Lpool)}；月投佔用 ${bal.m.toFixed(1)} 萬至第 ${until} 年後<b>自動釋放</b>（目前年度剩餘可投 ${nowAvail.toFixed(1)} 萬/月）。${squeezed?"部分年度可投額受前序目標占用，完成率已按逐年可投上限計算。":""}</div>`;
+      html+=`<div class="mini" style="margin-top:5px">以「平衡型」納入計畫：現金池剩 ${fmtW(Lpool)}；月投佔用 ${bal.m.toFixed(1)} 萬至第 ${until} 年後<b>自動釋放</b>（目前年度剩餘可投 ${nowAvail.toFixed(1)} 萬/月）。${squeezed?"部分年度可投額受前序目標占用，完成率已按逐年可投上限計算。":""}${(Lpool<=0.5&&bal.L>0.5)?`<br><span style="color:#8a5a00">現金池已用完——存款只留 ④-1 緊急預備金 ${buf.toFixed(0)} 萬；客戶想多留一些現金，到 ④-1 調高預備金再重新求解（求解一律不動預備金）。</span>`:""}</div>`; /* v429 */
       if(!done){
         const fb=svFallbacks(makeSpec,LB,Mcap,it.kind,availOf);
         html+=`<div class="note warn" style="margin-top:6px"><b>平衡型完成率 ${covTxt(balCov)}——資源全上仍無法 100% 完成此目標。</b>三條補救：<br>
