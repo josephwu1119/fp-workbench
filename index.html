@@ -517,7 +517,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <span style="margin-left:auto;font-size:11.5px;color:var(--gold);font-family:system-ui;letter-spacing:1px">
     編輯者｜吳振哲 &amp; 蔡旻峰　—　醫師的財務管家</span>
     <span id="hdrAcct" class="no-print" style="display:inline-flex;align-items:center;gap:8px;margin-left:14px"><span id="lgChip" class="lgChip" style="display:none"></span><span id="qsState" class="qsState" style="display:none"></span><button class="btn" id="btnQuickSave" style="display:none" title="把目前畫面存進客戶庫（同一天重複按會覆蓋今天的版本，隔天再按會新增版本）。快捷鍵 Cmd／Ctrl＋S">💾 儲存</button><button class="btn ghost" id="btnClientLib" title="客戶清單、多版本存檔（本機或 Google 雲端硬碟）">📁 客戶管理</button></span></div>
-  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v430</span></h1>
+  <h1 class="h1">財務規劃整合工作台<span id="appVer" class="appVer no-print" data-tip="[b]目前程式版本[/b]||更新到 GitHub 後畫面還是舊版號：網址後面加 ?v=版本號（例如 ?v=360）重開，或按 Cmd＋Shift＋R 強制重新整理。">v434</span></h1>
   <p class="lead">從<b>結構化收支與資產負債</b>建立客戶現況 → 一鍵帶入<b>多目標重疊蒙地卡羅模擬</b> → 檢視<b>風險規劃</b> →
   在<b>方案工作區</b>加入顧問建議與處方 → 一鍵產出<b>報告書</b>，執行狀態由財務追蹤工具回填；歷史快照支援週年檢視。</p>
   <div class="hdBar no-print">
@@ -841,8 +841,13 @@ body:not(.rxLock) .bsCascade{display:block}
   </div>
   <p class="cap no-print" style="margin:-2px 0 8px"><b>現金管理紀律同時作用於現況藍圖、方案藍圖與 ④-3 求解</b>——客戶的現況本來就該有現金紀律，方案只是延續同一條規則。<b>緊急預備金</b>＝平時最低要留的現金地板（N 個月生活支出與固定金額取大者，可由 ①-0 匯入依追蹤工具規則帶入）。它<b>不是完全不能碰的錢</b>——實務上真的沒錢時當然會動用：<b>④-3 求解</b>時保留不投入目標（可動用單筆＝存款−緊急預備金）；<b>④-1 藍圖</b>存款高於此線正常，低於此線就依贖回順序<b>先變現投資補回</b>，投資也用盡時才動用預備金本身。<b>⑤ 蒙地卡羅</b>則保守——不把預備金計入投資部位。0＝不設（不保留、存款見底才變現）。</p>
   <div class="no-print" style="margin-top:-4px"><span id="bpRedeemNote" class="status"></span></div>
-  <input type="hidden" id="bp_kbOrd" value="9999"><input type="hidden" id="bp_invOrd" value="9998"><input type="hidden" id="bp_residUse" value="[]"><input type="hidden" id="retSelfM" value=""><input type="hidden" id="retSpM" value=""><input type="hidden" id="retSelfEnd" value=""><input type="hidden" id="retSpEnd" value=""><input type="hidden" id="bp_rdLv" value=""><input type="hidden" id="syncStamp" value=""><input type="hidden" id="incMixJson" value=""><input type="hidden" id="expMixJson" value=""><input type="hidden" id="trkArvJson" value=""><input type="hidden" id="nyPendJson" value="[]"><input type="hidden" id="nyMetaJson" value="">
+  <input type="hidden" id="hcPortJson" value=""><input type="hidden" id="bp_kbOrd" value="9999"><input type="hidden" id="bp_invOrd" value="9998"><input type="hidden" id="bp_residUse" value="[]"><input type="hidden" id="retSelfM" value=""><input type="hidden" id="retSpM" value=""><input type="hidden" id="retSelfEnd" value=""><input type="hidden" id="retSpEnd" value=""><input type="hidden" id="bp_rdLv" value=""><input type="hidden" id="syncStamp" value=""><input type="hidden" id="incMixJson" value=""><input type="hidden" id="expMixJson" value=""><input type="hidden" id="trkArvJson" value=""><input type="hidden" id="nyPendJson" value="[]"><input type="hidden" id="nyMetaJson" value="">
   <div id="bpStale" class="no-print"></div>
+  <details class="no-print" id="catDefWrap" style="margin-top:8px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--accent)">資產類別長期假設（①-3 年化報酬預設 μ・類別波動 σ）</summary>
+    <p class="cap" style="margin:4px 0 6px">這張表是你的「資產類別長期假設表」：μ＝未來 10～15 年的長期預期（扣費前）、σ＝3～5 年年化波動。用途：①-3 投資類各列「年化報酬」的預設（新客戶與空白列）、③ 原有投資組合診斷的類別 σ、⑤ 現況 σ 推估。已經填在 ①-3 的報酬不會被這裡改掉（按「套用到空白列」才填空白的）。</p>
+    <div id="catDefBox"></div>
+    <div class="scRow" style="margin-top:6px"><button class="btn ghost sm" type="button" id="btnCatApply">套用 μ 到 ①-3 空白列</button><button class="btn ghost sm" type="button" id="btnCatSave">存為我的預設（新客戶套用）</button><button class="btn ghost sm" type="button" id="btnCatFactory">回復原廠</button><span class="status" id="catDefMsg"></span></div>
+  </details>
   <div id="rdSeq" class="no-print"></div>
   <div id="bpModeBanner"></div>
   <p class="cap no-print" style="margin-top:-4px">現況＝<b>維持目前行為</b>，三個資金去向各自複利：<b>既有投資部位</b>續抱（報酬<b>自動取 ①-3 投資類資產</b>的持有報酬加權）；
@@ -1139,6 +1144,7 @@ body:not(.rxLock) .bsCascade{display:block}
 <div class="rdExGrid"><div class="rdEx"><div class="rdExT">A＝<b>部分贖回</b></div><table class="rdTb"><tr><th>年齡</th><th>A 年底</th><th>A 動用</th><th>B 年底</th><th>B 動用</th><th>活存</th><th></th></tr><tr><td>65</td><td>465.0</td><td class="rdHi">60.0</td><td>318.0</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>66</td><td>428.2</td><td class="rdHi">60.0</td><td>337.1</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>67</td><td>389.7</td><td class="rdHi">60.0</td><td>357.3</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>68</td><td>349.1</td><td class="rdHi">60.0</td><td>378.7</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>69</td><td>306.6</td><td class="rdHi">60.0</td><td>401.5</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>70</td><td>261.9</td><td class="rdHi">60.0</td><td>425.6</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>71</td><td>215.0</td><td class="rdHi">60.0</td><td>451.1</td><td class="">—</td><td class="">—</td><td></td></tr><tr><td>72</td><td>165.8</td><td class="rdHi">60.0</td><td>478.2</td><td class="">—</td><td class="">—</td><td></td></tr></table><div class="rdExN">A 每年只被提領當年缺口 60 萬，其餘照 5% 繼續滾；B 完全沒被動到，一路長到 478 萬。<br>72 歲合計 <b>644.0 萬</b></div></div><div class="rdEx"><div class="rdExT">A＝<b>全部贖回</b></div><table class="rdTb"><tr><th>年齡</th><th>A 年底</th><th>A 動用</th><th>B 年底</th><th>B 動用</th><th>活存</th><th></th></tr><tr><td>65</td><td>—</td><td class="rdHi">525.0</td><td>783.0</td><td class="">—</td><td class="">—</td><td>整筆變現，餘額轉入 B</td></tr><tr><td>66</td><td>—</td><td class="">—</td><td>770.0</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>67</td><td>—</td><td class="">—</td><td>756.2</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>68</td><td>—</td><td class="">—</td><td>741.5</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>69</td><td>—</td><td class="">—</td><td>726.0</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>70</td><td>—</td><td class="">—</td><td>709.6</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>71</td><td>—</td><td class="">—</td><td>692.2</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>72</td><td>—</td><td class="">—</td><td>673.7</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr></table><div class="rdExN">65 歲輪到 A 時<b>整筆賣掉 525 萬</b>：60 萬補缺口，剩下 465 萬自動再投入順序中下一個「部分贖回」的 B（不會躺在活存）；之後都由 B 付。<br>72 歲合計 <b>673.7 萬</b>（錢搬到報酬 6% 的 B，所以比部分贖回多；若 B 報酬較低就會變少）</div></div><div class="rdEx"><div class="rdExT">A＝<b>年金式／特定時間</b></div><table class="rdTb"><tr><th>年齡</th><th>A 年底</th><th>A 動用</th><th>B 年底</th><th>B 動用</th><th>活存</th><th></th></tr><tr><td>65</td><td>525.0</td><td class="">—</td><td>258.0</td><td class="rdHi">60.0</td><td class="">—</td><td>A 鎖住</td></tr><tr><td>66</td><td>551.2</td><td class="">—</td><td>213.5</td><td class="rdHi">60.0</td><td class="">—</td><td>A 鎖住</td></tr><tr><td>67</td><td>518.8</td><td class="">—</td><td>226.3</td><td class="">—</td><td class="">—</td><td>年金 60.0</td></tr><tr><td>68</td><td>484.8</td><td class="">—</td><td>239.9</td><td class="">—</td><td class="">—</td><td>年金 60.0</td></tr><tr><td>69</td><td>449.0</td><td class="">—</td><td>254.3</td><td class="">—</td><td class="">—</td><td>年金 60.0</td></tr><tr><td>70</td><td>411.4</td><td class="">—</td><td>269.5</td><td class="">—</td><td class="">—</td><td>年金 60.0</td></tr><tr><td>71</td><td>372.0</td><td class="">—</td><td>285.7</td><td class="">—</td><td class="">—</td><td>年金 60.0</td></tr><tr><td>72</td><td>330.6</td><td class="">—</td><td>302.8</td><td class="">—</td><td class="">—</td><td>年金 60.0</td></tr></table><div class="rdExN">設定：每年給付 60 萬、<b>67 歲起</b>、給付 10 年。65～66 歲 A <b>鎖住不能解約</b>，缺口由 B 付；67 歲起 A 每年撥 60 萬進活存剛好補缺口，B 停止被動用、開始回升。<br>72 歲合計 <b>633.4 萬</b></div></div><div class="rdEx"><div class="rdExT">A＝<b>不贖回</b></div><table class="rdTb"><tr><th>年齡</th><th>A 年底</th><th>A 動用</th><th>B 年底</th><th>B 動用</th><th>活存</th><th></th></tr><tr><td>65</td><td>525.0</td><td class="">—</td><td>258.0</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>66</td><td>551.2</td><td class="">—</td><td>213.5</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>67</td><td>578.8</td><td class="">—</td><td>166.3</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>68</td><td>607.8</td><td class="">—</td><td>116.3</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>69</td><td>638.1</td><td class="">—</td><td>63.2</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>70</td><td>670.0</td><td class="">—</td><td>7.0</td><td class="rdHi">60.0</td><td class="">—</td><td></td></tr><tr><td>71</td><td>703.6</td><td class="">—</td><td>—</td><td class="rdHi">7.5</td><td class="rdNeg">-52.5</td><td>B 用完</td></tr><tr><td>72</td><td>738.7</td><td class="">—</td><td>—</td><td class="">—</td><td class="rdNeg">-112.5</td><td>缺口</td></tr></table><div class="rdExN">A 永遠不動、照 5% 長到 738.7 萬；缺口全由 B 付，B 在 70 歲用完，<b>71 歲起活存變負數＝付不出生活費</b>（帳面上有 700 多萬卻是現金流缺口）。<br>72 歲：A 738.7 萬、活存 <b style="color:var(--gD)">−112.5 萬</b></div></div></div>
 <div class="rdRule" style="margin-top:6px"><b>判讀重點：</b>同樣的錢，贖回方式會改變<b>「先動哪一筆、能不能動、動多少」</b>——①「全部贖回」適合不能拆賣的資產，但要確認順序下一個標的是你想要的去處；②「年金式」在起始年齡前是死錢，前幾年的缺口要有別的錢撐；③「不贖回」的資產再多也付不了生活費，退休現金流要靠其他標的。</div>
 </details></div>
+      <div class="scRow no-print" style="margin:2px 0 4px"><button class="btn ghost sm" type="button" id="btnHcImport" title="讀「投資標的健檢工具」匯出的 JSON：依名稱對上逐筆資產，填入每檔的退休前／後報酬與 σ；組合 μ／σ 另存，③ 診斷與 ⑤ 現況 σ 優先採用">📥 匯入健檢結果（每檔 μ／σ）</button><input type="file" id="fileHc" accept=".json,application/json" style="display:none"><span class="status" id="hcMsg"></span></div>
       <div id="itmAssetBox"></div>
       <div id="itmLiabBox" style="margin-top:12px"></div>
     </div>
@@ -1647,6 +1653,7 @@ body:not(.rxLock) .bsCascade{display:block}
   <h2>逐目標建議配置（核心／衛星）與鄰近檔位對比</h2>
   <p class="cap">能力／意願共用，<b>時程逐目標判定</b>（直接取自 ②目標設定 的實現年齡與持續期間）。點下方總覽任一列，把該目標設為檢視——展開它的完整配置、鄰近檔位與「下調一檔」代價。數據校準至 2000–2024（含網路泡沫）。</p>
   <div id="riskGoalOverview" style="margin-top:4px"></div>
+  <div id="riskPortDiag" style="margin-top:10px"></div>
   <div id="riskCurGoal" style="margin:14px 0 6px"></div>
   <div class="scRow no-print">
     <label style="font-size:12px;color:var(--sub);font-family:system-ui">版本</label>
@@ -1918,6 +1925,7 @@ body:not(.rxLock) .bsCascade{display:block}
     <label class="chk" style="margin:0"><input type="checkbox" id="rpt_s14" checked><span>12-2 逐年資金流向</span></label>
     <span class="rptBdWrap" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--sub);font-family:system-ui">細度<div class="segRow" id="rptBdSeg" style="margin:0"><button type="button" class="seg" data-lv="n">總額</button><button type="button" class="seg" data-lv="g">大類</button><button type="button" class="seg on" data-lv="r">細類</button><button type="button" class="seg" data-lv="i">逐筆</button></div><input type="hidden" id="rpt_bdLv" value="r"></span>
     <label class="chk" style="margin:0"><input type="checkbox" id="rpt_s13" checked><span>13 聯絡我們</span></label>
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--sub);font-family:system-ui;margin-left:4px" title="基本＝單一報酬＋生涯藍圖（完成率為主數字；不印成功率、蒙地卡羅、波動 σ）——給偏好單純講解的客戶；進階＝加上波動與蒙地卡羅把握度。工作台本身兩種都算，只差印不印">報告書深度<select id="rpt_depth" style="font-size:12px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--paper)"><option value="basic" selected>基本（報酬＋藍圖）</option><option value="adv">進階（＋波動與蒙地卡羅）</option></select></span>
     <input type="checkbox" id="rpt_clinic" style="display:none"><span class="mini a2keep" id="rptClinicNote" style="margin:0;font-weight:400" title="開業醫模式自動判定：①-0a 職業身分＝開業醫 ＋ 服務方案＝B 全方位 ＋ 勾「＋ 稅務及傳承規劃」。啟用時報告書不印年結餘／儲蓄率列，申報階梯（目標所需申報水準）只印在方案章節並加註「全額如實申報為法定標準」"></span></div>
   <div class="scRow no-print"><button class="btn" id="btnRptOpen">📄 產生報告書（新分頁）</button><button class="btn ghost" id="btnRptDl">⬇ 下載 HTML</button><span class="status" id="rptMsg"></span></div>
 </div>
@@ -2226,7 +2234,7 @@ function heatColor(v){ // 0~1 → 紅→琥珀→綠
 
 // ==================== 讀參數 ====================
 function readP(){
-  if(typeof wsActive!=="undefined"&&wsActive===0&&typeof syncCurMuSig==="function")syncCurMuSig(); // 現況：⑤ μ/σ 由 ①-3 推估
+  if(typeof syncCurMuSig==="function")syncCurMuSig(); // 現況：⑤ μ/σ 由 ①-3 推估；方案：μA/σA 自動加權（v432）
   if($("buyEnabled"))$("buyEnabled").checked=false; // v244：⑤-3 購屋模組已併入 ④-1b 沙盤，購屋一律走 ②-2 目標列（與 ④-1 同口徑；舊檔勾著也不再生效）
   const cash=num("cash"), etf=num("etf");
   // 緊急預備金＝地板：N 個月生活支出與固定金額取大者（模擬內·真沒錢時可動用、有投資時補回）
@@ -3296,7 +3304,7 @@ function itmSync(quiet){ // 逐筆 → 類別表欄位（未被手動覆寫的�
     if(sumA[k]===undefined&&itmHad(id)&&itmOvr.indexOf(id)<0){const e=$(id);if(e)e.value=0;}}));
   LIAB_ROWS.forEach((r,ri)=>{const id=`li_${ri}`;
     if(sumL[String(ri)]===undefined&&itmHad(id)&&itmOvr.indexOf(id)<0){const e=$(id);if(e)e.value=0;}});
-  // 逐筆報酬率 → 投資類該列的「年化報酬」欄（依金額加權；有填才覆寫，供 ④-1 現況投組報酬推導）
+  // 逐筆報酬率 → 投資類該列的「年化報酬」欄（依金額加權；有填才覆寫，供 ④-1 現況投組報酬推導；方案裡沒動的既有部位也照它）
   const rw={};
   itmLive(itmAssets).forEach(x=>{const k=x.bs||"0_0";if(!/^1_/.test(k))return;
     const r=parseFloat(x.r1),v=parseFloat(x.value)||0;if(!isFinite(r)||v<=0)return;
@@ -3428,7 +3436,7 @@ function buildItems(){
         ${op?`<div style="margin-top:5px">`+list.map(o=>astRow(o.x,o.i)).join("")+`</div>`:""}</div>`;}).join("")
     +(aAll.length?"":`<div class="mini">尚無逐筆資產——按「＋ 新增資產」開始，或由 ①-0 匯入追蹤工具 JSON 自動建立。</div>`);
   function astRow(x,i){return `
-    <div class="itmRow" data-dv="${x.who==="sp"?"sp":x.who==="joint"?"joint":"self"}" style="grid-template-columns:1.5fr 1.4fr .8fr 1fr 1fr .9fr .9fr 1.1fr auto${ITM_OWNED[x.bs]?";border-color:var(--gD);background:#fdf3f0":""}">
+    <div class="itmRow" data-dv="${x.who==="sp"?"sp":x.who==="joint"?"joint":"self"}" style="grid-template-columns:1.5fr 1.4fr .8fr 1fr 1fr .9fr .9fr .8fr 1.1fr auto${ITM_OWNED[x.bs]?";border-color:var(--gD);background:#fdf3f0":""}">
       ${ITM_OWNED[x.bs]?`<div style="grid-column:1/-1;font-family:system-ui;font-size:11px;color:var(--gD);margin-bottom:2px">⚠ 「${(ASSET_GROUPS[+x.bs.split("_")[0]].rows[+x.bs.split("_")[1]])}」由 <b>${ITM_OWNED[x.bs]}</b> 專屬彙總，此列不計入資產表——請改選其他類別，或把這張保單登錄到 ${polRegName()}。</div>`:""}
       ${x.saleNote?`<div style="grid-column:1/-1;font-family:system-ui;font-size:11px;color:var(--gold);margin-bottom:2px">🔁 ${esc(x.saleNote)}——由 ②-3 購屋精算「換屋」指定，資產負債表仍列今日現況</div>`:""}
       <div><div class="mini">名稱</div><input type="text" data-ia="${i}" data-if="name" value="${(x.name||"").replace(/"/g,"&quot;")}" placeholder="永豐大戶-台幣活存"></div>
@@ -3436,9 +3444,10 @@ function buildItems(){
       <div><div class="mini">歸屬</div>${sel(x.who||"self",ITM_WHO,`data-ia="${i}" data-if="who"`)}</div>
       <div><div class="mini">投入成本</div><input type="number" data-ia="${i}" data-if="cost" value="${x.cost||""}" placeholder="0"></div>
       <div><div class="mini">現在價值</div><input type="number" data-ia="${i}" data-if="value" value="${x.value||""}" placeholder="0"></div>
-      ${x.sim===false?`<div style="grid-column:span 3;align-self:center;font-family:system-ui;font-size:10.5px;color:var(--sub);border-left:2px solid var(--line);padding-left:8px">不計入生涯模擬——報酬率與贖回方式不需設定（仍列入資產負債表與淨值）</div>`
+      ${x.sim===false?`<div style="grid-column:span 4;align-self:center;font-family:system-ui;font-size:10.5px;color:var(--sub);border-left:2px solid var(--line);padding-left:8px">不計入生涯模擬——報酬率與贖回方式不需設定（仍列入資產負債表與淨值）</div>`
       :`<div><div class="mini">退休前 %</div><input type="number" data-ia="${i}" data-if="r1" value="${x.r1!==undefined?x.r1:""}" step="0.5" placeholder="—"></div>
       <div><div class="mini">退休後 %</div><input type="number" data-ia="${i}" data-if="r2" value="${x.r2!==undefined?x.r2:""}" step="0.5" placeholder="${(()=>{const r1=parseFloat(x.r1);if(!isFinite(r1))return "報酬−預設";if(String(x.bs)==="0_1")return r1.toFixed(1)+"（定存不降）";const g=Math.max(0,num("bp_baseGlide")||0),r0=(typeof bpDeriveR0==="function"?bpDeriveR0()*100:0);return "預設 "+Math.max(r0,r1-g).toFixed(1);})()}"></div>
+      <div><div class="mini" title="年化波動（選填）：空白＝用 ④-1 類別 σ；由「匯入健檢結果」自動填">σ %</div><input type="number" data-ia="${i}" data-if="sg" value="${x.sg!==undefined&&x.sg!==""?x.sg:""}" step="0.5" min="0" placeholder="${/^1_\d$/.test(String(x.bs||""))?("類別 "+catSg(+String(x.bs).split("_")[1])):"—"}"></div>
       <div><div class="mini">贖回方式 <a href="#rdHelp" class="rdQ" title="四種贖回方式的定義與逐年明細示意">ⓘ</a></div>${sel(x.redeem||"part",ITM_REDEEM,`data-ia="${i}" data-if="redeem"`)}</div>`}
       <div style="display:flex;gap:4px;align-items:center;padding-bottom:3px">
         <label class="chk" style="margin:0;font-size:10px" title="是否計入生涯模擬與客戶端追蹤（自用房屋、自用車常關閉）；資產負債表一律計入"><input type="checkbox" data-ia="${i}" data-if="sim" ${x.sim!==false?"checked":""}><span>模擬</span></label>
@@ -3659,6 +3668,18 @@ $("itmExpBox")&&$("itmExpBox").addEventListener("click",e=>{
     itmSave();buildItems();itmSync();
     const f=$("itmExpBox").querySelector('input[data-if="name"]');if(f)f.focus();return;}
   const d=e.target.closest("button[data-iedel]");if(d){const x=itmExps[+d.dataset.iedel]||{};if(!delAsk("這筆支出",`${x.name||"（未命名）"}　${delAmt(x.amt," 元")?delAmt(x.amt," 元")+(x.freq?"／"+x.freq:""):"（金額未填）"}`))return;itmExps.splice(+d.dataset.iedel,1);itmSave();buildItems();itmSync();}});
+function hcImport(j){ /* v434：健檢工具 JSON → 逐筆 r1／r2／sg、組合 μ／σ */
+  const msg=$("hcMsg");if(!j||j.kind!=="健檢結果"||!Array.isArray(j.items)){if(msg)msg.textContent="不是健檢工具匯出檔（kind 應為「健檢結果」）";return null;}
+  if(typeof wsActive!=="undefined"&&wsActive!==0){if(msg)msg.textContent="請切回「現況」工作區再匯入（健檢的是客戶原有組合）";return null;}
+  const norm=s=>String(s||"").replace(/\s+/g,"").toLowerCase();const L=(typeof itmAssets!=="undefined")?itmAssets:[];const hit=[],miss=[];
+  j.items.forEach(it=>{const n=norm(it.name);if(!n)return;let x=L.find(a=>norm(a.name)===n&&(!it.bs||String(a.bs)===String(it.bs)))||L.find(a=>norm(a.name)===n)||L.find(a=>n&&(norm(a.name).includes(n)||n.includes(norm(a.name))));
+    if(!x){miss.push(it.name);return;}const num1=v=>{const f=parseFloat(v);return isFinite(f)?f:null;};
+    if(num1(it.r1)!==null)x.r1=num1(it.r1);if(num1(it.r2)!==null)x.r2=num1(it.r2);if(num1(it.sg)!==null&&num1(it.sg)>=0)x.sg=num1(it.sg);hit.push(x.name||it.name);});
+  const P=j.portfolio||null;if($("hcPortJson"))$("hcPortJson").value=(P&&isFinite(parseFloat(P.sg)))?JSON.stringify({mu:parseFloat(P.mu)||0,sg:parseFloat(P.sg),asOf:String(P.asOf||j.asOf||"").slice(0,10),n:hit.length}):"";
+  itmSave();buildItems();itmSync(true);try{doSync();}catch(e){}if(typeof syncCurMuSig==="function")syncCurMuSig();if(typeof renderBlueprint==="function")try{renderBlueprint();}catch(e){}if(typeof renderPortDiag==="function")try{renderPortDiag();}catch(e){}if(typeof schedule==="function")schedule();
+  if(msg)msg.textContent=`已匯入 ${hit.length} 檔${P&&isFinite(parseFloat(P.sg))?`・組合 μ ${(+P.mu||0).toFixed(1)}%／σ ${(+P.sg).toFixed(1)}%（${String(P.asOf||"").slice(0,10)}）`:""}${miss.length?`；對不到名稱 ${miss.length} 檔：${miss.slice(0,5).join("、")}${miss.length>5?"…":""}`:""}`;return {hit,miss};}
+$("btnHcImport")&&$("btnHcImport").addEventListener("click",()=>$("fileHc").click());
+$("fileHc")&&$("fileHc").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{let j=null;try{j=JSON.parse(rd.result);}catch(x){$("hcMsg").textContent="JSON 解析失敗";return;}hcImport(j);};rd.readAsText(f,"utf-8");e.target.value="";});
 $("itmAssetBox")&&$("itmAssetBox").addEventListener("input",e=>{const el=e.target,i=el.dataset.ia,f=el.dataset.if;if(i===undefined||!f)return;
   const x=itmAssets[+i];if(!x)return;
   if(f==="sim")x.sim=el.checked;
@@ -4973,7 +4994,8 @@ function newClientReset(silent){
     document.querySelectorAll("#tblExpense select").forEach(e=>{e.selectedIndex=0;});
     if($("p_edu_split"))$("p_edu_split").value="even";if($("p_edu_share"))$("p_edu_share").value=50; /* v396 */
     [1,2,7,6,5].forEach((r,ri)=>{const e=$(`exp_4_${ri}_r`);if(e)e.value=r;});
-    [7,3.5,7,6,2,0,0,0,0,2].forEach((r,ri)=>{const e=$(`as_1_${ri}_r`);if(e)e.value=r;}); /* v301：新客戶清空時 ①-3 投資類「年化報酬」預設值一併被清成空白 → 現況 μ 推估為 0%、藍圖／⑤ 以零報酬計算；改為回復預設 */
+    if(typeof catDefLoad==="function")catDefLoad(true); /* v433：類別假設回「我的預設」或原廠 */
+    ASSET_GROUPS[1].rows.forEach((r,ri)=>{const e=$(`as_1_${ri}_r`);if(e)e.value=catMu(ri);}); /* v301：新客戶清空時 ①-3 投資類「年化報酬」預設值一併被清成空白 → 回復預設（v433：來自類別假設表） */
     ["noteJson","eduJson","famJson","estHeirJson","estAllocJson","liMetaJson","siJson","trkAssetsJson","inc_self_basis","inc_sp_basis","bsAdjJson","retAdjJson","txSrc","txExtJson","journeyJson","nyMetaJson"].forEach(id=>{if($(id))$(id).value="";});
     if(typeof buildJourney==="function")buildJourney();
     // 結構資料
@@ -6948,34 +6970,67 @@ function goalTierOf(startYrs,durYrs,p){ // 共用檔位判定：③-2 總覽與 
   const cell=RISK_DATA[$("riskVer").value][band].cells.find(c=>c.tier===tier);
   return {band,tier,cell};
 }
-function mcApplyAll(){ // 一鍵：把 ③ 各目標檔位灌入 ⑤ 的 μA（購屋）與 μB/μC（退休），減少 ③↔⑤ 接縫
+function riskMuSet(){ /* v431：③ 判定的報酬假設 {muA,sigA,muB,sigB,muC,sigC,...}（%）；問卷未完成回 null。現況工作區 ⑤ 自動採用、方案工作區一鍵帶入，兩邊同一套算法 */
+  try{const p=riskProfile();if(p.incomplete)return null;
+    const cur=V("g_self_cur")||num("startAge"),ver=$("riskVer").value;
+    const tierOfGoal=gl=>{const rem=Math.max(1,goalSpan(gl)-Math.max(0,cur-gl.age));return goalTierOf(Math.max(0,gl.age-cur),rem,riskProfileFor(gl)).cell;};
+    // 退休 → μB/σB（累積），μC/σC（提領期降一檔）；退休屬共同目標 → 兩人較保守者
+    const retT=goalTierOf(Math.max(0,V("g_self_ret")-cur),Math.max(1,V("g_self_life")-V("g_self_ret")),riskProfileFor("ret"));
+    const cells=RISK_DATA[ver][retT.band].cells;const di=Math.max(0,RISK_TIERS.indexOf(retT.tier)-1),dcell=cells[di];
+    // 購屋 → μA/σA：有購屋目標取其檔位（多筆金額加權）；否則其他目標金額加權；都無則同退休檔位
+    const others=(typeof goals!=="undefined"?goals:[]).filter(gl=>goalFundOf(gl)!=="budget");
+    const houses=others.filter(gl=>(gl.cat||"").indexOf("購屋")===0);
+    const wavg=arr=>{let sum=0,wr=0,ws=0;arr.forEach(gl=>{const c=tierOfGoal(gl),w=Math.max(1,gl.pv||0);sum+=w;wr+=w*c.ret;ws+=w*c.stock;});return sum>0?{ret:wr/sum,stock:ws/sum}:null;};
+    const a=wavg(houses.length?houses:others);
+    const aInfo=a?`μA ${a.ret.toFixed(1)}%（${houses.length?(houses.length>1?"購屋目標金額加權":"購屋目標檔位"):"無購屋目標，取其他目標金額加權"}）`:`μA ${retT.cell.ret.toFixed(1)}%（無非退休、非預算目標，同退休檔位）`;
+    return {muA:+(a?a.ret:retT.cell.ret).toFixed(1),sigA:riskSigma(a?a.stock:retT.cell.stock),muB:+retT.cell.ret.toFixed(1),sigB:riskSigma(retT.cell.stock),muC:+dcell.ret.toFixed(1),sigC:riskSigma(dcell.stock),retTier:retT.tier,dTier:dcell.tier,aInfo};}
+  catch(e){return null;}}
+function mcApplyAll(){ // 一鍵：把 ③ 各目標檔位灌入 ⑤ 的 μA（購屋）與 μB/μC（退休），減少 ③↔⑤ 接縫（v431：改用 riskMuSet，與現況自動採用同一套）
   const p=riskProfile(),msg=$("riskGoalApplyMsg");
   if(curWsGuard(msg))return;
   if(p.incomplete){if(msg){msg.textContent=`問卷未完成（還差 ${p.incomplete} 題），無法帶入`;msg.style.color="var(--gD)";}return;}
-  const cur=V("g_self_cur")||num("startAge");
-  const ver=$("riskVer").value;
-  const tierOfGoal=gl=>{const rem=Math.max(1,goalSpan(gl)-Math.max(0,cur-gl.age));return goalTierOf(Math.max(0,gl.age-cur),rem,riskProfileFor(gl)).cell;};
-  // 退休 → μB/σB（累積），μC/σC（提領期降一檔）；退休屬共同目標 → 兩人較保守者
-  const retT=goalTierOf(Math.max(0,V("g_self_ret")-cur),Math.max(1,V("g_self_life")-V("g_self_ret")),riskProfileFor("ret"));
-  const cells=RISK_DATA[ver][retT.band].cells;
-  const di=Math.max(0,RISK_TIERS.indexOf(retT.tier)-1),dcell=cells[di];
-  $("muB").value=retT.cell.ret.toFixed(1);$("sigB").value=riskSigma(retT.cell.stock);
-  $("muC").value=dcell.ret.toFixed(1);$("sigC").value=riskSigma(dcell.stock);
-  // 購屋 → μA/σA：有購屋目標取其檔位（多筆金額加權）；否則其他目標金額加權；都無則不動
-  const others=goals.filter(gl=>goalFundOf(gl)!=="budget");
-  const houses=others.filter(gl=>(gl.cat||"").indexOf("購屋")===0);
-  const wavg=arr=>{let sum=0,wr=0,ws=0;arr.forEach(gl=>{const c=tierOfGoal(gl),w=Math.max(1,gl.pv||0);sum+=w;wr+=w*c.ret;ws+=w*c.stock;});return sum>0?{ret:wr/sum,stock:ws/sum}:null;};
-  let aInfo;
-  const src=houses.length?houses:others;
-  const a=wavg(src);
-  if(a){$("muA").value=a.ret.toFixed(1);$("sigA").value=riskSigma(a.stock);
-    aInfo=`μA ${a.ret.toFixed(1)}%（${houses.length?(houses.length>1?"購屋目標金額加權":"購屋目標檔位"):"無購屋目標，取其他目標金額加權"}）`;
-  }else aInfo="μA 未變（無非退休、非預算目標）";
-  syncRanges();syncLabels();schedule();
-  if(msg){msg.style.color="";msg.innerHTML=`已一鍵帶入 ⑤ ✓ ${aInfo}；μB ${retT.cell.ret.toFixed(1)}%／σB ${riskSigma(retT.cell.stock)}%，提領期 μC ${dcell.ret.toFixed(1)}%（降一檔 ${dcell.tier}）。<b>接著到 ⑤ 按「重跑」看整體把握度。</b>`;}
+  const R=riskMuSet();if(!R){if(msg){msg.textContent="無法判定檔位";msg.style.color="var(--gD)";}return;}
+  ["muB","sigB","muC","sigC"].forEach(id=>{$(id).value=R[id];}); /* v432：μA／σA 由既有＋轉入自動加權，不再由這裡寫 */
+  if(typeof syncCurMuSig==="function")syncCurMuSig();
+  syncRanges();syncLabels();schedule();if(typeof renderBlueprint==="function")try{renderBlueprint();}catch(e){}
+  const mx=(typeof bpPlanMix==="function")?bpPlanMix():null;
+  if(msg){msg.style.color="";msg.innerHTML=`已一鍵帶入 ⑤ ✓ μB ${R.muB}%／σB ${R.sigB}%（退休檔位 ${R.retTier}：④-3 專戶、④-2 處方預設、①-3 調整配置轉入的錢都用它），提領期 μC ${R.muC}%（降一檔 ${R.dTier}）；μA／σA 由既有部位與方案轉入自動加權${mx?`（目前 μA ${(mx.mu*100).toFixed(1)}%）`:""}。<b>接著到 ⑤ 按「重跑」看整體把握度。</b>`;}
 }
+function portDiag(vals,opt){ /* v432：原有投資組合診斷。vals＝快照 values 或 collectValues()；opt.items＝逐筆（可省）；回 {rows,cash,inv,re,mu,sg,R,judg:[{lv,t}]} */
+  opt=opt||{};const g=id=>{const x=parseFloat(vals[id]);return isNaN(x)?0:x;};
+  const cash=ASSET_GROUPS[0].rows.reduce((a,r,ri)=>a+g(`as_0_${ri}`),0),re=ASSET_GROUPS[2].rows.reduce((a,r,ri)=>a+g(`as_2_${ri}`),0);
+  const rows=[];let inv=0,wt=0,ws=0;
+  ASSET_GROUPS[1].rows.forEach((r,ri)=>{const v=g(`as_1_${ri}`);if(!(v>0))return;const rr=g(`as_1_${ri}_r`);const rt=rr>0?rr:catMu(ri,vals),sg=catSg(ri,vals); /* v433：類別假設表 */inv+=v;wt+=v*rt;ws+=v*sg;rows.push({ri,name:String(r).split("（")[0],v,rt,sg});});
+  rows.forEach(x=>{x.w=inv>0?x.v/inv:0;});const mu=inv>0?wt/inv:0,sgW=inv>0?ws/inv:0; /* v434：sgW＝直接加權（高估）、sg＝含分散效果；健檢工具有算就用它 */
+  const hc=hcPort(vals);const sgCalc=portSigmaCalc(sigmaEntries({vals,items:opt.items||[]}));const sg=hc?parseFloat(hc.sg):(sgCalc>0?sgCalc:sgW);const sgSrc=hc?`健檢工具（${hc.asOf||""}）`:"類別 σ 含分散效果";
+  const R=(typeof riskMuSet==="function")?riskMuSet():null;const judg=[];const W=v=>fmtW(v/1e4),P=v=>(v*100).toFixed(0)+"%";
+  if(inv>0&&R){
+    if(sg>R.sigB+3)judg.push({lv:"bad",k:"sigma",t:`原有組合的波動 σ ${sg.toFixed(1)}% 超過風險屬性建議的 ${R.sigB}%（${R.retTier}）——市場大跌時可能撐不住、容易在低點停損。`});
+    else if(sg<R.sigB-4&&mu<R.muB-1)judg.push({lv:"mid",k:"sigma",t:`原有組合偏保守：μ ${mu.toFixed(1)}%／σ ${sg.toFixed(1)}%，低於風險屬性可承受的 ${R.muB}%／${R.sigB}%（${R.retTier}）——長期目標靠這個報酬會不夠。`});
+    else judg.push({lv:"ok",k:"sigma",t:`原有組合 μ ${mu.toFixed(1)}%／σ ${sg.toFixed(1)}%，與風險屬性建議檔位（${R.retTier} μ ${R.muB}%／σ ${R.sigB}%）相當。`});
+    if(mu<R.muB-1&&!(sg<R.sigB-4))judg.push({lv:"mid",k:"mu",t:`原有組合預期報酬 μ ${mu.toFixed(1)}% 低於建議檔位的 ${R.muB}%。`});}
+  else if(inv>0)judg.push({lv:"mid",k:"sigma",t:"③ 問卷尚未完成，無法對照建議檔位。"});
+  {const liq=cash+inv;const cs=liq>0?cash/liq:0;const cur=g("g_self_cur")||0,retY=Math.max(0,(g("g_self_ret")||0)-cur);const farY=(typeof goals!=="undefined"?goals:[]).map(gl=>(gl.age||0)-cur).filter(y=>y>=8).concat(retY>=8?[retY]:[]);const far=farY.length>0;
+    if(liq>0&&cs>=0.5&&far)judg.push({lv:"mid",t:`現金類 ${W(cash)} 佔金融資產 ${P(cs)}，而最近的長期目標（≥8 年）還有 ${Math.min.apply(null,farY)} 年——這部分錢在閒置（通膨下實質縮水）。`});
+    else if(liq>0&&cs<0.1&&inv>0)judg.push({lv:"mid",t:`現金類只佔金融資產 ${P(cs)}，緊急預備金與近期支出要靠變現投資部位。`});}
+  if(inv>0){const top=rows.slice().sort((a,b)=>b.w-a.w)[0];if(top&&top.w>=0.6&&rows.length>1)judg.push({lv:"mid",t:`投資類 ${P(top.w)} 集中在「${top.name}」。`});
+    const biz=rows.find(x=>x.ri===5);if(biz&&biz.w>=0.4)judg.push({lv:"mid",t:`事業股權佔投資類 ${P(biz.w)}——與工作收入同源，風險沒有分散，退休時也難變現。`});
+    const sv=rows.find(x=>x.ri===4);if(sv&&sv.w>=0.3)judg.push({lv:"mid",t:`儲蓄保險現值佔投資類 ${P(sv.w)}，報酬約 ${sv.rt}%、流動性低。`});
+    const items=(opt.items||[]).filter(x=>x.sim!==false&&/^1_[0-3]$/.test(String(x.bs||""))&&(parseFloat(x.value)||0)>0);if(items.length>1){const mx=items.slice().sort((a,b)=>(+b.value)-(+a.value))[0];const w=(+mx.value)/inv;if(w>=0.4)judg.push({lv:"mid",t:`單一標的「${mx.name||"？"}」佔投資類 ${P(w)}。`});}}
+  if(!(inv>0))judg.push({lv:"mid",t:"目前沒有投資部位，金融資產全在現金類。"});
+  return {rows,cash,inv,re,mu,sg,sgW,sgSrc,R,judg};}
+function portDiagHTML(D,E,opt){ /* ③ 頁與報告書共用 */
+  opt=opt||{};const N=v=>NT(Math.round(v||0)),P=v=>(v*100).toFixed(0)+"%";const col={bad:"#8e2a1e",mid:"#9a5a12",ok:"#1d6b4f"};const bg={bad:"#fdf3f1",mid:"#fff5e6",ok:"#e8f5e9"};const S=!opt.noSigma; /* v434：基本模式不印 σ */
+  const tbl=D.rows.length?`<table class="t" style="max-width:640px"><tr><th>投資類別</th><th style="text-align:right">金額（元）</th><th style="text-align:right">佔投資類</th><th style="text-align:right">年化報酬假設</th>${S?`<th style="text-align:right">波動 σ 推估</th>`:""}</tr>${D.rows.map(x=>`<tr><td>${E(x.name)}</td><td class="n">${N(x.v)}</td><td class="n">${P(x.w)}</td><td class="n">${x.rt.toFixed(1)}%</td>${S?`<td class="n">${x.sg}%</td>`:""}</tr>`).join("")}<tr style="font-weight:700"><td>投資類合計</td><td class="n">${N(D.inv)}</td><td class="n">100%</td><td class="n">${D.mu.toFixed(1)}%</td>${S?`<td class="n">${D.sg.toFixed(1)}%</td>`:""}</tr></table>`:"";
+  const cmp=D.R?`<table class="t" style="max-width:640px"><tr><th></th><th style="text-align:right">原有組合</th><th style="text-align:right">③ 建議檔位（退休・${E(D.R.retTier)}）</th><th style="text-align:right">差距</th></tr><tr><td>預期報酬 μ</td><td class="n">${D.mu.toFixed(1)}%</td><td class="n">${D.R.muB}%</td><td class="n">${(D.mu-D.R.muB>=0?"+":"")+(D.mu-D.R.muB).toFixed(1)} 點</td></tr>${S?`<tr><td>波動 σ（含分散效果）</td><td class="n">${D.sg.toFixed(1)}%</td><td class="n">${D.R.sigB}%</td><td class="n">${(D.sg-D.R.sigB>=0?"+":"")+(D.sg-D.R.sigB).toFixed(1)} 點</td></tr>`:""}</table>`:"";
+  const mix=`<p class="cap" style="margin:4px 0">金融資產配置：現金類 ${N(D.cash)}（${P(D.cash+D.inv>0?D.cash/(D.cash+D.inv):0)}）／投資類 ${N(D.inv)}（${P(D.cash+D.inv>0?D.inv/(D.cash+D.inv):0)}）；不動產另計 ${N(D.re)}。</p>`;
+  const J=D.judg.filter(j=>S||j.k!=="sigma");
+  const jd=`<ul style="margin:6px 0 0 18px;padding:0">${J.map(j=>`<li style="margin:3px 0;padding:4px 8px;border-radius:6px;background:${bg[j.lv]};color:${col[j.lv]}">${E(j.t)}</li>`).join("")}</ul>`;
+  return `${opt.title!==false?`<h3>${E(opt.title||"原有投資組合診斷")}</h3>`:""}${mix}${tbl}${cmp}${jd}<p class="cap">報酬為類別推估（①-3 各列年化報酬）${S?`；波動 σ ${D.sgSrc||"類別 σ 含分散效果"}${(D.sgW&&Math.abs(D.sgW-D.sg)>0.05)?`（各類別直接加權為 ${D.sgW.toFixed(1)}%，分散後 ${D.sg.toFixed(1)}%）`:""}`:""}，用來看方向，不是精算；③ 建議檔位＝退休目標依風險承受能力與意願判定。方案工作區只有「動過的錢」改用建議檔位，沒動的部位維持原有假設。</p>`;}
+function renderPortDiag(){const box=$("riskPortDiag");if(!box)return;try{const D=portDiag(collectValues(),{items:(typeof itmAssets!=="undefined")?itmAssets:[]});const isCur=(typeof wsActive==="undefined"||wsActive===0);
+    box.innerHTML=`<div class="axTitle" style="margin-bottom:4px">原有投資組合診斷${isCur?"":"（本工作區＝方案調整後的配置；現況請切回現況工作區看）"}</div>${portDiagHTML(D,esc,{title:false})}`;}catch(e){box.innerHTML="";console.warn(e);}}
 function renderGoalOverview(p){
-  const box=$("riskGoalOverview");if(!box)return;
+  const box=$("riskGoalOverview");if(typeof renderPortDiag==="function")renderPortDiag();if(!box)return;
   if(p.incomplete){box.innerHTML="";return;}
   const rows=riskGoalList().map(g=>{
     const gl0=g.key==="ret"?null:goals[+g.key.slice(1)];const pr=riskProfileFor(gl0||"ret");
@@ -7012,7 +7067,7 @@ function renderGoalOverview(p){
   但 3 年後的頭期款和 25 年後的退休金承受波動的本錢完全不同——短目標配保守檔、長目標配積極檔，
   這就是目標導向投資「一目標一組合」的核心。點任一列可把該目標設為下方檢視；
   <b>與蒙地卡羅的關係：</b>MC（⑤）只有兩個投資帳戶——退休帳戶（μB 累積→μC 提領）、購屋帳戶（μA）。
-  按上方<b>「一鍵帶入 ⑤」</b>即把 ③ 判定的檔位灌入：μB/μC←退休檔位（提領期自動降一檔）、μA←購屋目標檔位（多筆購屋或無購屋時取其他目標金額加權）。
+  現況＝客戶原有組合，⑤ 由 ①-3 持有部位推估（下方「原有投資組合診斷」看它跟這裡判定的檔位差多少）；方案工作區按上方<b>「一鍵帶入 ⑤」</b>即把 ③ 判定的檔位灌入：μB/μC←退休檔位（提領期自動降一檔）、μA←購屋目標檔位（多筆購屋或無購屋時取其他目標金額加權）。
   其他目標（旅遊、教育金…）在 ⑤ 中是自兩帳戶流出的支出、其專屬檔位由 ④ 求解器逐目標開專戶採用——這是 ⑤（整體把握度）與 ④（逐目標配置）的分工。</div>`;
   box.querySelectorAll("tr[data-goalkey]").forEach(tr=>tr.addEventListener("click",e=>{
     if(e.target.closest("[data-mcapply]"))return; // 帶入按鈕不觸發列切換
@@ -7042,6 +7097,7 @@ $("riskVer").addEventListener("change",renderRisk);
 $("riskQBox").addEventListener("change",()=>{
   markStale("riskSyncMsg");markStale("riskGoalApplyMsg");
   riskViewTier=null;renderRisk();
+
 });
 $("riskQBox").addEventListener("click",e=>{const b=e.target.closest("#riskWhoSeg button[data-rw]");if(!b)return;riskWho=b.dataset.rw;riskWhoRender();});
 document.addEventListener("change",e=>{if(!e.target||e.target.id!=="bio_hasSp")return; // ①-0a 由 buildBio() 稍後建立，用委派才綁得到
@@ -7249,14 +7305,15 @@ function rptBuild(){
   const hasSp=$("bio_hasSp")?$("bio_hasSp").checked:true;
   const protRate=(w,k)=>{const need=k==="resp"?respNeed(w):V(`pr_${w}_${k}_need`);if(!(need>0))return null;return (V(`pr_${w}_${k}_have`)+V(`pr_${w}_${k}_plan`)+(rpIsPlan()?V(`pr_${w}_${k}_ret`):0))/need;};
   // ---------- 章節產生器 ----------
+  const ADV=!$("rpt_depth")||$("rpt_depth").value==="adv"; /* v434：報告書深度（基本＝不印波動與蒙地卡羅） */
   const secSummary=(cols)=>{const row=(l,k,f)=>`<tr><td>${l}</td>${cols.map((sl,j)=>`<td class="n${j?" b":""}">${f(sl.sum?sl.sum[k]:null)}</td>`).join("")}</tr>`;
     const W_=v=>v==null?"—":Wf(v);
     return `<section><h2>摘要：現況${cols.length>1?" vs 方案":""}</h2><table class="t"><tr><th>指標</th>${cols.map(sl=>`<th>${E(sl.name)}${sl.i?"（執行建議後）":"（維持目前行為）"}</th>`).join("")}</tr>
     ${(()=>{const rc=sl=>(sl.rpt&&sl.rpt.retCompl!=null)?sl.rpt.retCompl:null;return `<tr><td><b>退休完成率（生涯藍圖・主數字）</b></td>${cols.map((sl,j)=>`<td class="n${j?" b":""}">${pct(rc(sl))}</td>`).join("")}</tr>`;})() /* v429：主數字＝藍圖完成率，成功率是把握度 */}
-    ${row("退休成功率（蒙地卡羅・把握度）","srRetire",pct)}${row("綜合成功率（含所有目標・把握度）","srBoth",pct)}${row("期末資產中位數","finalP50",W_)}${row("生涯藍圖期末資產","bpFinal",W_)}${(()=>{const tot=sl=>{const r0=rowsOf(sl);if(!r0)return null;const inc=Object.values(r0.inc).reduce((a,b0)=>a+b0,0),exp=Object.values(r0.exp).reduce((a,b0)=>a+b0,0);return {inc,exp,net:inc-exp};}; /* v428：與 03 收支表同口徑 */
+    ${ADV?row("退休成功率（蒙地卡羅・把握度）","srRetire",pct)+row("綜合成功率（含所有目標・把握度）","srBoth",pct)+row("期末資產中位數","finalP50",W_):""}${row("生涯藍圖期末資產","bpFinal",W_)}${(()=>{const tot=sl=>{const r0=rowsOf(sl);if(!r0)return null;const inc=Object.values(r0.inc).reduce((a,b0)=>a+b0,0),exp=Object.values(r0.exp).reduce((a,b0)=>a+b0,0);return {inc,exp,net:inc-exp};}; /* v428：與 03 收支表同口徑 */
       const T=cols.map(tot);const r=(l,f)=>`<tr><td>${l}</td>${cols.map((sl,j)=>`<td class="n${j?" b":""}">${T[j]?Wf(f(T[j])/1e4):"—"}</td>`).join("")}</tr>`;
       return r("家庭總收入（年）",t=>t.inc)+r("家庭總支出（年・含稅與保費）",t=>t.exp)+(clinicMode?"":r("年結餘",t=>t.net));})()}${svcTaxOn()?row("預估遺產稅（元）","estTax",v=>v==null?"—":N(v)):""}</table>
-    <p class="cap">各欄取該工作區最近快照（蒙地卡羅 ${NT(Math.max(600,num("nsim")||0))} 條路徑、同種子）。看法：先看<b>完成率</b>（藍圖逐年推算、整個家庭一起算的主數字），再看<b>成功率</b>（把市場波動放進來，運氣不好時撐不撐得住的把握度）；兩者用同一套報酬假設。</p></section>`;};
+    <p class="cap">${ADV?`各欄取該工作區最近快照（蒙地卡羅 ${NT(Math.max(600,num("nsim")||0))} 條路徑、同種子）。看法：先看<b>完成率</b>（藍圖逐年推算、整個家庭一起算的主數字），再看<b>成功率</b>（把市場波動放進來，運氣不好時撐不撐得住的把握度）；兩者用同一套報酬假設。`:`各欄取該工作區最近快照。完成率＝生涯藍圖以長期平均報酬逐年推算、整個家庭一起算；市場波動下的把握度屬進階內容，本報告書未納入。`}</p></section>`;};
   const secFamily=()=>{ // 00 背景與目標：家族圖＋收支資產摘要＋財務目標總額（照簡報版型）
     const svg=(typeof fgSvgForReport==="function")?fgSvgForReport():"";
     recalcData();let d=D||{};const W_=v=>fmtW((v||0)/1e4);
@@ -7324,13 +7381,13 @@ function rptBuild(){
     const srRow=(lb,k)=>`<tr><td>${lb}</td>${cols.map(sl=>`<td class="c">${pill(sl.sum?sl.sum[k]:null)}</td>`).join("")}</tr>`;
     return `<section><h2>02　生涯財務目標</h2><h3>財務目標清單與完成率</h3><div style="overflow-x:auto"><table class="t gt"><tr><th style="width:26px">重要度</th><th style="min-width:96px">目標</th><th>實現<br>(歲)</th><th>準備<br>年期</th><th>持續<br>年期</th><th>現值</th><th>成長率</th><th>終值</th><th>終值總額</th>${cols.map(sl=>`<th style="text-align:center">完成率<br><small>${E(sl.name)}</small></th>`).join("")}</tr>${trs}</table></div>
     <p class="cap">完成率＝生涯藍圖（④-1）逐年推算下，該目標各筆支付當年家庭資產仍為正的比例；退休為退休期各年資產為正的比例；「—」＝該目標已過期或不適用。${bqV>0?`期末預留＝預留時點的年末資產（不含不動產）達到預留金額的比例；蒙地卡羅的退休成功率已把「留不到預留金額」計為失敗。`:""}</p>
-    <h3>成功率（蒙地卡羅・${NT(Math.max(600,num("nsim")||0))} 條路徑）</h3><table class="t" style="max-width:640px"><tr><th>指標</th>${cols.map(sl=>`<th style="text-align:center">${E(sl.name)}</th>`).join("")}</tr>${srRow("退休成功率","srRetire")}${($("buyEnabled")&&$("buyEnabled").checked)?srRow("購屋成功率","srHouse"):""}${srRow("綜合成功率（含所有目標）","srBoth")}</table>
-    <p class="cap">成功率＝把市場波動放進來跑 ${NT(Math.max(600,num("nsim")||0))} 條路徑，退休期（或所有目標）不歸零的路徑比例。完成率看「平均路徑撐不撐得住」，成功率看「運氣不好時撐不撐得住」。</p>
+    ${ADV?`<h3>成功率（蒙地卡羅・${NT(Math.max(600,num("nsim")||0))} 條路徑）</h3><table class="t" style="max-width:640px"><tr><th>指標</th>${cols.map(sl=>`<th style="text-align:center">${E(sl.name)}</th>`).join("")}</tr>${srRow("退休成功率","srRetire")}${($("buyEnabled")&&$("buyEnabled").checked)?srRow("購屋成功率","srHouse"):""}${srRow("綜合成功率（含所有目標）","srBoth")}</table>
+    <p class="cap">成功率＝把市場波動放進來跑 ${NT(Math.max(600,num("nsim")||0))} 條路徑，退休期（或所有目標）不歸零的路徑比例。完成率看「平均路徑撐不撐得住」，成功率看「運氣不好時撐不撐得住」。</p>`:""}
     ${cols.map(sl=>{const R2=sl.rpt||{};const em=(R2.earmarks||[]),nt=(R2.svNotes||[]);if(!em.length&&!nt.length)return "";
       const byUse={};em.forEach(e=>{(byUse[e.label]=byUse[e.label]||[]).push(e);});
       const emRows=Object.keys(byUse).map(lb=>`<tr><td>${E(lb)}</td><td>${byUse[lb].map(e=>`${E(e.name)} ${N(e.amt)}${e.auto?"（自動指派）":""}`).join("、")}</td><td class="n">${N(byUse[lb].reduce((a,e)=>a+e.amt,0))}</td><td>${lb==="不動用"?"永遠不變現":lb==="備用"?"有需要就贖回，不綁目標":lb==="退休"?"退休前鎖定，退休當年起可動用":"到期前鎖定，到期優先支付該目標"}</td></tr>`).join("");
       const ntRows=nt.map(x=>`<tr><td>${E(x.label)}</td><td class="c" style="font-size:11px;color:#666">${x.kind==="budget"?(x.cov>=0.999?"結餘可支應":"結餘不足"):(x.cov==null?"—":(x.cov*100).toFixed(0)+"%")}</td><td>${E(x.text)}</td></tr>`).join(""); /* v429：附註口徑不用彩色 pill，主數字只有上表的完成率 */
-      return `<h3>${cols.length>1?E(sl.name)+"：":""}既有部位用途與藍圖對照</h3>${emRows?`<table class="t"><tr><th>用途</th><th>部位</th><th>合計（元）</th><th>藍圖處理</th></tr>${emRows}</table>`:""}${ntRows?`<table class="t"><tr><th>目標</th><th><small style="font-weight:400">專戶自給率（附註・④-3 新投入）</small></th><th>藍圖對照（這個目標實際上怎麼付）</th></tr>${ntRows}</table><p class="cap">專戶自給率是附註：④-3 只用剩餘資源（現金池、月結餘）與指定給該目標的既有部位另開專戶，看「這個專戶自己夠不夠」；主數字是上表的完成率（整個家庭資產負債表一起算）。兩者可能一高一低：專戶夠、但整個家庭撐不到那一年，以完成率與成功率為準。</p>`:""}`;}).join("")}</section>`;};
+      return `<h3>${cols.length>1?E(sl.name)+"：":""}既有部位用途與藍圖對照</h3>${emRows?`<table class="t"><tr><th>用途</th><th>部位</th><th>合計（元）</th><th>藍圖處理</th></tr>${emRows}</table>`:""}${ntRows?`<table class="t"><tr><th>目標</th><th><small style="font-weight:400">專戶自給率（附註・④-3 新投入）</small></th><th>藍圖對照（這個目標實際上怎麼付）</th></tr>${ntRows}</table><p class="cap">專戶自給率是附註：④-3 只用剩餘資源（現金池、月結餘）與指定給該目標的既有部位另開專戶，看「這個專戶自己夠不夠」；主數字是上表的完成率（整個家庭資產負債表一起算）。兩者可能一高一低：專戶夠、但整個家庭撐不到那一年，以完成率${ADV?"與成功率":""}為準。</p>`:""}`;}).join("")}</section>`;};
   // 03／04：cols＝要並排的工作區；withDiff＝最後一欄加「差異（vs 第一欄）」
   const secCashflow=(cols,tag,withDiff)=>{cols=cols.filter(sl=>rowsOf(sl));const R=cols.map(rowsOf);if(!R[0])return "";const base=R[0]; // 只有輕量快照（自動存檔）的工作區沒有明細列，略過該欄而不中斷
     const cell=(k,tbl,j)=>{const v=R[j]?R[j][tbl][k]:null;const chg=j&&R[j]&&Math.abs(v-base[tbl][k])>0.5;return `<td class="n${chg?" chg":""}">${v==null?"—":N(v)}</td>`;};
@@ -7378,7 +7435,8 @@ function rptBuild(){
       <table class="t"><tr><th>目標</th><th>歸屬</th><th>起用</th><th>提領期</th><th>時程</th><th>建議檔位</th><th>可能最大回撤</th></tr>${list.map(g=>{const gl0=g.key==="ret"?null:goals[+g.key.slice(1)];const pq=riskProfileFor(gl0||"ret");const t=goalTierOf(g.startYrs,g.durYrs,pq);return `<tr><td>${E(g.label)}</td><td>${E(RISK_WHO_LB[(gl0&&gl0.who)||"joint"])}</td><td class="n">${g.startYrs} 年後</td><td class="n">${g.durYrs} 年</td><td>${E(t.band)}</td><td><b>${E(t.tier)}</b></td><td>${E(TIER_MDD_RANGE[t.tier]||"")}</td></tr>`;}).join("")}</table></div>`;} /* v430：整塊不拆頁 */
       else rp=`<p class="cap">投資風險屬性問卷尚未完成（缺 ${pr.incomplete} 題）。</p>`;}catch(e){}
     let rcH="";try{if(typeof rcCompute==="function")rcPersons().forEach(([w,nm])=>{const R=rcCompute(w);if(!(R.peak.v>0))return;rcH+=`<h3>${E(nm)}｜家庭責任曲線</h3>${rcSvg(R,{w:720,h:280})}<p class="cap">${rcSummary(R)}</p>`;});}catch(e){} /* v379 */
-    return `<section><h2>05　風險管理</h2><p class="lead">先把「萬一」的窟窿補起來，投資才有意義。下表以責任分析算出每人應備保障，對照現有保單（含追蹤工具匯入之保障型給付）與${isPlan?"本方案規劃新增與風險自留":"規劃新增"}。</p>${sayP}${tbl||`<p class="cap">尚未填寫責任分析。</p>`}${rcH}${rp}</section>`;};
+    let pdH="";try{const vs=(curS&&curS.sn&&curS.sn.values)?curS.sn.values:collectValues();let its=[];try{its=JSON.parse(vs.itmAssetJson||"[]")||[];}catch(e){}const D=portDiag(vs,{items:its});pdH=`<div style="break-inside:avoid;page-break-inside:avoid">${portDiagHTML(D,E,{title:"原有投資組合診斷（現況）",noSigma:!ADV})}</div>`;}catch(e){} /* v432／v434 */
+    return `<section><h2>05　風險管理</h2><p class="lead">先把「萬一」的窟窿補起來，投資才有意義。下表以責任分析算出每人應備保障，對照現有保單（含追蹤工具匯入之保障型給付）與${isPlan?"本方案規劃新增與風險自留":"規劃新增"}。</p>${sayP}${tbl||`<p class="cap">尚未填寫責任分析。</p>`}${rcH}${rp}${pdH}</section>`;};
   const secSocial=()=>{
     let rows="";const who0=$("lc_who")?$("lc_who").value:"self";const LC={}; /* v430：直式（項目列、本人／配偶欄） */
     ["self","sp"].forEach(w=>{if(w==="sp"&&!hasSp)return;if(!$("lc_sal"))return;const has=lcApplySI(w);if(w==="sp"&&!has)return;$("lc_who").value=w;const r=lcCompute();if(!r)return;LC[w]=r;});
@@ -7394,12 +7452,12 @@ function rptBuild(){
     <p class="cap">勞保年金以 A／B 式取高、提前或展延每年 ±4%；勞退依雇主提繳＋自提、專戶報酬與請領期利率推估，法定按平均餘命精算，此為近似。開業醫以自營作業者身分自提者，雇主提繳為 0。</p></section>`;};
   const bpLegend=$("bpChart")?rptSvg("bpChart").replace(/^[\s\S]*<\/svg>/,""):"",mcLegend=$("chart")?rptSvg("chart").replace(/^[\s\S]*<\/svg>/,""):"";
   const slotCharts=(sl)=>{const bp=sl.rpt&&sl.rpt.bp;const sm=sl.sum||{};
-    const bpSvg=sl.rpt&&sl.rpt.bpSvg?`<svg viewBox="0 0 980 360" style="width:100%;height:auto;display:block">${sl.rpt.bpSvg}</svg>${sl.rpt.bpStrip||""}`:`<p class="cap">（藍圖尚未產生）</p>`;
+    const strip=(sl.rpt&&sl.rpt.bpStrip)||"";const bpSvg=sl.rpt&&sl.rpt.bpSvg?`<svg viewBox="0 0 980 360" style="width:100%;height:auto;display:block">${sl.rpt.bpSvg}</svg>${ADV?strip:strip.replace(/（看 ⑤ 把握度）/g,"")}`:`<p class="cap">（藍圖尚未產生）</p>`; /* v434 */
     const mcSvg=sl.rpt&&sl.rpt.mcSvg?`<svg viewBox="0 0 980 420" style="width:100%;height:auto;display:block">${sl.rpt.mcSvg}</svg>`:`<p class="cap">（模擬圖尚未產生）</p>`;
     const bLb=bp&&bp.poolB?(bp.baseSrc==="現況方案"?"對照：現況（維持目前行為）終點資產":"對照：同方案不執行處方之終點資產"):""; /* v430：對照曲線取現況工作區快照 */
     return `<div class="slotBlk" style="border-left:4px solid ${colorOf(sl)};padding-left:10px;margin:14px 0;break-before:page;page-break-before:always"><h3 style="margin-top:4px">${E(sl.name)}${sl.i===0?"（維持目前行為）":"（執行建議後）"}</h3>
       <div class="sub">生涯藍圖</div>${bpSvg}${bpLegend}${bp?`<table class="t"><tr><th>資產耗竭年齡</th><th>規劃終點（${bp.a0+bp.n-1} 歲）資產</th>${bp.poolB?`<th>${bLb}</th>`:""}</tr><tr><td class="c">${bp.depAge!==null?bp.depAge+" 歲":"全程為正"}</td><td class="c b">${fmtW(bp.final)}</td>${bp.poolB?`<td class="c">${fmtW(bp.finalB)}</td>`:""}</tr></table>`:""}
-      <div class="sub">蒙地卡羅模擬</div>${mcSvg}${mcLegend}<table class="t"><tr><th>退休成功率</th><th>綜合成功率</th><th>期末資產中位數</th></tr><tr><td class="c b">${pct(sm.srRetire)}</td><td class="c b">${pct(sm.srBoth)}</td><td class="c">${sm.finalP50!=null?fmtW(sm.finalP50):"—"}</td></tr></table></div>`;};
+      ${ADV?`<div class="sub">蒙地卡羅模擬</div>${mcSvg}${mcLegend}<table class="t"><tr><th>退休成功率</th><th>綜合成功率</th><th>期末資產中位數</th></tr><tr><td class="c b">${pct(sm.srRetire)}</td><td class="c b">${pct(sm.srBoth)}</td><td class="c">${sm.finalP50!=null?fmtW(sm.finalP50):"—"}</td></tr></table>`:""}</div>`;};
   const secSim=(cols,tag,withOverview)=>{
     const withBp=cols.filter(sl=>sl.rpt&&sl.rpt.bp&&sl.rpt.bp.pool);let cmp="";
     if(withOverview&&withBp.length>1){
@@ -7419,10 +7477,10 @@ function rptBuild(){
       const blocks=cols.filter(sl=>sl.i>0).map(sl=>{const L=(typeof sbAdoptedFrom==="function")?sbAdoptedFrom(sl.i===wsActive?null:sl.sn):[];if(!L.length)return "";
         const fv=(d,v)=>d.kind==="ret"?N(Math.round(v))+"／月":fmtW(v/1e4);
         const trs=L.map(n=>{const d=n.d;if(!d)return `<tr><td colspan="6">${E(n.v||"")}</td></tr>`;
-          return `<tr><td>${E(d.name)}</td><td>${d.from.age} 歲・${d.kind==="house"?"總價 ":""}${fv(d,d.from.pv)}</td><td><b>${d.to.age} 歲・${d.kind==="house"?"總價 ":""}${fv(d,d.to.pv)}</b></td><td class="n">${pc(d.b.bp)} → <b>${pc(d.r.bp)}</b></td><td class="n">${pc(d.b.mc)} → <b>${pc(d.r.mc)}</b></td><td class="n">${pc(d.b.ret)} → <b>${pc(d.r.ret)}</b></td></tr>`;}).join("");
-        return `<div class="sub">${E(sl.name)}</div><table class="t"><tr><th>目標</th><th>調整前</th><th>調整後</th><th>④-1 確定性完成率</th><th>⑤ 目標成功率</th><th>退休把握度</th></tr>${trs}</table>`;}).filter(Boolean).join("");
-      return blocks?`<h3>目標沙盤：調整前後把握度</h3><p class="lead">在醫師可接受的範圍內把目標的金額或時間調到「站得住」——每一列是一次採用：左邊是原設定，右邊是採用值；三個數字分別是平均路徑的完成率、含波動的目標成功率、對退休把握度的牽動。購屋以整間房（總價／購屋年齡）調整，頭期款與房貸由購屋精算連動。</p>${blocks}`:"";})();
-    return `<section><h2>07　財務現況：生涯資產模擬${tag||""}</h2><p class="lead">生涯藍圖是「照目前的收支、投資與扣款走下去」家庭資產逐年的樣子（確定性推算）；蒙地卡羅把市場波動放進來，跑 ${NT(Math.max(600,num("nsim")||0))} 條可能的路徑，看有多少比例能撐到規劃終點。</p>${cmp}${cols.map(slotCharts).join("")}${sbSec}</section>`;};
+          return `<tr><td>${E(d.name)}</td><td>${d.from.age} 歲・${d.kind==="house"?"總價 ":""}${fv(d,d.from.pv)}</td><td><b>${d.to.age} 歲・${d.kind==="house"?"總價 ":""}${fv(d,d.to.pv)}</b></td><td class="n">${pc(d.b.bp)} → <b>${pc(d.r.bp)}</b></td>${ADV?`<td class="n">${pc(d.b.mc)} → <b>${pc(d.r.mc)}</b></td><td class="n">${pc(d.b.ret)} → <b>${pc(d.r.ret)}</b></td>`:""}</tr>`;}).join("");
+        return `<div class="sub">${E(sl.name)}</div><table class="t"><tr><th>目標</th><th>調整前</th><th>調整後</th><th>④-1 確定性完成率</th>${ADV?"<th>⑤ 目標成功率</th><th>退休把握度</th>":""}</tr>${trs}</table>`;}).filter(Boolean).join("");
+      return blocks?`<h3>目標沙盤：調整前後${ADV?"把握度":"完成率"}</h3><p class="lead">在醫師可接受的範圍內把目標的金額或時間調到「站得住」——每一列是一次採用：左邊是原設定，右邊是採用值；${ADV?"三個數字分別是平均路徑的完成率、含波動的目標成功率、對退休把握度的牽動":"數字是平均路徑的完成率"}。購屋以整間房（總價／購屋年齡）調整，頭期款與房貸由購屋精算連動。</p>${blocks}`:"";})();
+    return `<section><h2>07　財務現況：生涯資產模擬${tag||""}</h2><p class="lead">生涯藍圖是「照目前的收支、投資與扣款走下去」家庭資產逐年的樣子（以長期平均報酬確定性推算）${ADV?`；蒙地卡羅把市場波動放進來，跑 ${NT(Math.max(600,num("nsim")||0))} 條可能的路徑，看有多少比例能撐到規劃終點`:""}。</p>${cmp}${cols.map(slotCharts).join("")}${sbSec}</section>`;};
   const secEstate=()=>{ // 07-2 資產傳承：繼承人結構＋遺產稅推估＋建議前後
     if(typeof estProject!=="function"||!$("est_year"))return "";
     let rows,k,v,H,B,rows2=null,v2=null;
@@ -7475,7 +7533,7 @@ function rptBuild(){
   const secPlanTable=(sl,tag)=>{const L=(sl&&sl.rpt&&sl.rpt.adv)||[];let x=`<section><h2>10　執行計畫表${tag||""}</h2>`;
     if(!L.length)x+=`<p class="cap">無可執行項目。</p>`;
     else{x+=`<table class="t plan"><tr><th style="width:28px">#</th><th>項目</th><th>執行方向</th><th style="width:90px">確認執行</th><th style="width:150px">執行時間</th></tr>`;let n=0;L.forEach(it=>{n++;const w=(it.st&&it.st.when)?it.st.when.replace(/^(\d{4})-(\d{2})$/,"$1 年 $2 月")+"（預計）":whenOf(it);x+=`<tr${it.st&&it.st.accept==="no"?' style="color:#999"':""}><td class="n">${n}</td><td><b>${E(it.src)}</b><br>${E(it.what)}</td><td>${E(it.eff||it.note||"")}</td><td class="c">${stOf(it)}</td><td>${w?E(w):'<span class="line"></span>'}</td></tr>`;});
-      {const d=new Date(date);if(!isNaN(d)){d.setFullYear(d.getFullYear()+1);x+=`<tr><td class="n">${n+1}</td><td><b>年度檢視</b><br>週年檢視：去年建議 vs 實際、參數與成功率變化</td><td>帶追蹤工具匯出檔回診；⑧-2 三欄表對照</td><td class="c"><span class="box">☐</span></td><td>${d.toISOString().slice(0,7).replace("-"," 年 ")} 月（預計）</td></tr>`;}}
+      {const d=new Date(date);if(!isNaN(d)){d.setFullYear(d.getFullYear()+1);x+=`<tr><td class="n">${n+1}</td><td><b>年度檢視</b><br>週年檢視：去年建議 vs 實際、參數與${ADV?"成功率":"完成率"}變化</td><td>帶追蹤工具匯出檔回診；⑧-2 三欄表對照</td><td class="c"><span class="box">☐</span></td><td>${d.toISOString().slice(0,7).replace("-"," 年 ")} 月（預計）</td></tr>`;}}
       x+=`</table><p class="cap">「確認執行」欄：客戶選案時逐項確認（☑ 確認執行／✕ 不執行／⏸ 延後），執行後由財務追蹤工具回報更新（☑ 已執行／◐ 部分／☐ 待執行）；未接追蹤工具時可手寫勾選。</p>`;}
     return x+`</section>`;};
   const secLadder=(sl,tag)=>{const L=sl&&sl.rpt&&sl.rpt.ladder;if(!clinicMode||!L||!L.rows)return "";const N0=v=>v==null?"—":N(Math.round(v)); /* v318：申報階梯——只在方案章節 */
@@ -9009,7 +9067,7 @@ function readPFrom(v,flowsArr,goalsArr){
   const gs=id=>v[id]!==undefined?String(v[id]):"";
   const cash=gv("cash"),etf=gv("etf");
   const emergTotal=Math.max((gv("bp_bufM")||0)>0?(gv("bp_bufM")/12)*gv("expense"):0, gv("bp_bufW")||0);const emergTd=(typeof emergTdWFrom==="function")?Math.min(emergTotal,emergTdWFrom(v)):0;const emergFloor=Math.max(0,emergTotal-emergTd);
-  const cm=(v.__wsCur===true||v.__wsCur==="true")&&typeof curMuSigFrom==="function"?curMuSigFrom(v):null; // 現況快照：μ/σ 由該快照 ①-3 推估
+  const cm=(v.__wsCur===true||v.__wsCur==="true")&&typeof curMuSigFrom==="function"?curMuSigFrom(v):null; // 現況快照：μ/σ 由該快照 ①-3 推估（v432 退回）
   return {
     seed:gs("seed")||"1", startAge:gv("startAge"),
     income:gv("income"), incomeSp:gv("incomeSp")||0, retireAgeSp:gv("retireAgeSp")||0, incomeGrowth:gv("incomeGrowth")/100, taxRate:gv("taxRate")/100,
@@ -10919,6 +10977,7 @@ function bsRecalc(){ // 建議變更 → delta → 還款時間帶 → 方案保
   if(typeof doSync==="function")doSync();
   buildFlows();if(typeof schedule==="function")schedule();
   bsRenderPlan();bsRenderCascade();
+  if(typeof syncCurMuSig==="function")try{syncCurMuSig();}catch(e){} /* v432：方案轉入變動 → ⑤ μA／σA 重算 */
   if(typeof txRecalc==="function")txRecalc(); // ①-0b 依方案值（曝光至）重算
   if(typeof renderBlueprint==="function")renderBlueprint();
   if(typeof recalcProt==="function")recalcProt();
@@ -12820,22 +12879,37 @@ buildFlows();
 
 /* ---------- 生涯資產模擬藍圖（規劃後＝依 ④-2 求解計畫執行） ---------- */
 /* 現況報酬率自動推導（取代已移除的 ④-1 目前投組報酬／存款利率欄位）*/
-function bpPlanMu(){ /* v429：方案工作區的藍圖與 ⑤ 蒙地卡羅同一套報酬——既有投資部位 μA、續扣 μB、退休後降 μB−μC（勾「退休後降風險」）；現況工作區回 null（⑤ 由 ①-3 推導、本來就同源） */
-  if(typeof wsActive==="undefined"||wsActive===0)return null;const mA=parseFloat(($("muA")||{}).value);if(!(mA>0))return null;
-  const mB=parseFloat(($("muB")||{}).value),mC=parseFloat(($("muC")||{}).value),dr=!$("deRisk")||$("deRisk").checked;
-  return {r1:mA/100,rB:(mB>0?mB:mA)/100,glide:dr?Math.max(0,((mB>0?mB:mA)-(mC>0?mC:0)))/100:0};}
-function bpDeriveRC(){ // 投組報酬＝①-3 投資類資產（as_1）持有報酬現值加權；無部位時退回 muA；方案工作區＝⑤ μA（v429）
-  {const pm=bpPlanMu();if(pm)return pm.r1;}
-  let sum=0,wt=0;
-  ASSET_GROUPS[1].rows.forEach((r,ri)=>{const v=V(`as_1_${ri}`),rt=V(`as_1_${ri}_r`);if(v>0){sum+=v;wt+=v*rt;}});
+function bpMovedInto(adjObj,skipFn){ /* v432：方案「調整配置」轉入投資類各列的金額（元）{as_1_x:元}；adjObj 不給＝讀目前 bsAdj（略過 bsSkip 的建議）；as_1_4 保單現價不算 */
+  const out={};const A=adjObj||((typeof bsAdj!=="undefined")?bsAdj:{});const skip=skipFn||(adjObj?(it=>it.status==="done"):(typeof bsSkip==="function"?bsSkip:(()=>false)));
+  Object.entries(A||{}).forEach(([id,L])=>{if(!/^(as|li)_/.test(id))return;(L||[]).forEach(it=>{if(!it||it.t!=="調整配置"||skip(it))return;const amt=parseFloat(it.amt)||0;if(!(amt>0))return;
+    const tid=(typeof bsIdByName==="function")?bsIdByName(it.to):null;if(!tid||!/^as_1_[0-35-9]$/.test(tid))return;out[tid]=(out[tid]||0)+amt;});});return out;}
+function bpNewMu(){ /* v432：方案轉入新標的的報酬＝③ 退休檔位（⑤ μB／σB） */
+  const mB=parseFloat(($("muB")||{}).value),sB=parseFloat(($("sigB")||{}).value);return {mu:(mB>0?mB:0)/100,sg:(sB>0?sB:13)/100};}
+function bpPlanMu(){ /* v432：只有方案工作區有：轉入新標的用 ③ 退休檔位 μB；既有部位照 ①-3、續扣照 ①-2、處方照處方；退休後既有部位降 μB−μC（勾「退休後降風險」） */
+  if(typeof wsActive==="undefined"||wsActive===0)return null;const n=bpNewMu();if(!(n.mu>0))return null;
+  const dr=!$("deRisk")||$("deRisk").checked,mC=parseFloat(($("muC")||{}).value);
+  return {rNew:n.mu,sgNew:n.sg,rB:n.mu,glide:dr?Math.max(0,n.mu-(mC>0?mC/100:0)):0,moved:bpMovedInto()};}
+function bpDeriveRCAssets(o){ // ①-3 投資類資產（as_1）持有報酬現值加權（現況投組報酬）；o.moved＝各列要先扣掉的方案轉入金額（元）、o.fb＝沒填報酬的列用的 fallback；無部位時退回 muA
+  o=o||{};let sum=0,wt=0;
+  ASSET_GROUPS[1].rows.forEach((r,ri)=>{const k=`as_1_${ri}`;const v=V(k)-((o.moved&&o.moved[k])||0);if(v<=0)return;const rr=V(k+"_r");const rt=rr>0?rr:(o.fb!=null?o.fb*100:0);sum+=v;wt+=v*rt;});
   return sum>0?(wt/sum)/100:((num("muA")||5)/100);
 }
+function bpPlanMix(){ /* v432：方案工作區 既有（E，①-3）＋轉入（M，③ μB）的金額與加權（供 ⑤ μA／σA 與 ④-1 狀態列） */
+  const pm=bpPlanMu();if(!pm)return null;const mv=pm.moved;const M=Object.values(mv).reduce((a,b)=>a+b,0);
+  const E=ASSET_GROUPS[1].rows.reduce((a,r,ri)=>{const k=`as_1_${ri}`;return a+Math.max(0,V(k)-(mv[k]||0));},0);
+  const rE=bpDeriveRCAssets({moved:mv,fb:pm.rNew}),sE=bpDeriveSigma({moved:mv});
+  const extra=Object.keys(mv).map(k=>({cat:+k.split("_")[2],w:mv[k],sg:pm.sgNew*100})); /* v434：轉入的錢以目標列類別、③ σB 進相關性計算 */
+  const sgAll=portSigmaCalc(sigmaEntries({items:(typeof itmAssets!=="undefined")?itmAssets:[],moved:mv,extra}))/100;
+  const T=E+M;return {E,M,rE,sE,rN:pm.rNew,sN:pm.sgNew,mu:T>0?(rE*E+pm.rNew*M)/T:pm.rNew,sg:T>0?sgAll:pm.sgNew,glide:pm.glide};}
+function bpDeriveRC(){ // 投組報酬（⑤ μA 口徑）：現況＝①-3 加權；方案＝既有部位（①-3）＋轉入（③ μB）加權
+  const mx=bpPlanMix();return mx?mx.mu:bpDeriveRCAssets();}
 // 逐筆資產 → 生涯模擬的「桶」。沒有逐筆資產（或逐筆都不計入模擬）時回 null，引擎沿用原本的三桶模型。
 function bpTdRate(){const e=$("bp_tdRate");return e?Math.max(0,parseFloat(e.value)||0)/100:0.015;}
 function bpBuckets(P,rc){
   const dest=(typeof illiqDest!=="undefined")?illiqDest:"cash";
   const picked=(typeof illiqPicked==="function")?illiqPicked().map(r=>r.k):[];
-  return bpBucketsCore(P,rc,(typeof itmAssets!=="undefined"?itmAssets:[]),dest,picked,{tdRow:V("as_0_1")/10000,tdRate:bpTdRate(),invOrd:bpInvOrd(),residUse:residUseList(),muOvr:(typeof bpPlanMu==="function")?bpPlanMu():null}); /* v429 */
+  const pm=(typeof bpPlanMu==="function")?bpPlanMu():null; /* v432：方案轉入另開桶 */
+  return bpBucketsCore(P,rc,(typeof itmAssets!=="undefined"?itmAssets:[]),dest,picked,{tdRow:V("as_0_1")/10000,tdRate:bpTdRate(),invOrd:bpInvOrd(),residUse:residUseList(),moved:pm?pm.moved:null,muNew:pm?pm.rNew:null});
 }
 function bpBucketsFrom(P,rc,v){ // 方案快照版：讀快照裡的 itmAssetJson
   let arr=[];try{arr=JSON.parse(v.itmAssetJson||"[]")||[];}catch(e){arr=[];}
@@ -12853,17 +12927,17 @@ function bpBucketsCore(P,rc,list,dest,picked,td){ // td：{tdRow:①-3 定存列
   const items=itmAssets.filter(x=>x.sim!==false&&invRows.indexOf("as_"+(x.bs||""))>=0&&(parseFloat(x.value)||0)>0);
   const tdItems=itmAssets.filter(x=>x.sim!==false&&String(x.bs||"")==="0_1"&&(parseFloat(x.value)||0)>0);
   const tdRow=Math.max(0,td.tdRow||0);
-  if(!items.length&&!tdItems.length&&tdRow<=0.01)return null;
+  const MV=td.moved||{},mvKeys=Object.keys(MV).filter(k=>(MV[k]||0)>5000); /* v432：方案轉入 */
+  if(!items.length&&!tdItems.length&&tdRow<=0.01&&!mvKeys.length)return null;
   const num1=(v,d)=>{const f=parseFloat(v);return isFinite(f)?f:d;};
   const mk=(x,i,isTd)=>{const anA=parseFloat(x.anAge)||0,anM=(parseFloat(x.anAmt)||0);
     // 年金式必須同時有「發生起始年齡」與「年金金額」才成立；缺一則退回部分贖回（否則會變成永遠動不到的死錢）
     const md0=x.redeem||"part",md=(md0==="annuity"&&!(anA>0&&(anM>0||isTd)))?"part":md0; // 定存「特定時間」＝到期整筆轉活存，只需到期年齡
-    const ovr=(!isTd&&td.muOvr)?td.muOvr:null; /* v429：方案工作區既有投資部位一律 μA、退休後交給 glide（與 ⑤ 同口徑） */
-    const r1=ovr?ovr.r1:(num1(x.r1,null)!==null?num1(x.r1,0)/100:(isTd?td.tdRate:rc));
+    const r1=num1(x.r1,null)!==null?num1(x.r1,0)/100:(isTd?td.tdRate:rc); /* v432：既有部位照自己的報酬（v429 的 μA 覆寫拿掉） */
     return {name:(x.name||(isTd?"定存":"投資部位")).slice(0,14),
     bal:(parseFloat(x.value)||0)/10000,
     r1,
-    r2:isTd?r1:(ovr?null:(num1(x.r2,null)!==null?num1(x.r2,0)/100:null)), // 定存：退休後不降、不受 glide
+    r2:isTd?r1:(num1(x.r2,null)!==null?num1(x.r2,0)/100:null), // 定存：退休後不降、不受 glide
     mode:md,td:!!isTd,
     anAmt:(isTd&&md==="annuity")?1e9:anM/10000,anAge:anA,anYrs:(isTd&&md==="annuity")?1:(parseFloat(x.anYrs)||0),
     ord:num1(x.ord,isTd?i-1000:i),src:i,degraded:md!==md0,use:(x.use==="none"||x.use==="free"||x.use==="emerg"||x.softUse)?"":(x.use||""),emerg:false};};
@@ -12883,6 +12957,7 @@ function bpBucketsCore(P,rc,list,dest,picked,td){ // td：{tdRow:①-3 定存列
     const out=[];let left=b.bal;RU.filter(e=>e.src===src&&e.use&&e.amt>0&&!e.soft).forEach((e,k)=>{const a=Math.min(left,e.amt/1e4);if(a<=0.005)return;left-=a;out.push({...b,bal:a,use:e.use,name:b.name+"→"+astUseLabel(e.use),ord:b.ord-0.01*(k+1),src:src==="td"?-6:-5});});
     b.bal=left;return out.concat(left>0.005?[b]:[]);};
   if(tdResid>0.01)tbs.push(...carve({name:tbs.length?"其他定存":"定存（①-3 列）",bal:tdResid,r1:td.tdRate,r2:td.tdRate,mode:"part",td:true,anAmt:0,anAge:0,anYrs:0,ord:tbs.length?Math.min.apply(null,tbs.map(b=>b.ord))-0.5:-500,src:-2},"td")); // 殘餘定存跟著第一筆逐筆定存走（細類／大類排序才有意義）
+  mvKeys.forEach(k=>{const w=MV[k]/1e4;const ri=+k.split("_")[2];bks.push({name:("方案轉入・"+String((ASSET_GROUPS[1].rows[ri]||k)).split("（")[0]).slice(0,14),bal:w,r1:(td.muNew!=null?td.muNew:rc),r2:null,mode:"part",td:false,anAmt:0,anAge:0,anYrs:0,ord:(isFinite(parseFloat(td.invOrd))?parseFloat(td.invOrd):9998)-0.001,src:-7,degraded:false,use:"",emerg:false});}); /* v432：轉入的錢用 ③ 退休檔位，排在其他投資部位之前 */
   const sum=bks.reduce((a,b)=>a+b.bal,0),resid=P.houseAcc0-sum;
   if(resid>0.01)bks.push(...carve({name:"其他投資部位",bal:resid,r1:rc,r2:null,mode:"part",anAmt:0,anAge:0,anYrs:0,ord:isFinite(parseFloat(td.invOrd))?parseFloat(td.invOrd):9998,src:-1},"inv"));
   else if(resid<-0.01&&sum>0){const k=P.houseAcc0/sum;bks.forEach(b=>b.bal*=k);}
@@ -13150,7 +13225,7 @@ function emergTdW(list){ // 標為「緊急預備金」的逐筆部位合計（�
   return ((list!==undefined?list:(typeof itmAssets!=="undefined"?itmAssets:[]))||[]).reduce((a,x)=>{if(x.sim===false||x.use!=="emerg")return a;const v=(parseFloat(x.value)||0)/1e4;if(v<=0)return a;const ua=(parseFloat(x.useAmt)||0)/1e4;return a+(ua>0?Math.min(v,ua):v);},0);}
 function emergTdWFrom(v){let arr=[];try{arr=JSON.parse((v||{}).itmAssetJson||"[]")||[];}catch(e){}return emergTdW(arr);}
 function astUseLabel(u){if(!u)return "未指定";if(u==="ret")return "退休";if(u==="free")return "備用";if(u==="emerg")return "緊急預備金";if(u==="none")return "不動用";return String(u).replace(/^goal:/,"");}
-function astUseRate(x){{const pm=(typeof bpPlanMu==="function")?bpPlanMu():null;if(pm&&String(x.bs||"")!=="0_1")return pm.r1;} /* v429 */const r=parseFloat(x.r1);if(isFinite(r))return r/100;return String(x.bs||"")==="0_1"?bpTdRate():((typeof bpDeriveRC==="function")?bpDeriveRC():0.05);}
+function astUseRate(x){const r=parseFloat(x.r1);if(isFinite(r))return r/100; /* v432：既有部位照自己的報酬 */return String(x.bs||"")==="0_1"?bpTdRate():((typeof bpDeriveRC==="function")?bpDeriveRC():0.05);}
 function residUseList(){try{const a=JSON.parse(($("bp_residUse")||{}).value||"[]");return Array.isArray(a)?a:[];}catch(e){return [];}} // 未逐筆部位（其他投資部位／①-3 定存列）的指派：[{src:"inv"|"td",use,amt(元)}]，只由 ④-3 自動指派寫入
 function residUseSave(a){const e=$("bp_residUse");if(e)e.value=JSON.stringify(a||[]);}
 function residUseName(src){return src==="td"?"定存（①-3 列）":"其他投資部位（未逐筆）";}
@@ -13242,21 +13317,64 @@ function bpDeriveRCfrom(v){
 }
 function bpDeriveR0from(v){ return (v.bp_r0!==undefined&&v.bp_r0!=="")?Math.max(0,parseFloat(v.bp_r0)||0)/100:0; }
 /* 現況 σ：依 ①-3 投資類「類別」自動推估（金額加權），與 rc 用同一組列與權重；順序對應 ASSET_GROUPS[1].rows */
-const SIGMA_BY_CAT=[18,6,15,22,1,25,2,15,3,8]; // 股票/債券/共同基金ETF/期貨選擇權REITs/儲蓄保險現值/事業股權/互助會/另類/債權/投資性不動產（%）
-function bpDeriveSigma(){ let sum=0,wt=0;ASSET_GROUPS[1].rows.forEach((r,ri)=>{const v=V(`as_1_${ri}`);if(v>0){sum+=v;wt+=v*(SIGMA_BY_CAT[ri]||10);}});return sum>0?(wt/sum)/100:((num("sigA")||13)/100); }
-function bpDeriveSigmaFrom(v){ let sum=0,wt=0;ASSET_GROUPS[1].rows.forEach((r,ri)=>{const val=parseFloat(v[`as_1_${ri}`])||0;if(val>0){sum+=val;wt+=val*(SIGMA_BY_CAT[ri]||10);}});return sum>0?(wt/sum)/100:((parseFloat(v.sigA)||13)/100); }
+const SIGMA_BY_CAT=[18,6,15,22,1,25,2,15,3,8]; // 原廠：股票/債券/共同基金ETF/期貨選擇權REITs/儲蓄保險現值/事業股權/互助會/另類/債權/投資性不動產（%）
+const CAT_MU_FACTORY=[7,3.5,7,6,2,0,0,0,0,2]; /* v433：①-3 投資類年化報酬原廠預設 */
+/* v434：類別相關係數（股票/債券/共同基金ETF/期貨選擇權REITs/儲蓄險/事業股權/互助會/另類/債權/投資性不動產）——組合 σ 要算分散效果 */
+const CAT_CORR=[
+ [1.0,0.2,0.9,0.6,0.1,0.3,0.0,0.1,0.1,0.3],
+ [0.2,1.0,0.2,0.3,0.3,0.1,0.0,0.1,0.3,0.2],
+ [0.9,0.2,1.0,0.6,0.1,0.3,0.0,0.1,0.1,0.3],
+ [0.6,0.3,0.6,1.0,0.1,0.2,0.0,0.1,0.1,0.5],
+ [0.1,0.3,0.1,0.1,1.0,0.0,0.0,0.0,0.2,0.1],
+ [0.3,0.1,0.3,0.2,0.0,1.0,0.0,0.0,0.1,0.2],
+ [0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.1,0.0],
+ [0.1,0.1,0.1,0.1,0.0,0.0,0.0,1.0,0.0,0.1],
+ [0.1,0.3,0.1,0.1,0.2,0.1,0.1,0.0,1.0,0.1],
+ [0.3,0.2,0.3,0.5,0.1,0.2,0.0,0.1,0.1,1.0]];
+function portSigmaCalc(E){ /* entries [{cat,w(元),sg(%)}] → 組合 σ（%）；同類別視為完全相關 */
+  const L=(E||[]).filter(x=>x&&x.w>0&&isFinite(x.sg));const T=L.reduce((a,x)=>a+x.w,0);if(!(T>0))return 0;let v=0;
+  for(let i=0;i<L.length;i++)for(let j=0;j<L.length;j++){const r=(L[i].cat===L[j].cat)?1:((CAT_CORR[L[i].cat]||[])[L[j].cat]||0);v+=L[i].w*L[j].w*L[i].sg*L[j].sg*r;}
+  return Math.sqrt(Math.max(0,v))/T;}
+function sigmaEntries(o){ /* o.vals（快照 values；省略＝即時）、o.items（逐筆）、o.moved（{as_1_x:元}）、o.extra（[{cat,w,sg}]） */
+  o=o||{};const gv=k=>o.vals?(parseFloat(o.vals[k])||0):V(k);const items=(o.items||[]).filter(x=>x&&x.sim!==false&&/^1_\d$/.test(String(x.bs||""))&&(parseFloat(x.value)||0)>0&&isFinite(parseFloat(x.sg))&&parseFloat(x.sg)>=0);
+  const E=[];ASSET_GROUPS[1].rows.forEach((r,ri)=>{const k=`as_1_${ri}`;const row=Math.max(0,gv(k)-((o.moved&&o.moved[k])||0));if(!(row>0))return;
+    let used=0;items.filter(x=>String(x.bs)===`1_${ri}`).forEach(x=>{const w=Math.min(parseFloat(x.value)||0,row-used);if(w<=0)return;used+=w;E.push({cat:ri,w,sg:parseFloat(x.sg)});});
+    const rem=row-used;if(rem>0)E.push({cat:ri,w:rem,sg:catSg(ri,o.vals)});});
+  (o.extra||[]).forEach(x=>{if(x&&x.w>0)E.push(x);});return E;}
+function hcPort(v){try{const o=JSON.parse((v?v.hcPortJson:(($("hcPortJson")||{}).value))||"null");return (o&&isFinite(parseFloat(o.sg))&&parseFloat(o.sg)>0)?o:null;}catch(e){return null;}} /* v434：健檢工具算好的組合 μ／σ（%） */
+function catMu(ri,v){const raw=v?v[`cat_mu_${ri}`]:(($(`cat_mu_${ri}`)||{}).value);const x=parseFloat(raw);return (raw!==undefined&&raw!==""&&isFinite(x))?x:(CAT_MU_FACTORY[ri]||0);} /* v433：類別 μ 預設（%）；快照 v 有值讀快照 */
+function catSg(ri,v){const raw=v?v[`cat_sg_${ri}`]:(($(`cat_sg_${ri}`)||{}).value);const x=parseFloat(raw);return (raw!==undefined&&raw!==""&&isFinite(x)&&x>=0)?x:(SIGMA_BY_CAT[ri]||10);} /* v433：類別 σ（%） */
+function catDefSaved(){try{const o=JSON.parse(localStorage.getItem("fpw_catDef")||"null");return (o&&Array.isArray(o.mu)&&Array.isArray(o.sg))?o:null;}catch(e){return null;}}
+function catDefLoad(force){ /* 空白（或 force）→ 我的預設 → 原廠 */
+  const sv=catDefSaved();ASSET_GROUPS[1].rows.forEach((r,ri)=>{const m=$(`cat_mu_${ri}`),g=$(`cat_sg_${ri}`);if(m&&(force||m.value==="")){m.value=sv?sv.mu[ri]:(CAT_MU_FACTORY[ri]||0);}if(g&&(force||g.value==="")){g.value=sv?sv.sg[ri]:(SIGMA_BY_CAT[ri]||10);}});}
+function catDefRender(){const box=$("catDefBox");if(!box)return;if(box.querySelector("table"))return;
+  box.innerHTML=`<table class="t" style="max-width:560px"><tr><th style="text-align:left">①-3 投資類列</th><th style="text-align:right">μ 年化報酬預設 %</th><th style="text-align:right">σ 年化波動 %</th></tr>${ASSET_GROUPS[1].rows.map((r,ri)=>`<tr><td>${esc(String(r))}</td><td class="n"><input type="number" id="cat_mu_${ri}" step="0.1" style="width:72px;text-align:right;font-family:var(--mono);font-size:12px;padding:3px 5px;border:1px solid var(--line);border-radius:5px;background:var(--paper)"></td><td class="n"><input type="number" id="cat_sg_${ri}" step="0.5" min="0" style="width:72px;text-align:right;font-family:var(--mono);font-size:12px;padding:3px 5px;border:1px solid var(--line);border-radius:5px;background:var(--paper)"></td></tr>`).join("")}</table>`;
+  ASSET_GROUPS[1].rows.forEach((r,ri)=>{regLb(`cat_mu_${ri}`,`假設｜${String(r).split("（")[0]} μ%`);regLb(`cat_sg_${ri}`,`假設｜${String(r).split("（")[0]} σ%`);});
+  catDefLoad(false);
+  box.addEventListener("input",()=>{if(typeof syncCurMuSig==="function")try{syncCurMuSig();}catch(e){}if(typeof renderBlueprint==="function")try{renderBlueprint();}catch(e){}if(typeof renderPortDiag==="function")try{renderPortDiag();}catch(e){}if(typeof schedule==="function")schedule();});
+  const msg=$("catDefMsg");
+  $("btnCatApply").onclick=()=>{let n=0;ASSET_GROUPS[1].rows.forEach((r,ri)=>{const e=$(`as_1_${ri}_r`);if(!e)return;const cm=catMu(ri);if(e.value===""||(!(parseFloat(e.value)>0)&&cm>0)){if(String(e.value)!==String(cm)){e.value=cm;n++;}}});if(typeof doSync==="function")try{doSync();}catch(e){}if(typeof syncCurMuSig==="function")syncCurMuSig();if(typeof renderBlueprint==="function")try{renderBlueprint();}catch(e){}if(msg)msg.textContent=`已填 ${n} 列（只填 ①-3 空白或 0 的列）`;};
+  $("btnCatSave").onclick=()=>{const o={mu:ASSET_GROUPS[1].rows.map((r,ri)=>catMu(ri)),sg:ASSET_GROUPS[1].rows.map((r,ri)=>catSg(ri)),at:locISO().slice(0,10)};try{localStorage.setItem("fpw_catDef",JSON.stringify(o));if(msg)msg.textContent=`已存為我的預設 ✓（${o.at}）——新客戶重置時套用`;}catch(e){if(msg)msg.textContent="瀏覽器不允許儲存";}};
+  $("btnCatFactory").onclick=()=>{ASSET_GROUPS[1].rows.forEach((r,ri)=>{$(`cat_mu_${ri}`).value=CAT_MU_FACTORY[ri]||0;$(`cat_sg_${ri}`).value=SIGMA_BY_CAT[ri]||10;});box.dispatchEvent(new Event("input"));if(msg)msg.textContent="已回復原廠（尚未存為我的預設）";};}
+function bpDeriveSigma(o){ o=o||{}; /* v434：含分散效果；現況且有健檢組合 σ 時直接用它 */
+  if(!o.moved&&(typeof wsActive==="undefined"||wsActive===0)){const h=hcPort();if(h)return parseFloat(h.sg)/100;}
+  const E=sigmaEntries({items:(typeof itmAssets!=="undefined")?itmAssets:[],moved:o.moved,extra:o.extra});const sg=portSigmaCalc(E);return E.length?sg/100:((num("sigA")||13)/100); }
+function bpDeriveSigmaFrom(v){ const h=hcPort(v);if(h)return parseFloat(h.sg)/100;let arr=[];try{arr=JSON.parse(v.itmAssetJson||"[]")||[];}catch(e){arr=[];}const E=sigmaEntries({vals:v,items:arr});const sg=portSigmaCalc(E);return E.length?sg/100:((parseFloat(v.sigA)||13)/100); } /* v434 */
 function curMuSigCalc(rc,sg,r0,glide){ const muRet=Math.max(r0,rc-glide),sgRet=rc>0?sg*(muRet/rc):sg;return {mu:rc,sg,muRet,sgRet}; } // 退休後 glide：μ 下調、σ 同比例縮
-function curMuSig(){ return curMuSigCalc(bpDeriveRC(),bpDeriveSigma(),bpDeriveR0(),Math.max(0,num("bp_baseGlide")||0)/100); }
+function curMuSig(){ return curMuSigCalc(bpDeriveRCAssets(),bpDeriveSigma(),bpDeriveR0(),Math.max(0,num("bp_baseGlide")||0)/100); } /* v431：純 ①-3 */
 function curMuSigFrom(v){ const g=(v.bp_baseGlide!==undefined&&v.bp_baseGlide!=="")?Math.max(0,parseFloat(v.bp_baseGlide)||0)/100:0.015;return curMuSigCalc(bpDeriveRCfrom(v),bpDeriveSigmaFrom(v),bpDeriveR0from(v),g); }
 function syncCurMuSig(){ // 現況工作區：⑤ 的 μ/σ 一律由 ①-3 持有部位推估（與 ④-1 現況同源），欄位唯讀；方案工作區恢復可編輯
   const isCur=(typeof wsActive!=="undefined"&&wsActive===0),ids=["muA","sigA","muB","sigB","muC","sigC"],hint=$("curMuSigHint");
-  if(!isCur){ids.forEach(id=>{const e=$(id);if(e){e.readOnly=false;e.classList.remove("curDerived");}});if(hint)hint.textContent="";return;}
-  const c=curMuSig();
-  const set=(id,v)=>{const e=$(id);if(!e)return;const nv=(v*100).toFixed(1);if(e.value!==nv)e.value=nv;e.readOnly=true;e.classList.add("curDerived");};
-  set("muA",c.mu);set("sigA",c.sg);set("muB",c.mu);set("sigB",c.sg);set("muC",c.muRet);set("sigC",c.sgRet);
-  if(hint)hint.innerHTML=`現況工作區：μ／σ 由 <b>①-3 持有部位</b>自動推估（累積期 μ ${(c.mu*100).toFixed(1)}%／σ ${(c.sg*100).toFixed(1)}%；退休後 glide → μ ${(c.muRet*100).toFixed(1)}%／σ ${(c.sgRet*100).toFixed(1)}%）——唯讀，與 ④-1 現況曲線同源；方案工作區才可編輯。`;
+  if(!isCur){["muB","sigB","muC","sigC"].forEach(id=>{const e=$(id);if(e){e.readOnly=false;e.classList.remove("curDerived");}});
+    const mx=(typeof bpPlanMix==="function")?bpPlanMix():null; /* v432：方案 μA／σA＝既有（①-3）＋轉入（③ μB）自動加權、唯讀 */
+    ["muA","sigA"].forEach(id=>{const e=$(id);if(!e)return;if(mx){const nv=((id==="muA"?mx.mu:mx.sg)*100).toFixed(1);if(e.value!==nv)e.value=nv;e.readOnly=true;e.classList.add("curDerived");}else{e.readOnly=false;e.classList.remove("curDerived");}});
+    if(hint)hint.innerHTML=mx?`方案工作區：μA／σA 自動加權（唯讀）＝既有部位 ${fmtW(mx.E/1e4)}（①-3 各列報酬，μ ${(mx.rE*100).toFixed(1)}%／σ ${(mx.sE*100).toFixed(1)}%）＋方案轉入 ${fmtW(mx.M/1e4)}（③ 退休檔位 μB ${(mx.rN*100).toFixed(1)}%／σB ${(mx.sN*100).toFixed(1)}%）→ μA ${(mx.mu*100).toFixed(1)}%／σA ${(mx.sg*100).toFixed(1)}%。μB／σB／μC／σC 由 ③「一鍵帶入」（處方、專戶與轉入的錢用它）。`:"方案工作區：先到 ③ 按「一鍵帶入 ⑤」帶入 μB／μC，μA／σA 會依 ①-3 既有部位與方案轉入自動加權。";return;}
+  const c=curMuSig(); /* v432：現況＝客戶原有組合，μ／σ 由 ①-3 持有部位推估（v430 做法） */
+  const set=(id,v)=>{const e=$(id);if(!e)return;const nv=(+v).toFixed(1);if(e.value!==nv)e.value=nv;e.readOnly=true;e.classList.add("curDerived");};
+  set("muA",c.mu*100);set("sigA",c.sg*100);set("muB",c.mu*100);set("sigB",c.sg*100);set("muC",c.muRet*100);set("sigC",c.sgRet*100);
+  if(hint)hint.innerHTML=`現況工作區：μ／σ 由 <b>①-3 持有部位</b>自動推估（客戶原有組合：累積期 μ ${(c.mu*100).toFixed(1)}%／σ ${(c.sg*100).toFixed(1)}%；退休後 glide → μ ${(c.muRet*100).toFixed(1)}%／σ ${(c.sgRet*100).toFixed(1)}%）——唯讀，與 ④-1 現況曲線同源。原有組合與 ③ 建議檔位的差距看 ③-2「原有投資組合診斷」；方案工作區只有「動過的錢」改用 ③ 的檔位。`;
 }
-function curWsGuard(msgEl){ if(typeof wsActive!=="undefined"&&wsActive===0){if(msgEl){msgEl.textContent="現況工作區的 μ/σ 由 ①-3 持有部位推估、不接受帶入——請切到方案工作區再帶入";msgEl.style.color="var(--gD)";}return true;}return false; }
+function curWsGuard(msgEl){ if(typeof wsActive!=="undefined"&&wsActive===0){if(msgEl){msgEl.textContent="現況＝客戶原有組合，μ/σ 由 ①-3 持有部位推估、不接受帶入（原有組合與 ③ 的差距看下方「原有投資組合診斷」）——請切到方案工作區再帶入";msgEl.style.color="var(--gD)";}return true;}return false; } /* v432 */
 function runBlueprint(){
   const P=readP();
   const base=simulate({...P,buyEnabled:false,goalOut:null,emLocks:null},1,false); // 藍圖自行疊目標支出，需關閉引擎內建目標流以免重複；專款由桶模型處理
@@ -13271,8 +13389,8 @@ function runBlueprint(){
   const expA=new Float64Array(n);
   for(let t=0;t<n;t++)expA[t]=base.expense[t]+goalOut[t];
   // 現況報酬率自動推導：投組報酬＝①-3 投資類資產持有報酬加權；存款（活存）利率＝④-1 現金管理紀律 bp_r0（預設 0%）
-  const pmBP=(typeof bpPlanMu==="function")?bpPlanMu():null; /* v429：方案工作區＝⑤ 的 μA／μB／μB−μC */
-  const rc=bpDeriveRC(),r0=bpDeriveR0();
+  const pmBP=(typeof bpPlanMu==="function")?bpPlanMu():null; /* v432：方案＝既有照 ①-3、轉入用 ③ μB、退休後降 μB−μC */
+  const rc=pmBP?bpDeriveRCAssets({moved:pmBP.moved,fb:pmBP.rNew}):bpDeriveRCAssets(),r0=bpDeriveR0(); // 既有部位（未逐筆的殘餘）用的報酬
   // 現況退休後降風險（多時段報酬／glide）：退休當年起，既有部位與續扣桶報酬下調 baseGlide 百分點（下限存款利率）；方案工作區＝μB−μC
   const baseGlide=pmBP?pmBP.glide:Math.max(0,num("bp_baseGlide")||0)/100;
   const retTB=Math.max(0,P.retireAge-a0);
@@ -13312,7 +13430,6 @@ function runBlueprint(){
     // 定期定額是約定扣款：大額支出年度仍照扣，缺口由贖回補（取消勾選＝當年沒結餘就停扣）
     const keepOn=!$("bp_keepOnShort")||$("bp_keepOnShort").checked;
     const keepRows=bpKeepRows(); // 逐筆優先：①-2b 的理財支出各自有金額、年化報酬、扣款起訖（5 筆定期定額各扣到不同年齡都表達得出來）；連結既有標的者報酬隨它、扣款進它的桶
-    if(pmBP){keepRows.items.forEach(x=>{x[1]=pmBP.rB*100;});rkE=pmBP.rB;} /* v429：方案工作區續扣桶＝μB（⑤ 把續扣投進退休組合） */
     {
       const items=keepRows.items;
       const sum=items.reduce((s,x)=>s+x[0],0);
@@ -13664,7 +13781,7 @@ function renderBlueprint(){
     const bg=Math.max(0,num("bp_baseGlide")||0),planSpread=Math.max(0,(num("muB")||0)-(num("muC")||0));
     const nBlank=(typeof itmAssets!=="undefined"?itmAssets:[]).filter(x=>x.sim!==false&&/^1_[0-3]$/.test(String(x.bs||""))&&(parseFloat(x.value)||0)>0&&!(x.r2!==undefined&&x.r2!=="")).length;
     const pmG=(typeof bpPlanMu==="function")?bpPlanMu():null; /* v429 */
-    if(pmG){$("bpGlideMsg").textContent=`方案工作區：既有投資部位一律 μA ${(pmG.r1*100).toFixed(1)}%、續扣桶 μB ${(pmG.rB*100).toFixed(1)}%、退休後降 ${(pmG.glide*100).toFixed(1)} 百分點（與 ⑤ 蒙地卡羅同口徑；①-3 各列／逐筆報酬只在現況工作區使用）`;$("bpGlideMsg").style.color="var(--sub)";}
+    if(pmG){const mx=bpPlanMix();$("bpGlideMsg").textContent=`方案工作區：既有部位照 ①-3 各列／逐筆報酬（${mx?fmtW(mx.E/1e4):"—"}・加權 ${mx?(mx.rE*100).toFixed(1):"—"}%）、方案轉入 ${mx?fmtW(mx.M/1e4):"0 元"} 用 ③ 退休檔位 μB ${(pmG.rNew*100).toFixed(1)}%、續扣與處方照各自設定；退休後既有部位降 ${(pmG.glide*100).toFixed(1)} 百分點。⑤ μA＝兩者加權 ${mx?(mx.mu*100).toFixed(1):"—"}%（自動）`;$("bpGlideMsg").style.color="var(--sub)";}
     else{$("bpGlideMsg").textContent=bg>0
       ?`未填退休後 % 者退休當年起降 ${bg} 百分點（目前 ${nBlank} 筆逐筆吃預設）；④-2 新標的專戶 glide μB−μC＝${planSpread.toFixed(1)}`
       :`未填退休後 % 者維持單一報酬（${nBlank} 筆逐筆吃預設）；④-2 新標的專戶 glide μB−μC＝${planSpread.toFixed(1)}`;
@@ -13844,7 +13961,8 @@ function renderBlueprint(){
 $("btnBlueprint").addEventListener("click",()=>{if(preGate("更新藍圖"))renderBlueprint();});
 $("btnPreCheck")&&$("btnPreCheck").addEventListener("click",()=>{let L=[];try{L=preCheck();}catch(e){}renderPreCheck(L,"");});
 ["bp_bufM","bp_bufW","bp_baseGlide","bp_r0"].forEach(id=>$(id).addEventListener("input",()=>{renderBlueprint();if(typeof syncCurMuSig==="function")syncCurMuSig();}));
-["muA","muB","muC","deRisk"].forEach(id=>{const e=$(id);if(e)e.addEventListener("change",()=>{if(typeof wsActive!=="undefined"&&wsActive!==0&&typeof renderBlueprint==="function")renderBlueprint();});}); /* v429：方案工作區藍圖跟 ⑤ 的 μ 連動 */
+["muA","muB","muC","deRisk"].forEach(id=>{const e=$(id);if(e)e.addEventListener("change",()=>{if(typeof renderBlueprint==="function")renderBlueprint();});}); /* v429：藍圖跟 ⑤ 的 μ 連動（v431 起現況也是） */
+try{catDefRender();}catch(e){console.warn(e);} /* v433 */
 document.addEventListener("click",e=>{const b=e.target.closest("button[data-bpx]");if(!b)return;
   const k=b.dataset.bpx;if(k==="inc")bpXInc=!bpXInc;else if(k==="exp")bpXExp=!bpXExp;else if(k==="goal")bpXGoal=!bpXGoal;else if(k==="inv")bpXInv=!bpXInv;renderBlueprint();});
 $("bpXLvSeg")&&$("bpXLvSeg").addEventListener("click",e=>{const b=e.target.closest("button[data-lv]");if(!b)return;
@@ -14158,7 +14276,7 @@ function preCheck(){
   if(cur>0&&ret<=cur)err("②-1",`退休年齡 ${ret} 不大於目前年齡 ${cur}`,"view_goal");
   if(life<=ret)err("②-1",`生命終點 ${life} 不大於退休年齡 ${ret}`,"view_goal");
   try{const by=bioYr(V("bio_self_y"));if(by&&cur>0&&Math.abs(yNow-by-cur)>=1)warn("⓪／②-1",`出生年推算 ${yNow-by} 歲，②-1 填 ${cur} 歲——到 ⓪ 按「同步全站」`,"view_fam");}catch(e){}
-  try{if($("muB")&&!(num("muB")>0)&&!(num("muA")>0)){const cur0=(typeof wsActive!=="undefined"&&wsActive===0);warn("③-2／⑤",cur0?`⑤ 的報酬率假設為 0%——現況工作區的 μ 由 ①-3 投資部位的「預期報酬」加權推估，請確認 ①-3 投資類各列是否已填預期報酬率（或客戶確實無投資部位）`:`⑤ 的報酬率假設還是 0%（μA／μB 未帶入）——藍圖與蒙地卡羅會以零報酬計算，請到 ③-2 按「一鍵帶入 ⑤」或在 ⑤ 手填`,cur0?"view_data":"view_risk");}}catch(e){} /* v301：實案核對發現 μ 未帶入時成功率失真卻無提醒；現況／方案提示分流 */
+  try{const cur0=(typeof wsActive!=="undefined"&&wsActive===0);if($("muB")&&(cur0?(!(num("muB")>0)&&!(num("muA")>0)):!(num("muB")>0))){warn("③-2／⑤",cur0?`⑤ 的報酬率假設為 0%——現況工作區的 μ 由 ①-3 投資部位的「年化報酬」加權推估，請確認 ①-3 投資類各列是否已填（或客戶確實無投資部位）`:`⑤ 的退休組合 μB 還是 0%——④-2 處方、④-3 專戶與方案轉入的錢都用它，藍圖與蒙地卡羅會以零報酬計算，請到 ③-2 按「一鍵帶入 ⑤」或在 ⑤ 手填 μB`,cur0?"view_data":"view_risk");}}catch(e){} /* v432：方案看 μB（μA 自動加權） */ /* v301：實案核對發現 μ 未帶入時成功率失真卻無提醒；現況／方案提示分流 */
   if($("startAge")&&cur>0&&Math.abs(num("startAge")-cur)>=1)warn("⑤",`模擬起始年齡 ${num("startAge")} ≠ 本人年齡 ${cur}`,"view_sim");
   if($("est_age")&&cur>0&&Math.abs(V("est_age")-cur)>=1)warn("⑦-1",`⑦ 目前年齡 ${V("est_age")} ≠ 本人年齡 ${cur}`,"view_est");
   const hasSp=!!($("bio_hasSp")&&$("bio_hasSp").checked);
@@ -14632,9 +14750,8 @@ function ipTargets(){ // 可加碼的既有標的：①-3b 投資類（股票／
 }
 function ipTargetMuSg(t){ // 加碼既有標的的 μ／σ：①-3b 逐筆報酬率（未填→①-3 該列報酬率→現況 rc）、類別預設 σ
   const ri=+String(t.bs||"1_0").split("_")[1];const rowR=(typeof V==="function")?V(`as_1_${ri}_r`):0;
-  const pm=(typeof bpPlanMu==="function")?bpPlanMu():null;
-  const mu=pm?pm.r1*100:(isFinite(parseFloat(t.r1))?parseFloat(t.r1):(rowR>0?rowR:(typeof bpDeriveRC==="function"?bpDeriveRC()*100:6))); /* v429：方案工作區＝μA */
-  return {mu:+(mu).toFixed(2),sg:(typeof SIGMA_BY_CAT!=="undefined"&&SIGMA_BY_CAT[ri])||15};}
+  const mu=isFinite(parseFloat(t.r1))?parseFloat(t.r1):(rowR>0?rowR:(typeof bpDeriveRC==="function"?bpDeriveRC()*100:6)); /* v432：既有標的照 ①-3 */
+  return {mu:+(mu).toFixed(2),sg:(typeof catSg==="function")?catSg(ri):((typeof SIGMA_BY_CAT!=="undefined"&&SIGMA_BY_CAT[ri])||15)};} /* v433 */
 function ipTarget(p){ // 依 id 找；找不到（①-0 匯入重建了逐筆）退回名稱＋列別，並把新 id 寫回處方
   if(!p||!p.assetRef)return null;const T=ipTargets();let t=T.find(o=>o.id===p.assetRef);
   if(!t&&p.assetName){t=T.find(o=>(o.x.name||"")===p.assetName&&(!p.assetBs||String(o.x.bs||"")===p.assetBs));if(t)p.assetRef=t.id;}
